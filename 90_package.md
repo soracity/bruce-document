@@ -1,20 +1,20 @@
 ```text
 src/app/
-  ├── AKC0100/             # メニュー表示
+  ├── AKC01000/             # メニュー表示
   │    ├── read-models/    # Read Models（Signalで扱う表示専用のデータ型）
   │    └── components/     # Angular Components（画面、テンプレート）
-  ├── AKC0200/             # 試合属性
+  ├── AKC02000/             # 試合属性
   │    ├── read-models/    # Read Models（Signalで扱う表示専用のデータ型）
   │    └── components/     # Angular Components（画面、テンプレート）
-  ├── AKC0300/             # ポイント入力
+  ├── AKC03000/             # ポイント入力
   │    ├── read-models/    # Read Models（Signalで扱う表示専用のデータ型）
   │    └── components/     # Angular Components（画面、テンプレート）
-  └── AKC0900/             # 共通
+  └── AKC09000/             # 共通
        ├── read-models/    # Read Models（Signalで扱う表示専用のデータ型）
        └── components/     # Angular Components（画面、テンプレート）
        
 src/libs/
-  ├── AKC0100/                     # メニュー表示
+  ├── AKC01000/                     # メニュー表示
   │       ├── store/          　　　# 画面のキャッシュデータ
   │       │    ├── service/        # 
   │       │    └── dto/            # 
@@ -30,7 +30,7 @@ src/libs/
   │       └── infrastructure/      # 【インフラ層】
   │            ├── repositories/   # DB保存（Event Store）の実装
   │            └── gate-api/       # ACL
-  ├── AKC0200/                     # 試合属性
+  ├── AKC02000/                     # 試合属性
   │       ├── store/          　　　# 画面のキャッシュデータ
   │       │    ├── service/        # 
   │       │    └── dto/            # 
@@ -46,7 +46,7 @@ src/libs/
   │       └── infrastructure/      # 【インフラ層】
   │            ├── repositories/   # DB保存（Event Store）の実装
   │            └── gate-api/       # ACL
-  ├── AKC0300/                     # ポイント入力
+  ├── AKC03000/                     # ポイント入力
   │       ├── store/          　　　# 画面のキャッシュデータ
   │       │    ├── service/        # 
   │       │    └── dto/            # 
@@ -62,7 +62,7 @@ src/libs/
   │       └── infrastructure/      # 【インフラ層】
   │            ├── repositories/   # DB保存（Event Store）の実装
   │            └── gate-api/       # ACL
-  └── AKC0900/                     # 共通
+  └── AKC09000/                     # 共通
           ├── store/          　　　# 画面のキャッシュデータ
           │    ├── service/        # 
           │    └── dto/            # 
