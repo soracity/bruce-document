@@ -19,6 +19,30 @@
       └─store           # 画面のキャッシュデータ
           ├─dto
           └─service
+以下に共通処理
+shared
+├─sqlite
+├─di
+├─logger
+└─utils
+
+または
+└─platform
+    ├─sqlite
+    │   ├─sqlite.service.ts
+    │   ├─sqlite.dao.ts
+    │   ├─sqlite.config.ts
+    │   └─migration
+    │
+    ├─di
+    │   └─tokens
+    │
+    ├─logger
+    │
+    ├─utils
+    │
+    └─http
+
 ```
 
 - 「src/app/」と「src/libs/」配下のコンテキストは関連させるべき。
