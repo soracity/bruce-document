@@ -9,10 +9,14 @@
       │  └─service
       ├─domain           # 【ドメイン層】業務ルールと事実の定義
       │  ├─models        # Entity, Value Object
-      │  └─service       # Domain Services
+      │  ├─service       # Domain Services
+      │  ├─repositories  # DB保存（Event Store）のInterface
+      │  └─aggregate
       ├─infrastructure   # 【インフラ層】
       │  ├─gate-api      # ACL
-      │  └─repositories  # DB保存（Event Store）の実装
+      │  ├─repositories  # DB保存（Event Store）の実装
+      │  ├─dao-generated # 自動生成DAO
+      │  └─dao-custom    # 手動生成DAO
       ├─projections      # Projections（イベントを検知してSignalを更新）
       │  ├─dto           
       │  └─service       
