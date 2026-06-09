@@ -1,7 +1,7 @@
 # DAO設計書
 
 ## １．概要
-試合属性データを取得する
+PTN02 検索系（１件検索）：入力IF、出力プリミティブ
 
 ## ２．DAO定義
 #### （１）DAO種別
@@ -10,12 +10,12 @@
 - [ ] 検索系(複数件)
 
 #### （２）DAO名称
-- 論理名：AKI02100(試合属性一覧取得)
-- 物理名：Aki02100MatchInfoSelectDao
-- ファイル名：aki02100-match-info-select.dao
+- 論理名：PTN02
+- 物理名：PTN02Dao
+- ファイル名：ptn02.dao
 
 #### （３）パッケージ
-- パッケージ：app\akc02000\infrastructure\aki02100\dao-generated
+- パッケージ：daotest\dao-generated
 
 #### （４）SQL
 ```
@@ -46,17 +46,17 @@ select matchId
 
 ## ３．入力パラメータ
 #### （１）入力パラメータ種別
-- [x] 値形式
-- [ ] インターフェイス形式
+- [ ] 値形式
+- [x] インターフェイス形式
 - [ ] パラメータ無し
 
 #### （２）入力パラメータ名称
-- 論理名：AKI02100(試合属性一覧取得)
-- 物理名：Aki02100MatchInfoSelectRequestDto
-- ファイル名：aki02100-match-info-select-request.dto
+- 論理名：PTN02
+- 物理名：PTN02RequestDto
+- ファイル名：ptn02-request.dto
 
 #### （３）入力パラメータパッケージ
-- パッケージ：app\akc02000\infrastructure\aki02100\dao-generated
+- パッケージ：daotest\dao-generated
 
 #### （４）入力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
@@ -70,36 +70,17 @@ select matchId
 - [ ] パラメータ無し
 
 #### （２）出力パラメータ名称
-- 論理名：AKI02100(試合属性一覧取得)
-- 物理名：Aki02100MatchInfoSelectResponseDto
-- ファイル名：aki02100-match-info-select-response.dto
+- 論理名：【値形式のため未定義】
+- 物理名：【値形式のため未定義】
+- ファイル名：【値形式のため未定義】
 
 #### （３）出力パラメータパッケージ
-- パッケージ：app\akc02000\infrastructure\aki02100\dao-generated
+- パッケージ：【値形式のため未定義】
 
 #### （４）出力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
 | :--- | :--- | :--- | :--- | :--- |
-| 01 |試合ID    |matchId| 文字列 | --- |
-| 02 |試合日時  |matchDateTime| 文字列 | --- |
-| 03 |試合名    |matchName| 文字列 | --- |
-| 04 |試合タイプ|matchType| 文字列 | --- |
-| 05 |選手名１  |singlesPlayer1| 文字列 | --- |
-| 06 |選手名２  |singlesPlayer2| 文字列 | --- |
-| 07 |選手名１  |doublesPlayerA1| 文字列 | --- |
-| 08 |選手名２  |doublesPlayerA2| 文字列 | --- |
-| 09 |選手名３  |doublesPlayerB1| 文字列 | --- |
-| 10 |選手名４  |doublesPlayerB2| 文字列 | --- |
-| 11 |ゲーム設定|matchSetting| 文字列 | --- |
-| 12 |セット設定|setType| 文字列 | --- |
-| 13 |ゲーム確定|gameFinalType| 文字列 | --- |
-| 14 |状態      |matchStatus| 文字列 | --- |
-| 15 |タイブレークモード|tieBreakMode| 文字列 | --- |
-| 16 |サーバー順| serveRotation| 文字列 | --- |
-| 17 |リターン順| returnRotation| 文字列 | --- |
-| 18 |作成日| createDateTime| 文字列 | --- |
-| 19 |更新日| updateDateTime| 文字列 | --- |
-| 20 |削除日| deleteDateTime| 文字列 | --- |
+| 01 |試合名    |matchName| 文字列 | --- |
 
 
 ## 凡例
