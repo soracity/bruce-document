@@ -1,52 +1,51 @@
 # DAO設計書
 
 ## １．概要
-試合属性データを追加する
+PTN12 検索系（１件検索）：入力IF、出力プリミティブ
 
 ## ２．DAO定義
 #### （１）DAO種別
-- [x] 更新系(INSERT, UPDATE, DELETE)
+- [ ] 更新系(INSERT, UPDATE, DELETE)
 - [ ] 検索系(１件)
-- [ ] 検索系(複数件)
+- [x] 検索系(複数件)
 
 #### （２）DAO名称
-- 論理名：AKD02000(試合属性（入力）)
-- 物理名：Aki02100MatchInfoSelectDao
-- ファイル名：aki02100-match-info-select.dao
+- 論理名：PTN12
+- 物理名：PTN12Dao
+- ファイル名：ptn12.dao
 
 #### （３）パッケージ
-- パッケージ：app\akc02000\infrastructure\aki02100\dao-generated
+- パッケージ：daotest\dao-generated
 
 #### （４）SQL
 ```
-    select matchId
-         , matchDateTime
-         , matchName
-         , matchType
-         , singlesPlayer1
-         , singlesPlayer2
-         , doublesPlayerA1
-         , doublesPlayerA2
-         , doublesPlayerB1
-         , doublesPlayerB2
-         , matchSetting
-         , setType
-         , gameFinalType
-         , matchStatus
-         , tieBreakMode
-         , serveRotation
-         , returnRotation
-         , createDateTime
-         , updateDateTime
-         , deleteDateTime
-         , json
-      from t_matches
-     where matchId = :matchId
-     order by matchId;
+select matchId
+      , matchDateTime
+      , matchName
+      , matchType
+      , singlesPlayer1
+      , singlesPlayer2
+      , doublesPlayerA1
+      , doublesPlayerA2
+      , doublesPlayerB1
+      , doublesPlayerB2
+      , matchSetting
+      , setType
+      , gameFinalType
+      , matchStatus
+      , tieBreakMode
+      , serveRotation
+      , returnRotation
+      , createDateTime
+      , updateDateTime
+      , deleteDateTime
+  from t_matches
+  where matchId = :matchId
+  order by matchId;
 ```
 
 ## ３．入力パラメータ
-#### （１）入力種別
+#### （１）入力パラメータ種別
 - [ ] 値形式
 - [x] インターフェイス形式
 - [ ] 型形式(ブランド有)
@@ -54,35 +53,14 @@
 - [ ] パラメータ無し
 
 #### （２）入力パラメータ名称
-- 論理名：AKI02100(試合属性一覧取得)
-- 物理名：Aki02100MatchInfoSelectRequestDto
-- ファイル名：aki02100-match-info-select-request.dto
+- 論理名：PTN12
+- 物理名：PTN12RequestDto
+- ファイル名：ptn12-request.dto
 
-#### （３）パッケージ
-- パッケージ：app\akc02000\infrastructure\aki02100\dao-generated
+#### （３）入力パラメータパッケージ
+- パッケージ：daotest\dao-generated
 
 #### （４）入力パラメータ値
-| No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
-| :--- | :--- | :--- | :--- | :--- |
-| 01 |試合ID    |matchId| 文字列 | --- |
-
-## ４．出力パラメータ
-#### （１）出力種別
-- [ ] 値形式
-- [x] インターフェイス形式
-- [ ] 型形式(ブランド有)
-- [ ] 型形式(ブランド無)
-- [ ] パラメータ無し
-
-#### （２）出力パラメータ名称
-- 論理名：AKI02100(試合属性一覧取得)
-- 物理名：Aki02100MatchInfoSelectResponseDto
-- ファイル名：aki02100-match-info-select-response.dto
-
-#### （３）パッケージ
-- パッケージ：app\akc02000\infrastructure\aki02100\dao-generated
-
-#### （４）出力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
 | :--- | :--- | :--- | :--- | :--- |
 | 01 |試合ID    |matchId| 文字列 | --- |
@@ -105,7 +83,27 @@
 | 18 |作成日| createDateTime| 文字列 | --- |
 | 19 |更新日| updateDateTime| 文字列 | --- |
 | 20 |削除日| deleteDateTime| 文字列 | --- |
-| 21 | JSON | json | 文字列 | --- |
+
+## ４．出力パラメータ
+#### （１）出力パラメータ種別
+- [x] 値形式
+- [ ] インターフェイス形式
+- [ ] 型形式(ブランド有)
+- [ ] 型形式(ブランド無)
+- [ ] パラメータ無し
+
+#### （２）出力パラメータ名称
+- 論理名：【値形式のため未定義】
+- 物理名：【値形式のため未定義】
+- ファイル名：【値形式のため未定義】
+
+#### （３）出力パラメータパッケージ
+- パッケージ：【値形式のため未定義】
+
+#### （４）出力パラメータ値
+| No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
+| :--- | :--- | :--- | :--- | :--- |
+| 01 |試合名    |matchName| 文字列 | --- |
 
 
 ## 凡例
