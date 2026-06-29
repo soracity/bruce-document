@@ -6,20 +6,17 @@
       │  └─read-models   # Read Models（Signalで扱う表示専用のデータ型）
       ├─application      # 【アプリケーション層】
       │  ├─dto
-      │  └─service
+      │  └─service       # CQRS (Command Query(Projection) Responsibility Segregation)
       ├─domain           # 【ドメイン層】業務ルールと事実の定義
+      │  ├─aggregate
       │  ├─models        # Entity, Value Object
-      │  ├─service       # Domain Services
-      │  ├─repositories  # DB保存（Event Store）のInterface
-      │  └─aggregate
+      │  ├─service       # Domain Services（業務処理の補助的な役割）
+      │  └─repositories  # DB処理のInterface
       ├─infrastructure   # 【インフラ層】
       │  ├─gate-api      # ACL
-      │  ├─repositories  # DB保存（Event Store）の実装
+      │  ├─repositories  # DB処理のInterfaceの実装
       │  ├─dao-generated # 自動生成DAO
       │  └─dao-custom    # 手動生成DAO
-      ├─projections      # Projections（イベントを検知してSignalを更新）
-      │  ├─dto           
-      │  └─service       
       └─store           # 画面のキャッシュデータ
           ├─dto
           └─service
@@ -29,23 +26,6 @@ shared
 ├─di
 ├─logger
 └─utils
-
-または
-└─platform
-    ├─sqlite
-    │   ├─sqlite.service.ts
-    │   ├─sqlite.dao.ts
-    │   ├─sqlite.config.ts
-    │   └─migration
-    │
-    ├─di
-    │   └─tokens
-    │
-    ├─logger
-    │
-    ├─utils
-    │
-    └─http
 
 ```
 

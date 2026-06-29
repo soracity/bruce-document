@@ -1,69 +1,78 @@
 # DAO設計書
 
 ## １．概要
-PTN01 検索系（１件検索）：入力プリミティブ、出力プリミティブ
+ログデータを登録する
 
 ## ２．DAO定義
 #### （１）DAO種別
-- [ ] 更新系(INSERT, UPDATE, DELETE)
-- [x] 検索系(１件)
+- [x] 更新系(INSERT, UPDATE, DELETE)
+- [ ] 検索系(１件)
 - [ ] 検索系(複数件)
 
 #### （２）DAO名称
-- 論理名：PTN01
-- 物理名：PTN01Dao
-- ファイル名：ptn01.dao
+- 論理名：ログデータ登録
+- 物理名：AppLogInsertDao
+- ファイル名：app-log-insert.dao
 
 #### （３）パッケージ
-- パッケージ：daotest\dao-generated
+- パッケージ：app\shared\log\dao-generated
 
 #### （４）SQL
 ```
-select matchId
-      , matchDateTime
-      , matchName
-      , matchType
-      , singlesPlayer1
-      , singlesPlayer2
-      , doublesPlayerA1
-      , doublesPlayerA2
-      , doublesPlayerB1
-      , doublesPlayerB2
-      , matchSetting
-      , setType
-      , gameFinalType
-      , matchStatus
-      , tieBreakMode
-      , serveRotation
-      , returnRotation
-      , createDateTime
-      , updateDateTime
-      , deleteDateTime
-  from t_matches
-  where matchId = :matchId
-  order by matchId;
+insert into t_logs (
+    datetime,
+    level,
+    category1,
+    category2,
+    category3,
+    message,
+    stack
+  )
+values (
+    :dateTime,
+    :level,
+    :category1,
+    :category2,
+    :category3,
+    :message,
+    :stack
+  );
 ```
+
+#### （５）Log
+- [ ] ログ出力(あり)
+- [x] ログ出力(なし)
+
+#### （６）DBセッション
+- [ ] クリティカルセッション
+- [x] ログセッション
 
 ## ３．入力パラメータ
 #### （１）入力パラメータ種別
-- [x] 値形式
+- [ ] 値形式
 - [ ] インターフェイス形式
-- [ ] 型形式(ブランド有)
+- [x] 型形式(ブランド有)
 - [ ] 型形式(ブランド無)
 - [ ] パラメータ無し
 
 #### （２）入力パラメータ名称
-- 論理名：【値形式のため未定義】
-- 物理名：【値形式のため未定義】
-- ファイル名：【値形式のため未定義】
+- 論理名：ログデータ登録
+- 物理名：AppLogInsertRequestDto
+- ファイル名：app-log-insert-request.dto
 
 #### （３）入力パラメータパッケージ
-- パッケージ：【値形式のため未定義】
+- パッケージ：app\shared\log\dao-generated
 
 #### （４）入力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
 | :--- | :--- | :--- | :--- | :--- |
-| 01 |試合ID    |matchId| 文字列 | --- |
+| 01 |日時|dateTime| 文字列 | --- |
+| 02 |レベル|level| 文字列 | --- |
+| 03 |カテゴリ１|category1| 文字列 | --- |
+| 04 |カテゴリ２|category2| 文字列 | --- |
+| 05 |カテゴリ３|category3| 文字列 | --- |
+| 06 |メッセージ|message| 文字列 | --- |
+| 07 |スタック|stack| 文字列 | --- |
 
 ## ４．出力パラメータ
 #### （１）出力パラメータ種別
@@ -84,7 +93,7 @@ select matchId
 #### （４）出力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
 | :--- | :--- | :--- | :--- | :--- |
-| 01 |試合名    |matchName| 文字列 | --- |
+| 01 |更新件数    |count| 数値 | --- |
 
 
 ## 凡例

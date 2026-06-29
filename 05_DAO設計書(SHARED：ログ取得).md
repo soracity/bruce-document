@@ -1,90 +1,92 @@
 # DAO設計書
 
 ## １．概要
-PTN01 検索系（１件検索）：入力プリミティブ、出力プリミティブ
+ログデータを取得する
 
 ## ２．DAO定義
 #### （１）DAO種別
 - [ ] 更新系(INSERT, UPDATE, DELETE)
-- [x] 検索系(１件)
-- [ ] 検索系(複数件)
+- [ ] 検索系(１件)
+- [x] 検索系(複数件)
 
 #### （２）DAO名称
-- 論理名：PTN01
-- 物理名：PTN01Dao
-- ファイル名：ptn01.dao
+- 論理名：ログデータ取得
+- 物理名：AppLogSearchDao
+- ファイル名：app-log-search.dao
 
 #### （３）パッケージ
-- パッケージ：daotest\dao-generated
+- パッケージ：app\shared\log\dao-generated
 
 #### （４）SQL
 ```
-select matchId
-      , matchDateTime
-      , matchName
-      , matchType
-      , singlesPlayer1
-      , singlesPlayer2
-      , doublesPlayerA1
-      , doublesPlayerA2
-      , doublesPlayerB1
-      , doublesPlayerB2
-      , matchSetting
-      , setType
-      , gameFinalType
-      , matchStatus
-      , tieBreakMode
-      , serveRotation
-      , returnRotation
-      , createDateTime
-      , updateDateTime
-      , deleteDateTime
-  from t_matches
-  where matchId = :matchId
-  order by matchId;
+select id
+     , datetime
+     , level
+     , category1
+     , category2
+     , category3
+     , message
+     , stack
+  from t_logs
+ order by dateTime
+;
 ```
+
+#### （５）Log
+- [ ] ログ出力(あり)
+- [x] ログ出力(なし)
+
+#### （６）DBセッション
+- [ ] クリティカルセッション
+- [x] ログセッション
 
 ## ３．入力パラメータ
 #### （１）入力パラメータ種別
-- [x] 値形式
+- [ ] 値形式
 - [ ] インターフェイス形式
 - [ ] 型形式(ブランド有)
 - [ ] 型形式(ブランド無)
-- [ ] パラメータ無し
+- [x] パラメータ無し
 
 #### （２）入力パラメータ名称
-- 論理名：【値形式のため未定義】
-- 物理名：【値形式のため未定義】
-- ファイル名：【値形式のため未定義】
+- 論理名：
+- 物理名：
+- ファイル名：
 
 #### （３）入力パラメータパッケージ
-- パッケージ：【値形式のため未定義】
+- パッケージ：
 
 #### （４）入力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
 | :--- | :--- | :--- | :--- | :--- |
-| 01 |試合ID    |matchId| 文字列 | --- |
 
 ## ４．出力パラメータ
 #### （１）出力パラメータ種別
-- [x] 値形式
+- [ ] 値形式
 - [ ] インターフェイス形式
-- [ ] 型形式(ブランド有)
+- [x] 型形式(ブランド有)
 - [ ] 型形式(ブランド無)
 - [ ] パラメータ無し
 
 #### （２）出力パラメータ名称
-- 論理名：【値形式のため未定義】
-- 物理名：【値形式のため未定義】
-- ファイル名：【値形式のため未定義】
+- 論理名：ログデータ取得
+- 物理名：AppLogSearchResponseType
+- ファイル名：app-log-search-response.type
 
 #### （３）出力パラメータパッケージ
-- パッケージ：【値形式のため未定義】
+- パッケージ：app\shared\log\dao-generated
 
 #### （４）出力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
 | :--- | :--- | :--- | :--- | :--- |
-| 01 |試合名    |matchName| 文字列 | --- |
+| 01 |ID|id| 文字列 | --- |
+| 02 |日時|dateTime| 文字列 | --- |
+| 03 |レベル|level| 文字列 | --- |
+| 04 |カテゴリ１|category1| 文字列 | --- |
+| 05 |カテゴリ２|category2| 文字列 | --- |
+| 06 |カテゴリ３|category3| 文字列 | --- |
+| 07 |メッセージ|message| 文字列 | --- |
+| 08 |スタック|stack| 文字列 | --- |
 
 
 ## 凡例
