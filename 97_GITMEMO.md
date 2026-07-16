@@ -1,10 +1,10 @@
 |処理時間|コミットID（ハッシュ）|親コミットID（ハッシュ）|ポインタ(参照先ハッシュ)|処理内容|
 |---|---|---|---|---|
-|10:05|Ver1|||test1.txtをコミット|
-|10:10||Ver1|branch1 -> Ver1|branch1 作成（コミットなし）|
-|10:15|Ver2|Ver1||（別ライン）コミット|
-|10:20||Ver1|branch2 -> Ver1|branch2 作成（コミットなし）|
-|10:25|Ver3|Ver2||（別ライン）コミット|
+|10:05|Ver1| | |test1.txtをコミット|
+|10:10| |Ver1|branch1 -> Ver1|branch1 作成（コミットなし）|
+|10:15|Ver2|Ver1| |（別ライン）コミット|
+|10:20| |Ver1|branch2 -> Ver1|branch2 作成（コミットなし）|
+|10:25|Ver3|Ver2| |（別ライン）コミット|
 |10:30|Ver4|Ver1|branch1 -> Ver4|(branch1 上で) test1.txt をコミット|
 |10:35|Ver5|Ver4|branch1 -> Ver5|(branch1 上で) test2.txt をコミット|
 

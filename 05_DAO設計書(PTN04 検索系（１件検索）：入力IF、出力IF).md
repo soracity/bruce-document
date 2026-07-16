@@ -12,36 +12,38 @@ PTN04 検索系（１件検索）：入力IF、出力IF
 #### （２）DAO名称
 - 論理名：PTN04
 - 物理名：PTN04Dao
-- ファイル名：ptn04.dao
+- ファイル名：ptn04.dao.ts
 
 #### （３）パッケージ
-- パッケージ：daotest\dao-generated
+daotest
 
 #### （４）SQL
 ```
-select matchId
-      , matchDateTime
-      , matchName
-      , matchType
-      , singlesPlayer1
-      , singlesPlayer2
-      , doublesPlayerA1
-      , doublesPlayerA2
-      , doublesPlayerB1
-      , doublesPlayerB2
-      , matchSetting
-      , setType
-      , gameFinalType
-      , matchStatus
-      , tieBreakMode
-      , serveRotation
-      , returnRotation
-      , createDateTime
-      , updateDateTime
-      , deleteDateTime
+select match_id                   as matchId
+      , match_date_time           as matchDateTime
+      , match_name                as matchName
+      , match_type                as matchType
+      , singles_player1           as singlesPlayer1
+      , singles_player2           as singlesPlayer2
+      , doubles_player_a1         as doublesPlayerA1
+      , doubles_player_a2         as doublesPlayerA2
+      , doubles_player_b1         as doublesPlayerB1
+      , doubles_player_b2         as doublesPlayerB2
+      , match_setting             as matchSetting
+      , set_type                  as setType
+      , game_final_type           as gameFinalType
+      , match_status              as matchStatus
+      , tie_break_mode            as tieBreakMode
+      , first_server_player_id    as firstServerPlayerId
+      , second_server_player_id   as secondServerPlayerId
+      , first_receiver_player_id  as firstReceiverPlayerId
+      , second_receiver_player_id as secondReceiverPlayerId
+      , create_date_time          as createDateTime
+      , update_date_time          as updateDateTime
+      , delete_date_time          as deleteDateTime
   from t_matches
-  where matchId = :matchId
-  order by matchId;
+  where match_id = :matchId
+  order by match_id;
 ```
 
 ## ３．入力パラメータ
@@ -55,10 +57,10 @@ select matchId
 #### （２）入力パラメータ名称
 - 論理名：PTN04
 - 物理名：PTN04RequestDto
-- ファイル名：ptn04-request.dto
+- ファイル名：ptn04-request.dto.ts
 
 #### （３）入力パラメータパッケージ
-- パッケージ：daotest\dao-generated
+daotest
 
 #### （４）入力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
@@ -76,10 +78,10 @@ select matchId
 #### （２）出力パラメータ名称
 - 論理名：PTN04
 - 物理名：PTN04ResponseDto
-- ファイル名：ptn04-response.dto
+- ファイル名：ptn04-response.dto.ts
 
 #### （３）出力パラメータパッケージ
-- パッケージ：daotest\dao-generated
+daotest
 
 #### （４）出力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
@@ -99,11 +101,13 @@ select matchId
 | 13 |ゲーム確定|gameFinalType| 文字列 | --- |
 | 14 |状態      |matchStatus| 文字列 | --- |
 | 15 |タイブレークモード|tieBreakMode| 文字列 | --- |
-| 16 |サーバー順| serveRotation| 文字列 | --- |
-| 17 |リターン順| returnRotation| 文字列 | --- |
-| 18 |作成日| createDateTime| 文字列 | --- |
-| 19 |更新日| updateDateTime| 文字列 | --- |
-| 20 |削除日| deleteDateTime| 文字列 | --- |
+| 16 |サーバー（第１ゲーム）| firstServerPlayerId| 文字列 | --- |
+| 17 |サーバー（第２ゲーム）| secondServerPlayerId| 文字列 | --- |
+| 18 |リターン（第１ゲーム）| firstReceiverPlayerId| 文字列 | --- |
+| 19 |リターン（第２ゲーム）| secondReceiverPlayerId| 文字列 | --- |
+| 20 |作成日| createDateTime| 文字列 | --- |
+| 21 |更新日| updateDateTime| 文字列 | --- |
+| 22 |削除日| deleteDateTime| 文字列 | --- |
 
 ## 凡例
 - 型

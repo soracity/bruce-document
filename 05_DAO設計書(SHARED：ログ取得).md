@@ -12,10 +12,10 @@
 #### （２）DAO名称
 - 論理名：ログデータ取得
 - 物理名：AppLogSearchDao
-- ファイル名：app-log-search.dao
+- ファイル名：app-log-search.dao.ts
 
 #### （３）パッケージ
-- パッケージ：app\shared\log\dao-generated
+app\shared\log
 
 #### （４）SQL
 ```
@@ -54,7 +54,7 @@ select id
 - ファイル名：
 
 #### （３）入力パラメータパッケージ
-- パッケージ：
+app\shared\log
 
 #### （４）入力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
@@ -71,10 +71,10 @@ select id
 #### （２）出力パラメータ名称
 - 論理名：ログデータ取得
 - 物理名：AppLogSearchResponseType
-- ファイル名：app-log-search-response.type
+- ファイル名：app-log-search-response.type.ts
 
 #### （３）出力パラメータパッケージ
-- パッケージ：app\shared\log\dao-generated
+app\shared\log
 
 #### （４）出力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |

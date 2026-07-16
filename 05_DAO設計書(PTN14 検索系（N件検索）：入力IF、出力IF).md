@@ -12,10 +12,10 @@ PTN14 検索系（１件検索）：入力IF、出力IF
 #### （２）DAO名称
 - 論理名：PTN14
 - 物理名：PTN14Dao
-- ファイル名：ptn14.dao
+- ファイル名：ptn14.dao.ts
 
 #### （３）パッケージ
-- パッケージ：daotest\dao-generated
+daotest
 
 #### （４）SQL
 ```
@@ -55,10 +55,10 @@ select matchId
 #### （２）入力パラメータ名称
 - 論理名：PTN14
 - 物理名：PTN14RequestDto
-- ファイル名：ptn14-request.dto
+- ファイル名：ptn14-request.dto.ts
 
 #### （３）入力パラメータパッケージ
-- パッケージ：daotest\dao-generated
+daotest
 
 #### （４）入力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
@@ -76,10 +76,10 @@ select matchId
 #### （２）出力パラメータ名称
 - 論理名：PTN14
 - 物理名：PTN14ResponseDto
-- ファイル名：ptn14-response.dto
+- ファイル名：ptn14-response.dto.ts
 
 #### （３）出力パラメータパッケージ
-- パッケージ：daotest\dao-generated
+daotest
 
 #### （４）出力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |

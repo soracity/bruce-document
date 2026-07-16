@@ -12,10 +12,10 @@
 #### （２）DAO名称
 - 論理名：ログデータ登録
 - 物理名：AppLogInsertDao
-- ファイル名：app-log-insert.dao
+- ファイル名：app-log-insert.dao.ts
 
 #### （３）パッケージ
-- パッケージ：app\shared\log\dao-generated
+app\shared\log
 
 #### （４）SQL
 ```
@@ -58,10 +58,10 @@ values (
 #### （２）入力パラメータ名称
 - 論理名：ログデータ登録
 - 物理名：AppLogInsertRequestDto
-- ファイル名：app-log-insert-request.dto
+- ファイル名：app-log-insert-request.dto.ts
 
 #### （３）入力パラメータパッケージ
-- パッケージ：app\shared\log\dao-generated
+app\shared\log
 
 #### （４）入力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
@@ -88,7 +88,7 @@ values (
 - ファイル名：【値形式のため未定義】
 
 #### （３）出力パラメータパッケージ
-- パッケージ：【値形式のため未定義】
+【値形式のため未定義】
 
 #### （４）出力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
