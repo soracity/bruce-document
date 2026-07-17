@@ -2,11 +2,11 @@
 
 #### 列挙型名称
 - 論理名：スコア入力メニュー
-- 物理名：AppLiveScoringMenuCodeEnum
-- ファイル名：app-live-scoring-menu-code-enum.enum.ts
+- 物理名：AppLiveScoringMenuComponentEnum
+- ファイル名：app-live-scoring-menu-component-enum.ts
 
 #### 列挙型パッケージ
-app\shared\utils\enum\menu
+app\shared\utils\enum\component
 
 #### 列挙型定義
 | No | 列挙名 | 値 | 型 | 説明 |
