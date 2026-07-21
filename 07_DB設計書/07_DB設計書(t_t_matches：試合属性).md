@@ -5,7 +5,7 @@
 #### DB項目定義
 | # | 項目名（論理名） | 項目名（物理名） | 型 | サイズ | 値 | NOTNULL | PK | IDX1 | IDX2 | IDX3 | IDX4 | IDX5  |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 1 | 試合ID | match_id | TEXT |  |  | ● | 1 |  |  |  |  |   |
+| 1 | 試合ID | match_id | TEXT |  |  |  | 1 |  |  |  |  |   |
 | 2 | 試合日時 | match_date_time | TEXT |  |  |  |  | 1 |  |  |  |   |
 | 3 | 試合名 | match_name | TEXT |  |  |  |  |  |  |  |  |   |
 | 4 | 試合タイプ | match_type | TEXT |  |  [AppGameTypeCodeEnum](../06_列挙型設計書/01_CODE/06_列挙型設計書(AppGameTypeCodeEnum：ゲーム形式).md)  |  |  |  |  |  |  |   |
