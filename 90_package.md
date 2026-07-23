@@ -1,32 +1,44 @@
 ```text
-└─app
-   └─ <コンテキストID>
-      ├─ui
-      │  ├─components    # Angular Components（画面、テンプレート）
-      │  └─read-models   # Read Models（Signalで扱う表示専用のデータ型）
-      ├─application      # 【アプリケーション層】
-      │  ├─dto
-      │  └─service       # CQRS (Command Query(Projection) Responsibility Segregation)
-      ├─domain           # 【ドメイン層】業務ルールと事実の定義
-      │  ├─aggregate
-      │  ├─models        # Entity, Value Object
-      │  ├─service       # Domain Services（業務処理の補助的な役割）
-      │  └─repositories  # DB処理のInterface
-      ├─infrastructure   # 【インフラ層】
-      │  ├─gate-api      # ACL
-      │  ├─repositories  # DB処理のInterfaceの実装
-      │  ├─dao-generated # 自動生成DAO
-      │  └─dao-custom    # 手動生成DAO
-      └─store           # 画面のキャッシュデータ
-          ├─dto
-          └─service
-以下に共通処理
-shared
-├─sqlite
-├─di
-├─logger
-└─utils
-
+app
+└── brf10-match-state/                         # 【機能グループ】BRF10：試合状態
+    └── brf11-match-state/                     # 【機能】BRF11：試合状態
+        ├── ui/
+        │   ├── components/
+        │   │   └── bru1100.component.ts
+        │   └── dto/
+        │       └── bru1100.dto.ts
+        │
+        ├── application/
+        │   ├── service/
+        │   │   └── bra1100.service.ts
+        │   └── dto/
+        │       ├── bra1100-<method1>-req.dto.ts
+        │       ├── bra1100-<method1>-res.dto.ts
+        │       ├── bra1100-<method2>-req.dto.ts
+        │       └── bra1100-<method2>-res.dto.ts
+        │
+        ├── domain/
+        │   ├── aggregate/
+        │   │   └── brd1100.aggregate.ts
+        │   ├── models/
+        │   │   └── brd1100-<entity-name>.entity.ts
+        │   ├── service/
+        │   └── repositories/
+        │       └── brd1100-<repository-name>.repository.ts
+        │
+        └── infrastructure/
+            ├── repositories/
+            │   └── bri1100-<repository-name>.repository.ts
+            ├── dao-generate/
+            │   └── bri1100-<dao-name>.dao.ts
+            ├── dao-dto-generate/
+            │   ├── bri1100-<dao-name>-req.dto.ts
+            │   └── bri1100-<dao-name>-res.dto.ts
+            ├── dao-custom/
+            │   └── bri1100-<dao-name>.dao.ts
+            └── dao-dto-custom/
+                ├── bri1100-<dao-name>-req.dto.ts
+                └── bri1100-<dao-name>-res.dto.ts
 ```
 
 - 「src/app/」と「src/libs/」配下のコンテキストは関連させるべき。
