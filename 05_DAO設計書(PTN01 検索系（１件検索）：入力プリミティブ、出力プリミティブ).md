@@ -19,29 +19,31 @@ daotest
 
 #### （４）SQL
 ```
-select matchId
-      , matchDateTime
-      , matchName
-      , matchType
-      , singlesPlayer1
-      , singlesPlayer2
-      , doublesPlayerA1
-      , doublesPlayerA2
-      , doublesPlayerB1
-      , doublesPlayerB2
-      , matchSetting
-      , setType
-      , gameFinalType
-      , matchStatus
-      , tieBreakMode
-      , serveRotation
-      , returnRotation
-      , createDateTime
-      , updateDateTime
-      , deleteDateTime
-  from t_matches
-  where matchId = :matchId
-  order by matchId;
+select match_id                  as matchId
+     , match_date_time           as matchDateTime
+     , match_name                as matchName
+     , match_type                as matchType
+     , singles_player1           as singlesPlayer1
+     , singles_player2           as singlesPlayer2
+     , doubles_player_a1         as doublesPlayerA1
+     , doubles_player_a2         as doublesPlayerA2
+     , doubles_player_b1         as doublesPlayerB1
+     , doubles_player_b2         as doublesPlayerB2
+     , match_setting             as matchSetting
+     , set_type                  as setType
+     , game_final_type           as gameFinalType
+     , match_status              as matchStatus
+     , tie_break_mode            as tieBreakMode
+     , first_server_player_id    as firstServerPlayerId
+     , second_server_player_id   as secondServerPlayerId
+     , first_receiver_player_id  as firstReceiverPlayerId
+     , second_receiver_player_id as secondReceiverPlayerId
+     , create_date_time          as createDateTime
+     , update_date_time          as updateDateTime
+     , delete_date_time          as deleteDateTime
+  from t_t_matches
+ where match_id = :matchId
+ order by match_id;
 ```
 
 ## ３．入力パラメータ
@@ -53,12 +55,11 @@ select matchId
 - [ ] パラメータ無し
 
 #### （２）入力パラメータ名称
-- 論理名：【値形式のため未定義】
-- 物理名：【値形式のため未定義】
-- ファイル名：【値形式のため未定義】
+- 論理名：
+- 物理名：
+- ファイル名：
 
 #### （３）入力パラメータパッケージ
-【値形式のため未定義】
 
 #### （４）入力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
@@ -74,18 +75,16 @@ select matchId
 - [ ] パラメータ無し
 
 #### （２）出力パラメータ名称
-- 論理名：【値形式のため未定義】
-- 物理名：【値形式のため未定義】
-- ファイル名：【値形式のため未定義】
+- 論理名：
+- 物理名：
+- ファイル名：
 
 #### （３）出力パラメータパッケージ
-【値形式のため未定義】
 
 #### （４）出力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
 | :--- | :--- | :--- | :--- | :--- |
 | 01 |試合名    |matchName| 文字列 | --- |
-
 
 ## 凡例
 - 型

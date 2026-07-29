@@ -15,12 +15,12 @@
 - ファイル名：app-log-insert.dao.ts
 
 #### （３）パッケージ
-app\shared\log
+app\brf9000\brf9012-log
 
 #### （４）SQL
 ```
 insert into t_logs (
-    datetime,
+    date_time,
     level,
     category1,
     category2,
@@ -61,7 +61,7 @@ values (
 - ファイル名：app-log-insert-request.dto.ts
 
 #### （３）入力パラメータパッケージ
-app\shared\log
+app\brf9000\brf9012-log
 
 #### （４）入力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |

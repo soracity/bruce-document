@@ -6,7 +6,7 @@
 - ファイル名：app-live-scoring-menu-component-enum.ts
 
 #### 列挙型パッケージ
-app\shared\utils\enum\component
+app\brf9000\brf9011-enum\component
 
 #### 列挙型定義
 | No | 列挙名 | 値 | 型 | 説明 |

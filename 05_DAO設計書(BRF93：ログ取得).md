@@ -15,18 +15,18 @@
 - ファイル名：app-log-search.dao.ts
 
 #### （３）パッケージ
-app\shared\log
+app\brf9000\brf9012-log
 
 #### （４）SQL
 ```
 select id
-     , datetime
-     , level
-     , category1
-     , category2
-     , category3
-     , message
-     , stack
+     , date_time as dateTime
+     , level     as level
+     , category1 as category1
+     , category2 as category2
+     , category3 as category3
+     , message   as message
+     , stack     as stack
   from t_logs
  order by dateTime
 ;
@@ -54,7 +54,7 @@ select id
 - ファイル名：
 
 #### （３）入力パラメータパッケージ
-app\shared\log
+app\brf9000\brf9012-log
 
 #### （４）入力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
@@ -74,7 +74,7 @@ app\shared\log
 - ファイル名：app-log-search-response.type.ts
 
 #### （３）出力パラメータパッケージ
-app\shared\log
+app\brf9000\brf9012-log
 
 #### （４）出力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |

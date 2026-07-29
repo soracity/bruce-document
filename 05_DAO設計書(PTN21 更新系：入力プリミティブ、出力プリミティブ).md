@@ -19,11 +19,53 @@ daotest
 
 #### （４）SQL
 ```
-insert into t_matches (
-    matchId
+insert into t_t_matches (
+       match_id
+     , match_date_time
+     , match_name
+     , match_type
+     , singles_player1
+     , singles_player2
+     , doubles_player_a1
+     , doubles_player_a2
+     , doubles_player_b1
+     , doubles_player_b2
+     , match_setting
+     , set_type
+     , game_final_type
+     , match_status
+     , tie_break_mode
+     , first_server_player_id
+     , second_server_player_id
+     , first_receiver_player_id
+     , second_receiver_player_id
+     , create_date_time
+     , update_date_time
+     , delete_date_time
 )
 VALUES (
-    :matchId
+       :matchId
+     , :matchDateTime
+     , :matchName
+     , :matchType
+     , :singlesPlayer1
+     , :singlesPlayer2
+     , :doublesPlayerA1
+     , :doublesPlayerA2
+     , :doublesPlayerB1
+     , :doublesPlayerB2
+     , :matchSetting
+     , :setType
+     , :gameFinalType
+     , :matchStatus
+     , :tieBreakMode
+     , :firstServerPlayerId
+     , :secondServerPlayerId
+     , :firstReceiverPlayerId
+     , :secondReceiverPlayerId
+     , :createDateTime
+     , :updateDateTime
+     , :deleteDateTime
 );
 ```
 
@@ -36,12 +78,11 @@ VALUES (
 - [ ] パラメータ無し
 
 #### （２）入力パラメータ名称
-- 論理名：【値形式のため未定義】
-- 物理名：【値形式のため未定義】
-- ファイル名：【値形式のため未定義】
+- 論理名：
+- 物理名：
+- ファイル名：
 
 #### （３）入力パラメータパッケージ
-【値形式のため未定義】
 
 #### （４）入力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
@@ -61,11 +102,13 @@ VALUES (
 | 13 |ゲーム確定|gameFinalType| 文字列 | --- |
 | 14 |状態      |matchStatus| 文字列 | --- |
 | 15 |タイブレークモード|tieBreakMode| 文字列 | --- |
-| 16 |サーバー順| serveRotation| 文字列 | --- |
-| 17 |リターン順| returnRotation| 文字列 | --- |
-| 18 |作成日| createDateTime| 文字列 | --- |
-| 19 |更新日| updateDateTime| 文字列 | --- |
-| 20 |削除日| deleteDateTime| 文字列 | --- |
+| 16 |サーバー（第１ゲーム）| firstServerPlayerId| 文字列 | --- |
+| 17 |サーバー（第２ゲーム）| secondServerPlayerId| 文字列 | --- |
+| 18 |リターン（第１ゲーム）| firstReceiverPlayerId| 文字列 | --- |
+| 19 |リターン（第２ゲーム）| secondReceiverPlayerId| 文字列 | --- |
+| 20 |作成日| createDateTime| 文字列 | --- |
+| 21 |更新日| updateDateTime| 文字列 | --- |
+| 22 |削除日| deleteDateTime| 文字列 | --- |
 
 ## ４．出力パラメータ
 #### （１）出力パラメータ種別
@@ -76,12 +119,11 @@ VALUES (
 - [ ] パラメータ無し
 
 #### （２）出力パラメータ名称
-- 論理名：【値形式のため未定義】
-- 物理名：【値形式のため未定義】
-- ファイル名：【値形式のため未定義】
+- 論理名：
+- 物理名：
+- ファイル名：
 
 #### （３）出力パラメータパッケージ
-【値形式のため未定義】
 
 #### （４）出力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |

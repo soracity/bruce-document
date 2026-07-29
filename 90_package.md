@@ -31,12 +31,12 @@ app
             │   └── bri1100-<repository-name>.repository.ts
             ├── dao-generate/
             │   └── bri1100-<dao-name>.dao.ts
-            ├── dao-dto-generate/
-            │   ├── bri1100-<dao-name>-req.dto.ts
-            │   └── bri1100-<dao-name>-res.dto.ts
             ├── dao-custom/
             │   └── bri1100-<dao-name>.dao.ts
-            └── dao-dto-custom/
+            ├── dto-generate/
+            │   ├── bri1100-<dao-name>-req.dto.ts
+            │   └── bri1100-<dao-name>-res.dto.ts
+            └── dto-custom/
                 ├── bri1100-<dao-name>-req.dto.ts
                 └── bri1100-<dao-name>-res.dto.ts
 ```

@@ -6,7 +6,7 @@
 - ファイル名：app-label-key-i18n.enum.ts
 
 #### 列挙型パッケージ
-app\brf90\brf92-enum\i18n
+app\brf9000\brf9011-enum\i18n
 
 #### 列挙型定義
 | No | 列挙名 | 値 | 型 | 説明  |

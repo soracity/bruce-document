@@ -6,7 +6,7 @@
 - ファイル名：app-number-of-sets-code.enum.ts
 
 #### 列挙型パッケージ
-app\shared\utils\enum\code
+app\brf9000\brf9011-enum\code
 
 #### 列挙型定義
 | No | 列挙名 | 値 | 型 | 説明 |

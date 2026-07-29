@@ -15,20 +15,20 @@
 - ファイル名：bri9100-label-key-select.dao.ts
 
 #### （３）パッケージ
-app\brf90\brf91-i18n\infrastructure\dao-generate
+app\brf9000\brf9010-i18n\infrastructure\dao-generate
 
 #### （４）SQL
 ```
 
-select label_key
-     , label_type
-     , description
-     , icon
-     , disabled_flg
-     , create_date_time
-     , update_date_time
-     , delete_date_time
-  from t_matches
+select label_key        as labelKey
+     , label_type       as labelType
+     , description      as description
+     , icon             as icon
+     , disabled_flg     as disabledFlg
+     , create_date_time as createDateTime
+     , update_date_time as updateDateTime
+     , delete_date_time as deleteDateTime
+  from t_m_label_key
  where disabled_flg is null
  order by label_key;
 ```
@@ -47,7 +47,7 @@ select label_key
 - ファイル名：bri9100-label-key-select-req.dto.ts
 
 #### （３）入力パラメータパッケージ
-app\brf90\brf91-i18n\infrastructure\dao-dto-generate
+app\brf9000\brf9010-i18n\infrastructure\dto-generate
 
 #### （４）入力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
@@ -67,19 +67,19 @@ app\brf90\brf91-i18n\infrastructure\dao-dto-generate
 - ファイル名：bri9100-label-key-select-res.dto.ts
 
 #### （３）出力パラメータパッケージ
-app\brf90\brf91-i18n\infrastructure\dao-dto-generate
+app\brf9000\brf9010-i18n\infrastructure\dto-generate
 
 #### （４）出力パラメータ値
 | No | 項目名（論理名） | 項目名（物理名） | 型 | 備考  |
 |---|---|---|---|---|
-| 01 | ラベルキー | label_key | 文字列 |   |
-| 02 | ラベルタイプ | label_type | 文字列 |   |
+| 01 | ラベルキー | labelKey | 文字列 |   |
+| 02 | ラベルタイプ | labelType | 文字列 |   |
 | 03 | 説明 | description | 文字列 |   |
 | 04 | アイコン | icon | 文字列 |   |
-| 05 | 無効フラグ | disabled_flg | 文字列 |   |
-| 06 | 作成日 | create_date_time | 文字列 |   |
-| 07 | 更新日 | update_date_time | 文字列 |   |
-| 08 | 削除日 | delete_date_time | 文字列 |   |
+| 05 | 無効フラグ | disabledFlg | 文字列 |   |
+| 06 | 作成日 | createDateTime | 文字列 |   |
+| 07 | 更新日 | updateDateTime | 文字列 |   |
+| 08 | 削除日 | deleteDateTime | 文字列 |   |
 
 ## 凡例
 - 型

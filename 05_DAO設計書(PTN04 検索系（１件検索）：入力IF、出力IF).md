@@ -19,31 +19,31 @@ daotest
 
 #### （４）SQL
 ```
-select match_id                   as matchId
-      , match_date_time           as matchDateTime
-      , match_name                as matchName
-      , match_type                as matchType
-      , singles_player1           as singlesPlayer1
-      , singles_player2           as singlesPlayer2
-      , doubles_player_a1         as doublesPlayerA1
-      , doubles_player_a2         as doublesPlayerA2
-      , doubles_player_b1         as doublesPlayerB1
-      , doubles_player_b2         as doublesPlayerB2
-      , match_setting             as matchSetting
-      , set_type                  as setType
-      , game_final_type           as gameFinalType
-      , match_status              as matchStatus
-      , tie_break_mode            as tieBreakMode
-      , first_server_player_id    as firstServerPlayerId
-      , second_server_player_id   as secondServerPlayerId
-      , first_receiver_player_id  as firstReceiverPlayerId
-      , second_receiver_player_id as secondReceiverPlayerId
-      , create_date_time          as createDateTime
-      , update_date_time          as updateDateTime
-      , delete_date_time          as deleteDateTime
-  from t_matches
-  where match_id = :matchId
-  order by match_id;
+select match_id                  as matchId
+     , match_date_time           as matchDateTime
+     , match_name                as matchName
+     , match_type                as matchType
+     , singles_player1           as singlesPlayer1
+     , singles_player2           as singlesPlayer2
+     , doubles_player_a1         as doublesPlayerA1
+     , doubles_player_a2         as doublesPlayerA2
+     , doubles_player_b1         as doublesPlayerB1
+     , doubles_player_b2         as doublesPlayerB2
+     , match_setting             as matchSetting
+     , set_type                  as setType
+     , game_final_type           as gameFinalType
+     , match_status              as matchStatus
+     , tie_break_mode            as tieBreakMode
+     , first_server_player_id    as firstServerPlayerId
+     , second_server_player_id   as secondServerPlayerId
+     , first_receiver_player_id  as firstReceiverPlayerId
+     , second_receiver_player_id as secondReceiverPlayerId
+     , create_date_time          as createDateTime
+     , update_date_time          as updateDateTime
+     , delete_date_time          as deleteDateTime
+  from t_t_matches
+ where match_id = :matchId
+ order by match_id;
 ```
 
 ## ３．入力パラメータ
@@ -56,8 +56,8 @@ select match_id                   as matchId
 
 #### （２）入力パラメータ名称
 - 論理名：PTN04
-- 物理名：PTN04RequestDto
-- ファイル名：ptn04-request.dto.ts
+- 物理名：PTN04ReqDto
+- ファイル名：ptn04-req.dto.ts
 
 #### （３）入力パラメータパッケージ
 daotest
@@ -77,8 +77,8 @@ daotest
 
 #### （２）出力パラメータ名称
 - 論理名：PTN04
-- 物理名：PTN04ResponseDto
-- ファイル名：ptn04-response.dto.ts
+- 物理名：PTN04ResDto
+- ファイル名：ptn04-res.dto.ts
 
 #### （３）出力パラメータパッケージ
 daotest
