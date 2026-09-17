@@ -2,8 +2,8 @@
 
 #### 列挙型名称
 - 論理名：スコア入力メニュー
-- 物理名：AppLiveScoringMenuComponentEnum
-- ファイル名：app-live-scoring-menu-component-enum.ts
+- 物理名：AppComponentLiveScoringMenuEnum
+- ファイル名：app-component-live-scoring-menu-enum.ts
 
 #### 列挙型パッケージ
 app\brf9000\brf9011-enum\component

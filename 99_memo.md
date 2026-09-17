@@ -179,6 +179,9 @@ PRAGMA user_version を読み、必要ならマイグレーションをトラン
 - ① DBの日付はUTC ISO8601
 - ② 画面表示はPipe経由：{{ match.matchDateTime | appDateTime }}
 - ③ 文言は定数化
+- ④ ラベルキーの体系
+  - lbl.<"comn" | 機能ID>.<label key>
+  - msg.<"comn" | 機能ID>.<label key>
 - 直接 toLocaleString() を画面に書かない ことです。
 
 - DBは管理用のコネクションとユーザ用のコネクションに分ける。

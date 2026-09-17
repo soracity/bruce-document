@@ -1,18 +1,18 @@
 ## 列挙型設計書
 
 #### 列挙型名称
-- 論理名：タイブレーク
-- 物理名：AppTieBreakCodeEnum
-- ファイル名：app-tie-break-code.enum.ts
+- 論理名：スコア入力タブ
+- 物理名：AppComponentLiveScoringTabEnum
+- ファイル名：app-component-live-scoring-tab-enum.ts
 
 #### 列挙型パッケージ
-app\brf9000\brf9011-enum\code
+app\brf9000\brf9011-enum\component
 
 #### 列挙型定義
 | No | 列挙名 | 値 | 型 | 説明 |
 | --- | :--- | :--- | :--- | :--- |
-| 01 |ENUM_WITH_TB|1|文字列| タイブレークあり |
-| 02 |ENUM_NO_TB|2|文字列| タイブレークなし |
+| 01 |TEAMA_TEAMB|1|文字列| 左（TEAM_A）,右（TEAM_B） |
+| 02 |TEAMB_TEAMA|2|文字列| 左（TEAM_B）,右（TEAM_A） |
 
 #### 留意事項
 - 型

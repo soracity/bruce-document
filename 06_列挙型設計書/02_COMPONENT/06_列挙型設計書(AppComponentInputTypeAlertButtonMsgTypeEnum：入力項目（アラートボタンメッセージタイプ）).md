@@ -1,9 +1,9 @@
 ## 列挙型設計書
 
 #### 列挙型名称
-- 論理名：入力項目（日付）
-- 物理名：AppInputTypeDateComponentEnum
-- ファイル名：app-input-type-date-component-enum.ts
+- 論理名：入力項目（アラートボタンメッセージタイプ）
+- 物理名：AppComponentInputTypeAlertButtonMsgTypeEnum
+- ファイル名：app-component-input-type-alert-button-msg-type-enum.ts
 
 #### 列挙型パッケージ
 app\brf9000\brf9011-enum\component
@@ -11,8 +11,8 @@ app\brf9000\brf9011-enum\component
 #### 列挙型定義
 | No | 列挙名 | 値 | 型 | 説明 |
 | --- | :--- | :--- | :--- | :--- |
-| 01 |ENUM_DATE|date|文字列| 日付 |
-| 02 |ENUM_DATE_TIME|datetime-local|文字列| 日時（ローカル） |
+| 01 |OK_CANCEL|1|文字列| OK/CANCEL |
+| 02 |OK_ONLY|2|文字列| OK only |
 
 #### 留意事項
 - 型

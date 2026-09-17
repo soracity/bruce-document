@@ -1,9 +1,9 @@
 ## 列挙型設計書
 
 #### 列挙型名称
-- 論理名：入力項目（ラジオ）
-- 物理名：AppInputTypeRadioComponentEnum
-- ファイル名：app-input-type-radio-component-enum.ts
+- 論理名：入力項目（アラート背景タイプ）
+- 物理名：AppComponentInputTypeAlertBgColorEnum
+- ファイル名：app-component-input-type-alert-bg-color-enum.ts
 
 #### 列挙型パッケージ
 app\brf9000\brf9011-enum\component
@@ -11,8 +11,8 @@ app\brf9000\brf9011-enum\component
 #### 列挙型定義
 | No | 列挙名 | 値 | 型 | 説明 |
 | --- | :--- | :--- | :--- | :--- |
-| 01 |ENUM_RADIO|radio|文字列| ラジオ形式 |
-| 02 |ENUM_BUTTON|button|文字列| ボタン形式 |
+| 01 |SOFT|alert-soft|文字列| ソフトタイプ |
+| 02 |NORMAL| |文字列| デフォルトタイプ |
 
 #### 留意事項
 - 型

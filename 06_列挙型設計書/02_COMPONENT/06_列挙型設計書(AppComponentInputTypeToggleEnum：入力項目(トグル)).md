@@ -1,9 +1,9 @@
 ## 列挙型設計書
 
 #### 列挙型名称
-- 論理名：入力項目（アラートボタンメッセージタイプ）
-- 物理名：AppInputTypeAlertButtonMsgTypeComponentEnum
-- ファイル名：app-input-type-alert-button-msg-type-component-enum.ts
+- 論理名：入力項目(トグル)
+- 物理名：AppComponentInputTypeToggleEnum
+- ファイル名：app-component-input-type-toggle.enum.ts
 
 #### 列挙型パッケージ
 app\brf9000\brf9011-enum\component
@@ -11,8 +11,8 @@ app\brf9000\brf9011-enum\component
 #### 列挙型定義
 | No | 列挙名 | 値 | 型 | 説明 |
 | --- | :--- | :--- | :--- | :--- |
-| 01 |ENUM_OK_CANCEL|1|文字列| OK/CANCEL |
-| 02 |ENUM_OK_ONLY|2|文字列| OK only |
+| 01 |SLIDE|slide|文字列| スライド形式 |
+| 02 |BUTTON|button|文字列| ボタン形式 |
 
 #### 留意事項
 - 型

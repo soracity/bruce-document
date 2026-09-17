@@ -1,20 +1,18 @@
 ## 列挙型設計書
 
 #### 列挙型名称
-- 論理名：セット数
-- 物理名：AppNumberOfSetsCodeEnum
-- ファイル名：app-number-of-sets-code.enum.ts
+- 論理名：入力項目（日付）
+- 物理名：AppComponentInputTypeDateEnum
+- ファイル名：app-component-input-type-date-enum.ts
 
 #### 列挙型パッケージ
-app\brf9000\brf9011-enum\code
+app\brf9000\brf9011-enum\component
 
 #### 列挙型定義
 | No | 列挙名 | 値 | 型 | 説明 |
 | --- | :--- | :--- | :--- | :--- |
-| 01 |ENUM_SET1|1|文字列| SET1 |
-| 02 |ENUM_SET3|3|文字列| SET3 |
-| 03 |ENUM_SET5|5|文字列| SET5 |
-| 04 |ENUM_SET_NON|9|文字列| セットなし |
+| 01 |DATE|date|文字列| 日付 |
+| 02 |DATE_TIME|datetime-local|文字列| 日時（ローカル） |
 
 #### 留意事項
 - 型
