@@ -56,6 +56,10 @@ app\brf9000\brf9011-enum\i18n
 | 32 | LBL_MATCH_STATUS_SCORE_FINAL | lbl.brf1001.match.status.score.final | 文字列 | スコア確定 |
 | 33 | LBL_TIEBREAK_MODE_ON | lbl.brf1001.tiebreak.mode.on | 文字列 | オン |
 | 34 | LBL_TIEBREAK_MODE_OFF | lbl.brf1001.tiebreak.mode.off | 文字列 | オフ |
+| 35 | LBL_COURT_DEUCE_SIDE | lbl.brf1001.court.deuce.side | 文字列 | デュースサイド(正式名) |
+| 36 | LBL_COURT_AD_SIDE | lbl.brf1001.court.ad.side | 文字列 | アドバンテージサイド(正式名) |
+| 37 | LBL_COURT_DEUCE | lbl.brf1001.court.deuce | 文字列 | デュースサイド(略名) |
+| 38 | LBL_COURT_AD | lbl.brf1001.court.ad | 文字列 | アドバンテージサイド(略名) |
 
   - 値説明
   - lbl.<"comn" | 機能ID>.<label key>
