@@ -19,31 +19,37 @@ daotest
 
 #### （４）SQL
 ```
-select match_id                  as matchId
-     , match_date_time           as matchDateTime
-     , match_name                as matchName
-     , match_type                as matchType
-     , singles_player1           as singlesPlayer1
-     , singles_player2           as singlesPlayer2
-     , doubles_player_a1         as doublesPlayerA1
-     , doubles_player_a2         as doublesPlayerA2
-     , doubles_player_b1         as doublesPlayerB1
-     , doubles_player_b2         as doublesPlayerB2
-     , match_setting             as matchSetting
-     , set_type                  as setType
-     , game_final_type           as gameFinalType
-     , match_status              as matchStatus
-     , tie_break_mode            as tieBreakMode
-     , first_server_player_id    as firstServerPlayerId
-     , second_server_player_id   as secondServerPlayerId
-     , first_receiver_player_id  as firstReceiverPlayerId
-     , second_receiver_player_id as secondReceiverPlayerId
-     , create_date_time          as createDateTime
-     , update_date_time          as updateDateTime
-     , delete_date_time          as deleteDateTime
-  from t_t_matches
- where match_id = :matchId
- order by match_id;
+SELECT match_id                    AS matchId
+     , match_code                  AS matchCode
+     , match_date_time             AS matchDateTime
+     , match_name                  AS matchName
+     , match_type                  AS matchType
+     , singles_player1             AS singlesPlayer1
+     , singles_player2             AS singlesPlayer2
+     , doubles_player_a1           AS doublesPlayerA1
+     , doubles_player_a2           AS doublesPlayerA2
+     , doubles_player_b1           AS doublesPlayerB1
+     , doubles_player_b2           AS doublesPlayerB2
+     , serve_no_singles_player1    AS serveNoSinglesPlayer1
+     , serve_no_singles_player2    AS serveNoSinglesPlayer2
+     , serve_no_doubles_player_a1  AS serveNoDoublesPlayerA1
+     , serve_no_doubles_player_a2  AS serveNoDoublesPlayerA2
+     , serve_no_doubles_player_b1  AS serveNoDoublesPlayerB1
+     , serve_no_doubles_player_b2  AS serveNoDoublesPlayerB2
+     , return_no_doubles_player_a1 AS returnNoDoublesPlayerA1
+     , return_no_doubles_player_a2 AS returnNoDoublesPlayerA2
+     , return_no_doubles_player_b1 AS returnNoDoublesPlayerB1
+     , return_no_doubles_player_b2 AS returnNoDoublesPlayerB2
+     , match_setting               AS matchSetting
+     , set_type                    AS setType
+     , game_final_type             AS gameFinalType
+     , match_status                AS matchStatus
+     , tie_break_mode              AS tieBreakMode
+     , create_date_time            AS createDateTime
+     , update_date_time            AS updateDateTime
+     , delete_date_time            AS deleteDateTime
+  FROM t_t_matches
+ WHERE match_code = :matchCode;
 ```
 
 ## ３．入力パラメータ
@@ -65,7 +71,7 @@ daotest
 #### （４）入力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
 | :--- | :--- | :--- | :--- | :--- |
-| 01 |試合ID    |matchId| 文字列 | --- |
+| 01 |試合CODE    |matchCode| 文字列 | --- |
 
 ## ４．出力パラメータ
 #### （１）出力パラメータ種別
@@ -86,28 +92,35 @@ daotest
 #### （４）出力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
 | :--- | :--- | :--- | :--- | :--- |
-| 01 |試合ID    |matchId| 文字列 | --- |
-| 02 |試合日時  |matchDateTime| 文字列 | --- |
-| 03 |試合名    |matchName| 文字列 | --- |
-| 04 |試合タイプ|matchType| 文字列 | --- |
-| 05 |選手名１  |singlesPlayer1| 文字列 | --- |
-| 06 |選手名２  |singlesPlayer2| 文字列 | --- |
-| 07 |選手名１  |doublesPlayerA1| 文字列 | --- |
-| 08 |選手名２  |doublesPlayerA2| 文字列 | --- |
-| 09 |選手名３  |doublesPlayerB1| 文字列 | --- |
-| 10 |選手名４  |doublesPlayerB2| 文字列 | --- |
-| 11 |ゲーム設定|matchSetting| 文字列 | --- |
-| 12 |セット設定|setType| 文字列 | --- |
-| 13 |ゲーム確定|gameFinalType| 文字列 | --- |
-| 14 |状態      |matchStatus| 文字列 | --- |
-| 15 |タイブレークモード|tieBreakMode| 文字列 | --- |
-| 16 |サーバー（第１ゲーム）| firstServerPlayerId| 文字列 | --- |
-| 17 |サーバー（第２ゲーム）| secondServerPlayerId| 文字列 | --- |
-| 18 |リターン（第１ゲーム）| firstReceiverPlayerId| 文字列 | --- |
-| 19 |リターン（第２ゲーム）| secondReceiverPlayerId| 文字列 | --- |
-| 20 |作成日| createDateTime| 文字列 | --- |
-| 21 |更新日| updateDateTime| 文字列 | --- |
-| 22 |削除日| deleteDateTime| 文字列 | --- |
+| 01 |試合ID    |matchId| バイナリ | --- |
+| 02 |試合CODE    |matchCode| 文字列 | --- |
+| 03 |試合日時  |matchDateTime| 文字列 | --- |
+| 04 |試合名    |matchName| 文字列 | --- |
+| 05 |試合タイプ|matchType| 文字列 | --- |
+| 06 |選手名１  |singlesPlayer1| 文字列 | --- |
+| 07 |選手名２  |singlesPlayer2| 文字列 | --- |
+| 08 |選手名１  |doublesPlayerA1| 文字列 | --- |
+| 09 |選手名２  |doublesPlayerA2| 文字列 | --- |
+| 10 |選手名３  |doublesPlayerB1| 文字列 | --- |
+| 11 |選手名４  |doublesPlayerB2| 文字列 | --- |
+| 12 | サーブ順(選手名S1) | serveNoSinglesPlayer1 | 文字列 | --- |
+| 13 | サーブ順(選手名S2) | serveNoSinglesPlayer2 | 文字列 | --- |
+| 14 | サーブ順(選手名DA1) | serveNoDoublesPlayerA1 | 文字列 | --- |
+| 15 | サーブ順(選手名DA2) | serveNoDoublesPlayerA2 | 文字列 | --- |
+| 16 | サーブ順(選手名DB1) | serveNoDoublesPlayerB1 | 文字列 | --- |
+| 17 | サーブ順(選手名DB2) | serveNoDoublesPlayerB2 | 文字列 | --- |
+| 18 | リターン順(選手名DA1) | returnNoDoublesPlayerA1 | 文字列 | 0 = DEUCE（デュースサイド）、1 = AD（アドサイド）|
+| 19 | リターン順(選手名DA2) | returnNoDoublesPlayerA2 | 文字列 | 0 = DEUCE（デュースサイド）、1 = AD（アドサイド） |
+| 20 | リターン順(選手名DB1) | returnNoDoublesPlayerB1 | 文字列 | 0 = DEUCE（デュースサイド）、1 = AD（アドサイド） |
+| 21 | リターン順(選手名DB2) | returnNoDoublesPlayerB2 | 文字列 | 0 = DEUCE（デュースサイド）、1 = AD（アドサイド） |
+| 22 |ゲーム設定|matchSetting| 文字列 | --- |
+| 23 |セット設定|setType| 文字列 | --- |
+| 24 |ゲーム確定|gameFinalType| 文字列 | --- |
+| 25 |状態      |matchStatus| 文字列 | --- |
+| 26 |タイブレークモード|tieBreakMode| 文字列 | --- |
+| 27 |作成日| createDateTime| 文字列 | --- |
+| 28 |更新日| updateDateTime| 文字列 | --- |
+| 29 |削除日| deleteDateTime| 文字列 | --- |
 
 ## 凡例
 - 型
@@ -115,6 +128,7 @@ daotest
   - 数値：number
   - 日付：string
   - 真偽：boolean
+  - バイナリ：Uint8Array
 - 必須
   - ●：入力チェック実装対象
 - 形式 ※入力形式チェック実装対象

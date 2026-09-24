@@ -19,31 +19,37 @@ daotest
 
 #### （４）SQL
 ```
-select match_id                  as matchId
-     , match_date_time           as matchDateTime
-     , match_name                as matchName
-     , match_type                as matchType
-     , singles_player1           as singlesPlayer1
-     , singles_player2           as singlesPlayer2
-     , doubles_player_a1         as doublesPlayerA1
-     , doubles_player_a2         as doublesPlayerA2
-     , doubles_player_b1         as doublesPlayerB1
-     , doubles_player_b2         as doublesPlayerB2
-     , match_setting             as matchSetting
-     , set_type                  as setType
-     , game_final_type           as gameFinalType
-     , match_status              as matchStatus
-     , tie_break_mode            as tieBreakMode
-     , first_server_player_id    as firstServerPlayerId
-     , second_server_player_id   as secondServerPlayerId
-     , first_receiver_player_id  as firstReceiverPlayerId
-     , second_receiver_player_id as secondReceiverPlayerId
-     , create_date_time          as createDateTime
-     , update_date_time          as updateDateTime
-     , delete_date_time          as deleteDateTime
-  from t_t_matches
- where match_id = :matchId
- order by match_id;
+SELECT match_id                    AS matchId
+     , match_code                  AS matchCode
+     , match_date_time             AS matchDateTime
+     , match_name                  AS matchName
+     , match_type                  AS matchType
+     , singles_player1             AS singlesPlayer1
+     , singles_player2             AS singlesPlayer2
+     , doubles_player_a1           AS doublesPlayerA1
+     , doubles_player_a2           AS doublesPlayerA2
+     , doubles_player_b1           AS doublesPlayerB1
+     , doubles_player_b2           AS doublesPlayerB2
+     , serve_no_singles_player1    AS serveNoSinglesPlayer1
+     , serve_no_singles_player2    AS serveNoSinglesPlayer2
+     , serve_no_doubles_player_a1  AS serveNoDoublesPlayerA1
+     , serve_no_doubles_player_a2  AS serveNoDoublesPlayerA2
+     , serve_no_doubles_player_b1  AS serveNoDoublesPlayerB1
+     , serve_no_doubles_player_b2  AS serveNoDoublesPlayerB2
+     , return_no_doubles_player_a1 AS returnNoDoublesPlayerA1
+     , return_no_doubles_player_a2 AS returnNoDoublesPlayerA2
+     , return_no_doubles_player_b1 AS returnNoDoublesPlayerB1
+     , return_no_doubles_player_b2 AS returnNoDoublesPlayerB2
+     , match_setting               AS matchSetting
+     , set_type                    AS setType
+     , game_final_type             AS gameFinalType
+     , match_status                AS matchStatus
+     , tie_break_mode              AS tieBreakMode
+     , create_date_time            AS createDateTime
+     , update_date_time            AS updateDateTime
+     , delete_date_time            AS deleteDateTime
+  FROM t_t_matches
+ WHERE match_code = :matchCode;
 ```
 
 ## ３．入力パラメータ
@@ -64,7 +70,7 @@ select match_id                  as matchId
 #### （４）入力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
 | :--- | :--- | :--- | :--- | :--- |
-| 01 |試合ID    |matchId| 文字列 | --- |
+| 01 |試合CODE    |matchCode| 文字列 | --- |
 
 ## ４．出力パラメータ
 #### （１）出力パラメータ種別
@@ -92,6 +98,7 @@ select match_id                  as matchId
   - 数値：number
   - 日付：string
   - 真偽：boolean
+  - バイナリ：Uint8Array
 - 必須
   - ●：入力チェック実装対象
 - 形式 ※入力形式チェック実装対象
