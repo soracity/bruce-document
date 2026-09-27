@@ -22,7 +22,7 @@ app\brf9000\brf9011-enum\code
 #### 列挙型定義
 | No | 列挙名 | 値 | 型 | 説明 |
 | --- | :--- | :--- | :--- | :--- |
-| 01 |MATCH_ID|match_id|文字列| 試合ID |
+| 01 |MATCH_CODE|match_code|文字列| 試合CODE |
 
   - 値説明
   - lbl.<"comn" | 機能ID>.<label key>
