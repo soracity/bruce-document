@@ -2,8 +2,8 @@
 
 #### 列挙型名称
 - 論理名：ラベルキー
-- 物理名：AppI18nLabelKeyEnum
-- ファイル名：app-i18n-label-key.enum.ts
+- 物理名：AppI18nLabelKeyCommonEnum
+- ファイル名：app-i18n-label-key-common.enum.ts
 
 #### 列挙種別
 - [ ] 一般列挙型
