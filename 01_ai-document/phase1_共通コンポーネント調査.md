@@ -37,6 +37,42 @@
 5. Layoutは子コンポーネントにCSSクラスを注入せず、子の幅を勝手に変更しない。
 6. 既存部品を優先し、不要な抽象化・過剰な汎用化を避ける。
 
+## 通常UI 8コンポーネント：SCSS・基底クラス確認（2026-10-15）
+
+対象：`soracity/bruce` / `feature/feature-20261015`。既存のTypeScript・HTML調査に加え、8部品のSCSSと`FormControlComponentBase`を静的確認。
+
+| 部品 | SCSSの実装 | レビュー観点 |
+|---|---|---|
+| Alert | host display:block | 狭い画面でのメッセージとボタン配置 |
+| Button | host display:block、button width:100% | 幅の責務と親Layoutとの関係 |
+| Date | host display:block、date-input width:100% | OS標準の日付UI差 |
+| Fab | hostの下部余白、FABのbottom/rightにsafe-area-insetを加算 | 下部ナビ・セーフエリア・画面末尾の操作性 |
+| Group | host display:block | disabledの視覚効果と子の操作禁止の区別 |
+| Radio | host display:block、width:100%、min-width:0 | 選択肢の折り返し・タップ領域 |
+| Textbox | host display:block、textbox-input width:100% | 狭い画面の横幅 |
+| Toggle | host display:block | control・checked・disabledの状態管理 |
+
+### FormControlComponentBaseの現状
+
+- `@Directive()` の抽象基底クラスで、`readonly control = input.required<FormControl<T>>()` を定義。
+- `ngOnInit`で`valueChanges`と`statusChanges`を購読し、`OnPush`の変更検知を`markForCheck()`で要求。
+- `takeUntilDestroyed`により破棄時に購読解除。
+- Date・Radio・Textboxが継承。Toggleは独自に類似処理を持つ。
+- フェーズ3の単一`ComponentBase`案は**未実装・議論中**。現行実装を直ちに変更する決定ではない。
+
+### Android・iPhone対応とデザイン方針
+
+- HTMLではDaisyUIの`btn`、`alert`、`input`、`radio`、`toggle`、`fieldset`等とTailwindユーティリティを利用。
+- 独自SCSSは現状、host表示、横幅指定、FABのセーフエリア補正などに使用。
+- **FABのセーフエリア対応はコード上で確認済み**。両OSでの表示品質は未検証。
+- 重点確認項目：狭い画面、文字サイズ拡大、横長ラベル、タップ領域、キーボード表示、OSネイティブ入力の違い、下部ナビとの重なり。
+- `Group`の`disabled`は現行テンプレートでは`opacity-50`を付与するだけで、投影された子コンポーネントの操作を一律に禁止する実装ではない。
+- `Toggle`の`checked`が指定された場合は`control.value`より優先して表示される。状態の責務は設計検討対象。
+
+### 検証範囲
+
+GitHub上のソースを静的に確認。ビルド・実機・エミュレーター・単体テストの実行は行っていない。ユーザーから旧`brf9014-shared-components`削除後のビルド成功の報告あり（本レビューでの実行結果ではない）。
+
 ## 調査成果物と未確認事項
 
 - 「brf9020共通コンポーネント仕様一覧 第1版」が過去の議論で言及されているが、完全な原本との照合は未完了。
