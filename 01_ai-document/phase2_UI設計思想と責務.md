@@ -305,6 +305,82 @@ readonly dto = new Bru1001Dto();
 - Layoutから子コンポーネントに画面固有CSSを注入しない。
 - 設計思想から外れる実装を、確認なく採用しない。
 
+## 承認済みIssue：画面・LayoutManager・共通Componentの責務境界
+
+> 状態：**設計承認済み**  
+> 承認日：2026-10-15
+
+### 決定内容
+
+画面・LayoutManager・共通Componentの責務を次のように分離する。
+
+| 層 | 責務 |
+|---|---|
+| 画面Component | 何を表示するか、どの順番で置くか、データ・イベントの接続 |
+| ItemStackLayout | 行を縦方向に積み重ね、行間のgapを管理する |
+| LayoutItem | 1行を構成し、子要素の横並び・gap・wrapを管理する |
+| LayoutSpan | 必要な場合のみ子要素の幅比率を指定する |
+| TableContainerLayout | テーブル固有の構造・列・横スクロール等を管理する |
+| 共通Component | 自身の内部構造・操作性・見た目を管理する |
+| styles.scss / design token | アプリ全体の色・文字・サイズ等のデザイン規則を管理する |
+
+基本原則は次のとおりとする。
+
+> **画面は「配置を記述」するが、「配置をCSSで実装」しない。**
+
+画面はLayoutManagerと共通Componentを組み合わせて画面構造を定義する。画面固有CSSによって、共通Componentの外部配置や内部デザインを変更しない。
+
+許可する例：
+
+```html
+<app-item-stack-layout>
+  <app-layout-item>
+    <app-textbox ... />
+    <app-date ... />
+  </app-layout-item>
+
+  <app-layout-item>
+    <app-button ... />
+  </app-layout-item>
+</app-item-stack-layout>
+```
+
+禁止する例：
+
+```html
+<div class="flex gap-4 mt-3 w-full">
+  ...
+</div>
+```
+
+```html
+<app-textbox class="w-1/2" ... />
+<app-textbox classContainer="m-4" ... />
+```
+
+幅比率など、レイアウト上必要な指定はLayoutManagerが提供する仕組みを利用する。
+
+```html
+<app-layout-item>
+  <app-textbox [appLayoutSpan]="7" ... />
+  <app-textbox [appLayoutSpan]="3" ... />
+</app-layout-item>
+```
+
+### 任意CSS注入に関する方針
+
+`classContainer`、`classInput`、`classLabel`、`classSpan`等、画面側から共通Component内部へ任意CSSを注入するAPIは原則廃止する方向とする。
+
+- コンポーネントの外側配置はLayoutManagerが担当する。
+- コンポーネント内部の配置・見た目は共通Component自身が担当する。
+- 見た目の差分が必要な場合は、任意CSS文字列ではなく`variant`、`appearance`、`size`等の意味を持つ限定的なAPIを使用する。
+
+### AIによる画面実装への適用
+
+AIに画面実装を依頼する場合も、自由なCSSレイアウトを生成させず、既存のLayoutManagerと共通Componentを使用させる。
+
+これにより、AI生成コードでも画面間の一貫性と設計思想を維持する。
+
 ## 継続検討・照合事項
 
 - UI Form DTOの`class + formGroup`方式を推奨案から正式方針へ確定するか。
