@@ -93,6 +93,38 @@ GitHub上のソースを静的に確認。ビルド・実機・エミュレー�
 
 ※これはフェーズ1の**現状調査記録**。コード修正・仕様変更を承認したものではない。
 
+## Table 4部品と補助処理の現行ソース調査（2026-10-15）
+
+対象：`soracity/bruce` / `feature/feature-20261015`。TypeScript・HTML・SCSSおよび`TableCornersDirective`・`table-corner-geometry.ts`を静的確認。
+
+| 部品 | 現行Input・Output | 主な動作 |
+|---|---|---|
+| TableContainerLayout | zebra=false, responsive=false, empty=false, emptyMessage='', emptyMessageKey?, recordGap=0, recordShadow=false, columns（不正値なら100） | table-fixed、100論理列が既定、横スクロール、ゼブラ、空表示、レコード間隔・影 |
+| TableRecord | clickable=false, selected=false, cellBorder=false、recordClick | tbodyでクリック通知、選択色、セル罫線、レコード間スペーサー |
+| TableRow | sticky=false | trを上端固定し、背景色を指定 |
+| TableCell | colSpan=1, rowSpan=1, header=false, sticky=false, align=LEFT, verticalAlign=MIDDLE, radiusPosition=NONE | td/thを切替、結合、配置、左固定、角丸位置、ホストCSSクラスを内部セルへ転送 |
+
+### 補助処理
+
+- `TableCornersDirective`はSVGオーバーレイとclip-pathを用い、角丸セルの描画を補正する。
+- `ResizeObserver`・`MutationObserver`・スクロール・ウィンドウリサイズを監視し、`requestAnimationFrame`で再計算する。
+- `tableGridOffset`はBlinkとWebKitのcollapsed border座標差を吸収することを意図した実装。
+- `recordShadow`有効時は各レコードの矩形に合わせた`rounded-lg shadow-md`の影レイヤーを作る。
+- 監視と描画は実装されているが、端末性能・大量レコード時の負荷・実機での描画精度は未検証。
+
+### 観察した注意点
+
+1. **スタイル継承（TableContainerLayout → TableRecord → TableCell）は未実装**。フェーズ3で検討する設計案と区別する。
+2. `TableRecord.cellBorder`のCSSは`border: 1px solid var(--color-base-300) !important`。セル個別の罫線指定との優先関係に注意。
+3. `TableCell.cellClasses`はホストの`className`を内部td/thの`[class]`へ転送する。Angularクラスバインディングとの組み合わせを変更する際は確認が必要。
+4. `TableRecord`のクリックは`tbody (click)`。キーボード操作・フォーカス対応は未確認。
+5. `responsive`時は`overflow-x-auto`と`min-w-max`を付与。狭い画面でのスクロール操作・stickyの相互作用を実機確認する。
+6. `TableRow.sticky`と`TableCell.sticky`は別々の方向（上端・左端）を固定する。交差部の重なり順序と背景の確認が必要。
+7. テーブルの`ViewEncapsulation.None`と全体セレクタを使うCSSがあるため、他画面・複数テーブルへの影響を確認する。
+8. 補助処理のテストファイルは存在するが、本調査ではテスト実行を行っていない。
+
+※フェーズ1の現状調査。実装・設計変更は行っていない。
+
 ## 調査成果物と未確認事項
 
 - 「brf9020共通コンポーネント仕様一覧 第1版」が過去の議論で言及されているが、完全な原本との照合は未完了。
