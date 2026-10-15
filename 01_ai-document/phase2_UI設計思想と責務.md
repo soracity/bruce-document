@@ -105,6 +105,93 @@ Layoutは配置だけを担当する。
 
 フェーズ1で判明した `LayoutItem` の「折り返し有無」「子を均等幅にするか」は、この責務原則の中で別途決定する。
 
+## FormGroup / UI DTO / Application DTO / 画面Componentの責務（現行BRU1001照合）
+
+### 現行ソースで確認した事実
+
+`BRU1001`では、UI側の`Bru1001Dto`がACGによる自動生成クラスとなっており、`FormGroup`と各`FormControl`の型・初期値・disabled・Angular Validatorsを保持している。
+
+画面Componentは`readonly dto = new Bru1001Dto()`、`readonly controls = this.dto.formGroup.controls`として使用し、HTMLから各共通入力Componentへ`[control]="controls.xxx"`の形で直接`FormControl`を渡している。
+
+一方、Application層の`Bra1001SaveMatchInfoReqDto`は`FormControl`を持たないreadonlyの値DTOであり、UIのReactive Formsとは分離されている。
+
+現行`Bru1001Component`では、画面初期化・Application Service呼び出し・FormGroupへのpatchValue・保存用DTOへの変換に加え、サーブ順やリターン側の決定などテニス固有の状態変更ロジックも実装されている。
+
+### DTOを2種類に分けて考える（提案）
+
+同じ「DTO」という名称でも責務を明確に分ける。
+
+| 種類 | 例 | 責務 | 持たせないもの |
+|---|---|---|---|
+| UI Form DTO | `Bru1001Dto` | FormGroup、FormControl、初期値、disabled初期状態、画面入力Validation | Application呼び出し、DB処理、テニス業務ルール |
+| Application DTO | `Bra1001SaveMatchInfoReqDto`等 | UI/Application間のユースケース入力・出力値 | FormControl、FormGroup、Angular Validator、画面表示状態 |
+
+現行の`Bru1001Dto`のように画面設計書からFormGroupをACG生成する方向は、UI Form DTOとして責務を限定する限り整合性が高い。
+
+### 画面Componentの責務（提案）
+
+画面ComponentはUIのオーケストレーターとする。
+
+- UI Form DTOを保持または参照する。
+- FormControlを共通Componentへ渡す。
+- ルートパラメータ・画面初期化・表示/非表示など画面固有状態を扱う。
+- ユーザーイベントを受けてApplication Serviceを呼び出す。
+- UI Form DTOとApplication DTOの境界で値を変換する。
+- Applicationから返った値をFormGroupへ反映する。
+
+ただし、テニスの意味に依存するルールそのものは画面Componentに置かない。
+
+### 現行BRU1001の処理を責務別に分類する（提案）
+
+| 現行処理 | 基本的な配置先 |
+|---|---|
+| `matchId`のルート取得、初期表示 | 画面Component |
+| `FormGroup.valueChanges`を契機とした自動保存 | 画面Component（保存ユースケースの起動） |
+| `controls.xxx`を共通Componentへ渡す | 画面Component / Template |
+| `matchSetting`に応じた入力項目のenable/disable | 画面表示制御である限り画面Component |
+| Form値からApplication Request DTOへの変換 | UI/Application境界。まずは画面Componentで可。重複が増えた場合のみMapper等を検討 |
+| Application Responseを`patchValue`する | UI/Application境界。まずは画面Componentで可 |
+| シングルス/ダブルス切替で非対象入力をクリア | 単なる画面編集状態の整理なら画面Component。保存データの整合性条件ならDomainでも保証が必要 |
+| サーブ順の決定・相互関係 | Domain側の候補 |
+| ダブルスのリターン側・組合せルール | Domain側の候補 |
+
+画面上の利便性のための処理と、保存される試合データの正しさを保証する業務ルールを区別する。後者はUIを経由しない処理から呼ばれても成立する必要があるため、Domain側へ置く。
+
+### 推奨フロー（提案）
+
+```text
+共通Component
+      ⇅ FormControl
+画面Component
+      ⇅
+UI Form DTO（FormGroup）
+      │ 値を取り出す / patchValue
+      ↓
+Application DTO
+      ↓
+Application Service
+      ↓
+Domain
+      ↓
+Repository
+      ↓
+Infrastructure
+```
+
+Application Serviceへ`FormGroup`や`FormControl`を渡さない。DomainにもAngular依存を持ち込まない。
+
+Infrastructure側にDAO/DB用DTOが存在する場合、それはApplication DTOとは別責務とし、Repository/Infrastructure境界で変換する。画面ComponentからDAO DTOを直接扱わない。
+
+### ACGとの関係（提案）
+
+- UI Form DTOは画面設計書から生成してよい。
+- 型、初期値、disabled初期状態、Angular Validatorsは生成対象にできる。
+- テニス業務ルールを生成UI DTOへ埋め込まない。
+- Application DTOはユースケース契約としてUI Form DTOとは別生成物にする。
+- 自動生成ファイルを直接修正せず、変更が必要な場合は設計書またはACG生成処理を変更する。
+
+この整理により、FormGroup生成とDDDの責務分離を両立する。
+
 ## 確認できた設計方針
 
 - 画面実装は既存の共通コンポーネントを優先して利用する。
@@ -119,9 +206,10 @@ Layoutは配置だけを担当する。
 
 ## 継続検討・照合事項
 
-- FormGroupを画面定義から生成する方式と、生成クラス・controlsオブジェクトの表現。
+- UI Form DTOの生成クラス表現を現行の`class + formGroup`で正式採用するか。
+- UI Form DTOとApplication DTO間の変換を画面Componentに残す範囲と、Mapperを導入する基準。
 - UIレベルValidationとDomain Validationの具体的な境界。
-- Application Serviceと画面Component間で使用する入出力DTOの形。
+- 現行BRU1001のサーブ順・リターン側ロジックをDomainへ移す場合のDomainモデル/API。
 - `LayoutItem`の折り返し・均等幅・`LayoutSpan`の正式仕様。
 - レイヤーと実際のディレクトリ構造・クラスとの対応。
 - 過去の決定事項の網羅性および設計理由の完全な復元。
