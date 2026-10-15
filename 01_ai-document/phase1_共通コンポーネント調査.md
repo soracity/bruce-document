@@ -1,6 +1,6 @@
 # フェーズ1：共通コンポーネント調査
 
-> 状態：過去の議論からの復元ドラフト（未レビュー）  
+> 状態：主要16部品の一次ソース調査完了／設計方針の承認・実機検証は未完了  
 > 対象：`soracity/bruce` / `brf9020-shared-components`
 
 ## 目的
@@ -15,7 +15,7 @@
 
 **決定事項（2026-10-15）**：`ToggleButtonComponent` は古い実装のためフェーズ1・3の開発対象から除外。`soracity/bruce` の `feature/feature-20261015` ブランチで `brf9020-shared-components/toggleButton/components/` 配下の4ファイルを削除（commit `5b2800c`）。`brf9014-shared-components` 側も後続コミット `409bc5f` でディレクトリごと削除した。
 
-**旧共通部品ディレクトリの削除（2026-10-15）**：`soracity/bruce` の `feature/feature-20261015` ブランチから `src/app/brf9000/brf9014-shared-components/` 配下の43ファイルを削除（commit `409bc5f`）。以降の共通部品レビュー対象は `brf9020-shared-components` とする。削除に伴う参照切れ・ビルド確認は未実施。
+**旧共通部品ディレクトリの削除（2026-10-15）**：`soracity/bruce` の `feature/feature-20261015` ブランチから `src/app/brf9000/brf9014-shared-components/` 配下の43ファイルを削除（commit `409bc5f`）。以降の共通部品レビュー対象は `brf9020-shared-components` とする。削除後のビルド成功はユーザーから報告済み。参照箇所の網羅的な静的検査と本レビューでのビルド実行は未実施。
 
 ## コンポーネント一覧（調査時点）
 
@@ -26,7 +26,7 @@
 | Swipe | SwipeDirective |
 | Layout | LayoutItem / ItemStackLayout / LayoutSpan |
 
-※上記は過去の調査内容を復元したものであり、最新ブランチとの再照合は未実施。
+※上記16部品は `feature/feature-20261015` の現行ソースと一次照合済み。利用箇所・テスト実行・実機動作の網羅確認は未実施。
 
 ## 確認できた設計方針
 
@@ -154,12 +154,42 @@ GitHub上のソースを静的に確認。ビルド・実機・エミュレー�
 
 通常UI（8）、Layout（3）、Table（4）、Swipe（1）の主要16部品についてソース調査を実施。**主要部品の一次調査は一巡**。未検証事項の総括・調査結果の整理は次工程。ソース修正なし。
 
+## フェーズ1一次調査の総括（2026-10-15）
+
+### 調査完了範囲
+
+- 通常UI：Alert、Button、Date、Fab、Group、Radio、Textbox、Toggle（8部品）
+- Layout：ItemStackLayout、LayoutItem、LayoutSpan（3部品）
+- Table：TableContainerLayout、TableRecord、TableRow、TableCell（4部品）および角丸描画補助処理
+- Swipe：SwipeDirective（1部品）およびSwipeCoordinator・関連SCSS
+- **合計16部品の一次ソース調査が完了**。これは実機品質・全テスト合格を意味しない。
+
+### 設計方針との相違・今後の確認事項
+
+| 優先度 | 分野 | 調査で判明した事実・確認事項 | 扱い |
+|---|---|---|---|
+| 高 | Layout | 復元方針は「折り返す」だが、現行LayoutItemには`flex-wrap`なし。直接の子へ`flex-1`・`basis-0`適用 | 方針と実装の差異を後の設計フェーズで判断 |
+| 高 | Swipe × Table | Swipeの`touch-action:pan-y pinch-zoom`と横スクロール可能Tableの操作が競合する可能性 | 両OS実機確認 |
+| 高 | Android/iPhone | FABセーフエリア、WebKit座標差補正等は実装済みだが表示・操作品質は未検証 | 両OS実機確認 |
+| 中 | Toggle | `checked`と`control.value`が併存し、表示の優先関係がある | 状態の責務を後の設計フェーズで検討 |
+| 中 | Table | Table→Record→Cellの汎用スタイル継承は未実装 | フェーズ3の議論事項 |
+| 中 | Group | disabled時は見た目の変更のみで子要素を一律に操作禁止しない | 使用仕様を確認 |
+| 中 | アクセシビリティ | Tableのクリック・Swipeのキーボード操作経路、英語固定aria-labelなど | 使用画面と実機で確認 |
+| 中 | 表示・性能 | 多量のTable行・Swipeポータル、長文、文字拡大、角丸OFF、sticky重なり | 必要なテストを整理 |
+
+### 検証・変更の境界
+
+- **確認済み**：GitHub上の主要16部品の現行ソース、既存テストファイルの一部、旧ディレクトリ削除後のビルド成功（ユーザー報告）。
+- **未実施**：本レビューでのビルド・テスト実行、実機・エミュレーター検証、全呼び出し元の網羅調査。
+- **未決定**：ComponentBase統合、Tableスタイル継承、Layout折り返し仕様など。フェーズ1では変更しない。
+- **ソースコード変更なし**：この総括はドキュメント更新のみ。
+
 ## 調査成果物と未確認事項
 
 - 「brf9020共通コンポーネント仕様一覧 第1版」が過去の議論で言及されているが、完全な原本との照合は未完了。
-- 各コンポーネントの全Input/Output、既定値、使用規則は最新ソースとの照合が必要。
+- 主要Input/Outputと既定値はソース調査済み。全使用箇所との照合、使用規則の確定は未完了。
 - 角丸OFF時の表示は追加確認が必要。
 - ビルド・実機表示確認は本書作成時には実施していない。
 
 ## 変更管理
-本書は設計の復元記録であり、新たな仕様決定を意味しない。ユーザー確認後に正式版とする。
+本書は復元記録に現行ソースの一次調査結果を追記したもの。調査結果は仕様変更の承認を意味しない。未決事項は後続フェーズで議論する。
