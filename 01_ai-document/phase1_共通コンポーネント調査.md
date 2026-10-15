@@ -13,11 +13,13 @@
 
 ※上記2項目はユーザーが明示的に追加した開発方針。具体的なテスト端末・対応OSバージョン・例外的なCSSの運用は今後決める。
 
+**決定事項（2026-10-15）**：`ToggleButtonComponent` は古い実装のためフェーズ1・3の開発対象から除外。`soracity/bruce` の `feature/feature-20261015` ブランチで `brf9020-shared-components/toggleButton/components/` 配下の4ファイルを削除（commit `5b2800c`）。`brf9014-shared-components` 側の同名ファイルは対象外で削除していない。
+
 ## コンポーネント一覧（調査時点）
 
 | 区分 | 対象 |
 |---|---|
-| 通常UI | Alert / Button / Date / Fab / Group / Radio / Textbox / Toggle / ToggleButton |
+| 通常UI | Alert / Button / Date / Fab / Group / Radio / Textbox / Toggle |
 | Table | TableContainerLayout / TableRecord / TableRow / TableCell |
 | Swipe | SwipeDirective |
 | Layout | LayoutItem / ItemStackLayout / LayoutSpan |

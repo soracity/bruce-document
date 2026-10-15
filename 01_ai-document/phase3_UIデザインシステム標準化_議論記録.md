@@ -119,7 +119,9 @@ export abstract class ComponentBase {
 
 ## 7. 対象コンポーネントと現行整理
 
-- 通常UI：Alert / Button / Date / Fab / Group / Radio / Textbox / Toggle / ToggleButton。
+**2026-10-15決定**：`ToggleButtonComponent` は古いため開発対象から除外。`bruce` の `feature/feature-20261015` ブランチで `brf9020-shared-components/toggleButton/components/` の4ファイルを削除（commit `5b2800c`）。別の `brf9014-shared-components` 配下は削除対象外。
+
+- 通常UI：Alert / Button / Date / Fab / Group / Radio / Textbox / Toggle（ToggleButtonは旧式のため除外）。
 - Table：TableContainerLayout / TableRecord / TableRow / TableCell。
 - Swipe：SwipeDirective。
 - Layout：LayoutItem / ItemStackLayout / LayoutSpan。
