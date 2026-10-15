@@ -125,6 +125,35 @@ GitHub上のソースを静的に確認。ビルド・実機・エミュレー�
 
 ※フェーズ1の現状調査。実装・設計変更は行っていない。
 
+## Swipeの現行ソース調査（2026-10-15）
+
+対象：`soracity/bruce` / `feature/feature-20261015`。SwipeDirective・SCSS・SwipeCoordinator・単体テストを静的確認。
+
+### 現行仕様
+
+- `[appSwipe]`は`TemplateRef<SwipeContext> | null`を受け取り、`swipeOpenChange: EventEmitter<boolean>`で状態通知。公開メソッド`open()`・`close()`、`isOpen`を持つ。
+- 左スワイプで開き、右スワイプで閉じる。移動量8px以上で方向を判定し、横・縦の比率1.25で判定する。開閉判定の閾値は`min(48px, panelWidth/2)`。
+- アクションのAngularテンプレートを`document.body`に配置する。元のTableのDOM・角丸clip-pathを変更しない。
+- `SwipeCoordinator`はTableContainerLayoutのprovidersでテーブル単位に提供され、同じテーブル内の同時オープンを1件に制限する。単独カードでの利用はCoordinatorなしでも可能。
+- `pointerdown/move/up/cancel`・`lostpointercapture`を監視。スワイプ後700msの誤クリック抑止、通常タップとキーボード由来クリックを区別。
+- アクションパネルに`inert`・`aria-hidden`を適用。Escapeで閉じ、必要時にフォーカスを復元。利用側から`open()`でキーボード操作を実装できる。
+- `ResizeObserver`・`MutationObserver`・scroll・resize・visualViewportを使い、表示位置・幅を更新。スクロール祖先の表示領域でクリップ。
+- CSSは`touch-action: pan-y pinch-zoom`、`transition: transform 180ms ease-out`、`prefers-reduced-motion`対応。CSS変数による角丸・z-index調整。
+- 単体テストには、複数テーブルの排他、クリック抑止、縦スクロール維持、キャンセル、キーボード、リサイズ、テーブル構造維持、後片付け等のケースが存在する（**実行は未実施**）。
+
+### 確認・検討事項
+
+1. **横スクロール可能なTableとのジェスチャー競合**：Swipe対象の`touch-action: pan-y pinch-zoom`により、横スクロールがSwipeに優先される可能性。Android・iPhone実機で確認する。
+2. `document.body`へポータル表示するため、テーマCSS変数を生成時にコピーする。パネルを開いたままテーマ変更した場合の追従は要確認。
+3. アクションパネルの`aria-label`は現在英語固定の`Actions`。多言語化の必要性を後の設計フェーズで検討する。
+4. スワイプ以外の操作手段として`open()`が提供されるが、利用側画面に開くボタン等があるかは別途確認。
+5. 大量レコード時のObserver・DOM計測・bodyポータルの性能は未検証。
+6. 本調査は静的レビュー。実機・エミュレーター・単体テストは未実行。
+
+### フェーズ1の進捗
+
+通常UI（8）、Layout（3）、Table（4）、Swipe（1）の主要16部品についてソース調査を実施。**主要部品の一次調査は一巡**。未検証事項の総括・調査結果の整理は次工程。ソース修正なし。
+
 ## 調査成果物と未確認事項
 
 - 「brf9020共通コンポーネント仕様一覧 第1版」が過去の議論で言及されているが、完全な原本との照合は未完了。
