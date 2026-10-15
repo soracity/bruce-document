@@ -111,7 +111,9 @@ Layoutは配置だけを担当する。
 
 `BRU1001`では、UI側の`Bru1001Dto`がACGによる自動生成クラスとなっており、`FormGroup`と各`FormControl`の型・初期値・disabled・Angular Validatorsを保持している。
 
-画面Componentは`readonly dto = new Bru1001Dto()`、`readonly controls = this.dto.formGroup.controls`として使用し、HTMLから各共通入力Componentへ`[control]="controls.xxx"`の形で直接`FormControl`を渡している。
+画面Componentは`readonly dto = new Bru1001Dto()`を保持し、HTML側では`@let ctrls = dto.formGroup.controls;`としてテンプレート内だけの短縮名を定義する方針とする。TypeScript側に`readonly controls = this.dto.formGroup.controls;`のような記述簡略化専用の別名は持たせない。
+
+共通入力Componentへの受け渡しは、HTMLから`[control]="ctrls.xxx"`の形で直接`FormControl`を渡す。
 
 一方、Application層の`Bra1001SaveMatchInfoReqDto`は`FormControl`を持たないreadonlyの値DTOであり、UIのReactive Formsとは分離されている。
 
@@ -133,7 +135,9 @@ Layoutは配置だけを担当する。
 画面ComponentはUIのオーケストレーターとする。
 
 - UI Form DTOを保持または参照する。
-- FormControlを共通Componentへ渡す。
+- FormControlを共通Componentへ渡すためのデータ元を提供する。
+- TypeScript側では記述簡略化だけを目的とした`controls`別名を持たない。
+- HTML側で必要に応じて`@let ctrls = dto.formGroup.controls;`を定義し、テンプレート内の参照を簡潔にする。
 - ルートパラメータ・画面初期化・表示/非表示など画面固有状態を扱う。
 - ユーザーイベントを受けてApplication Serviceを呼び出す。
 - UI Form DTOとApplication DTOの境界で値を変換する。
@@ -147,7 +151,8 @@ Layoutは配置だけを担当する。
 |---|---|
 | `matchId`のルート取得、初期表示 | 画面Component |
 | `FormGroup.valueChanges`を契機とした自動保存 | 画面Component（保存ユースケースの起動） |
-| `controls.xxx`を共通Componentへ渡す | 画面Component / Template |
+| `@let ctrls = dto.formGroup.controls;`でテンプレート内に短縮名を定義 | Template |
+| `ctrls.xxx`を共通Componentへ渡す | Template |
 | `matchSetting`に応じた入力項目のenable/disable | 画面表示制御である限り画面Component |
 | Form値からApplication Request DTOへの変換 | UI/Application境界。まずは画面Componentで可。重複が増えた場合のみMapper等を検討 |
 | Application Responseを`patchValue`する | UI/Application境界。まずは画面Componentで可 |
@@ -197,6 +202,8 @@ Infrastructure側にDAO/DB用DTOが存在する場合、それはApplication DTO
 - 画面実装は既存の共通コンポーネントを優先して利用する。
 - 画面の入力状態はAngularの`FormGroup` / `FormControl`で扱う。
 - 親画面から共通入力コンポーネントへ既存の`FormControl`インスタンスを渡す。
+- 記述簡略化だけを目的とした`readonly controls = this.dto.formGroup.controls;`は画面Componentに定義しない。
+- HTMLでは`@let ctrls = dto.formGroup.controls;`を使用し、テンプレート内で`ctrls.xxx`として参照する。
 - ラベル・メッセージはキーで管理し、既存のラベルキーを優先して再利用する。
 - Enumは共通・画面単位で管理し、ACG（AlfredCodeGenerator）で生成する。
 - AIは自動生成されたEnumやその他の生成コードを直接編集しない。
