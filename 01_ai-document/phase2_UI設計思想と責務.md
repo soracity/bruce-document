@@ -197,6 +197,35 @@ Infrastructure側にDAO/DB用DTOが存在する場合、それはApplication DTO
 
 この整理により、FormGroup生成とDDDの責務分離を両立する。
 
+### UI Form DTOの生成クラス表現（比較・提案）
+
+UI Form DTOの表現は次の候補を比較する。
+
+| 方式 | 例 | 評価 |
+|---|---|---|
+| A. `class`が`formGroup`を保持 | `class Bru1001Dto { formGroup = new FormGroup(...) }` | **推奨**。現行方式を活かせる。DTO自体とAngular FormGroupを分離したまま、生成物の単位が明確 |
+| B. `FormGroup`を継承 | `class Bru1001Dto extends FormGroup<...>` | 非推奨。UI DTOがAngularクラスそのものになり、継承による結合が強くなる |
+| C. controlsオブジェクトだけ生成 | `const controls = {...}` | FormGroup生成責務が画面側へ漏れ、画面ごとの定型処理が増える |
+| D. type + factory関数 | `type Bru1001Form = ...` + `createBru1001Form()` | 成立するが、現行ACG資産からの変更量が大きく、現時点で得られるメリットが小さい |
+
+フェーズ2の推奨案は **A：UI Form DTOを通常のclassとして生成し、そのプロパティとしてFormGroupを保持する方式を継続** とする。
+
+この方式では、画面側は次の形を基本とする。
+
+```ts
+readonly dto = new Bru1001Dto();
+```
+
+HTMLでは次の形とする。
+
+```html
+@let ctrls = dto.formGroup.controls;
+```
+
+UI Form DTOに独自の業務メソッドを追加してDomainオブジェクト化することはしない。FormGroup定義・初期値・入力ValidationというUI状態定義に責務を限定する。
+
+なお現行`Bru1001Dto`には`@Injectable({ providedIn: 'root' })`が付与されている一方、画面では`new Bru1001Dto()`している。UI Form DTOを画面インスタンス単位の状態オブジェクトとして扱うのであれば、DIサービスとして登録する必要性は薄い。この`@Injectable`をACG生成から外すかは、**別の設計判断として未決定**とする。
+
 ## 確認できた設計方針
 
 - 画面実装は既存の共通コンポーネントを優先して利用する。
@@ -213,7 +242,8 @@ Infrastructure側にDAO/DB用DTOが存在する場合、それはApplication DTO
 
 ## 継続検討・照合事項
 
-- UI Form DTOの生成クラス表現を現行の`class + formGroup`で正式採用するか。
+- UI Form DTOの`class + formGroup`方式を推奨案から正式方針へ確定するか。
+- UI Form DTOの`@Injectable`をACG生成から外すか。
 - UI Form DTOとApplication DTO間の変換を画面Componentに残す範囲と、Mapperを導入する基準。
 - UIレベルValidationとDomain Validationの具体的な境界。
 - 現行BRU1001のサーブ順・リターン側ロジックをDomainへ移す場合のDomainモデル/API。
