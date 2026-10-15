@@ -73,6 +73,26 @@
 
 GitHub上のソースを静的に確認。ビルド・実機・エミュレーター・単体テストの実行は行っていない。ユーザーから旧`brf9014-shared-components`削除後のビルド成功の報告あり（本レビューでの実行結果ではない）。
 
+## Layout 3部品の現行ソース調査（2026-10-15）
+
+対象：`soracity/bruce` / `feature/feature-20261015`。TypeScript・HTMLを静的確認。
+
+| 部品 | Input/Output | 現行実装 | 注意点 |
+|---|---|---|---|
+| ItemStackLayout | なし | `<div class="flex flex-col gap-4"><ng-content></ng-content></div>` | 子要素を縦積み、gap-4=16px |
+| LayoutItem | なし | `flex gap-2 [&>*]:min-w-0 [&>*]:flex-1 [&>*]:basis-0` | 横並び・gap-2=8px。**flex-wrap指定なし**。直接の子要素を均等幅に制御 |
+| LayoutSpan | `appLayoutSpan: number \| string` | `flex-grow`に指定数値、`flex-basis:0px`、`min-width:0px` | 非有限値・0以下はgrow=1。HostBindingによる直接スタイル指定 |
+
+### 設計方針との照合・未決事項
+
+1. 既存の復元ドラフトでは`LayoutItem`が「折り返す」とされているが、現行HTMLには`flex-wrap`がなく、**実装と記録に差異がある**。
+2. 復元ドラフトの「子の幅を勝手に変更しない」という記述に対し、現行`LayoutItem`は直接の子要素に`flex-1`・`basis-0`・`min-w-0`を適用する。仕様として意図した動作か、後の設計フェーズで確認する。
+3. `LayoutSpan`は均等幅を個別の比率に変更する用途と考えられるが、具体的な利用箇所・画面例との照合は未実施。
+4. Tailwind CSS中心で構成。iPhone/Androidの狭い画面での折り返し、ラベル切れ、文字サイズ拡大などの表示確認は未実施。
+5. 各部品の単体テスト内容、実際の呼び出し側、ビルド・実機表示は未確認。
+
+※これはフェーズ1の**現状調査記録**。コード修正・仕様変更を承認したものではない。
+
 ## 調査成果物と未確認事項
 
 - 「brf9020共通コンポーネント仕様一覧 第1版」が過去の議論で言及されているが、完全な原本との照合は未完了。
