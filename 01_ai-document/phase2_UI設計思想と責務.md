@@ -111,9 +111,9 @@ Layoutは配置だけを担当する。
 
 `BRU1001`では、UI側の`Bru1001Dto`がACGによる自動生成クラスとなっており、`FormGroup`と各`FormControl`の型・初期値・disabled・Angular Validatorsを保持している。
 
-画面Componentは`readonly dto = new Bru1001Dto()`を保持し、HTML側では`@let ctrls = dto.formGroup.controls;`としてテンプレート内だけの短縮名を定義する方針とする。TypeScript側に`readonly controls = this.dto.formGroup.controls;`のような記述簡略化専用の別名は持たせない。
+現行画面Componentは`readonly dto = new Bru1001Dto()`、`readonly controls = this.dto.formGroup.controls`としている。設計方針としては、DTO取得をComponentスコープDIへ変更し、記述簡略化専用の`controls`別名は廃止する。
 
-共通入力Componentへの受け渡しは、HTMLから`[control]="ctrls.xxx"`の形で直接`FormControl`を渡す。
+HTML側では`@let ctrls = dto.formGroup.controls;`としてテンプレート内だけの短縮名を定義し、共通入力Componentへ`[control]="ctrls.xxx"`の形で直接`FormControl`を渡す。
 
 一方、Application層の`Bra1001SaveMatchInfoReqDto`は`FormControl`を持たないreadonlyの値DTOであり、UIのReactive Formsとは分離されている。
 
@@ -134,7 +134,7 @@ Layoutは配置だけを担当する。
 
 画面ComponentはUIのオーケストレーターとする。
 
-- UI Form DTOを保持または参照する。
+- UI Form DTOをComponentスコープDIで取得する。
 - FormControlを共通Componentへ渡すためのデータ元を提供する。
 - TypeScript側では記述簡略化だけを目的とした`controls`別名を持たない。
 - HTML側で必要に応じて`@let ctrls = dto.formGroup.controls;`を定義し、テンプレート内の参照を簡潔にする。
@@ -210,10 +210,10 @@ UI Form DTOの表現は次の候補を比較する。
 
 フェーズ2の推奨案は **A：UI Form DTOを通常のclassとして生成し、そのプロパティとしてFormGroupを保持する方式を継続** とする。
 
-この方式では、画面側は次の形を基本とする。
+画面側のDTO取得は次の形を採用する。
 
 ```ts
-readonly dto = new Bru1001Dto();
+readonly dto = inject(Bru1001Dto);
 ```
 
 HTMLでは次の形とする。
@@ -224,12 +224,77 @@ HTMLでは次の形とする。
 
 UI Form DTOに独自の業務メソッドを追加してDomainオブジェクト化することはしない。FormGroup定義・初期値・入力ValidationというUI状態定義に責務を限定する。
 
-なお現行`Bru1001Dto`には`@Injectable({ providedIn: 'root' })`が付与されている一方、画面では`new Bru1001Dto()`している。UI Form DTOを画面インスタンス単位の状態オブジェクトとして扱うのであれば、DIサービスとして登録する必要性は薄い。この`@Injectable`をACG生成から外すかは、**別の設計判断として未決定**とする。
+## 承認済みIssue：UI Form DTOをComponentスコープDIへ変更
+
+> 状態：**設計承認済み / 実装未着手**  
+> 承認日：2026-10-15
+
+### 決定内容
+
+UI Form DTOはDIで取得する。ただしアプリ全体のシングルトンにはせず、**画面Component単位のインスタンス**とする。
+
+`Bru1001Dto`のFormGroupは画面固有状態であるため、`providedIn: 'root'`によるアプリ全体共有は行わない。
+
+想定形：
+
+```ts
+@Injectable()
+export class Bru1001Dto {
+  readonly formGroup = new FormGroup({
+    // ...
+  });
+}
+```
+
+```ts
+@Component({
+  // ...
+  providers: [Bru1001Dto],
+})
+export class Bru1001Component {
+  readonly dto = inject(Bru1001Dto);
+}
+```
+
+### 実装時の変更対象
+
+1. ACGが生成するUI Form DTOの`@Injectable({ providedIn: 'root' })`を、root提供しない形へ変更する。
+2. `Bru1001Component`の`providers`へ`Bru1001Dto`を登録する。
+3. `readonly dto = new Bru1001Dto();`を`readonly dto = inject(Bru1001Dto);`へ変更する。
+4. 記述簡略化だけを目的とする`readonly controls = this.dto.formGroup.controls;`を廃止する。
+5. HTMLで`@let ctrls = dto.formGroup.controls;`を定義し、`ctrls.xxx`で参照する。
+6. 同種のUI Form DTOについても、画面固有状態を持つものは同じComponentスコープDI方針を適用する。
+
+### 採用理由
+
+- FormGroupのライフサイクルを画面Componentのライフサイクルと一致させる。
+- 画面を開き直した場合や複数画面インスタンスでForm状態を意図せず共有しない。
+- DTO生成方法をDIへ統一しつつ、画面状態をシングルトン化しない。
+- テスト時に画面単位でUI Form DTOを差し替えやすくする。
+
+### 非採用
+
+```ts
+@Injectable({ providedIn: 'root' })
+```
+
+によるUI Form DTOのシングルトン化は採用しない。
+
+また、画面Componentからの直接生成：
+
+```ts
+readonly dto = new Bru1001Dto();
+```
+
+も今後の方針としては採用しない。
+
+※本Issueは設計承認の記録であり、このコミットではアプリケーションソースおよびACGソースを変更しない。
 
 ## 確認できた設計方針
 
 - 画面実装は既存の共通コンポーネントを優先して利用する。
 - 画面の入力状態はAngularの`FormGroup` / `FormControl`で扱う。
+- UI Form DTOはDIで取得し、Componentスコープで管理する。シングルトン化しない。
 - 親画面から共通入力コンポーネントへ既存の`FormControl`インスタンスを渡す。
 - 記述簡略化だけを目的とした`readonly controls = this.dto.formGroup.controls;`は画面Componentに定義しない。
 - HTMLでは`@let ctrls = dto.formGroup.controls;`を使用し、テンプレート内で`ctrls.xxx`として参照する。
@@ -243,7 +308,6 @@ UI Form DTOに独自の業務メソッドを追加してDomainオブジェクト
 ## 継続検討・照合事項
 
 - UI Form DTOの`class + formGroup`方式を推奨案から正式方針へ確定するか。
-- UI Form DTOの`@Injectable`をACG生成から外すか。
 - UI Form DTOとApplication DTO間の変換を画面Componentに残す範囲と、Mapperを導入する基準。
 - UIレベルValidationとDomain Validationの具体的な境界。
 - 現行BRU1001のサーブ順・リターン側ロジックをDomainへ移す場合のDomainモデル/API。
