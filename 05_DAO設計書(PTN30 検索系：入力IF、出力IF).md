@@ -147,10 +147,10 @@ daotest
 | 37 |真偽TRUE相当| testBooleanTrue | 真偽 | SQLiteの1がJSのbooleanに変換されるか確認 |
 | 38 |真偽FALSE相当| testBooleanFalse | 真偽 | SQLiteの0がJSのbooleanに変換されるか確認 |
 | 39 |真偽NULL| testBooleanNull | 真偽 | NULLを維持 |
-| 40 |日付通常値| testDateValue | 日付 | 2026-10-09を維持 |
-| 41 |日付NULL| testDateNull | 日付 | NULLを空文字へ変換 |
-| 42 |日時通常値| testDateTimeValue | 日時 | 2026-10-09 18:00:00を維持 |
-| 43 |日時NULL| testDateTimeNull | 日時 | NULLを空文字へ変換 |
+| 40 |日付通常値| testDateValue | 文字列 | 2026-10-09を維持（日付表現もDAOでは文字列として扱う） |
+| 41 |日付NULL| testDateNull | 文字列 | NULLを空文字へ変換（日付表現もDAOでは文字列として扱う） |
+| 42 |日時通常値| testDateTimeValue | 文字列 | 2026-10-09 18:00:00を維持（日時表現もDAOでは文字列として扱う） |
+| 43 |日時NULL| testDateTimeNull | 文字列 | NULLを空文字へ変換（日時表現もDAOでは文字列として扱う） |
 | 44 |バイナリ通常値| testBinaryValue | バイナリ | X'0102FF'の取得時の実体型を確認 |
 | 45 |バイナリNULL| testBinaryNull | バイナリ | NULLを維持 |
 
@@ -159,16 +159,8 @@ daotest
   - 文字列：string
   - 数値：number
   - 真偽：boolean
-  - 日付：string
-  - 日時：string
   - バイナリ：Uint8Array
-
-- 必須
-  - ●：入力チェック実装対象
-- 形式 ※入力形式チェック実装対象
-  - 半角数字
-  - 半角英数字
-  - 正規表現
+  - 日付・日時の表現もDAO設計書では文字列型として扱う
 
 ## ８．型別テストの注意事項
 - 本設計書はDAOの型別コード生成およびSQLite実行時の挙動を検証するためのもの。
@@ -187,9 +179,8 @@ daotest
 - [ ] 数値の負数・小数が維持されること
 - [ ] 真偽の1・0が実際にbooleanになるか確認すること（SQLiteは通常数値として返す）
 - [ ] 真偽NULLがNULLのまま返ること
-- [ ] 日付・日時の通常値が維持されること
+- [ ] 日付・日時の通常値が文字列として維持されること
 - [ ] 日付・日時のNULLが空文字へ変換されること
 - [ ] BLOB値がUint8Arrayとして取得されるか確認すること（SQLiteドライバ依存）
 - [ ] バイナリNULLがNULLのまま返ること
 - [ ] 生成DTOのNULL許容型と実際の戻り値が一致すること
-
