@@ -40,3 +40,9 @@ ENUM
 UI専用の別型Enumは新設せず、既存の型分類Enumを汎用名称へリネームして拡張する。
 
 自動生成ファイルを直接修正せず、ACG本体の参照箇所を `TypeScriptTypeEnum` へ変更する。
+
+## 現行パッケージの扱い
+
+ACGの現行パッケージは `io.github.soracity.alfred` とする。
+
+`com.github.soracity.alfred` は旧パッケージとして扱い、今後の設計検討・コード調査・修正対象・コード例から除外する。
