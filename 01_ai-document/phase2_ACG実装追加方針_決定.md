@@ -91,8 +91,10 @@ Enum型=AppCodeMatchTypeEnum
 生成側では以下を使用する。
 
 ```ts
-FormControl<AppCodeMatchTypeEnum | null>
+FormControl<Nullable<AppCodeMatchTypeEnum>>
 ```
+
+`Nullable<T>` はBruce共通のグローバル型として `src/global.d.ts` に定義し、ACGはimportを生成しない。
 
 `ENUM` に対して共通処理から固定のTypeScript型名を取得しようとした場合、ACGは推測値を返さずFail Fastで停止する。
 
