@@ -145,3 +145,37 @@ SYSTEM_DATETIME
 ```
 
 ACGはこれらの予約語を固定値文字列としてFormControlへ設定せず、対応する `AppDateUtil` 呼び出しへ変換する。
+
+## 予約語と形式の組み合わせチェック
+
+`SYSTEM_DATE` と `SYSTEM_DATETIME` は、対応する形式と1対1で使用する。
+
+```text
+形式=日付
+デフォルト=SYSTEM_DATE
+→ OK
+
+形式=日時
+デフォルト=SYSTEM_DATETIME
+→ OK
+
+形式=日付
+デフォルト=SYSTEM_DATETIME
+→ Exception
+
+形式=日時
+デフォルト=SYSTEM_DATE
+→ Exception
+
+形式が日付・日時以外
+デフォルト=SYSTEM_DATE
+→ Exception
+
+形式が日付・日時以外
+デフォルト=SYSTEM_DATETIME
+→ Exception
+```
+
+ACGは不正な組み合わせを自動補正せず、検出した時点でExceptionを発生させてコード生成を停止する。
+
+この方針をFail Fastとする。
