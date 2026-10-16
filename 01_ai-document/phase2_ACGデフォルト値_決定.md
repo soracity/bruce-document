@@ -21,9 +21,9 @@
 | Enum | `-` | `null` |
 | Enum | コード値 | `Enum型.toEnum('コード値')` |
 | 文字列＋日付 | `-` | `''` |
-| 文字列＋日付 | 値指定 | 日付の内部形式文字列 |
+| 文字列＋日付 | `SYSTEM_DATE` | `AppDateUtil.getSysDateIso8601()` |
 | 文字列＋日時 | `-` | `''` |
-| 文字列＋日時 | 値指定 | 日時の内部形式文字列 |
+| 文字列＋日時 | `SYSTEM_DATETIME` | `AppDateUtil.getSysDateTimeUtcIso8601()` |
 
 ## Enumのデフォルト値
 
@@ -65,11 +65,23 @@ ACGは必須だからという理由で推測して初期値を設定しない�
 
 `形式=日付`、`形式=日時` も `デフォルト=-` の場合は空文字 `''` とする。
 
-日付・日時で現在値をデフォルト値として設定する場合は、既存の `AppDateUtil` を使用する。
+現在日付・現在日時をデフォルト値として設定する場合は、画面設計書の `デフォルト` 列に以下の予約語を指定する。
+
+```text
+SYSTEM_DATE
+SYSTEM_DATETIME
+```
 
 ### 日時
 
-現在日時をデフォルト値として設定する場合は、以下の戻り値を使用する。
+画面設計書：
+
+```text
+形式=日時
+デフォルト=SYSTEM_DATETIME
+```
+
+ACG生成：
 
 ```ts
 AppDateUtil.getSysDateTimeUtcIso8601()
@@ -85,7 +97,14 @@ UTCのISO 8601形式で取得する。
 
 ### 日付
 
-現在日付をデフォルト値として設定する場合は、以下の戻り値を使用する。
+画面設計書：
+
+```text
+形式=日付
+デフォルト=SYSTEM_DATE
+```
+
+ACG生成：
 
 ```ts
 AppDateUtil.getSysDateIso8601()
@@ -111,4 +130,18 @@ src/app/brf9000/brf9017-utils/app-date.util.ts
 
 ACGは現在日付・現在日時の取得処理を独自実装せず、`AppDateUtil` の上記メソッドを利用する。
 
-なお、画面設計書の `デフォルト` 列で「現在日付」「現在日時」をどの記法で指定するかは、本決定では新たに定義しない。
+## 予約語
+
+画面設計書の `デフォルト` 列で使用する日付・日時の予約語は以下とする。
+
+```text
+SYSTEM_DATE
+→ 形式=日付 で使用
+→ AppDateUtil.getSysDateIso8601()
+
+SYSTEM_DATETIME
+→ 形式=日時 で使用
+→ AppDateUtil.getSysDateTimeUtcIso8601()
+```
+
+ACGはこれらの予約語を固定値文字列としてFormControlへ設定せず、対応する `AppDateUtil` 呼び出しへ変換する。
