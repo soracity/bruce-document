@@ -179,3 +179,19 @@ ACGはこれらの予約語を固定値文字列としてFormControlへ設定せ
 ACGは不正な組み合わせを自動補正せず、検出した時点でExceptionを発生させてコード生成を停止する。
 
 この方針をFail Fastとする。
+
+## 特定項目の特別扱い禁止
+
+`createDateTime`、`updateDateTime`、`deleteDateTime` などの項目について、ACGは物理名や用途を見てデフォルト値を特別扱いしない。
+
+これら3項目を含め、各項目の初期値は画面設計書の `デフォルト` 列の指定に従う。
+
+```text
+デフォルト=-
+→ ''
+
+デフォルト=SYSTEM_DATETIME
+→ AppDateUtil.getSysDateTimeUtcIso8601()
+```
+
+ACGは項目名から意味を推測してデフォルト値を変更・補完しない。
