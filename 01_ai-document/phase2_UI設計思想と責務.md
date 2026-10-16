@@ -154,8 +154,8 @@ HTML側では`@let ctrls = dto.formGroup.controls;`としてテンプレート�
 | `@let ctrls = dto.formGroup.controls;`でテンプレート内に短縮名を定義 | Template |
 | `ctrls.xxx`を共通Componentへ渡す | Template |
 | `matchSetting`に応じた入力項目のenable/disable | 画面表示制御である限り画面Component |
-| Form値からApplication Request DTOへの変換 | UI/Application境界。まずは画面Componentで可。重複が増えた場合のみMapper等を検討 |
-| Application Responseを`patchValue`する | UI/Application境界。まずは画面Componentで可 |
+| Form値からApplication Request DTOへの変換 | UI/Application境界。画面Componentで行う。Mapperは作成しない |
+| Application Responseを`patchValue`する | UI/Application境界。画面Componentで行う |
 | シングルス/ダブルス切替で非対象入力をクリア | 単なる画面編集状態の整理なら画面Component。保存データの整合性条件ならDomainでも保証が必要 |
 | サーブ順の決定・相互関係 | Domain側の候補 |
 | ダブルスのリターン側・組合せルール | Domain側の候補 |
@@ -702,14 +702,148 @@ AIが画面を実装する場合も次を遵守する。
 - `appLayoutSpan`は横並び時の比率として扱い、狭い画面で比率維持を強制しない。
 - 既存LayoutManagerで対応できないレスポンシブ要件が出た場合、画面固有CSSで回避せず設計確認を行う。
 
+## 承認済みIssue：共通Componentの外部CSS排除
+
+> 状態：**設計承認済み**  
+> 承認日：2026-10-16
+
+### 基本原則
+
+> **画面側から共通Component内部へ任意CSSを注入しない。外側の配置はLayoutManager、内側の見た目は共通Component自身が管理する。**
+
+共通Componentは画面側から見てブラックボックスとして扱う。画面Componentは、共通Component内部のDOM構造や内部class名を前提とした実装を行わない。
+
+### 任意CSS注入Inputは原則廃止対象
+
+以下のような任意CSS文字列を受け取るInputは、原則として段階的に廃止する。
+
+- `classContainer`
+- `classInput`
+- `classLabel`
+- `classSpan`
+- `classButton`
+- `classRadioItem`
+- `classLabelSpan`
+- `classMessageContainer`
+- `classButtonContainer`
+- `classAlertBox`
+- `classMessage`
+- `classMessageIcon`
+
+実際のComponentに上記以外の同種APIが存在する場合も、同じ基準で扱う。
+
+### 外部配置はLayoutManagerへ移す
+
+次のような実装は採用しない。
+
+```html
+<app-textbox
+  classContainer="m-4"
+  classInput="w-full"
+/>
+```
+
+`m-4`等の外部配置はLayoutManagerの責務とする。
+
+Textbox内部のinputが割り当てられた領域を全面使用する必要がある場合は、画面から`w-full`を注入せず、TextboxComponent内部の標準仕様として実装する。
+
+### Component内部CSSはComponent自身が管理する
+
+Component内部を成立させるためのCSSは排除対象ではない。
+
+例：
+
+- Radio内部の選択肢を横並び・等幅にするためのflex / gap
+- Alert内部のアイコン・メッセージ・アクションの配置
+- Toggleとラベルの内部配置
+- Textbox内部のinput幅・padding
+- Button内部の文字・アイコン配置
+
+判断基準はCSSプロパティ名ではなく、**Componentの外側の配置を調整するものか、Component内部を成立させるものか**とする。
+
+### 見た目の差分は意味のある限定APIで表現する
+
+画面ごとに見た目の差分が必要な場合でも、任意CSS文字列を渡さない。
+
+必要に応じて、例えば次のような意味のある限定APIで表現する。
+
+- `variant`
+- `appearance`
+- `size`
+- `density`
+- `level`
+- `color`
+
+ただし、将来必要になる可能性だけを理由にInputやEnumを先行追加しない。実際の画面要件として必要性が確認されたものだけを追加する。
+
+### 移行方針
+
+既存の任意CSS注入Inputを、設計承認直後に一括削除して既存画面を破壊することはしない。
+
+実装フェーズでは利用箇所を確認しながら段階的に移行する。
+
+1. 外部配置に使われているclass指定をLayoutManagerへ移す。
+2. Component内部を成立させる標準CSSはComponent内部へ固定化する。
+3. 本当に必要な見た目差分のみ意味のある限定APIへ置き換える。
+4. 利用箇所がなくなった任意CSS注入Inputを削除する。
+5. component-test / APIドキュメントの利用例を新方式へ更新する。
+
+### AI実装ルール
+
+AIが画面・共通Componentを実装する場合も次を遵守する。
+
+- `classContainer`等の任意CSS注入APIを新規利用・新規追加しない。
+- 画面側から共通Component内部DOMを前提としたclass指定を行わない。
+- 外部配置はLayoutManagerを使用する。
+- 内部レイアウト・内部デザインは共通Component自身に実装する。
+- 見た目変更が必要な場合は既存の意味的APIを優先する。
+- 必要なAPIが存在しない場合、勝手にCSS注入で回避せず設計確認を行う。
+
+## 承認済みIssue：Mapperを作成しない
+
+> 状態：**設計承認済み**  
+> 承認日：2026-10-16
+
+### 決定内容
+
+UI Form DTOとApplication DTOの間の値変換、およびApplication ResponseからUI Form DTOへの反映のために、Mapperクラス・Mapperサービス・Mapperユーティリティ等の専用抽象を作成しない。
+
+変換処理は画面Component内で明示的に行う。
+
+```text
+UI Form DTO（FormGroup）
+      ↓ 画面Componentで値変換
+Application DTO
+```
+
+逆方向も同様に、Application ResponseからFormGroupへの`patchValue`等は画面Componentで行う。
+
+### AI実装ルール
+
+AIは次の判断を独自に行ってはならない。
+
+- 項目数が多いことを理由にMapperを作成する。
+- 変換処理が長いことを理由にMapperを作成する。
+- 重複があることを理由にMapperを作成する。
+- DDDや一般的なベストプラクティスを理由にMapper層を新設する。
+- `XxxMapper`、`XxxConverter`、`XxxAssembler`等、同等責務の別名称クラスへ置き換える。
+
+Mapper相当の抽象を新設する必要があるとAIが判断した場合も、実装せず設計確認を求める。
+
+### 優先関係
+
+本承認は、本文中の過去の提案にある「重複や複雑化時にMapperを検討する」という記述を**上書きする正式方針**である。
+
+フェーズ2の正式仕様化時には、旧提案のMapper検討記述を削除し、本方針へ統一する。
+
 ## 継続検討・照合事項
 
 - UI Form DTOの`class + formGroup`方式を推奨案から正式方針へ確定するか。
-- UI Form DTOとApplication DTO間の変換を画面Componentに残す範囲と、Mapperを導入する基準。
 - UIレベルValidationとDomain Validationの具体的な境界。
 - 現行BRU1001のサーブ順・リターン側ロジックをDomainへ移す場合のDomainモデル/API。
 - レスポンシブ実装時に「十分な幅」を判定する具体方式。
 - 画面外周paddingの具体的な実装場所。
+- 任意CSS注入Inputの現行利用箇所調査と削除順序。
 - レイヤーと実際のディレクトリ構造・クラスとの対応。
 - 過去の決定事項の網羅性および設計理由の完全な復元。
 
