@@ -154,8 +154,8 @@ HTML側では`@let ctrls = dto.formGroup.controls;`としてテンプレート�
 | `@let ctrls = dto.formGroup.controls;`でテンプレート内に短縮名を定義 | Template |
 | `ctrls.xxx`を共通Componentへ渡す | Template |
 | `matchSetting`に応じた入力項目のenable/disable | 画面表示制御である限り画面Component |
-| Form値からApplication Request DTOへの変換 | UI/Application境界。まずは画面Componentで可。重複が増えた場合のみMapper等を検討 |
-| Application Responseを`patchValue`する | UI/Application境界。まずは画面Componentで可 |
+| Form値からApplication Request DTOへの変換 | UI/Application境界。画面Componentで行う。Mapperは作成しない |
+| Application Responseを`patchValue`する | UI/Application境界。画面Componentで行う |
 | シングルス/ダブルス切替で非対象入力をクリア | 単なる画面編集状態の整理なら画面Component。保存データの整合性条件ならDomainでも保証が必要 |
 | サーブ順の決定・相互関係 | Domain側の候補 |
 | ダブルスのリターン側・組合せルール | Domain側の候補 |
@@ -799,10 +799,46 @@ AIが画面・共通Componentを実装する場合も次を遵守する。
 - 見た目変更が必要な場合は既存の意味的APIを優先する。
 - 必要なAPIが存在しない場合、勝手にCSS注入で回避せず設計確認を行う。
 
+## 承認済みIssue：Mapperを作成しない
+
+> 状態：**設計承認済み**  
+> 承認日：2026-10-16
+
+### 決定内容
+
+UI Form DTOとApplication DTOの間の値変換、およびApplication ResponseからUI Form DTOへの反映のために、Mapperクラス・Mapperサービス・Mapperユーティリティ等の専用抽象を作成しない。
+
+変換処理は画面Component内で明示的に行う。
+
+```text
+UI Form DTO（FormGroup）
+      ↓ 画面Componentで値変換
+Application DTO
+```
+
+逆方向も同様に、Application ResponseからFormGroupへの`patchValue`等は画面Componentで行う。
+
+### AI実装ルール
+
+AIは次の判断を独自に行ってはならない。
+
+- 項目数が多いことを理由にMapperを作成する。
+- 変換処理が長いことを理由にMapperを作成する。
+- 重複があることを理由にMapperを作成する。
+- DDDや一般的なベストプラクティスを理由にMapper層を新設する。
+- `XxxMapper`、`XxxConverter`、`XxxAssembler`等、同等責務の別名称クラスへ置き換える。
+
+Mapper相当の抽象を新設する必要があるとAIが判断した場合も、実装せず設計確認を求める。
+
+### 優先関係
+
+本承認は、本文中の過去の提案にある「重複や複雑化時にMapperを検討する」という記述を**上書きする正式方針**である。
+
+フェーズ2の正式仕様化時には、旧提案のMapper検討記述を削除し、本方針へ統一する。
+
 ## 継続検討・照合事項
 
 - UI Form DTOの`class + formGroup`方式を推奨案から正式方針へ確定するか。
-- UI Form DTOとApplication DTO間の変換を画面Componentに残す範囲と、Mapperを導入する基準。
 - UIレベルValidationとDomain Validationの具体的な境界。
 - 現行BRU1001のサーブ順・リターン側ロジックをDomainへ移す場合のDomainモデル/API。
 - レスポンシブ実装時に「十分な幅」を判定する具体方式。
