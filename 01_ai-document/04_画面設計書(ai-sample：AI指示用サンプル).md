@@ -1,7 +1,7 @@
 # 画面設計書
-- 論理名：試合属性エントリ
-- 物理名：Bru1001Component
-- ファイル名：bru1001.component.ts
+- 論理名：AI指示用サンプル
+- 物理名：AiSampleComponent
+- ファイル名：ai-sample.component.ts
 
 ## １．概要
 試合属性の新規登録、更新をおこなう。
@@ -37,12 +37,12 @@ export class Bru1001Component {
 `readonly dto = new Bru1001Dto()`は使用しない。
 
 #### （２）DTO名称
-- 論理名：試合属性
-- 物理名：Bru1001Dto
-- ファイル名：bru1001.dto.ts
+- 論理名：AI指示用サンプル
+- 物理名：AiSampleDto
+- ファイル名：ai-sample.dto.ts
 
 #### （３）DTOパッケージ
-app\brf1000\brf1001\ui\dto
+app\sample-component\dto
 
 #### （４）DTO項目定義
 | No | グループ | 論理名 | 物理名 | 型 | Enum型 | 無効状態 | 文字種 | 形式 | 必須 | 必須(真偽) | 文字数(最小/最大) | 数値(最小/最大) | 正規表現 | デフォルト | 備考 |
