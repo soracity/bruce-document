@@ -22,13 +22,39 @@ BruceにおいてAIへ画面実装を任せる際に、AIが自由実装へ逸�
 
 ---
 
+## 決定事項
+
+### Brandは実体Brandで統一する
+
+Bruceプロジェクトでは、AIによる実装・ユーザーによる手動実装のどちらであっても、Brandを使用する場合は**実行時にも実体が存在するBrand（実体Brand）で統一する**。
+
+型情報だけに存在し、実行時には消える `declare` Brand は標準方式としない。
+
+例：
+
+```ts
+// 標準方式にはしない
+// declare readonly __brand: 'AppCodeEnumIf';
+```
+
+実体Brandを採用する目的：
+
+- コンパイル時の型識別だけでなく、必要に応じて実行時にも識別できるようにする
+- AI実装と手動実装でBrandの意味を統一する
+- 共通Componentや汎用処理で、型と実行時の扱いを一致させる
+- Bruce全体でBrand実装の揺れをなくす
+
+> 状態：**方針決定**。ただし、実体Brandの表現を通常プロパティにするかSymbolにするかは下記TODOで継続検討する。
+
+---
+
 ## TODO
 
-### [ ] コード列挙型の実体brandをSymbol化するか検討
+### [ ] 実体Brandの標準表現をSymbolにするか検討
 
-現状、コード列挙型の識別用として `AppCodeEnumIf` と `__brand` を利用している。
+実体Brandの採用自体は決定済み。
 
-将来的に実行時にもコード列挙型を識別する場合、通常の文字列プロパティとして
+一方、通常の文字列プロパティとして
 
 ```ts
 readonly __brand = 'AppCodeEnumIf' as const;
@@ -36,7 +62,7 @@ readonly __brand = 'AppCodeEnumIf' as const;
 
 を持たせると、`JSON.stringify()`、Object展開、REST通信用DTO化等でbrandがシリアライズ対象に混入する可能性がある。
 
-Bruceは将来的にREST通信を行うため、**通常プロパティの `__brand` ではなく、Symbolによる実体brandにしてシリアライズ対象から自然に外す設計を検討する。**
+Bruceは将来的にREST通信を行うため、**通常プロパティの `__brand` ではなく、Symbolによる実体Brandにしてシリアライズ対象から自然に外す設計を検討する。**
 
 候補イメージ：
 
@@ -65,11 +91,12 @@ export class AppCodeCourtSideEnum implements AppCodeEnumIf {
 
 検討事項：
 
-- ACGでSymbol brandを生成する責務を持たせるか
+- Bruce全体でBrand用Symbolの定義方法を統一するか
+- ACGでSymbol Brandを生成する責務を持たせるか
 - `AppCodeEnumIf` とSymbol定数を同一ファイルへ置くか
 - 実行時型ガード `isAppCodeEnum()` を共通化するか
-- `JSON.stringify()` / Object spread / REST Request DTOでbrandが混入しないことを確認する
-- 現在の `declare readonly __brand` から移行する場合の影響範囲を確認する
-- コンパイル時識別だけで十分な箇所と、実行時識別が必要な箇所を分ける
+- `JSON.stringify()` / Object spread / REST Request DTOでBrandが混入しないことを確認する
+- 現在の `declare readonly __brand` から実体Brandへ移行する影響範囲を確認する
+- コード列挙型以外のBrandにも同じ標準方式を適用するか
 
 > 状態：未決。現在のACG/Bruce互換対応を優先し、AIフレームワーク設計の本線再開後に検討する。
