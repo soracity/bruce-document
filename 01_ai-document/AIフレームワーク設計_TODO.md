@@ -24,47 +24,15 @@ BruceにおいてAIへ画面実装を任せる際に、AIが自由実装へ逸�
 
 ## 決定事項
 
-### Brandは実体Brandで統一する
+### BrandはSymbol方式の実体Brandで統一する
 
-Bruceプロジェクトでは、AIによる実装・ユーザーによる手動実装のどちらであっても、Brandを使用する場合は**実行時にも実体が存在するBrand（実体Brand）で統一する**。
+Bruceプロジェクトでは、AIによる実装・ユーザーによる手動実装のどちらであっても、Brandを使用する場合は**Symbol方式の実体Brandで統一する**。
 
 型情報だけに存在し、実行時には消える `declare` Brand は標準方式としない。
 
-例：
+通常の文字列プロパティとして `__brand` を実体化する方式も標準方式としない。
 
-```ts
-// 標準方式にはしない
-// declare readonly __brand: 'AppCodeEnumIf';
-```
-
-実体Brandを採用する目的：
-
-- コンパイル時の型識別だけでなく、必要に応じて実行時にも識別できるようにする
-- AI実装と手動実装でBrandの意味を統一する
-- 共通Componentや汎用処理で、型と実行時の扱いを一致させる
-- Bruce全体でBrand実装の揺れをなくす
-
-> 状態：**方針決定**。ただし、実体Brandの表現を通常プロパティにするかSymbolにするかは下記TODOで継続検討する。
-
----
-
-## TODO
-
-### [ ] 実体Brandの標準表現をSymbolにするか検討
-
-実体Brandの採用自体は決定済み。
-
-一方、通常の文字列プロパティとして
-
-```ts
-readonly __brand = 'AppCodeEnumIf' as const;
-```
-
-を持たせると、`JSON.stringify()`、Object展開、REST通信用DTO化等でbrandがシリアライズ対象に混入する可能性がある。
-
-Bruceは将来的にREST通信を行うため、**通常プロパティの `__brand` ではなく、Symbolによる実体Brandにしてシリアライズ対象から自然に外す設計を検討する。**
-
-候補イメージ：
+標準イメージ：
 
 ```ts
 export const APP_CODE_ENUM_BRAND = Symbol('AppCodeEnumIf');
@@ -80,7 +48,7 @@ export interface AppCodeEnumIf {
 
 ```ts
 export class AppCodeCourtSideEnum implements AppCodeEnumIf {
-  readonly [APP_CODE_ENUM_BRAND] = true as const;
+  readonly [APP_CODE_ENUM_BRAND] = true;
 
   constructor(
     public readonly name: string,
@@ -89,14 +57,43 @@ export class AppCodeCourtSideEnum implements AppCodeEnumIf {
 }
 ```
 
-検討事項：
+採用目的：
 
-- Bruce全体でBrand用Symbolの定義方法を統一するか
-- ACGでSymbol Brandを生成する責務を持たせるか
-- `AppCodeEnumIf` とSymbol定数を同一ファイルへ置くか
-- 実行時型ガード `isAppCodeEnum()` を共通化するか
-- `JSON.stringify()` / Object spread / REST Request DTOでBrandが混入しないことを確認する
-- 現在の `declare readonly __brand` から実体Brandへ移行する影響範囲を確認する
-- コード列挙型以外のBrandにも同じ標準方式を適用するか
+- コンパイル時だけでなく必要に応じて実行時にも識別できるようにする
+- AI実装と手動実装でBrand方式を統一する
+- 共通Componentや汎用処理で、型と実行時の扱いを一致させる
+- `JSON.stringify()` 等の通常のシリアライズへBrandを混入させない
+- Bruce全体でBrand実装の揺れをなくす
 
-> 状態：未決。現在のACG/Bruce互換対応を優先し、AIフレームワーク設計の本線再開後に検討する。
+> 状態：**方針決定**。
+
+---
+
+## 2026-10-17 対応済み
+
+今回のACG/Bruce対応では、以下まで完了済み。
+
+- 修正版ACGをPUSH済み
+- ACGによる全クラスの自動生成結果をBruceへ反映済み
+- Enumインターフェースの名称修正済み
+- EnumインターフェースをSymbol方式の実体Brandへ変更済み
+- ACGのEnumクラス生成でSymbol方式の実体Brandを生成するよう反映済み
+
+注意：今回ACGへ実装した実体Brand自動生成は**Enumクラス生成が対象**。Bruce全体のBrand方針自体はSymbol方式の実体Brandで統一するが、Enum以外へのACG自動生成対応まで実装したという意味ではない。
+
+---
+
+## TODO
+
+### [ ] Enum以外でBrandを使用する箇所が発生した場合の標準適用
+
+Bruce全体のBrand方式は決定済みなので、今後Enum以外でBrandが必要になった場合もSymbol方式の実体Brandを使用する。
+
+必要に応じて、以下をその時点で設計・実装する。
+
+- Brand用Symbolの配置・命名ルール
+- 実行時型ガードの共通化
+- ACGによる自動生成対象へ追加するか
+- REST/JSON/Object spread等への影響確認
+
+> 状態：将来対応。現時点ではEnumクラス生成への反映まで完了。
