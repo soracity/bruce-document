@@ -1,14 +1,16 @@
 # Bruce ビルドエラー調査・修正プラン
 
-> 目的：ACG再生成後に発生している多数のBruceビルドエラーを、発生ファイル単位ではなく**根本原因単位**で分類し、効率的な修正順序と修正方法を決める。
+> 目的：ACG再生成後に発生している多数のBruceビルドエラーを、発生ファイル単位ではなく**根本原因単位**で分類し、効率的な修正順序と修正方法を固定する。
 
 > 運用方針：代表的なエラーは理解目的でユーザーが手動修正する。機械的・反復的な修正は、VS Codeのリファクタリング/検索置換、共通Component修正、ACG修正、AIによる横展開を使い分ける。
 
+> 最終更新：2026-10-17。RadioComponentの型契約修正とBRU1001 `matchType` の代表修正まで完了。現在はToggleComponentの設計・修正へ進む段階。
+
 ---
 
-## 1. 調査対象
+## 1. 基準点と現在地
 
-Bruce：
+### 1.1 ACG再生成直後のBruce基準点
 
 ```text
 repository : soracity/bruce
@@ -17,385 +19,530 @@ message    : ACG修正に伴うビルドエラー多数発生状態
 parent     : 831b496036d8bc1f33ffe3f91fd81131b91b22bb
 ```
 
-ACG：
+このコミットは、ACG再生成直後かつBruce手修正開始前の基準点として扱う。
+
+### 1.2 現在のBruce到達点
 
 ```text
-repository : soracity/alfred
-branch     : feature/feature-20261016
-commit     : 9495fda143e2796054ed85b05d18c882282df465
-message    : Enum生成のSymbol方式の実体Brand
+commit : 627b760f94234ea6027c3d81b48f22868ef3c08b
+message: 3：Radioがstring専用のままEnum FormControlを受けている
 ```
 
-Bruceの対象コミットはACG再生成直後の状態であり、手動修正を開始する前の基準点として扱う。
+この時点までに、以下を完了している。
 
-GitHub上には当該コミットのCI/buildログが存在しないため、**現時点の件数はソース静的調査による確認件数**とする。`npx ng build`の全文を取得後、TypeScript/Angularコンパイラが出した正確なエラー件数を追記する。
-
----
-
-## 2. 調査結論（第1次）
-
-大量のエラーは、現時点では主に次の根本原因へ集約できる。
-
-| No | 根本原因 | 主なエラー形態 | 修正責務 | 修正方法 | 優先度 | 手動理解対象 | 状態 |
-|---:|---|---|---|---|---|---|---|
-| 1 | ACG生成のi18n Enum Interface importパス誤り | TS2307 module not found | ACG | **A：ACG修正→再生成** | P0 | ACGの該当2行は手動確認推奨 | 未修正 |
-| 2 | Bruce手書きコードに旧i18n Interface importパスが残存 | TS2307 module not found | Bruce手書き部 | **B：VS Code検索置換** | P0 | 不要（機械修正） | 未修正 |
-| 3 | Radioが`string`専用のままEnum FormControlを受けている | TS2322ほか | 共通Component | **C：Radio設計修正** | P1 | **手動修正推奨** | 未修正 |
-| 4 | Toggleが`boolean`専用のままEnum FormControlを受けている | TS2322ほか | 共通Component | **C：Toggle設計修正** | P1 | **手動修正推奨** | 未修正 |
-| 5 | BRU1001がEnum FormControlを旧`string/boolean`前提で扱っている | TS2345 / TS2367 / TS2322等 | 画面Component | **D/E：代表項目を手動→横展開** | P2 | **手動修正推奨** | 未修正 |
-| 6 | BRU1002がEnum FormControlを旧`string`前提で扱っている | TS2345 / patchValue型不一致等 | 画面Component | **D：BRU1001確立後に横展開** | P3 | BRU1001理解後はAI可 | 未修正 |
-| 7 | Enum objectをbooleanとしてtruthy/falsy判定している | ビルドを通ってもロジック誤り | 画面Component | **D/E：明示Enum比較へ変更** | P2 | **手動確認推奨** | 未修正 |
-| 8 | 型アサーションがUI→Application境界の型不一致を隠している | ビルドで検出されない可能性 | 画面Component | **D：明示変換へ変更** | P2 | **手動確認推奨** | 未修正 |
-
-現時点では、**8種類の独立したビルドエラーがあるという意味ではない**。No.5〜8は同じ「UI Form DTOのEnum化」に由来する派生問題で、修正順序と責務を分けるために分解している。
+```text
+P0 i18n import問題
+  ↓ 完了
+共通型 AppComponentValueType / AppComponentEventKeyType
+  ↓ 追加済み
+RadioComponent string固定解除
+  ↓ 完了
+BRU1001 matchType の values をEnum object化
+  ↓ 完了
+matchType比較を Enum === Enum に修正
+  ↓ 完了
+不要だったmatchType用eventKey引数を削除
+  ↓ 完了
+build
+  ↓
+次はToggleComponent
+```
 
 ---
 
-## 3. P0：ACG生成のi18n Enum Interface importパス誤り
+## 2. 根本原因別の進捗
 
-### 3.1 調査結果
+| No | 根本原因 | 修正責務 | 優先度 | 状態 |
+|---:|---|---|---|---|
+| 1 | ACG生成のi18n Enum Interface importパス誤り | ACG | P0 | **完了** |
+| 2 | Bruce手書きコードの旧i18n Interface import参照 | Bruce手書き部 | P0 | **完了** |
+| 3 | Radioが`string`専用のままEnum FormControlを受けている | 共通Component | P1 | **共通契約修正完了** |
+| 4 | Toggleが`boolean`専用のままEnum FormControlを受けている | 共通Component | P1 | **現在ここ** |
+| 5 | BRU1001がEnum FormControlを旧`string/boolean`前提で扱っている | 画面Component | P2 | 一部修正済み・多数残 |
+| 6 | BRU1002がEnum FormControlを旧`string`前提で扱っている | 画面Component | P3 | 未修正 |
+| 7 | Enum objectをbooleanとしてtruthy/falsy判定している | 画面Component | P2 | 未修正 |
+| 8 | UI Enum object ↔ Application string code境界が未変換 | 画面Component | P2 | 未修正 |
 
-生成済みのラベルEnumは次をimportしている。
+No.5〜8は独立した原因というより、UI Form DTOをEnum object化したことに対して、既存画面ロジックが旧string/boolean前提のまま残っている派生問題である。
+
+---
+
+## 3. P0：i18n Interface import問題【完了】
+
+### 3.1 ACG生成側
+
+ACGのLABEL/MESSAGE Interface importパスを修正し、Bruceを再生成済み。
+
+正しい参照先は以下。
+
+```text
+@approot/app/brf9000/brf9011-enum/i18n/app-i18n-label-key.enum-if
+@approot/app/brf9000/brf9011-enum/i18n/app-i18n-message-key.enum-if
+```
+
+Bruce生成側修正コミット：
+
+```text
+edbe596a05e6c1317ef128ce9ddc2cc120159454
+```
+
+メッセージInterface側の追従修正：
+
+```text
+958e14c88d56cf9b927a9c2e8d5447bcd2ab6f97
+```
+
+### 3.2 Bruce手書き部
+
+旧Interface参照を手書きコードから除去済み。
+
+```text
+commit : fe1c029e95029e6c2a295a477256a84c685beee1
+message: No.2「Bruce手書き部の旧Interface参照修正」
+```
+
+以後のbuildではTS2307 / module-not-found / 旧Interface importエラーは出ていないため、No.1 / No.2は完了扱いとする。
+
+---
+
+## 4. 共通Component用の値型【追加済み】
+
+`src/global.d.ts` に以下を追加した。
 
 ```ts
-import {
-  APP_LABEL_KEY_ENUM_BRAND,
-  AppLabelKeyEnumIf,
-} from '@approot/app/brf9000/brf9011-enum/code/app-label-key.enum-if';
+import type { AppCodeEnumIf } from './app/brf9000/brf9011-enum/code/app-code.enum-if';
+
+declare global {
+  type Nullable<T> = T | null;
+
+  /** 共通Componentで扱える値 */
+  type AppComponentValueType = string | number | boolean | AppCodeEnumIf;
+
+  /** Componentから親へ通知するイベントキー */
+  type AppComponentEventKeyType = AppComponentValueType;
+}
+
+export {};
 ```
 
-しかし実ファイルは次。
+重要：`AppComponentValueType` 自体へ`null`を含めたわけではない。
 
-```text
-src/app/brf9000/brf9011-enum/i18n/app-label-key.enum-if.ts
-```
-
-つまり、`code` が誤りで `i18n` が正しい。
-
-生成済みのメッセージEnumは次をimportしている。
+Radio側で、
 
 ```ts
-import {
-  APP_MESSAGE_KEY_ENUM_BRAND,
-  AppMessageKeyEnumIf,
-} from '@approot/app/brf9000/brf9011-enum/i18n/brf-message-key.enum-if';
+T extends Nullable<AppComponentValueType>
 ```
 
-しかし実ファイルは次。
+とすることにより、**nullを含む具体型も受けられる**契約にしている。
+
+また、次の2概念は分離する。
 
 ```text
-src/app/brf9000/brf9011-enum/i18n/app-message-key.enum-if.ts
+FormControl value = Componentが実際に扱う値
+
+eventKey          = 親へ通知する操作識別子
 ```
 
-つまり、旧ファイル名 `brf-message-key.enum-if` が残っており、`app-message-key.enum-if` が正しい。
-
-### 3.2 ACG側の原因箇所
-
-ACG最新コミットの以下に原因が残っている。
-
-```text
-subproject/AlfredCodeGenerator/src/main/java/
-io/github/soracity/alfred/generator/user/enumspec/
-AcgEnumSpecCodeGenerator.java
-```
-
-`createClassModel()` の `TYPE_LABEL`：
-
-```java
-// 現在
-classBuilder.addImport(
-    "@approot/app/brf9000/brf9011-enum/code/app-label-key.enum-if",
-    "APP_LABEL_KEY_ENUM_BRAND", "AppLabelKeyEnumIf");
-```
-
-修正候補：
-
-```java
-classBuilder.addImport(
-    "@approot/app/brf9000/brf9011-enum/i18n/app-label-key.enum-if",
-    "APP_LABEL_KEY_ENUM_BRAND", "AppLabelKeyEnumIf");
-```
-
-`TYPE_MESSAGE`：
-
-```java
-// 現在
-classBuilder.addImport(
-    "@approot/app/brf9000/brf9011-enum/i18n/brf-message-key.enum-if",
-    "APP_MESSAGE_KEY_ENUM_BRAND", "AppMessageKeyEnumIf");
-```
-
-修正候補：
-
-```java
-classBuilder.addImport(
-    "@approot/app/brf9000/brf9011-enum/i18n/app-message-key.enum-if",
-    "APP_MESSAGE_KEY_ENUM_BRAND", "AppMessageKeyEnumIf");
-```
-
-### 3.3 影響確認
-
-現在確認できた生成対象は以下の6ファイル。
-
-```text
-app-i18n-label-key-common.enum.ts
-app-i18n-label-key-brf1001.enum.ts
-app-i18n-label-key-brf1002.enum.ts
-app-i18n-label-key-test.enum.ts
-app-i18n-message-key-common.enum.ts
-app-i18n-message-key-test.enum.ts
-```
-
-### 3.4 修正方法
-
-**Bruce生成ファイルは手修正しない。**
-
-```text
-ACGの2つのimportパスを修正
-  ↓
-ACGをPUSH
-  ↓
-Bruceを再生成
-  ↓
-生成された6ファイルのimportを確認
-```
-
-この問題を最初に解消してからBruce手書きコードを直す。
+同じ許容型を使う場合でも、意味上は別責務である。
 
 ---
 
-## 4. P0：Bruce手書きコードの旧i18n Interface importパス
+## 5. P1：RadioComponentの型契約【共通Component修正完了】
 
-### 4.1 調査結果
-
-Interface本体は現在、以下へ移動・改名済み。
-
-```text
-@approot/app/brf9000/brf9011-enum/i18n/app-label-key.enum-if
-@approot/app/brf9000/brf9011-enum/i18n/app-message-key.enum-if
-```
-
-しかし手書きコードには旧パスが残っている。
-
-確認済み例：
-
-```text
-brf9010-i18n/application/service/bra9010.service.ts
-brf9018-pipe/brf9018-i18n-label.pipe.ts
-brf9018-pipe/brf9018-i18n-message.pipe.ts
-brf9020-shared-components/alert/components/alert.component.ts
-brf9020-shared-components/button/components/button.component.ts
-brf9020-shared-components/date/components/date.component.ts
-brf9020-shared-components/group/components/group.component.ts
-brf9020-shared-components/radio/components/radio.component.ts
-brf9020-shared-components/textbox/components/textbox.component.ts
-brf9020-shared-components/toggle/components/toggle.component.ts
-```
-
-少なくとも10ファイルを確認済み。正確な全件数は修正直前にVS Code workspace検索で確定する。
-
-### 4.2 修正方法
-
-これは意味を変えない機械修正なので、手作業で1ファイルずつ直さない。
-
-**Rename Symbol(F2)より、今回はimportパス自体が古いのでVS Codeの全体検索置換が適切。**
-
-検索1：
-
-```text
-@approot/app/brf9000/brf9011-enum/i18n/brf-label-key.enum-If
-```
-
-置換1：
-
-```text
-@approot/app/brf9000/brf9011-enum/i18n/app-label-key.enum-if
-```
-
-検索2：
-
-```text
-@approot/app/brf9000/brf9011-enum/i18n/brf-message-key.enum-If
-```
-
-置換2：
-
-```text
-@approot/app/brf9000/brf9011-enum/i18n/app-message-key.enum-if
-```
-
-大文字小文字も正規化する。
-
-この変更は**ACG再生成後**に実施する。
-
----
-
-## 5. P1：RadioComponentの型契約
-
-### 5.1 現状
-
-現在のRadioは次の契約。
+### 5.1 修正前
 
 ```ts
 export class RadioComponent extends FormControlComponentBase<string> {
   readonly values = input<string[]>([]);
+  readonly radioChange = output<string>();
   readonly eventKey = input<string>('');
 }
 ```
 
-一方、ACG生成後のBRU1001は例えば次。
+このため画面側の、
 
 ```ts
-matchType: FormControl<Nullable<AppCodeMatchTypeEnum>>
-setType: FormControl<Nullable<AppCodeNumberOfSetsEnum>>
-gameFinalType: FormControl<Nullable<AppCodeGameFinalEnum>>
-tieBreakMode: FormControl<Nullable<AppCodeTieBreakEnum>>
+FormControl<Nullable<AppCodeMatchTypeEnum>>
 ```
 
-BRU1001にはRadio利用が4か所あり、`FormControl<string>` と Enum FormControl が一致しない。
+を受けられなかった。
 
-### 5.2 重要な設計条件
+### 5.2 一度検討したが採用しなかった形
 
-次を混同しない。
+```ts
+extends FormControlComponentBase<AppComponentValueType>
+```
+
+これは親クラスの`T`を広いUnion型へ固定するだけであり、
 
 ```text
-FormControlの値型 = 選択値そのもの
-
-eventKey = 親へ通知する操作識別子
+FormControl<AppCodeMatchTypeEnum | null>
 ```
 
-したがって、以前検討したような
+という画面側の具体型と一致しないため採用しない。
+
+### 5.3 現在の契約
 
 ```ts
-FormControlComponentBase<AppEventKeyType>
+export class RadioComponent<T extends Nullable<AppComponentValueType>>
+  extends FormControlComponentBase<T> {
+
+  readonly values = input<T[]>([]);
+  readonly radioChange = output<AppComponentEventKeyType>();
+  readonly eventKey = input<AppComponentEventKeyType>('');
+}
 ```
 
-で逃げない。
+意味は、Radioごとに`control`から具体的な`T`を推論し、その型を`values`にも連動させること。
 
-また画面側で`as`キャストしてRadioへ押し込まない。
+`matchType`では概念的に、
 
-### 5.3 修正方法
+```text
+T
+= AppCodeMatchTypeEnum | null
 
-Radioは共通Componentなので、**最初の重要な手動修正対象**とする。
+control
+= FormControl<AppCodeMatchTypeEnum | null>
 
-ここではまだ実装方式を確定しない。以下を確認してから1案に決める。
+values
+= (AppCodeMatchTypeEnum | null)[]
+```
 
-- string FormControlも今後サポートするか
-- Enum FormControlを型安全に受ける方法
-- `values` をEnum objectとして持たせるか
-- Angularテンプレートでのgeneric Component適用可否
-- null未選択をどう扱うか
-- `eventKey` は別契約として維持する
+となる。
 
-Radioの契約を確定後、BRU1001側の4利用箇所を横展開する。
+「nullを必ず含む」のではなく、**nullを含む型も受けられる**ようにした。
+
+### 5.4 BRU1001 matchType代表修正
+
+修正前：
+
+```html
+[values]="[codeMatchTypeEnum.SINGLES.value, codeMatchTypeEnum.DOUBLES.value]"
+```
+
+修正後：
+
+```html
+[values]="[codeMatchTypeEnum.SINGLES, codeMatchTypeEnum.DOUBLES]"
+```
+
+さらに比較も、
+
+```html
+controls.matchType.value === codeMatchTypeEnum.SINGLES
+```
+
+へ変更した。
+
+ルールは次。
+
+```text
+UI FormControlがEnum
+  ↓
+Radio valuesもEnum
+  ↓
+画面内比較もEnum同士
+  ↓
+Application/API/DB境界だけ .value でstring code化
+```
+
+### 5.5 eventKeyの扱い
+
+`matchType`では`onMatchTypeChange()`内でeventKeyを使用していなかったため、
+
+```html
+[eventKey]="'matchTypeChange'"
+(radioChange)="onMatchTypeChange($event)"
+```
+
+を、
+
+```html
+(radioChange)="onMatchTypeChange()"
+```
+
+へ変更した。
+
+不要なeventKeyを形式的に残さない。
+
+### 5.6 Radioの残作業
+
+共通Component側の型契約は完了。
+
+ただしBRU1001の他Radio利用箇所では、まだ`.value`をvaluesへ渡している。
+
+```text
+setType
+  SET1.value / SET3.value / SET5.value / SET_NON.value
+
+gameFinalType
+  DEUCE.value / NO_AD.value / SEMI_AD.value
+
+tieBreakMode
+  NO_TB.value / WITH_TB.value
+```
+
+現在のbuildでこれらは明確に型エラーとして検出されている。
+
+これはRadioComponentの再設計ではなく、**BRU1001側の横展開**として後続STEPで修正する。
 
 ---
 
-## 6. P1：ToggleComponentの型契約
+## 6. P1：ToggleComponentの型契約【現在ここ】
 
-### 6.1 現状
-
-現在のToggleは次。
+### 6.1 現在のToggle
 
 ```ts
 readonly control = input<FormControl<boolean>>();
+readonly type = input<AppComponentInputTypeToggleEnum>();
 readonly checked = input<boolean>();
+...
+
+isChecked(): boolean {
+  return this.checked() ?? this.control()?.value ?? false;
+}
+
+onChange(event: Event): void {
+  const checked = (event.target as HTMLInputElement).checked;
+  this.control()?.setValue(checked);
+  this.toggleChange.emit(this.eventKey());
+}
 ```
 
-DOM checkboxの`checked`はbooleanなので、これはUI状態としては正しい。
+DOM checkboxとしては`checked: boolean`で正しい。
 
-しかしBRU1001の`matchSetting`は現在、
+しかしBRU1001の`matchSetting`は、
 
 ```ts
 FormControl<Nullable<AppCodeMatchSettingEnum>>
 ```
 
-であり、次の利用は型不一致になる。
+であるため、
 
 ```html
-<app-toggle [control]="controls.matchSetting" ... />
+<app-toggle [control]="controls.matchSetting" />
 ```
 
-### 6.2 重要な設計条件
+で型不一致になる。
 
-次を分離する。
+### 6.2 Radioとの違い
+
+Radioは選択値そのものをEnum objectとして扱える。
+
+ToggleはDOMから取得する値が必ずboolean。
 
 ```text
-HTMLInputElement.checked = boolean
-FormControl.value          = Enum|null
+HTMLInputElement.checked
+= boolean
+
+FormControl.value
+= AppCodeMatchSettingEnum | null
 ```
 
-`AppCodeMatchSettingEnum.FALSE`はオブジェクトなのでJavaScriptではtruthyである。
+したがって、Radioと同じジェネリック化だけでは完了しない。
 
-Enum化したから`checked`までEnumにする、という修正はしない。
+`AppCodeMatchSettingEnum`は、
 
-### 6.3 修正方法
+```text
+FALSE -> value "0"
+TRUE  -> value "1"
+```
 
-ToggleもRadioの次に**手動で共通Component設計を理解しながら修正する**。
+というEnum objectである。
 
-候補として、Toggle内部で「checked boolean ↔ FormControl値」の変換契約を持たせる方法を検討する。具体案はRadio修正後に現利用箇所を確認して決定する。
+必要なのは、
+
+```text
+DOM boolean
+  ↓ 変換
+Enum object
+  ↓
+FormControl
+```
+
+および逆方向の、
+
+```text
+FormControl Enum object
+  ↓ 変換
+checked boolean
+```
+
+である。
+
+### 6.3 設計上の注意
+
+`AppCodeMatchSettingEnum.FALSE`もJavaScriptオブジェクトなのでtruthyである。
+
+したがって、
+
+```ts
+if (control.value) { ... }
+```
+
+や、
+
+```ts
+return control.value ?? false;
+```
+
+ではFALSE Enumをfalseとして扱えない。
+
+Enumの意味を明示して変換する必要がある。
+
+### 6.4 次の作業
+
+Toggle内部に「boolean ↔ FormControl値」の変換責務をどう持たせるかを決める。
+
+ここは共通Componentの責務変更なので、BRU1001側を先にキャスト等で逃がさない。
 
 ---
 
-## 7. P2：BRU1001のEnum化追従
+## 7. 2026-10-17 Radio修正後build結果
 
-### 7.1 根本原因
+`627b760f94234ea6027c3d81b48f22868ef3c08b` 到達後に`npx ng build`を実施。
 
-UI Form DTOは正しくEnum objectを保持するようになったが、BRU1001 Component/HTMLが再生成前の`string/boolean`前提のまま。
+### 7.1 エラー総数
 
-### 7.2 確認済みパターン
+```text
+62 errors
+```
 
-#### パターンA：Enum objectとstring codeを比較
+TypeScriptエラーコード別：
+
+```text
+TS2345 : 36
+TS2322 : 25
+TS2352 :  1
+```
+
+ファイル別：
+
+```text
+BRU1001 component.ts   : 29
+BRU1001 component.html : 22
+BRU1002 component.ts   :  6
+BRU1002 component.html :  5
+```
+
+重要：エラー数が以前より増減すること自体は問題ではない。
+
+型契約を正しく狭めた結果、今まで隠れていた旧string/boolean前提がコンパイラに検出される場合があるため、**件数ではなく根本原因が減っているか**で判断する。
+
+### 7.2 Radio修正で消えた問題
+
+少なくとも以下は現在のbuildでは主原因から外れた。
+
+```text
+[control]="controls.matchType"
+  FormControl<Enum|null> vs FormControl<string> 不一致
+
+(radioChange)="onMatchTypeChange($event)"
+  AppComponentEventKeyType vs string 不一致
+
+matchTypeのvalues
+  string code vs Enum object 不一致
+
+matchTypeの画面比較
+  Enum object vs string code 比較
+```
+
+### 7.3 現在残っている主分類
+
+```text
+A. Toggle
+   FormControl<AppCodeMatchSettingEnum|null>
+   vs FormControl<boolean>
+
+B. BRU1001 Radio横展開
+   setType / gameFinalType / tieBreakMode の values がまだ .value
+
+C. AppCodeCourtSideEnum
+   Enum|nullをAppStringUtil.isEmpty()へ渡している
+   Enum FormControlへ空文字をsetValueしている
+   stringをEnum FormControlへsetValueしている
+
+D. Application -> UI 境界
+   response string codeをEnum FormControlへそのままpatchValueしている
+
+E. UI -> Application 境界
+   Enum objectをstring契約Request DTOへそのまま入れている
+   `as Bra1001SaveMatchInfoReqDto`で型不一致を押し込もうとしている
+
+F. 既にEnumなのにtoEnum()を呼んでいる
+
+G. Enum objectをbooleanとして扱っている
+
+H. BRU1002
+   helper引数・patchValue・toEnum()が旧string前提
+```
+
+---
+
+## 8. P2：BRU1001のEnum化追従
+
+UI Form DTOはEnum objectを保持する設計になったが、画面Component/HTMLには旧string/boolean前提が残っている。
+
+### パターンA：Enum objectとstring codeを比較
 
 ```html
 controls.matchType.value === codeMatchTypeEnum.SINGLES.value
 ```
 
-左は`Enum|null`、右は`string`。
+`matchType`代表箇所は修正済み。
 
-#### パターンB：既にEnumなのに`toEnum()`へ渡す
+### パターンB：既にEnumなのに`toEnum()`へ渡す
 
 ```ts
 AppCodeMatchTypeEnum.toEnum(this.controls.matchType.value)
 ```
 
-`toEnum()`はstring codeをEnumへ変換する境界処理であり、UI FormControl内では既にEnumになっている。
+UI FormControl内では既にEnum objectであり、`toEnum()`はApplication/API/DB等のraw string codeからUIへ入る境界で使う。
 
-#### パターンC：Enum|nullをstring Utilityへ渡す
+### パターンC：Enum|nullをstring Utilityへ渡す
 
 ```ts
 AppStringUtil.isEmpty(controls.returnNoDoublesPlayerA1.value)
 ```
 
-returnNoは`Nullable<AppCodeCourtSideEnum>`。
+`returnNoDoublesPlayerA1`は`Nullable<AppCodeCourtSideEnum>`であり、文字列空判定ではなくEnum/nullとして判定する。
 
-#### パターンD：Enum FormControlへ空文字をセット
+### パターンD：Enum FormControlへ空文字をセット
 
 ```ts
 this.controls.returnNoDoublesPlayerA1.setValue(AppStringUtil.EMPTY)
 ```
 
-未選択は`null`を使う方針。
+Enum項目の未選択値は`null`を使う方針。
 
-#### パターンE：Enum|nullをbooleanへ代入
+### パターンE：Enum|nullをbooleanへ代入
 
 ```ts
 const toggleValue: boolean = this.controls.matchSetting.value;
 ```
 
-#### パターンF：Applicationからのraw stringをそのままEnum FormControlへpatchValue
+matchSettingはEnum objectなので、明示的なTRUE/FALSE判定が必要。
+
+### パターンF：Applicationのstring codeをそのままEnum FormControlへpatchValue
 
 ```ts
 matchType: res.matchType
 setType: res.setType
-...
 ```
 
-境界で`EnumType.toEnum(rawCode)`が必要。
+境界で、
 
-#### パターンG：UIのEnum objectをApplication DTOへそのまま渡す
+```ts
+EnumType.toEnum(rawCode)
+```
 
-Application DTOは現在string code契約。
+へ変換する。
+
+null/空文字等の入力契約は項目仕様に従って明示する。
+
+### パターンG：UI Enum objectをApplication DTOへそのまま渡す
+
+Application DTOがstring code契約の場合、
 
 ```text
 Application / DB string code
@@ -405,44 +552,43 @@ UI FormControl Enum object
 Application / DB string code
 ```
 
-この境界をComponentで明示する。
+とする。
 
-### 7.3 手動修正対象
+`as`キャストで不一致を隠さない。
 
-理解目的で、BRU1001は次の3系統を代表として手動修正するのが効率的。
+### 手動理解対象
+
+BRU1001は以下3系統を代表として理解する。
 
 ```text
 1. matchType
-   → 通常のEnum FormControl
+   通常Enum FormControl
+   ※Radio表示部分は代表修正済み
 
 2. returnNoDoublesPlayerA1
-   → Nullable Enum / nullクリア / string Utility排除
+   Nullable Enum / nullクリア / string Utility排除
 
 3. matchSetting
-   → TRUE/FALSE意味を持つEnum + Toggleとの変換
+   TRUE/FALSE意味を持つEnum + Toggle boolean変換
 ```
-
-この3パターンを理解すれば、残りのEnum項目はAIによる横展開が可能。
 
 ---
 
-## 8. P2：ビルドを通っても残るEnum truthiness問題
+## 9. Enum truthiness問題
 
-次はTypeScriptが必ずしもビルドエラーにしないが、動作が誤る。
+次はビルドを通っても挙動が誤る可能性がある。
 
 ```html
 [disabled]="!controls.matchSetting.value"
 ```
 
-および保存処理のような、
-
 ```ts
 value.matchSetting ? TRUE.value : FALSE.value
 ```
 
-Enum objectは`FALSE`を表すインスタンスでもtruthy。
+Enum objectは`FALSE`インスタンスでもtruthy。
 
-したがって、
+必ず、
 
 ```ts
 value === AppCodeMatchSettingEnum.TRUE
@@ -452,173 +598,218 @@ value === null
 
 のように意味を明示する。
 
-ビルド修正時に同時に直す。後回しにすると「ビルド成功したが挙動が壊れる」ため、BRU1001修正完了条件へ含める。
-
 ---
 
-## 9. P2：型アサーションで境界不一致を隠さない
+## 10. 型アサーションで境界不一致を隠さない
 
-BRU1001保存処理にはApplication Request DTO生成時に型アサーションが存在する。
+現在の保存処理には、
 
 ```ts
 const reqDto = { ... } as Bra1001SaveMatchInfoReqDto;
 ```
 
-UI側Enum objectとApplication側string codeの不一致が、この`as`により見えなくなる可能性がある。
+がある。
 
-修正時は先に各プロパティを正しいApplication型へ明示変換し、`as`を「ビルドエラーを黙らせる用途」に使わない。
+現在のbuildではTS2352として、`matchType: Enum|null`とApplication側`matchType: string`の不一致が検出されている。
 
-Application DTO自体のBrand設計変更は今回のビルドエラー修正と混ぜず、AIフレームワーク側の別TODOとして扱う。
+修正方針：
+
+```text
+UI Enum object
+  ↓ .value等で明示変換
+Application Request DTOのstring code
+```
+
+型アサーションを「エラーを消すため」に使わない。
 
 ---
 
-## 10. P3：BRU1002のEnum化追従
+## 11. P3：BRU1002のEnum化追従
 
-BRU1002も同じ原因を持つ。
+BRU1002も同じ旧string前提を持つ。
 
-確認済み：
+現在のbuildで確認済みの例：
+
+```text
+getMatchStatusColor(ctrls.matchStatus.value)
+getMatchStatusLabel(ctrls.matchStatus.value)
+getMatchTypeLabel(ctrls.matchType.value)
+getNumberOfSetsLabel(ctrls.setType.value)
+```
+
+helper側はstring引数だが、テンプレート側はEnum|null。
+
+さらに、
 
 ```ts
 AppCodeMatchTypeEnum.toEnum(dto.formGroup.controls.matchType.value)
 ```
 
-現在の`matchType.value`は既に`Nullable<AppCodeMatchTypeEnum>`。
+のように、既にEnumであるFormControl値を再度`toEnum()`している。
 
-また以下のhelperは現在`string`引数。
+一覧データ取得時にはApplication responseのstring codeをEnum FormControlへそのままpatchしている箇所も残る。
 
-```ts
-getNumberOfSetsLabel(numberOfSets: string)
-getMatchTypeLabel(matchType: string)
-getMatchStatusColor(matchStatus: string)
-getMatchStatusLabel(matchStatus: string)
-```
-
-テンプレートからはEnum|nullを渡している。
-
-さらに`ngOnInit()`ではApplication responseのstring codeをEnum FormControlへそのまま`patchValue()`している。
-
-### 修正方法
-
-BRU1001で、
-
-```text
-raw code → Enum object
-Enum objectの画面内利用
-Enum object → raw code
-```
-
-のルールを手動で理解・確立してから、BRU1002へ横展開する。
-
-BRU1002は一覧表示中心なので、BRU1001確立後はAI修正比率を高くしてよい。
+BRU1001で境界ルールを確立してから横展開する。
 
 ---
 
-## 11. 今回はまだ触らない事項
+## 12. eventKeyの現在の位置づけ
 
-### eventKey
+以前はeventKey型設計を保留していたが、現在は以下まで確定・実装済み。
 
-現時点で確認した主ビルドエラーの直接原因ではない。
-
-```text
-FormControl value
+```ts
+type AppComponentEventKeyType = AppComponentValueType;
 ```
 
-と
+Radioの、
 
-```text
+```ts
+radioChange
 eventKey
 ```
 
-を混同しないことを優先し、Radio/Toggle修正に便乗してeventKeyの型設計まで変更しない。
+は`AppComponentEventKeyType`へ変更済み。
 
-必要性が確認された時点で別途整理する。
+ただし、FormControl値とeventKeyを同一概念として扱わない。
 
-### Bru1001DtoのDI方式
+```text
+FormControl<T>
+```
 
-現在は画面Component側で`new Bru1001Dto()`を使っているが、既決方針はscreen scopeの`providers:[Bru1001Dto]` + `inject(Bru1001Dto)`。
+の`T`をeventKey型へ置き換える設計は採用しない。
 
-これはビルドエラーの根本原因ではないため、Enum追従後に設計整合として実施する。
+また、イベントキーを使用しない画面イベントでは、今回の`matchType`のように不要な`eventKey`自体を指定しない。
 
-### Enum以外のBrand
-
-Bruce全体ではSymbol方式の実体Brandに統一する方針だが、今回ACGへ実装した自動生成はEnumクラスが対象。
-
-Application DTO等の既存Brand方式変更は今回のビルド復旧へ混ぜない。
+Toggle / Button等へのイベントキー型横展開は、各Component修正時に責務を確認して行う。
 
 ---
 
-## 12. 推奨修正順序
+## 13. 今回のビルド復旧とは分ける事項
 
-今回の調査結果から、次の順番に固定する。
+### Bru1001DtoのDI方式
+
+既決方針は、
+
+```ts
+providers: [Bru1001Dto]
+readonly dto = inject(Bru1001Dto);
+```
+
+だが、現在の`new Bru1001Dto()`は今回の主ビルドエラー原因ではない。
+
+Enum型追従後に設計整合として修正する。
+
+### Enum以外のBrand
+
+Bruce全体はSymbol方式の実体Brandへ統一する方針だが、今回のACG自動生成対応はEnumクラスが中心。
+
+Application DTO等のBrand設計変更はビルド復旧へ混ぜない。
+
+---
+
+## 14. 修正順序【現在版】
 
 ```text
-STEP 1  ACG：TYPE_LABEL / TYPE_MESSAGE のimportパスを修正
+STEP 1  ACG：i18n Interface importパス修正
+        【完了】
    ↓
-STEP 2  ACGをPUSHし、Bruceを再生成
+STEP 2  ACG PUSH → Bruce再生成
+        【完了】
    ↓
-STEP 3  再生成直後をコミット（手修正との境界を作る）
+STEP 3  再生成直後をコミット
+        【完了】
    ↓
-STEP 4  Bruce手書き部の旧i18n importパスをVS Codeで一括置換
+STEP 4  Bruce手書き部の旧i18n参照修正
+        【完了】
    ↓
-STEP 5  npx ng build
-         → module-not-found系が消えたことを確認
+STEP 5  build：module-not-found系消滅確認
+        【完了】
    ↓
-STEP 6  RadioComponentを手動で設計・修正
+STEP 6  RadioComponentを設計・修正
+        AppComponentValueType / generic T / Enum values
+        【完了】
    ↓
-STEP 7  npx ng build
+STEP 7  BRU1001 matchTypeをRadio代表として修正 → build
+        【完了】
+        現在 62 errors
    ↓
-STEP 8  ToggleComponentを手動で設計・修正
+STEP 8  ToggleComponentを設計・修正
+        boolean checked ↔ Enum FormControl
+        【現在ここ】
    ↓
-STEP 9  npx ng build
+STEP 9  build
    ↓
-STEP 10 BRU1001：matchTypeを代表として手動修正
+STEP 10 BRU1001：matchTypeの残る境界処理を修正
    ↓
-STEP 11 BRU1001：returnNoDoublesPlayerA1を代表として手動修正
+STEP 11 BRU1001：returnNoDoublesPlayerA1を代表として修正
    ↓
-STEP 12 BRU1001：matchSettingを代表として手動修正
+STEP 12 BRU1001：matchSettingを代表として修正
    ↓
-STEP 13 BRU1001の同種項目へ横展開
+STEP 13 BRU1001同種項目へ横展開
+        setType / gameFinalType / tieBreakMode等を含む
    ↓
 STEP 14 BRU1002へ横展開
    ↓
-STEP 15 npx ng buildして残件を再分類
+STEP 15 buildして残件を再分類
    ↓
 STEP 16 DI等の設計整合を確認
    ↓
 STEP 17 AIフレームワーク本線 Phase 2-2「幅の責務」へ戻る
 ```
 
-**ポイント：各大分類を直すごとにbuildする。**
+**各大分類を直すごとにbuildする。**
 
-大量にまとめて直して最後にbuildすると、どの修正で新しい問題を入れたか分からなくなるため避ける。
-
----
-
-## 13. VS Codeを使う箇所 / 使わない箇所
-
-### VS Codeで一括処理してよい
-
-- i18n Interfaceの旧importパス置換
-- 最終的に確定した名称のRename Symbol
-- 同じ意味のまま参照だけ追従する変更
-
-### VS Codeの一括置換だけで直さない
-
-- `FormControl<string>` → Enum FormControl
-- `string code` ↔ `Enum object`
-- `boolean` ↔ TRUE/FALSE Enum
-- nullable Enumの`null`処理
-- Radio/Toggleの責務変更
-- UI Form DTO ↔ Application DTO境界
-
-これらは意味が変わるため、代表1件を理解してから横展開する。
+大量にまとめて直して最後にbuildすると、新たに入れた不具合と既存不具合の境界が分からなくなるため避ける。
 
 ---
 
-## 14. 次の作業
+## 15. VS Codeを使う箇所 / 使わない箇所
 
-最初に着手するのは**STEP 1：ACGのi18n Interface importパス修正**。
+### 一括処理してよい
 
-Bruce側のRadio/Toggle/BRU1001にはまだ手を入れない。
+```text
+i18n Interfaceの旧importパス置換
+確定済み名称のRename Symbol
+意味を変えず参照だけ追従する変更
+確立済みパターンの機械的横展開
+```
 
-STEP 1〜5完了後に再度build結果を取得し、残ったエラーの件数をこの文書へ追記する。
+### 単純な一括置換だけで直さない
+
+```text
+FormControl<string/boolean> → Enum FormControl
+string code ↔ Enum object
+boolean ↔ TRUE/FALSE Enum
+Nullable Enumのnull処理
+Radio/Toggleの責務変更
+UI Form DTO ↔ Application DTO境界
+Enum truthiness判定
+```
+
+意味が変わる箇所は、代表1件を理解してから横展開する。
+
+---
+
+## 16. 次の作業
+
+**STEP 8：ToggleComponentの型契約を決める。**
+
+現在の直接エラーは、
+
+```text
+FormControl<Nullable<AppCodeMatchSettingEnum>>
+  is not assignable to
+FormControl<boolean>
+```
+
+である。
+
+先にBRU1001をキャスト等で合わせず、共通Toggle側で、
+
+```text
+checked boolean
+↔
+AppCodeMatchSettingEnum | null
+```
+
+の責務をどう表現するかを決定してから実装する。
