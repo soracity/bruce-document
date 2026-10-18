@@ -18,6 +18,108 @@ classContainer等の任意CSS注入は原則廃止し、既存画面を壊さな
 - **次の作業**：一括削除せずPhase 5で段階移行
 - **原典**：[phase2_UI設計思想と責務.md](議事録バックアップ/phase2_UI設計思想と責務.md)
 
+### 2026-10-16承認済み原典の詳細
+
+> [原典](議事録バックアップ/phase2_UI設計思想と責務.md)から復元。ここに記載した設計承認と実装完了は別である。
+
+#### 承認済みIssue：共通Componentの外部CSS排除
+
+> 状態：**設計承認済み**  
+> 承認日：2026-10-16
+
+##### 基本原則
+
+> **画面側から共通Component内部へ任意CSSを注入しない。外側の配置はLayoutManager、内側の見た目は共通Component自身が管理する。**
+
+共通Componentは画面側から見てブラックボックスとして扱う。画面Componentは、共通Component内部のDOM構造や内部class名を前提とした実装を行わない。
+
+##### 任意CSS注入Inputは原則廃止対象
+
+以下のような任意CSS文字列を受け取るInputは、原則として段階的に廃止する。
+
+- `classContainer`
+- `classInput`
+- `classLabel`
+- `classSpan`
+- `classButton`
+- `classRadioItem`
+- `classLabelSpan`
+- `classMessageContainer`
+- `classButtonContainer`
+- `classAlertBox`
+- `classMessage`
+- `classMessageIcon`
+
+実際のComponentに上記以外の同種APIが存在する場合も、同じ基準で扱う。
+
+##### 外部配置はLayoutManagerへ移す
+
+次のような実装は採用しない。
+
+```html
+<app-textbox
+  classContainer="m-4"
+  classInput="w-full"
+/>
+```
+
+`m-4`等の外部配置はLayoutManagerの責務とする。
+
+Textbox内部のinputが割り当てられた領域を全面使用する必要がある場合は、画面から`w-full`を注入せず、TextboxComponent内部の標準仕様として実装する。
+
+##### Component内部CSSはComponent自身が管理する
+
+Component内部を成立させるためのCSSは排除対象ではない。
+
+例：
+
+- Radio内部の選択肢を横並び・等幅にするためのflex / gap
+- Alert内部のアイコン・メッセージ・アクションの配置
+- Toggleとラベルの内部配置
+- Textbox内部のinput幅・padding
+- Button内部の文字・アイコン配置
+
+判断基準はCSSプロパティ名ではなく、**Componentの外側の配置を調整するものか、Component内部を成立させるものか**とする。
+
+##### 見た目の差分は意味のある限定APIで表現する
+
+画面ごとに見た目の差分が必要な場合でも、任意CSS文字列を渡さない。
+
+必要に応じて、例えば次のような意味のある限定APIで表現する。
+
+- `variant`
+- `appearance`
+- `size`
+- `density`
+- `level`
+- `color`
+
+ただし、将来必要になる可能性だけを理由にInputやEnumを先行追加しない。実際の画面要件として必要性が確認されたものだけを追加する。
+
+##### 移行方針
+
+既存の任意CSS注入Inputを、設計承認直後に一括削除して既存画面を破壊することはしない。
+
+実装フェーズでは利用箇所を確認しながら段階的に移行する。
+
+1. 外部配置に使われているclass指定をLayoutManagerへ移す。
+2. Component内部を成立させる標準CSSはComponent内部へ固定化する。
+3. 本当に必要な見た目差分のみ意味のある限定APIへ置き換える。
+4. 利用箇所がなくなった任意CSS注入Inputを削除する。
+5. component-test / APIドキュメントの利用例を新方式へ更新する。
+
+##### AI実装ルール
+
+AIが画面・共通Componentを実装する場合も次を遵守する。
+
+- `classContainer`等の任意CSS注入APIを新規利用・新規追加しない。
+- 画面側から共通Component内部DOMを前提としたclass指定を行わない。
+- 外部配置はLayoutManagerを使用する。
+- 内部レイアウト・内部デザインは共通Component自身に実装する。
+- 見た目変更が必要な場合は既存の意味的APIを優先する。
+- 必要なAPIが存在しない場合、勝手にCSS注入で回避せず設計確認を行う。
+
+
 ## 2.5.2 現行のclass注入Inputと呼び出し箇所を棚卸し
 
 - **作業**：未着手／**設計**：検討中／**実装**：未確認／**検証**：未検証
