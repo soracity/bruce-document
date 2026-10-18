@@ -163,6 +163,56 @@ readonly dto = new Bru1001Dto();
 
 
 
+### 旧再開サマリの検討詳細とスナップショット（2026-10-15）
+
+> [旧再開サマリ](議事録バックアップ/phase2_phase3_再開用完全サマリ.md)の内容。当時の未決・提案・再開指示を履歴として収録。後日にユーザーが承認した事項は最新記録を優先する。
+
+#### 1.3 承認済み：UI Form DTOをComponentスコープDIで管理
+
+承認日：2026-10-15。
+
+- UI Form DTOはDIで取得する。
+- `providedIn: 'root'` のアプリ全体シングルトンにはしない。
+- 画面Componentの `providers` へ登録し、画面単位のインスタンスとする。
+- 画面Componentでは `readonly dto = inject(Bru1001Dto);` とする。
+- `readonly dto = new Bru1001Dto();` は今後の方針として採用しない。
+- 記述短縮だけの `readonly controls = this.dto.formGroup.controls;` は画面Componentに持たない。
+- HTMLでは必要に応じて `@let ctrls = dto.formGroup.controls;` を使う。
+- UI Form DTOにはFormGroup、FormControl、型、初期値、disabled初期状態、画面入力Validationを持たせる。
+- UI Form DTOへテニス業務ルールを埋め込まない。
+- Application DTOにはFormGroup/FormControl/Angular Validatorを持ち込まない。
+- Application ServiceやDomainへFormGroup/FormControlを渡さない。
+
+想定形：
+
+```ts
+@Injectable()
+export class Bru1001Dto {
+  readonly formGroup = new FormGroup({
+    // ...
+  });
+}
+```
+
+```ts
+@Component({
+  providers: [Bru1001Dto],
+})
+export class Bru1001Component {
+  readonly dto = inject(Bru1001Dto);
+}
+```
+
+```html
+@let ctrls = dto.formGroup.controls;
+```
+
+ACG生成コードを直接修正しない。変更が必要な場合は設計書またはACG生成処理を変更する。
+
+---
+
+
+
 ## 2.6.2 Enum FormControlとApplication string codeの境界変換
 
 - **作業**：完了／**設計**：承認済／**実装**：完了／**検証**：ビルド確認済
