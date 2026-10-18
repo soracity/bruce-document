@@ -42,6 +42,39 @@ Tailwindのビルド時クラス検出を考慮し、許容値とクラス名を
 
 
 
+### 旧再開サマリの検討詳細とスナップショット（2026-10-15）
+
+> [旧再開サマリ](議事録バックアップ/phase2_phase3_再開用完全サマリ.md)の内容。当時の未決・提案・再開指示を履歴として収録。後日にユーザーが承認した事項は最新記録を優先する。
+
+#### 2.5 UiStyleUtil（方針合意）
+
+状態を持たない静的Utilityとする。
+
+担当しないもの：
+
+- レイアウト配置
+- disabled制御
+
+想定API：
+
+```ts
+getBorderClass(border: boolean, width: UiBorderWidth): string
+getRoundedClass(rounded: boolean, size: UiRoundedSize): string
+getShadowClass(shadow: boolean, size: UiShadowSize): string
+getPaddingClass(padding: UiPadding): string
+getBackgroundColorClass(color: UiColor): string
+getTextColorClass(color: UiColor): string
+getVisibleClass(visible: boolean): string
+```
+
+Tailwindのビルド時クラス検出を考慮し、許容値とクラス名を明示対応させる。
+
+任意文字列連結で実行時にクラス名を組み立てる方式は避ける。
+
+---
+
+
+
 ## 旧議事録（原文・承認日・検討経緯）
 
 - [phase3_UIデザインシステム標準化_議論記録.md](議事録バックアップ/phase3_UIデザインシステム標準化_議論記録.md)
