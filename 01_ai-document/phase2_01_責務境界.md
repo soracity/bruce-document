@@ -28,7 +28,6 @@
 このフェーズでは「どこに何を書くか」を決める。色・角丸・影などの具体的なデザインシステム標準化はフェーズ3で扱う。
 
 
-
 #### 責務分離
 
 | 領域 | 主な責務 | 原則として持たせない責務 |
@@ -42,7 +41,6 @@
 | Infrastructure | DB、REST、端末機能等の技術的処理 | テニス業務ルール、画面表示判断 |
 
 
-
 #### 共通Componentの境界（提案）
 
 共通Componentは「再利用可能なUI部品」に限定する。
@@ -52,7 +50,6 @@
 ButtonComponentもクリックを親へ通知するところまでとし、保存ApplicationServiceを直接呼び出さない。
 
 この境界により、同じ共通Componentを別画面や将来の機能でも再利用できる状態を維持する。
-
 
 
 #### Layoutの境界（提案）
@@ -73,7 +70,6 @@ Layoutは配置だけを担当する。
 - テニス業務ルール
 
 フェーズ1で判明した `LayoutItem` の「折り返し有無」「子を均等幅にするか」は、この責務原則の中で別途決定する。
-
 
 
 #### 承認済みIssue：画面・LayoutManager・共通Componentの責務境界
@@ -151,7 +147,6 @@ Layoutは配置だけを担当する。
 AIに画面実装を依頼する場合も、自由なCSSレイアウトを生成させず、既存のLayoutManagerと共通Componentを使用させる。
 
 これにより、AI生成コードでも画面間の一貫性と設計思想を維持する。
-
 
 
 ### 旧再開サマリの工程別原文（2026-10-15の履歴）
@@ -248,15 +243,6 @@ CSSプロパティ名だけで責務を判定しない。**Componentホストよ
 
 画面・LayoutManager・共通Componentの責務を次のように分離する。
 
-| 層 | 責務 |
-|---|---|
-| 画面Component | 何を表示するか、どの順番で置くか、データ・イベントの接続 |
-| ItemStackLayout | 行を縦方向に積み重ね、行間のgapを管理する |
-| LayoutItem | 1行を構成し、子要素の横並び・gap・wrapを管理する |
-| LayoutSpan | 必要な場合のみ子要素の幅比率を指定する |
-| TableContainerLayout | テーブル固有の構造・列・横スクロール等を管理する |
-| 共通Component | 自身の内部構造・操作性・見た目を管理する |
-| styles.scss / design token | アプリ全体の色・文字・サイズ等のデザイン規則を管理する |
 
 基本原則は次のとおりとする。
 
@@ -294,20 +280,9 @@ CSSプロパティ名だけで責務を判定しない。**Componentホストよ
 
 幅比率など、レイアウト上必要な指定はLayoutManagerが提供する仕組みを利用する。
 
-```html
-<app-layout-item>
-  <app-textbox [appLayoutSpan]="70" ... />
-  <app-textbox [appLayoutSpan]="30" ... />
-</app-layout-item>
-```
 
 ##### 任意CSS注入に関する方針
 
-`classContainer`、`classInput`、`classLabel`、`classSpan`等、画面側から共通Component内部へ任意CSSを注入するAPIは原則廃止する方向とする。
-
-- コンポーネントの外側配置はLayoutManagerが担当する。
-- コンポーネント内部の配置・見た目は共通Component自身が担当する。
-- 見た目の差分が必要な場合は、任意CSS文字列ではなく`variant`、`appearance`、`size`等の意味を持つ限定的なAPIを使用する。
 
 ##### AIによる画面実装への適用
 
