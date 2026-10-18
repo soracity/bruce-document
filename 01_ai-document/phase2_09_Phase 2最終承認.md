@@ -819,6 +819,79 @@ Table子クラスで `undefined` 許容Inputを再定義する案は出たが、
 > `bruce-document/01_ai-document/phase2_UI設計思想と責務.md`、`phase3_UIデザインシステム標準化_議論記録.md`、`phase2_phase3_再開用完全サマリ.md` を前提に、フェーズ2-2「幅の責務」の承認判断から再開してください。承認事項は随時設計書へ保存してください。
 
 
+### 旧再開サマリの工程別原文（2026-10-15の履歴）
+
+> 過去の議論の記録です。「未承認」「次回の議題」の記載は当時のもので、現在の承認・進捗には優先しません。
+<!-- HISTORICAL-SUMMARY-SECTIONS: 1.2,1.8 -->
+
+#### 1.2 フェーズ2全体の作業ロードマップ
+
+現在の整理は以下。
+
+| 項目 | 内容 | 状態 |
+|---|---|---|
+| 2-1 | 画面・LayoutManager・共通Componentの責務境界 | **承認済み・正本保存済み** |
+| 2-2 | 幅の責務（均等割り、LayoutSpan、w-full、Component内部幅） | **議論済み・未承認。次回ここから再開** |
+| 2-3 | 余白の責務（gap / padding / margin） | 未決 |
+| 2-4 | レスポンシブ・折り返し（wrap、スマホ幅、縦横切替） | 未決 |
+| 2-5 | 共通Componentの外部CSS排除（classContainer等） | 基本方針は合意済み、詳細移行ルール未完 |
+| 2-6 | Form / DTO / Validation責務 | 一部承認済み、一部継続 |
+| 2-7 | UIとDomainの責務（テニス業務ロジック） | 未決 |
+| 2-8 | AI / ACG実装ルール | 基本方針は合意済み |
+
+この番号は議論の進行を分かりやすくするための整理であり、各項目は承認された時点で正本へ確定事項として反映する。
+
+---
+
+#### 1.8 フェーズ2で残っている主要論点
+
+##### 余白
+
+既存方針：
+
+- 同一行のComponent間 → LayoutItemの `gap`
+- 行と行の間 → ItemStackLayoutの `gap`
+- 画面全体の外周 → 上位画面Containerの `padding`
+- 各Textbox/Button/Date等へmarginを持たせて画面調整する方式にはしない
+
+ただし細部はフェーズ2-3で正式決定する。
+
+##### レスポンシブ / wrap
+
+- LayoutItemの `flex-wrap` の正式挙動
+- スマホ幅での1行から複数行への切替
+- row/column切替の責務
+- LayoutSpanとwrapの組み合わせ
+
+をフェーズ2-4で詰める。
+
+##### Form / DTO / Validation
+
+継続論点：
+
+- UI Form DTOの `class + formGroup` 方式を正式方針として確定するか
+- UI Form DTOとApplication DTO間の変換を画面Componentに残す範囲
+- Mapper導入基準
+- UI入力ValidationとDomain Validationの具体的境界
+
+##### UI / Domain
+
+現行BRU1001にある
+
+- サーブ順
+- ダブルスのリターン側
+- 組合せルール
+
+等のテニス意味依存ロジックをDomainへ移す場合のモデル/APIが未決。
+
+##### レイヤーとディレクトリ
+
+論理レイヤーと実際のディレクトリ構造・クラスの対応を最終確認する。
+
+---
+
+# 2. フェーズ3：UIデザインシステム標準化
+
 ## 旧議事録（原文・承認日・検討経緯）
 
 - [phase2_UI設計思想と責務.md](議事録バックアップ/phase2_UI設計思想と責務.md)
