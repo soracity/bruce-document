@@ -247,6 +247,72 @@
 このフォント設計の最終値・正式採用はフェーズ3最終レビューで再確認する。
 
 
+### 旧再開サマリの工程別原文（2026-10-15の履歴）
+
+> 過去の議論の記録です。「未承認」「次回の議題」の記載は当時のもので、現在の承認・進捗には優先しません。
+<!-- HISTORICAL-SUMMARY-SECTIONS: 2.4,2.9 -->
+
+#### 2.4 共通デザイン属性（方針合意）
+
+呼び出し側は `[uiStyle]="{...}"` の一括オブジェクトではなく、各属性を個別Inputで指定する。
+
+例：
+
+```html
+<app-textbox [border]="true" [roundedSize]="8" />
+```
+
+| Input | 型 | 原則既定値 | 補足 |
+|---|---|---|---|
+| `border` | `boolean` | `true` | 枠線有無 |
+| `borderWidth` | `UiBorderWidth` | `1` | px: 0, 0.5, 1, 2, 4 |
+| `rounded` | `boolean` | `true` | 角丸有無 |
+| `roundedSize` | `UiRoundedSize` | `8` | px: 0, 4, 8, 16, 24。FABは円形既定 |
+| `shadow` | `boolean` | `false` | FABはtrue既定 |
+| `shadowSize` | `UiShadowSize` | `'md'` | sm, md, lg。FABはlg既定 |
+| `padding` | `UiPadding` | `8` | px: 0, 4, 8, 12, 16, 24, 32 |
+| `backgroundColor` | `UiColor` | 部品別 | DaisyUI意味色 |
+| `textColor` | `UiColor` | 部品別 | DaisyUI意味色 |
+| `visible` | `boolean` | `true` | falseはhidden/display:none |
+| `disabled` | — | 共通化しない | 入力系はFormControl、Button等は個別責務 |
+
+`UiColor` 候補：
+
+- primary
+- secondary
+- accent
+- neutral
+- base-100
+- base-200
+- base-300
+- info
+- success
+- warning
+- error
+
+数値指定単位はpx。
+
+---
+
+#### 2.9 対象Component
+
+2026-10-15時点：
+
+- 通常UI：Alert / Button / Date / Fab / Group / Radio / Textbox / Toggle
+- Table：TableContainerLayout / TableRecord / TableRow / TableCell
+- Swipe：SwipeDirective
+- Layout：LayoutItem / ItemStackLayout / LayoutSpan
+
+`ToggleButtonComponent` は旧式のため開発対象から除外。
+
+`bruce` の `feature/feature-20261015` で `brf9020-shared-components/toggleButton/components/` の4ファイルを削除済み（commit `5b2800c`）。
+
+`brf9014-shared-components` 側は削除対象外。
+
+`component-base`、`component-test`、`apidoc` は通常UI部品一覧とは分けて扱う。
+
+---
+
 ## 3.1.2 Android・iPhone共通表示品質の検査観点を確定
 
 - **作業**：未着手／**設計**：方針合意／**実装**：未着手／**検証**：未検証
@@ -309,6 +375,24 @@
 ---
 
 
+
+### 旧再開サマリの工程別原文（2026-10-15の履歴）
+
+> 過去の議論の記録です。「未承認」「次回の議題」の記載は当時のもので、現在の承認・進捗には優先しません。
+<!-- HISTORICAL-SUMMARY-SECTIONS: 2.3 -->
+
+#### 2.3 共通Component開発方針
+
+ユーザー明示方針：
+
+- AndroidとiPhoneの両方で見た目が崩れず、美しく表示されること。
+- 画面サイズ、セーフエリア、文字サイズ、タッチ操作、OS描画差を考慮する。
+- デザインはTailwind CSSとDaisyUIをベースとする。
+- 個別CSSは必要性を検討してから追加する。
+
+具体的なテスト端末、対応OS、例外CSS運用は未決。
+
+---
 
 ## 旧議事録（原文・承認日・検討経緯）
 
