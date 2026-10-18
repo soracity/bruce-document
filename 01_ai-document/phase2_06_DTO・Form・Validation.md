@@ -223,6 +223,141 @@ ACG生成コードを直接修正しない。変更が必要な場合は設計�
 - **次の作業**：保存→再表示等の動作確認はPhase 7
 - **原典**：[phase2_UI設計思想と責務.md](議事録バックアップ/phase2_UI設計思想と責務.md)、[phase2_Nullable型_決定.md](議事録バックアップ/phase2_Nullable型_決定.md)、[phase2_TypeScriptTypeEnum_決定.md](議事録バックアップ/phase2_TypeScriptTypeEnum_決定.md)、[phase2_画面DTO項目_型別指定可能パターン_決定.md](議事録バックアップ/phase2_画面DTO項目_型別指定可能パターン_決定.md)、[phase2_ACG形式チェック_決定.md](議事録バックアップ/phase2_ACG形式チェック_決定.md)、[phase2_ACG必須チェック_空白文字列_決定.md](議事録バックアップ/phase2_ACG必須チェック_空白文字列_決定.md)、[phase2_ACGデフォルト値_決定.md](議事録バックアップ/phase2_ACGデフォルト値_決定.md)、[phase2_画面設計書_日付日時の形式列化_決定.md](議事録バックアップ/phase2_画面設計書_日付日時の形式列化_決定.md)、[phase2_UIヘッダー明細DTO分離_決定.md](議事録バックアップ/phase2_UIヘッダー明細DTO分離_決定.md)、[phase2_ACG実装追加方針_決定.md](議事録バックアップ/phase2_ACG実装追加方針_決定.md)、[phase2_phase3_20261017追記_再開情報.md](議事録バックアップ/phase2_phase3_20261017追記_再開情報.md)
 
+### 旧2026-10-17再開情報の詳細（復旧スナップショット）
+
+> [旧ACG/Bruce再開情報](議事録バックアップ/phase2_phase3_20261017追記_再開情報.md)を転記。**ロールバック・ブランチ情報は当時の事実**であり、現在のブランチ状態を保証しない。未承認の技術提案を承認済みに変更しない。
+
+#### 4. ACG側で既に決定済みの事項
+
+詳細は `01_ai-document` 配下の各 `_決定.md` を正本として参照する。
+
+特に今回の再対応に関係する正本：
+
+- `phase2_Nullable型_決定.md`
+- `phase2_TypeScriptTypeEnum_決定.md`
+- `phase2_ACGデフォルト値_決定.md`
+- `phase2_ACG形式チェック_決定.md`
+- `phase2_ACG必須チェック_空白文字列_決定.md`
+- `phase2_ACG実装追加方針_決定.md`
+- `phase2_画面DTO項目_型別指定可能パターン_決定.md`
+- `phase2_画面設計書_日付日時の形式列化_決定.md`
+
+主な既決事項のうち今回重要なもの：
+
+- Bruceでは `Nullable<T>` を `T | null` の共通表現として使用する。
+- `src/global.d.ts` に `type Nullable<T> = T | null;` を置く。
+- 画面設計書のEnum型項目は、UI Form DTOで `FormControl<Nullable<対象Enum>>` として生成する方向。
+- Enum項目の初期値は基本 `null`。
+- ACG生成ファイルを直接手修正しない。問題が生成規則にある場合は設計書またはACGを修正して再生成する。
+- UI Form DTOは画面設計書から生成するが、業務ロジックを持たせない。
+
+個別の型・Validation・デフォルト値・形式チェックの詳細は必ず正本を参照し、この追記文書だけで再解釈しない。
+
+---
+
+
+
+#### 5. 手修正レビューで判明した重要事項
+
+以下は2026-10-17のレビューで判明した事項。**すべてを新しい最終設計として承認したという意味ではない。** 再対応時に同じ誤りを繰り返さないための確認事項として保存する。
+
+##### 5.1 FormControlの値とeventKeyは別概念
+
+共通Componentの `eventKey` は、親へ「どの操作が発生したか」を通知するためのキー。
+
+一方、`FormControl<T>` の `T` は、その入力Componentが保持・編集するフォーム値の型。
+
+例：
+
+```text
+control.value = AppCodeMatchTypeEnum
+
+eventKey = "matchTypeChange"
+```
+
+この2つを同じ型パラメータとして扱うと、Radio等の共通Component設計が崩れやすい。
+
+`AppEventKeyType` を共通イベントキー型として使う案は議論したが、**global.d.tsへの最終配置・import方式・各Componentへの適用範囲は未承認**。再開時に勝手に確定しない。
+
+ユーザーの要求として、共通ComponentのeventKeyをstring専用に限定せず、string / number / boolean / Enum等を扱える方向を検討している。
+
+##### 5.2 RadioComponent
+
+修正途中では、Enum FormControlへ合わせるために
+
+```ts
+FormControlComponentBase<AppEventKeyType>
+```
+
+のような方向へ変更したが、これはFormControl値とeventKeyを混同する危険がある。
+
+さらに既存Radioの `values` が `string[]` のままで、FormControl側だけEnumオブジェクトへ変わると、選択値とFormControl値の型が一致しなくなる。
+
+再対応時は、**画面側で無理にキャストして逃げず、Radioがstring値とEnum値をどう扱うかを共通Component設計として先に決める。**
+
+##### 5.3 ToggleComponent
+
+HTML checkboxの `checked` はUI上はbooleanの概念。
+
+`AppCodeBooleanEnum.FALSE` のようなEnumオブジェクトをJavaScriptのbooleanとして扱ってはいけない。Enumオブジェクトは `FALSE` という名前でもオブジェクトなのでtruthyとなる。
+
+```ts
+if (AppCodeBooleanEnum.FALSE) {
+  // オブジェクトなのでtrue扱い
+}
+```
+
+FormControl値をEnumにする場合でも、Toggle内部の `checked`、DOMの `HTMLInputElement.checked`、FormControl値の変換責務をどこに置くかは別途整理する。
+
+**「Enum化したからcheckedもEnumにする」と短絡的に変更しない。**
+
+##### 5.4 Enumオブジェクトの真偽判定
+
+Enumオブジェクトに対して、TRUE/FALSEの意味判定を次のように書かない。
+
+```ts
+if (value) { ... }
+!value
+```
+
+`null` 判定とEnum値判定を分ける。
+
+例：
+
+```ts
+value === null
+value === AppCodeMatchSettingEnum.TRUE
+value === AppCodeMatchSettingEnum.FALSE
+```
+
+##### 5.5 UI / Application境界
+
+UI Form DTO側でEnumオブジェクトを保持し、Application/DB側の契約がコード文字列の場合、境界で明示変換する。
+
+基本方向：
+
+```text
+Application / DB の string code
+      ↓ toEnum(...)
+UI FormControl の Enum object
+      ↓ .value
+Application / DB の string code
+```
+
+既存方針どおり、UI Form DTOとApplication DTOの間にMapper/Converter/Assemblerを機械的に追加せず、画面Componentで明示変換する。
+
+ただし、具体的なnullable時の扱い・`toEnum()` の引数契約・Enum共通InterfaceはACG/Enum設計と整合するよう再確認する。
+
+##### 5.6 型アサーションで問題を隠さない
+
+修正途中で、Application Request DTOへ値を渡す箇所に `as XxxDto` があると、Enum object → string等の型不一致をTypeScriptが検出できなくなる場合がある。
+
+再対応では、まず型が自然に一致する形へ直し、型アサーションをビルドエラー隠しとして使わない。
+
+---
+
+
+
 ## 2.6.3 FormControl ValidationとDomain Validationの境界を確定
 
 - **作業**：未着手／**設計**：検討中／**実装**：未着手／**検証**：未検証
