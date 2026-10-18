@@ -41,7 +41,6 @@ getVisibleClass(visible: boolean): string
 Tailwindのビルド時クラス検出を考慮し、許容値とクラス名を**明示的に対応付ける**。実行時に任意文字列を連結してクラス名を組み立てる方式は避ける。
 
 
-
 ### 旧再開サマリの工程別原文（2026-10-15の履歴）
 
 > 過去の議論の記録です。「未承認」「次回の議題」の記載は当時のもので、現在の承認・進捗には優先しません。
@@ -58,15 +57,6 @@ Tailwindのビルド時クラス検出を考慮し、許容値とクラス名を
 
 想定API：
 
-```ts
-getBorderClass(border: boolean, width: UiBorderWidth): string
-getRoundedClass(rounded: boolean, size: UiRoundedSize): string
-getShadowClass(shadow: boolean, size: UiShadowSize): string
-getPaddingClass(padding: UiPadding): string
-getBackgroundColorClass(color: UiColor): string
-getTextColorClass(color: UiColor): string
-getVisibleClass(visible: boolean): string
-```
 
 Tailwindのビルド時クラス検出を考慮し、許容値とクラス名を明示対応させる。
 
