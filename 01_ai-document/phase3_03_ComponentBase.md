@@ -18,6 +18,42 @@ ComponentBaseを単一基底にする方向で合意。FormControlComponentBase�
 - **次の作業**：既存FormControlComponentBase／Angular継承制約を確認
 - **原典**：[phase3_UIデザインシステム標準化_議論記録.md](議事録バックアップ/phase3_UIデザインシステム標準化_議論記録.md)
 
+### 旧議事録の具体的内容（方針合意・未承認を区別）
+
+> [旧議事録の原典](議事録バックアップ/phase3_UIデザインシステム標準化_議論記録.md)を転記。Phase 3は最終承認前であり、これを実装済みとは扱わない。
+
+#### 4. ComponentBase：親クラスは1つに統一
+
+`UiStyleComponentBase` と `FormControlComponentBase` を分けず、**共通デザインInput・visible・任意のFormControl Inputを1つの `ComponentBase` に持たせる**方針。
+
+FormControlを使わないButton等も同じ基底クラスを継承するが、controlは使用しない。
+
+```ts
+export abstract class ComponentBase {
+  readonly control = input<FormControl>();
+
+  protected getControl(): FormControl {
+    const control = this.control();
+    if (control === undefined) {
+      throw new Error('FormControlが指定されていません');
+    }
+    return control;
+  }
+
+  // 共通デザインInput群はここに定義する
+}
+```
+
+- 親画面から既存の `FormControl` インスタンスを渡す。例：`<app-textbox [control]="dto.formGroup.controls.playerName" />`
+- `input(new FormControl(''))` のようなダミーインスタンスは**作らない**。
+- `getControl()` は入力系コンポーネントで利用し、未指定時には明示的にエラーとする。
+- 不必要な `?.` や `!` に依存しない書き方を優先する。
+- FormControlの有効・無効はFormControlで管理し、Button等のdisabledは部品個別に扱う。
+
+**実装前検証**：既存 `FormControlComponentBase` の処理との整合、Angularの継承・型・テンプレートからのprotectedメソッド参照を確認する。設計を勝手に変更せず、制約があれば説明して再協議する。
+
+
+
 ## 旧議事録（原文・承認日・検討経緯）
 
 - [phase3_UIデザインシステム標準化_議論記録.md](議事録バックアップ/phase3_UIデザインシステム標準化_議論記録.md)
