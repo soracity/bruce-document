@@ -103,6 +103,133 @@
 
 未指定値を「残り全部」「1」「自動値」等と解釈する余地をなくし、人間とAIの双方にとって実装規則を明確にするためである。
 
+### 旧Phase 2原典の完全な記録（追加照合）
+
+> [2026-10-15〜16の旧議事録](議事録バックアップ/phase2_UI設計思想と責務.md)から移行。当時の**提案・調査事実・承認済み**は各見出しの当時の状態を保持する。後日の承認・変更があれば最新の承認記録が優先する。
+
+#### 承認済みIssue：幅の責務
+
+> 状態：**設計承認済み**  
+> 承認日：2026-10-16
+
+##### 基本原則
+
+LayoutManagerはComponentに**どれだけの領域を与えるか**を決める。共通Componentは**与えられた領域の中でどう描画するか**を決める。画面ComponentはCSSで幅を直接決めない。
+
+| 対象 | 責務 |
+|---|---|
+| LayoutItem | 子Componentへ割り当てる横方向の領域を管理する |
+| LayoutSpan | LayoutItem内における子Componentの幅比率を指定する |
+| Textbox / Date / Radio / Button等 | LayoutManagerから与えられた領域内で自身を描画する |
+| 画面Component | 画面上意味のある比率だけをLayoutSpanで指定する。CSSのwidth系classを直接指定しない |
+
+##### LayoutSpanは100等分で扱う
+
+横方向の幅比率は**100等分**を基本単位とする。
+
+```html
+<app-layout-item>
+  <app-textbox [appLayoutSpan]="70" ... />
+  <app-date [appLayoutSpan]="30" ... />
+</app-layout-item>
+```
+
+上記は70:30の比率を表す。
+
+原則として、同一`LayoutItem`内で明示的に`appLayoutSpan`を指定する場合、兄弟要素のspan合計を**100**とする。
+
+例：
+
+- `50 + 50 = 100`
+- `70 + 30 = 100`
+- `60 + 40 = 100`
+- `20 + 30 + 50 = 100`
+
+`appLayoutSpan`の値は**CSSの`width: n%`そのものではない**。LayoutItemが持つgap等を除いた利用可能領域を、指定されたspan比率に従って分配するための**重み**として扱う。
+
+したがって、`70 + 30 + gap`をそのまま`70% + 30% + gap`として実装し、100%を超過させる実装は行わない。
+
+##### span未指定時は均等割り
+
+同一`LayoutItem`内で`appLayoutSpan`を指定しない場合、兄弟Componentを均等幅として扱う。
+
+```html
+<app-layout-item>
+  <app-textbox ... />
+  <app-date ... />
+</app-layout-item>
+```
+
+上記は50:50。
+
+```html
+<app-layout-item>
+  <app-textbox ... />
+  <app-date ... />
+  <app-radio ... />
+</app-layout-item>
+```
+
+上記は3等分とする。
+
+##### 明示指定と未指定を混在させない
+
+同一`LayoutItem`内では、次のどちらかに統一する。
+
+1. 全兄弟で`appLayoutSpan`を省略し、均等割りとする。
+2. 全兄弟で`appLayoutSpan`を明示し、合計100の比率を指定する。
+
+以下のような混在は採用しない。
+
+```html
+<app-layout-item>
+  <app-textbox [appLayoutSpan]="70" ... />
+  <app-date ... />
+</app-layout-item>
+```
+
+未指定値を「残り全部」「1」「自動値」等と解釈する余地をなくし、人間とAIの双方にとって実装規則を明確にするためである。
+
+##### Component内部の100%幅は許容する
+
+画面側から共通Componentへ`w-full`等を注入して幅を決めない。
+
+```html
+<app-textbox classInput="w-full" ... />
+```
+
+上記のような指定は廃止対象とする。
+
+一方、Textbox内部のinputが次のように自身へ割り当てられた領域を100%使用することは許容する。
+
+```css
+input {
+  width: 100%;
+}
+```
+
+この100%は画面全体に対する100%ではなく、**LayoutManagerからTextboxへ割り当てられた領域の100%**である。
+
+##### Radio・Button等の内部幅
+
+Radio内部の選択肢を等幅にする等の処理はRadioComponent自身の内部レイアウト責務とする。
+
+Buttonについても、LayoutManagerは`app-button`ホストへ割り当てる領域までを担当し、内部のネイティブ`button`を全面幅にするか内容幅にするかはButtonComponentのデザイン責務とする。
+
+画面Componentから`w-full`等を注入して決定しない。
+
+##### AI実装ルール
+
+AIが画面を実装する場合も次を遵守する。
+
+- 通常は`appLayoutSpan`を省略して均等割りを使用する。
+- 比率変更が必要な場合のみ`appLayoutSpan`を使用する。
+- `appLayoutSpan`を使う場合は同一`LayoutItem`内の全兄弟へ明示し、合計100とする。
+- `appLayoutSpan`をCSSの`width:%`へ単純変換しない。
+- 画面Componentで`w-*`等のwidth系CSSを直接使って配置を調整しない。
+
+
+
 ## 2.2.3 Layout外部割当幅と共通Component内部100%を分離
 
 - **作業**：完了／**設計**：承認済／**実装**：一部実装／**検証**：静的確認済
