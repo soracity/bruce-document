@@ -20,6 +20,77 @@ UI Form DTOはComponentスコープDI、専用Mapperは作らず画面Component�
 - **次の作業**：ACGと画面実装への反映はPhase 5
 - **原典**：[phase2_UI設計思想と責務.md](議事録バックアップ/phase2_UI設計思想と責務.md)、[phase2_Nullable型_決定.md](議事録バックアップ/phase2_Nullable型_決定.md)、[phase2_TypeScriptTypeEnum_決定.md](議事録バックアップ/phase2_TypeScriptTypeEnum_決定.md)、[phase2_画面DTO項目_型別指定可能パターン_決定.md](議事録バックアップ/phase2_画面DTO項目_型別指定可能パターン_決定.md)、[phase2_ACG形式チェック_決定.md](議事録バックアップ/phase2_ACG形式チェック_決定.md)、[phase2_ACG必須チェック_空白文字列_決定.md](議事録バックアップ/phase2_ACG必須チェック_空白文字列_決定.md)、[phase2_ACGデフォルト値_決定.md](議事録バックアップ/phase2_ACGデフォルト値_決定.md)、[phase2_画面設計書_日付日時の形式列化_決定.md](議事録バックアップ/phase2_画面設計書_日付日時の形式列化_決定.md)、[phase2_UIヘッダー明細DTO分離_決定.md](議事録バックアップ/phase2_UIヘッダー明細DTO分離_決定.md)、[phase2_ACG実装追加方針_決定.md](議事録バックアップ/phase2_ACG実装追加方針_決定.md)、[phase2_phase3_20261017追記_再開情報.md](議事録バックアップ/phase2_phase3_20261017追記_再開情報.md)
 
+### 2026-10-16承認済み原典の詳細
+
+> [原典](議事録バックアップ/phase2_UI設計思想と責務.md)から復元。ここに記載した設計承認と実装完了は別である。
+
+#### 承認済みIssue：UI Form DTOをComponentスコープDIへ変更
+
+> 状態：**設計承認済み / 実装未着手**  
+> 承認日：2026-10-15
+
+##### 決定内容
+
+UI Form DTOはDIで取得する。ただしアプリ全体のシングルトンにはせず、**画面Component単位のインスタンス**とする。
+
+`Bru1001Dto`のFormGroupは画面固有状態であるため、`providedIn: 'root'`によるアプリ全体共有は行わない。
+
+想定形：
+
+```ts
+@Injectable()
+export class Bru1001Dto {
+  readonly formGroup = new FormGroup({
+    // ...
+  });
+}
+```
+
+```ts
+@Component({
+  // ...
+  providers: [Bru1001Dto],
+})
+export class Bru1001Component {
+  readonly dto = inject(Bru1001Dto);
+}
+```
+
+##### 実装時の変更対象
+
+1. ACGが生成するUI Form DTOの`@Injectable({ providedIn: 'root' })`を、root提供しない形へ変更する。
+2. `Bru1001Component`の`providers`へ`Bru1001Dto`を登録する。
+3. `readonly dto = new Bru1001Dto();`を`readonly dto = inject(Bru1001Dto);`へ変更する。
+4. 記述簡略化だけを目的とする`readonly controls = this.dto.formGroup.controls;`を廃止する。
+5. HTMLで`@let ctrls = dto.formGroup.controls;`を定義し、`ctrls.xxx`で参照する。
+6. 同種のUI Form DTOについても、画面固有状態を持つものは同じComponentスコープDI方針を適用する。
+
+##### 採用理由
+
+- FormGroupのライフサイクルを画面Componentのライフサイクルと一致させる。
+- 画面を開き直した場合や複数画面インスタンスでForm状態を意図せず共有しない。
+- DTO生成方法をDIへ統一しつつ、画面状態をシングルトン化しない。
+- テスト時に画面単位でUI Form DTOを差し替えやすくする。
+
+##### 非採用
+
+```ts
+@Injectable({ providedIn: 'root' })
+```
+
+によるUI Form DTOのシングルトン化は採用しない。
+
+また、画面Componentからの直接生成：
+
+```ts
+readonly dto = new Bru1001Dto();
+```
+
+も今後の方針としては採用しない。
+
+※本Issueは設計承認の記録であり、このコミットではアプリケーションソースおよびACGソースを変更しない。
+
+
 ## 2.6.2 Enum FormControlとApplication string codeの境界変換
 
 - **作業**：完了／**設計**：承認済／**実装**：完了／**検証**：ビルド確認済
@@ -59,6 +130,48 @@ UI Form DTOはComponentスコープDI、専用Mapperは作らず画面Component�
 - **状態の区別**：作業=完了、設計=承認済、実装=一部実装、検証=静的確認済。設計上の完了を実装・実機検証済みと読み替えない。
 - **次の作業**：画面実装ルールへ反映して確認
 - **原典**：[phase2_UI設計思想と責務.md](議事録バックアップ/phase2_UI設計思想と責務.md)、[phase2_Nullable型_決定.md](議事録バックアップ/phase2_Nullable型_決定.md)、[phase2_TypeScriptTypeEnum_決定.md](議事録バックアップ/phase2_TypeScriptTypeEnum_決定.md)、[phase2_画面DTO項目_型別指定可能パターン_決定.md](議事録バックアップ/phase2_画面DTO項目_型別指定可能パターン_決定.md)、[phase2_ACG形式チェック_決定.md](議事録バックアップ/phase2_ACG形式チェック_決定.md)、[phase2_ACG必須チェック_空白文字列_決定.md](議事録バックアップ/phase2_ACG必須チェック_空白文字列_決定.md)、[phase2_ACGデフォルト値_決定.md](議事録バックアップ/phase2_ACGデフォルト値_決定.md)、[phase2_画面設計書_日付日時の形式列化_決定.md](議事録バックアップ/phase2_画面設計書_日付日時の形式列化_決定.md)、[phase2_UIヘッダー明細DTO分離_決定.md](議事録バックアップ/phase2_UIヘッダー明細DTO分離_決定.md)、[phase2_ACG実装追加方針_決定.md](議事録バックアップ/phase2_ACG実装追加方針_決定.md)、[phase2_phase3_20261017追記_再開情報.md](議事録バックアップ/phase2_phase3_20261017追記_再開情報.md)
+
+### 2026-10-16承認済み原典の詳細
+
+> [原典](議事録バックアップ/phase2_UI設計思想と責務.md)から復元。ここに記載した設計承認と実装完了は別である。
+
+#### 承認済みIssue：Mapperを作成しない
+
+> 状態：**設計承認済み**  
+> 承認日：2026-10-16
+
+##### 決定内容
+
+UI Form DTOとApplication DTOの間の値変換、およびApplication ResponseからUI Form DTOへの反映のために、Mapperクラス・Mapperサービス・Mapperユーティリティ等の専用抽象を作成しない。
+
+変換処理は画面Component内で明示的に行う。
+
+```text
+UI Form DTO（FormGroup）
+      ↓ 画面Componentで値変換
+Application DTO
+```
+
+逆方向も同様に、Application ResponseからFormGroupへの`patchValue`等は画面Componentで行う。
+
+##### AI実装ルール
+
+AIは次の判断を独自に行ってはならない。
+
+- 項目数が多いことを理由にMapperを作成する。
+- 変換処理が長いことを理由にMapperを作成する。
+- 重複があることを理由にMapperを作成する。
+- DDDや一般的なベストプラクティスを理由にMapper層を新設する。
+- `XxxMapper`、`XxxConverter`、`XxxAssembler`等、同等責務の別名称クラスへ置き換える。
+
+Mapper相当の抽象を新設する必要があるとAIが判断した場合も、実装せず設計確認を求める。
+
+##### 優先関係
+
+本承認は、本文中の過去の提案にある「重複や複雑化時にMapperを検討する」という記述を**上書きする正式方針**である。
+
+フェーズ2の正式仕様化時には、旧提案のMapper検討記述を削除し、本方針へ統一する。
+
 
 ## 2.6.6 Nullable<T>共通型・global.d.tsの設計
 
