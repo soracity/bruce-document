@@ -18,6 +18,30 @@ UiStyleUtilを状態を持たない共通スタイル変換処理とする方向
 - **次の作業**：Tailwindのビルド時検出と型制約を検証
 - **原典**：[phase3_UIデザインシステム標準化_議論記録.md](議事録バックアップ/phase3_UIデザインシステム標準化_議論記録.md)
 
+### 旧議事録の具体的内容（方針合意・未承認を区別）
+
+> [旧議事録の原典](議事録バックアップ/phase3_UIデザインシステム標準化_議論記録.md)を転記。Phase 3は最終承認前であり、これを実装済みとは扱わない。
+
+#### 3. UiStyleUtil
+
+**状態を持たない静的ユーティリティ**とする。レイアウト配置やdisabled制御は担当しない。
+
+想定API：
+
+```ts
+getBorderClass(border: boolean, width: UiBorderWidth): string
+getRoundedClass(rounded: boolean, size: UiRoundedSize): string
+getShadowClass(shadow: boolean, size: UiShadowSize): string
+getPaddingClass(padding: UiPadding): string
+getBackgroundColorClass(color: UiColor): string
+getTextColorClass(color: UiColor): string
+getVisibleClass(visible: boolean): string
+```
+
+Tailwindのビルド時クラス検出を考慮し、許容値とクラス名を**明示的に対応付ける**。実行時に任意文字列を連結してクラス名を組み立てる方式は避ける。
+
+
+
 ## 旧議事録（原文・承認日・検討経緯）
 
 - [phase3_UIデザインシステム標準化_議論記録.md](議事録バックアップ/phase3_UIデザインシステム標準化_議論記録.md)
