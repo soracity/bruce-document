@@ -18,6 +18,107 @@
 - **次の作業**：実装方法は次行で決める
 - **原典**：[phase2_UI設計思想と責務.md](議事録バックアップ/phase2_UI設計思想と責務.md)、[phase1_共通コンポーネント調査.md](議事録バックアップ/phase1_共通コンポーネント調査.md)
 
+### 2026-10-16承認済み原典の詳細
+
+> [原典](議事録バックアップ/phase2_UI設計思想と責務.md)から復元。ここに記載した設計承認と実装完了は別である。
+
+#### 承認済みIssue：レスポンシブ・折り返し
+
+> 状態：**設計承認済み**  
+> 承認日：2026-10-16
+
+##### 基本原則
+
+> **画面ComponentはレスポンシブCSSを直接記述せず、LayoutManagerが画面幅に応じた配置変更を担当する。**
+
+画面Componentは何をどの順番で配置するかという構造だけを記述し、ブレークポイント・折り返し・row/column切替等のCSS実装を直接持たない。
+
+##### 画面側でブレークポイントを直接指定しない
+
+次のような画面実装は行わない。
+
+```html
+<div class="flex flex-col md:flex-row">
+  ...
+</div>
+```
+
+```html
+<app-textbox class="w-full md:w-1/2" ... />
+```
+
+`sm:`、`md:`、`lg:`等のレスポンシブUtilityを画面HTMLに直接記述して配置を調整しない。
+
+画面側は次のようにLayoutManagerを使用して構造を記述する。
+
+```html
+<app-layout-item>
+  <app-textbox ... />
+  <app-date ... />
+</app-layout-item>
+```
+
+##### LayoutItemが折り返しを担当する
+
+同一`LayoutItem`内のComponentを横並びで表示できる十分な横幅がある場合は横並びとする。
+
+横幅が不足し、各Componentの操作性・視認性を維持できない場合は、`LayoutItem`が折り返して縦方向へ配置する。
+
+```text
+十分な幅：
+Textbox | Date
+
+幅不足：
+Textbox
+Date
+```
+
+画面Component自身は`flex-wrap`等を直接指定しない。
+
+##### LayoutSpanと折り返し
+
+`appLayoutSpan`で指定した比率は、**横並びで表示できる場合の配置比率**として扱う。
+
+```html
+<app-layout-item>
+  <app-textbox [appLayoutSpan]="70" ... />
+  <app-date [appLayoutSpan]="30" ... />
+</app-layout-item>
+```
+
+十分な横幅がある場合は70:30で配置する。
+
+横幅不足時には70:30を無理に維持せず、折り返した各Componentが利用可能な横幅を使用する。
+
+##### Component単位のレスポンシブInputは現段階で追加しない
+
+現段階では次のようなInputを追加しない。
+
+- `minWidth`
+- `responsiveBreakpoint`
+- `wrapBreakpoint`
+
+まずはLayoutManager側の共通ルールで対応する。実際の画面要件として一般ルールでは対応できないケースが複数発生した場合のみ、意味のある限定的API追加を検討する。
+
+不要な抽象化や設定項目を初期段階から増やさない。
+
+##### ItemStackLayoutの扱い
+
+`ItemStackLayout`は行を縦方向に積み重ねる責務を持つため、通常はレスポンシブによる大きな方向変更を必要としない。
+
+主なレスポンシブ・折り返し責務は`LayoutItem`が担う。
+
+##### AI実装ルール
+
+AIが画面を実装する場合も次を遵守する。
+
+- 画面HTMLに`sm:`、`md:`、`lg:`等のレスポンシブUtilityを直接追加しない。
+- 画面側に`flex-wrap`や独自メディアクエリを追加しない。
+- 横並び・折り返しは`LayoutItem`の責務として実装する。
+- `appLayoutSpan`は横並び時の比率として扱い、狭い画面で比率維持を強制しない。
+- 既存LayoutManagerで対応できないレスポンシブ要件が出た場合、画面固有CSSで回避せず設計確認を行う。
+
+
 ## 2.4.2 LayoutItemの幅不足判定・折り返し仕様を具体化
 
 - **作業**：未着手／**設計**：検討中／**実装**：未着手／**検証**：未検証
