@@ -101,21 +101,9 @@ LayoutManagerはComponentに**どれだけの領域を与えるか**を決める
 
 したがって、`70 + 30 + gap`をそのまま`70% + 30% + gap`として実装し、100%を超過させる実装は行わない。
 
-##### span未指定時は均等割り
+##### span未指定時は均等割り（2.2.1の原則）
 
-同一`LayoutItem`内で`appLayoutSpan`を指定しない場合、兄弟Componentを均等幅として扱う。
-
-```html
-<app-layout-item>
-  <app-textbox ... />
-  <app-date ... />
-</app-layout-item>
-```
-
-上記は50:50。
-
-
-上記は3等分とする。
+同一`LayoutItem`内ですべての兄弟が`appLayoutSpan`を省略した場合は均等幅となる。2項目なら50:50、3項目なら各約33.3%。正常なHTML例と詳細は[2.2.1](#221-layoutitem未指定兄弟の均等割りを決定)へ集約した。これは明示指定時の合計100規則とは別のケースである。
 
 ##### 明示指定と未指定を混在させない
 
@@ -293,6 +281,7 @@ LayoutItemが担当するのは `app-button` ホストへ割り当てる領域�
 
 ### 基本原則
 
+LayoutManagerは共通Componentのホストへ**どれだけの領域を割り当てるか**を管理し、各共通Componentは**割当領域の内部をどう描画するか**を管理する。画面Componentは任意の幅CSSを直接注入しない。2.2.2の原典表はこの共通原則を示しており、本節では内部幅の具体例を扱う。
 
 ### Component内部の100%幅は許容する
 
@@ -318,6 +307,7 @@ input {
 
 Radio内部の選択肢を等幅にする等の処理はRadioComponent自身の内部レイアウト責務とする。
 
+Buttonについても、LayoutManagerは`app-button`のホストへの割当幅を管理する一方、ネイティブ`button`を全面幅にするか内容幅にするかはButtonComponent自身の内部デザイン責務とする。
 
 画面Componentから`w-full`等を注入して決定しない。
 
