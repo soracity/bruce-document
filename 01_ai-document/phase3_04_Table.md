@@ -35,6 +35,49 @@ Cell明示＞Record明示＞Table明示＞既定値の継承方向を議論。�
 
 
 
+### 旧再開サマリの工程別原文（2026-10-15の履歴）
+
+> この節は旧サマリからの転記です。当時の「未承認」「再開地点」「提案」を現在の決定として扱わないでください。
+<!-- HISTORICAL-SUMMARY-SECTIONS: 2.7 -->
+
+#### 2.7 Tableスタイル継承（未決・フェーズ3再開点）
+
+方向性：
+
+`TableContainerLayout → TableRecord → TableCell` に既定スタイルを伝播させる。
+
+TableRowは構造・sticky等を担う。
+
+優先順位案：
+
+> **Cell明示指定 > Record明示指定 > Table明示指定 > 共通既定値**
+
+子が `undefined` なら親から継承。
+
+子が明示的に `false` を指定した場合は `false` を優先。
+
+Table固有属性は共通デザイン属性と区別する。
+
+例：
+
+- zebra
+- recordGap
+- sticky
+- colSpan
+- rowSpan
+
+未解決：
+
+基底ComponentBaseに既定値付きInputがあると、子で「未指定」と「既定値」を区別しにくい。
+
+Table子クラスで `undefined` 許容Inputを再定義する案は出たが、Angular Input継承とTypeScript型互換性を未検証。
+
+**実装方式は未決。**
+
+フェーズ3を再開する場合はここから議論する。
+
+---
+
 ## 3.4.2 Table固有属性と共通スタイルの境界を確定
 
 - **作業**：未着手／**設計**：検討中／**実装**：未着手／**検証**：未検証
