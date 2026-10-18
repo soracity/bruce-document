@@ -54,53 +54,6 @@ export abstract class ComponentBase {
 
 
 
-### 旧再開サマリの工程別原文（2026-10-15の履歴）
-
-> 過去の議論の記録です。「未承認」「次回の議題」の記載は当時のもので、現在の承認・進捗には優先しません。
-<!-- HISTORICAL-SUMMARY-SECTIONS: 2.6 -->
-
-#### 2.6 ComponentBase（方針合意）
-
-`UiStyleComponentBase` と `FormControlComponentBase` を分けず、**1つのComponentBaseに統一**する方向。
-
-- 共通デザインInput
-- visible
-- 任意のFormControl Input
-
-を持つ。
-
-FormControlを使わないButton等も同じ基底クラスを継承するが、controlは使用しない。
-
-```ts
-export abstract class ComponentBase {
-  readonly control = input<FormControl>();
-
-  protected getControl(): FormControl {
-    const control = this.control();
-    if (control === undefined) {
-      throw new Error('FormControlが指定されていません');
-    }
-    return control;
-  }
-
-  // 共通デザインInput群
-}
-```
-
-方針：
-
-- 親画面から既存FormControlインスタンスを渡す。
-- ダミー `new FormControl('')` は作らない。
-- 入力系Componentは `getControl()` で未指定を明示エラーにする。
-- 不要な `?.` / `!` に依存しない。
-- FormControlのenable/disableはFormControlで管理。
-- Button等のdisabledはComponent個別責務。
-
-実装前に既存 `FormControlComponentBase`、Angular継承/Input、型、templateアクセス制約を検証する。
-
-制約が見つかった場合、AIが勝手に設計変更せず説明して再協議する。
-
----
 
 ## 旧議事録（原文・承認日・検討経緯）
 
