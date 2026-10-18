@@ -18,6 +18,40 @@
 - **次の作業**：画面表示制御かテニス業務規則か判定
 - **原典**：[phase2_UI設計思想と責務.md](議事録バックアップ/phase2_UI設計思想と責務.md)
 
+### 旧Phase 2原典の完全な記録（追加照合）
+
+> [2026-10-15〜16の旧議事録](議事録バックアップ/phase2_UI設計思想と責務.md)から移行。当時の**提案・調査事実・承認済み**は各見出しの当時の状態を保持する。後日の承認・変更があれば最新の承認記録が優先する。
+
+#### 基本データ・イベントフロー（提案）
+
+```text
+ユーザー操作
+    ↓
+画面Component
+    ↓
+FormGroup / DTO
+    ↓
+Application
+    ↓
+Domain
+    ↓
+Repository Interface
+    ↓
+Infrastructure
+```
+
+取得結果は逆方向に戻し、最終的な表示判断を画面Componentが行う。
+
+共通Componentはこの縦方向の業務フローには入らず、画面ComponentとFormControlの間にある再利用可能なUI部品として扱う。
+
+```text
+画面Component
+    ├─ FormControl ── 共通入力Component
+    └─ イベント  ←── 共通Component
+```
+
+
+
 ## 2.7.2 Domain移管するルールのAPI・戻り値を決定
 
 - **作業**：未着手／**設計**：未着手／**実装**：未着手／**検証**：未検証
