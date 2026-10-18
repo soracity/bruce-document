@@ -91,6 +91,78 @@ readonly dto = new Bru1001Dto();
 ※本Issueは設計承認の記録であり、このコミットではアプリケーションソースおよびACGソースを変更しない。
 
 
+### 旧Phase 2原典の完全な記録（追加照合）
+
+> [2026-10-15〜16の旧議事録](議事録バックアップ/phase2_UI設計思想と責務.md)から移行。当時の**提案・調査事実・承認済み**は各見出しの当時の状態を保持する。後日の承認・変更があれば最新の承認記録が優先する。
+
+#### 承認済みIssue：UI Form DTOをComponentスコープDIへ変更
+
+> 状態：**設計承認済み / 実装未着手**  
+> 承認日：2026-10-15
+
+##### 決定内容
+
+UI Form DTOはDIで取得する。ただしアプリ全体のシングルトンにはせず、**画面Component単位のインスタンス**とする。
+
+`Bru1001Dto`のFormGroupは画面固有状態であるため、`providedIn: 'root'`によるアプリ全体共有は行わない。
+
+想定形：
+
+```ts
+@Injectable()
+export class Bru1001Dto {
+  readonly formGroup = new FormGroup({
+    // ...
+  });
+}
+```
+
+```ts
+@Component({
+  // ...
+  providers: [Bru1001Dto],
+})
+export class Bru1001Component {
+  readonly dto = inject(Bru1001Dto);
+}
+```
+
+##### 実装時の変更対象
+
+1. ACGが生成するUI Form DTOの`@Injectable({ providedIn: 'root' })`を、root提供しない形へ変更する。
+2. `Bru1001Component`の`providers`へ`Bru1001Dto`を登録する。
+3. `readonly dto = new Bru1001Dto();`を`readonly dto = inject(Bru1001Dto);`へ変更する。
+4. 記述簡略化だけを目的とする`readonly controls = this.dto.formGroup.controls;`を廃止する。
+5. HTMLで`@let ctrls = dto.formGroup.controls;`を定義し、`ctrls.xxx`で参照する。
+6. 同種のUI Form DTOについても、画面固有状態を持つものは同じComponentスコープDI方針を適用する。
+
+##### 採用理由
+
+- FormGroupのライフサイクルを画面Componentのライフサイクルと一致させる。
+- 画面を開き直した場合や複数画面インスタンスでForm状態を意図せず共有しない。
+- DTO生成方法をDIへ統一しつつ、画面状態をシングルトン化しない。
+- テスト時に画面単位でUI Form DTOを差し替えやすくする。
+
+##### 非採用
+
+```ts
+@Injectable({ providedIn: 'root' })
+```
+
+によるUI Form DTOのシングルトン化は採用しない。
+
+また、画面Componentからの直接生成：
+
+```ts
+readonly dto = new Bru1001Dto();
+```
+
+も今後の方針としては採用しない。
+
+※本Issueは設計承認の記録であり、このコミットではアプリケーションソースおよびACGソースを変更しない。
+
+
+
 ## 2.6.2 Enum FormControlとApplication string codeの境界変換
 
 - **作業**：完了／**設計**：承認済／**実装**：完了／**検証**：ビルド確認済
@@ -111,6 +183,38 @@ readonly dto = new Bru1001Dto();
 - **次の作業**：具体例で重複なく責務を分ける
 - **原典**：[phase2_UI設計思想と責務.md](議事録バックアップ/phase2_UI設計思想と責務.md)、[phase2_Nullable型_決定.md](議事録バックアップ/phase2_Nullable型_決定.md)、[phase2_TypeScriptTypeEnum_決定.md](議事録バックアップ/phase2_TypeScriptTypeEnum_決定.md)、[phase2_画面DTO項目_型別指定可能パターン_決定.md](議事録バックアップ/phase2_画面DTO項目_型別指定可能パターン_決定.md)、[phase2_ACG形式チェック_決定.md](議事録バックアップ/phase2_ACG形式チェック_決定.md)、[phase2_ACG必須チェック_空白文字列_決定.md](議事録バックアップ/phase2_ACG必須チェック_空白文字列_決定.md)、[phase2_ACGデフォルト値_決定.md](議事録バックアップ/phase2_ACGデフォルト値_決定.md)、[phase2_画面設計書_日付日時の形式列化_決定.md](議事録バックアップ/phase2_画面設計書_日付日時の形式列化_決定.md)、[phase2_UIヘッダー明細DTO分離_決定.md](議事録バックアップ/phase2_UIヘッダー明細DTO分離_決定.md)、[phase2_ACG実装追加方針_決定.md](議事録バックアップ/phase2_ACG実装追加方針_決定.md)、[phase2_phase3_20261017追記_再開情報.md](議事録バックアップ/phase2_phase3_20261017追記_再開情報.md)
 
+### 旧Phase 2原典の完全な記録（追加照合）
+
+> [2026-10-15〜16の旧議事録](議事録バックアップ/phase2_UI設計思想と責務.md)から移行。当時の**提案・調査事実・承認済み**は各見出しの当時の状態を保持する。後日の承認・変更があれば最新の承認記録が優先する。
+
+#### Validationの責務境界（提案）
+
+Validationは種類で分ける。
+
+##### FormGroup / FormControl側
+
+画面入力として機械的に判定できるものを担当する。
+
+- required
+- 文字数
+- 数値形式
+- 日付形式
+- 入力可能範囲など、画面入力として完結する制約
+
+##### Domain側
+
+テニスの意味を理解しないと判定できないものを担当する。
+
+例：
+
+- ポイント・ゲーム・セットの状態遷移が成立するか
+- 試合状態として矛盾していないか
+- 戦術・スタッツ上の業務ルール
+
+同じ条件を画面とDomainの双方へ重複実装しないことを原則とする。
+
+
+
 ## 2.6.4 UI Form DTOのclass＋formGroup方式を最終確定
 
 - **作業**：未着手／**設計**：推奨案／**実装**：既存実装／**検証**：静的確認済
@@ -120,6 +224,131 @@ readonly dto = new Bru1001Dto();
 - **状態の区別**：作業=未着手、設計=推奨案、実装=既存実装、検証=静的確認済。本記録は作業計画の具体化であり、設計仕様や実装の承認・完了を意味しない。
 - **次の作業**：既存方針とAngularの扱いをレビュー
 - **原典**：[phase2_UI設計思想と責務.md](議事録バックアップ/phase2_UI設計思想と責務.md)、[phase2_Nullable型_決定.md](議事録バックアップ/phase2_Nullable型_決定.md)、[phase2_TypeScriptTypeEnum_決定.md](議事録バックアップ/phase2_TypeScriptTypeEnum_決定.md)、[phase2_画面DTO項目_型別指定可能パターン_決定.md](議事録バックアップ/phase2_画面DTO項目_型別指定可能パターン_決定.md)、[phase2_ACG形式チェック_決定.md](議事録バックアップ/phase2_ACG形式チェック_決定.md)、[phase2_ACG必須チェック_空白文字列_決定.md](議事録バックアップ/phase2_ACG必須チェック_空白文字列_決定.md)、[phase2_ACGデフォルト値_決定.md](議事録バックアップ/phase2_ACGデフォルト値_決定.md)、[phase2_画面設計書_日付日時の形式列化_決定.md](議事録バックアップ/phase2_画面設計書_日付日時の形式列化_決定.md)、[phase2_UIヘッダー明細DTO分離_決定.md](議事録バックアップ/phase2_UIヘッダー明細DTO分離_決定.md)、[phase2_ACG実装追加方針_決定.md](議事録バックアップ/phase2_ACG実装追加方針_決定.md)、[phase2_phase3_20261017追記_再開情報.md](議事録バックアップ/phase2_phase3_20261017追記_再開情報.md)
+
+### 旧Phase 2原典の完全な記録（追加照合）
+
+> [2026-10-15〜16の旧議事録](議事録バックアップ/phase2_UI設計思想と責務.md)から移行。当時の**提案・調査事実・承認済み**は各見出しの当時の状態を保持する。後日の承認・変更があれば最新の承認記録が優先する。
+
+#### FormGroup / UI DTO / Application DTO / 画面Componentの責務（現行BRU1001照合）
+
+##### 現行ソースで確認した事実
+
+`BRU1001`では、UI側の`Bru1001Dto`がACGによる自動生成クラスとなっており、`FormGroup`と各`FormControl`の型・初期値・disabled・Angular Validatorsを保持している。
+
+現行画面Componentは`readonly dto = new Bru1001Dto()`、`readonly controls = this.dto.formGroup.controls`としている。設計方針としては、DTO取得をComponentスコープDIへ変更し、記述簡略化専用の`controls`別名は廃止する。
+
+HTML側では`@let ctrls = dto.formGroup.controls;`としてテンプレート内だけの短縮名を定義し、共通入力Componentへ`[control]="ctrls.xxx"`の形で直接`FormControl`を渡す。
+
+一方、Application層の`Bra1001SaveMatchInfoReqDto`は`FormControl`を持たないreadonlyの値DTOであり、UIのReactive Formsとは分離されている。
+
+現行`Bru1001Component`では、画面初期化・Application Service呼び出し・FormGroupへのpatchValue・保存用DTOへの変換に加え、サーブ順やリターン側の決定などテニス固有の状態変更ロジックも実装されている。
+
+##### DTOを2種類に分けて考える（提案）
+
+同じ「DTO」という名称でも責務を明確に分ける。
+
+| 種類 | 例 | 責務 | 持たせないもの |
+|---|---|---|---|
+| UI Form DTO | `Bru1001Dto` | FormGroup、FormControl、初期値、disabled初期状態、画面入力Validation | Application呼び出し、DB処理、テニス業務ルール |
+| Application DTO | `Bra1001SaveMatchInfoReqDto`等 | UI/Application間のユースケース入力・出力値 | FormControl、FormGroup、Angular Validator、画面表示状態 |
+
+現行の`Bru1001Dto`のように画面設計書からFormGroupをACG生成する方向は、UI Form DTOとして責務を限定する限り整合性が高い。
+
+##### 画面Componentの責務（提案）
+
+画面ComponentはUIのオーケストレーターとする。
+
+- UI Form DTOをComponentスコープDIで取得する。
+- FormControlを共通Componentへ渡すためのデータ元を提供する。
+- TypeScript側では記述簡略化だけを目的とした`controls`別名を持たない。
+- HTML側で必要に応じて`@let ctrls = dto.formGroup.controls;`を定義し、テンプレート内の参照を簡潔にする。
+- ルートパラメータ・画面初期化・表示/非表示など画面固有状態を扱う。
+- ユーザーイベントを受けてApplication Serviceを呼び出す。
+- UI Form DTOとApplication DTOの境界で値を変換する。
+- Applicationから返った値をFormGroupへ反映する。
+
+ただし、テニスの意味に依存するルールそのものは画面Componentに置かない。
+
+##### 現行BRU1001の処理を責務別に分類する（提案）
+
+| 現行処理 | 基本的な配置先 |
+|---|---|
+| `matchId`のルート取得、初期表示 | 画面Component |
+| `FormGroup.valueChanges`を契機とした自動保存 | 画面Component（保存ユースケースの起動） |
+| `@let ctrls = dto.formGroup.controls;`でテンプレート内に短縮名を定義 | Template |
+| `ctrls.xxx`を共通Componentへ渡す | Template |
+| `matchSetting`に応じた入力項目のenable/disable | 画面表示制御である限り画面Component |
+| Form値からApplication Request DTOへの変換 | UI/Application境界。画面Componentで行う。Mapperは作成しない |
+| Application Responseを`patchValue`する | UI/Application境界。画面Componentで行う |
+| シングルス/ダブルス切替で非対象入力をクリア | 単なる画面編集状態の整理なら画面Component。保存データの整合性条件ならDomainでも保証が必要 |
+| サーブ順の決定・相互関係 | Domain側の候補 |
+| ダブルスのリターン側・組合せルール | Domain側の候補 |
+
+画面上の利便性のための処理と、保存される試合データの正しさを保証する業務ルールを区別する。後者はUIを経由しない処理から呼ばれても成立する必要があるため、Domain側へ置く。
+
+##### 推奨フロー（提案）
+
+```text
+共通Component
+      ⇅ FormControl
+画面Component
+      ⇅
+UI Form DTO（FormGroup）
+      │ 値を取り出す / patchValue
+      ↓
+Application DTO
+      ↓
+Application Service
+      ↓
+Domain
+      ↓
+Repository
+      ↓
+Infrastructure
+```
+
+Application Serviceへ`FormGroup`や`FormControl`を渡さない。DomainにもAngular依存を持ち込まない。
+
+Infrastructure側にDAO/DB用DTOが存在する場合、それはApplication DTOとは別責務とし、Repository/Infrastructure境界で変換する。画面ComponentからDAO DTOを直接扱わない。
+
+##### ACGとの関係（提案）
+
+- UI Form DTOは画面設計書から生成してよい。
+- 型、初期値、disabled初期状態、Angular Validatorsは生成対象にできる。
+- テニス業務ルールを生成UI DTOへ埋め込まない。
+- Application DTOはユースケース契約としてUI Form DTOとは別生成物にする。
+- 自動生成ファイルを直接修正せず、変更が必要な場合は設計書またはACG生成処理を変更する。
+
+この整理により、FormGroup生成とDDDの責務分離を両立する。
+
+##### UI Form DTOの生成クラス表現（比較・提案）
+
+UI Form DTOの表現は次の候補を比較する。
+
+| 方式 | 例 | 評価 |
+|---|---|---|
+| A. `class`が`formGroup`を保持 | `class Bru1001Dto { formGroup = new FormGroup(...) }` | **推奨**。現行方式を活かせる。DTO自体とAngular FormGroupを分離したまま、生成物の単位が明確 |
+| B. `FormGroup`を継承 | `class Bru1001Dto extends FormGroup<...>` | 非推奨。UI DTOがAngularクラスそのものになり、継承による結合が強くなる |
+| C. controlsオブジェクトだけ生成 | `const controls = {...}` | FormGroup生成責務が画面側へ漏れ、画面ごとの定型処理が増える |
+| D. type + factory関数 | `type Bru1001Form = ...` + `createBru1001Form()` | 成立するが、現行ACG資産からの変更量が大きく、現時点で得られるメリットが小さい |
+
+フェーズ2の推奨案は **A：UI Form DTOを通常のclassとして生成し、そのプロパティとしてFormGroupを保持する方式を継続** とする。
+
+画面側のDTO取得は次の形を採用する。
+
+```ts
+readonly dto = inject(Bru1001Dto);
+```
+
+HTMLでは次の形とする。
+
+```html
+@let ctrls = dto.formGroup.controls;
+```
+
+UI Form DTOに独自の業務メソッドを追加してDomainオブジェクト化することはしない。FormGroup定義・初期値・入力ValidationというUI状態定義に責務を限定する。
+
+
 
 ## 2.6.5 専用Mapperを作成しないルールを確定
 
@@ -171,6 +400,49 @@ Mapper相当の抽象を新設する必要があるとAIが判断した場合も
 本承認は、本文中の過去の提案にある「重複や複雑化時にMapperを検討する」という記述を**上書きする正式方針**である。
 
 フェーズ2の正式仕様化時には、旧提案のMapper検討記述を削除し、本方針へ統一する。
+
+
+### 旧Phase 2原典の完全な記録（追加照合）
+
+> [2026-10-15〜16の旧議事録](議事録バックアップ/phase2_UI設計思想と責務.md)から移行。当時の**提案・調査事実・承認済み**は各見出しの当時の状態を保持する。後日の承認・変更があれば最新の承認記録が優先する。
+
+#### 承認済みIssue：Mapperを作成しない
+
+> 状態：**設計承認済み**  
+> 承認日：2026-10-16
+
+##### 決定内容
+
+UI Form DTOとApplication DTOの間の値変換、およびApplication ResponseからUI Form DTOへの反映のために、Mapperクラス・Mapperサービス・Mapperユーティリティ等の専用抽象を作成しない。
+
+変換処理は画面Component内で明示的に行う。
+
+```text
+UI Form DTO（FormGroup）
+      ↓ 画面Componentで値変換
+Application DTO
+```
+
+逆方向も同様に、Application ResponseからFormGroupへの`patchValue`等は画面Componentで行う。
+
+##### AI実装ルール
+
+AIは次の判断を独自に行ってはならない。
+
+- 項目数が多いことを理由にMapperを作成する。
+- 変換処理が長いことを理由にMapperを作成する。
+- 重複があることを理由にMapperを作成する。
+- DDDや一般的なベストプラクティスを理由にMapper層を新設する。
+- `XxxMapper`、`XxxConverter`、`XxxAssembler`等、同等責務の別名称クラスへ置き換える。
+
+Mapper相当の抽象を新設する必要があるとAIが判断した場合も、実装せず設計確認を求める。
+
+##### 優先関係
+
+本承認は、本文中の過去の提案にある「重複や複雑化時にMapperを検討する」という記述を**上書きする正式方針**である。
+
+フェーズ2の正式仕様化時には、旧提案のMapper検討記述を削除し、本方針へ統一する。
+
 
 
 ## 2.6.6 Nullable<T>共通型・global.d.tsの設計
