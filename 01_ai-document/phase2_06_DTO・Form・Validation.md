@@ -1764,3 +1764,603 @@ FormControl<Nullable<AppCodeMatchTypeEnum>>
 ###### 議事録更新ルール
 
 この工程の新しい議論は対応する小区分見出しの下へ日時・検討案・決定／未決・理由・次の作業を追記し、同時に[進捗管理表](AIフレームワーク_進捗管理表.md)を更新する。旧議事録は改変しない。
+
+
+---
+
+## 旧議事録原文の完全性保証（機械照合用）
+
+> 旧議事録の原文を改変せず保存し、転記漏れを機械検査するための履歴です。最新の承認・実装状況は上の工程本文およびWBSを参照してください。
+
+<details>
+<summary>原典全文：phase2_ACGデフォルト値_決定.md（2026-10-16承認済み記録）</summary>
+
+<!-- MIGRATION-SOURCE-BEGIN 01_ai-document/議事録バックアップ/phase2_ACGデフォルト値_決定.md -->
+# Phase2 ACGデフォルト値 決定
+
+> 状態：設計承認済み  
+> 承認日：2026-10-16
+
+## 決定内容
+
+画面設計書の `デフォルト` 列では、`-` を「デフォルト未指定」とする。
+
+`-` のときに生成するFormControl初期値は型ごとに決める。
+
+| 型 | デフォルト列 | FormControl初期値 |
+|---|---|---|
+| 文字列 | `-` | `''` |
+| 文字列 | 任意文字列 | 指定文字列 |
+| 数値 | `-` | `null` |
+| 数値 | 数値 | 指定数値 |
+| 真偽 | `-` | `false` |
+| 真偽 | `true` | `true` |
+| 真偽 | `false` | `false` |
+| Enum | `-` | `null` |
+| Enum | コード値 | `Enum型.toEnum('コード値')` |
+| 文字列＋日付 | `-` | `''` |
+| 文字列＋日付 | `SYSTEM_DATE` | `AppDateUtil.getSysDateIso8601()` |
+| 文字列＋日時 | `-` | `''` |
+| 文字列＋日時 | `SYSTEM_DATETIME` | `AppDateUtil.getSysDateTimeUtcIso8601()` |
+
+## Enumのデフォルト値
+
+例：
+
+```text
+型=Enum
+Enum型=AppCodeMatchTypeEnum
+デフォルト=0
+```
+
+生成イメージ：
+
+```ts
+new FormControl<AppCodeMatchTypeEnum | null>(
+  AppCodeMatchTypeEnum.toEnum('0')
+)
+```
+
+`デフォルト=-` の場合は `null` とする。
+
+```ts
+new FormControl<AppCodeMatchTypeEnum | null>(null)
+```
+
+## 必須項目との関係
+
+`必須=〇` であっても、`デフォルト=-` の場合にACGが値を補完しない。
+
+```text
+必須=〇 + デフォルト=-
+```
+
+の場合、初期状態は未入力とし、Validationで必須エラーになり得る状態とする。
+
+ACGは必須だからという理由で推測して初期値を設定しない。
+
+## 日付・日時
+
+`形式=日付`、`形式=日時` も `デフォルト=-` の場合は空文字 `''` とする。
+
+現在日付・現在日時をデフォルト値として設定する場合は、画面設計書の `デフォルト` 列に以下の予約語を指定する。
+
+```text
+SYSTEM_DATE
+SYSTEM_DATETIME
+```
+
+### 日時
+
+画面設計書：
+
+```text
+形式=日時
+デフォルト=SYSTEM_DATETIME
+```
+
+ACG生成：
+
+```ts
+AppDateUtil.getSysDateTimeUtcIso8601()
+```
+
+UTCのISO 8601形式で取得する。
+
+返却値例：
+
+```text
+2026-10-16T06:24:00.000Z
+```
+
+### 日付
+
+画面設計書：
+
+```text
+形式=日付
+デフォルト=SYSTEM_DATE
+```
+
+ACG生成：
+
+```ts
+AppDateUtil.getSysDateIso8601()
+```
+
+ISO 8601の日付形式で取得する。
+
+返却値例：
+
+```text
+2026-10-16
+```
+
+`形式=日付` は非推奨とする既存方針を維持する。
+
+## AppDateUtil
+
+利用する既存Utilityは以下とする。
+
+```text
+src/app/brf9000/brf9017-utils/app-date.util.ts
+```
+
+ACGは現在日付・現在日時の取得処理を独自実装せず、`AppDateUtil` の上記メソッドを利用する。
+
+## 予約語
+
+画面設計書の `デフォルト` 列で使用する日付・日時の予約語は以下とする。
+
+```text
+SYSTEM_DATE
+→ 形式=日付 で使用
+→ AppDateUtil.getSysDateIso8601()
+
+SYSTEM_DATETIME
+→ 形式=日時 で使用
+→ AppDateUtil.getSysDateTimeUtcIso8601()
+```
+
+ACGはこれらの予約語を固定値文字列としてFormControlへ設定せず、対応する `AppDateUtil` 呼び出しへ変換する。
+
+## 予約語と形式の組み合わせチェック
+
+`SYSTEM_DATE` と `SYSTEM_DATETIME` は、対応する形式と1対1で使用する。
+
+```text
+形式=日付
+デフォルト=SYSTEM_DATE
+→ OK
+
+形式=日時
+デフォルト=SYSTEM_DATETIME
+→ OK
+
+形式=日付
+デフォルト=SYSTEM_DATETIME
+→ Exception
+
+形式=日時
+デフォルト=SYSTEM_DATE
+→ Exception
+
+形式が日付・日時以外
+デフォルト=SYSTEM_DATE
+→ Exception
+
+形式が日付・日時以外
+デフォルト=SYSTEM_DATETIME
+→ Exception
+```
+
+ACGは不正な組み合わせを自動補正せず、検出した時点でExceptionを発生させてコード生成を停止する。
+
+この方針をFail Fastとする。
+
+## 特定項目の特別扱い禁止
+
+`createDateTime`、`updateDateTime`、`deleteDateTime` などの項目について、ACGは物理名や用途を見てデフォルト値を特別扱いしない。
+
+これら3項目を含め、各項目の初期値は画面設計書の `デフォルト` 列の指定に従う。
+
+```text
+デフォルト=-
+→ ''
+
+デフォルト=SYSTEM_DATETIME
+→ AppDateUtil.getSysDateTimeUtcIso8601()
+```
+
+ACGは項目名から意味を推測してデフォルト値を変更・補完しない。
+
+<!-- MIGRATION-SOURCE-END 01_ai-document/議事録バックアップ/phase2_ACGデフォルト値_決定.md -->
+
+</details>
+
+<details>
+<summary>原典全文：phase2_ACG実装追加方針_決定.md（2026-10-16承認済み記録）</summary>
+
+<!-- MIGRATION-SOURCE-BEGIN 01_ai-document/議事録バックアップ/phase2_ACG実装追加方針_決定.md -->
+# Phase2 ACG実装追加方針 決定
+
+> 状態：設計承認済み  
+> 承認日：2026-10-16
+
+## 決定内容
+
+Phase2のACG実装修正にあたり、未確定だった以下4点を正式決定する。
+
+## 1. 文字種Enumの配置
+
+画面設計書の `文字種` 列を解釈するEnumとして `AcgUiFormCharacterTypeEnum` を追加する。
+
+今回の実装では、既存のUI設計書用Enumと同じ以下のパッケージへ配置する。
+
+```text
+io.github.soracity.alfred.generator.user.uispec.uispecenum
+```
+
+対象イメージ：
+
+```text
+AcgUiFormFormatCheckEnum
+AcgUiFormCharacterTypeEnum
+```
+
+パッケージ全体の再編は今回のACG実装では行わない。
+
+共通EnumとUI専用Enumの最終的なパッケージ構成は、AlfredCodeGeneratorのGitHub Issue #8「設計書列用Enumのパッケージ構成を整理する」で別途検討する。
+
+Issue #8が未決の間、今回決定した配置を暫定的な正式配置として使用する。
+
+## 2. Injectableのroot提供有無
+
+`AcgClassModel` では、Injectableであるかどうかと、root提供するかどうかを分離して表現する。
+
+以下の2項目を持つ方針とする。
+
+```text
+isInjectable
+providedInRoot
+```
+
+UI Form DTOは以下とする。
+
+```text
+isInjectable = true
+providedInRoot = false
+```
+
+生成結果：
+
+```ts
+@Injectable()
+export class Bru1001Dto {
+  // ...
+}
+```
+
+DAO等、従来どおりroot提供するクラスは以下とする。
+
+```text
+isInjectable = true
+providedInRoot = true
+```
+
+生成結果：
+
+```ts
+@Injectable({ providedIn: 'root' })
+export class XxxDao {
+  // ...
+}
+```
+
+これにより、`isInjectable=true` の場合に必ず `providedIn: 'root'` を生成する現行仕様を変更し、UI Form DTOをComponentスコープDIで利用できるようにする。
+
+## 3. TypeScriptTypeEnum.ENUMのTypeScript型
+
+`TypeScriptTypeEnum.ENUM` は固定のTypeScript型名を持たない。
+
+画面設計書では、実際のTypeScript型は `Enum型` 列から取得する。
+
+例：
+
+```text
+型=Enum
+Enum型=AppCodeMatchTypeEnum
+```
+
+生成側では以下を使用する。
+
+```ts
+FormControl<Nullable<AppCodeMatchTypeEnum>>
+```
+
+`Nullable<T>` はBruce共通のグローバル型として `src/global.d.ts` に定義し、ACGはimportを生成しない。
+
+`ENUM` に対して共通処理から固定のTypeScript型名を取得しようとした場合、ACGは推測値を返さずFail Fastで停止する。
+
+つまり、`ENUM` の実型解決は `Enum型` 列を解釈できる処理の責務とする。
+
+## 4. 日付・日時のデフォルト値
+
+`形式=日付` / `形式=日時` は、任意の固定文字列をデフォルト値として許可しない。
+
+許可する組み合わせは以下のみとする。
+
+```text
+形式=日付
+デフォルト=-
+→ ''
+
+形式=日付
+デフォルト=SYSTEM_DATE
+→ AppDateUtil.getSysDateIso8601()
+
+形式=日時
+デフォルト=-
+→ ''
+
+形式=日時
+デフォルト=SYSTEM_DATETIME
+→ AppDateUtil.getSysDateTimeUtcIso8601()
+```
+
+以下は不正とする。
+
+```text
+形式=日付
+デフォルト=2026-10-16
+→ Exception
+
+形式=日時
+デフォルト=2026-10-16T06:24:00.000Z
+→ Exception
+```
+
+`形式=日付` / `形式=日時` に対して、`-` または対応する予約語以外が指定された場合、ACGは自動補正せずFail Fastで停止する。
+
+一般の `型=文字列` に対する「任意文字列をデフォルト値として指定可能」というルールは維持するが、`形式=日付` / `形式=日時` はこの一般ルールの対象外とする。
+
+## 実装対象
+
+今回のACG実装修正では、上記4点を既存のPhase2確定仕様と合わせて実装する。
+
+生成済みファイルを直接修正せず、ACG本体・設計書解析・内部モデル・コード生成・仕様チェック・テストを修正対象とする。
+
+<!-- MIGRATION-SOURCE-END 01_ai-document/議事録バックアップ/phase2_ACG実装追加方針_決定.md -->
+
+</details>
+
+<details>
+<summary>原典全文：phase2_ACG形式チェック_決定.md（2026-10-16承認済み記録）</summary>
+
+<!-- MIGRATION-SOURCE-BEGIN 01_ai-document/議事録バックアップ/phase2_ACG形式チェック_決定.md -->
+# Phase2 ACG形式チェック 決定
+
+> 状態：設計承認済み  
+> 更新日：2026-10-16
+
+## 形式チェック
+
+画面設計書の `形式` は以下の6種類とする。
+
+```text
+半角数字
+半角英数字
+半角英数字記号
+正規表現
+日付
+日時
+```
+
+`日付` / `日時` は `型=文字列` と組み合わせ、文字種は `-` とする。
+
+```text
+型=文字列 / 文字種=- / 形式=日付
+型=文字列 / 文字種=- / 形式=日時
+```
+
+日付・日時の具体的な表示形式は固定せず、表示時にロケールに応じて決定する。
+
+## ASCII文字列の形式
+
+`文字種=ASCII` の場合は、以下のいずれかの形式を指定する。
+
+```text
+半角数字
+半角英数字
+半角英数字記号
+正規表現
+```
+
+`文字種=ASCII / 形式=-` は使用しない。
+
+## 半角英数字記号
+
+`半角英数字記号` は、半角英字・半角数字・半角記号に加えて、**半角スペースを許可する**。
+
+許可範囲はASCIIの印字可能文字と半角スペースとする。
+
+```text
+半角スペース ～ ~
+```
+
+したがって、以下のような値を許可する。
+
+```text
+masahiro ariji
+ABC-123
+test_user
+abc@example.com
+```
+
+形式チェック自体は半角スペースを許可する。スペースのみの値を必須項目として許可するかどうかは、形式チェックではなく必須チェックの責務とする。
+
+## 正規表現
+
+上記の定義よりさらに限定した入力規則が必要な場合は `形式=正規表現` を使用し、画面設計書の `正規表現` 列で個別指定する。
+
+<!-- MIGRATION-SOURCE-END 01_ai-document/議事録バックアップ/phase2_ACG形式チェック_決定.md -->
+
+</details>
+
+<details>
+<summary>原典全文：phase2_ACG必須チェック_空白文字列_決定.md（2026-10-16承認済み記録）</summary>
+
+<!-- MIGRATION-SOURCE-BEGIN 01_ai-document/議事録バックアップ/phase2_ACG必須チェック_空白文字列_決定.md -->
+# Phase2 ACG必須チェック 空白文字列 決定
+
+> 状態：設計承認済み  
+> 承認日：2026-10-16
+
+## 決定内容
+
+文字列項目で `必須=〇` の場合、半角スペースのみの文字列は必須チェックNGとする。
+
+期待する判定は以下。
+
+```text
+null        → NG
+""          → NG
+" "         → NG
+"   "       → NG
+"abc"       → OK
+"abc def"   → OK
+```
+
+## 責務分離
+
+`形式=半角英数字記号` では半角スペースの入力自体を許可する。
+
+一方、スペースのみの値が必須項目として有効かどうかは `形式` の責務ではなく `必須` の責務とする。
+
+したがって、以下は両立する。
+
+```text
+形式=半角英数字記号
+→ 半角スペースを含む文字列を許可
+
+必須=〇
+→ trim後に空文字となる値はNG
+```
+
+## Angular標準Validatorとの違い
+
+Angular標準の `Validators.required` は、スペースだけの文字列を空とは判定しない。
+
+そのため、文字列型の必須チェックは、trim後に空文字かどうかを判定できる必須Validatorを使用する。
+
+具体的な共通Validatorのクラス名・メソッド名は別途実装設計で決定する。
+
+## 型ごとの必須チェック
+
+```text
+文字列 + 必須=〇
+→ trim後の空文字もNGとする必須チェック
+
+数値 + 必須=〇
+→ Validators.required 相当
+
+Enum + 必須=〇
+→ Validators.required 相当
+
+真偽 + 必須(真偽)=〇
+→ Validators.requiredTrue 相当
+```
+
+ACGは画面設計書の型に応じて適切な必須チェックを生成する。
+
+<!-- MIGRATION-SOURCE-END 01_ai-document/議事録バックアップ/phase2_ACG必須チェック_空白文字列_決定.md -->
+
+</details>
+
+<details>
+<summary>原典全文：phase2_Nullable型_決定.md（2026-10-16承認済み記録）</summary>
+
+<!-- MIGRATION-SOURCE-BEGIN 01_ai-document/議事録バックアップ/phase2_Nullable型_決定.md -->
+# Phase2 Nullable型 決定
+
+> 状態：設計承認済み  
+> 承認日：2026-10-16
+
+## 決定内容
+
+Bruceでは、TypeScriptで `null` を許容する型を表現する際、`A | null` を直接記述せず、共通型エイリアス `Nullable<T>` を使用する。
+
+```ts
+type Nullable<T> = T | null;
+```
+
+以下は同じ型を表す。
+
+```ts
+AppCodeMatchStatusEnum | null
+```
+
+```ts
+Nullable<AppCodeMatchStatusEnum>
+```
+
+`Nullable<T>` は型表記を統一するための型エイリアスであり、TypeScript上のnull許容の意味や型安全性は変更しない。
+
+## 共通型の配置
+
+Bruceの `src/global.d.ts` に以下を定義する。
+
+```ts
+type Nullable<T> = T | null;
+```
+
+`global.d.ts` はモジュール化せず、`import` / `export` を記述しない。
+
+これにより、Bruce配下のTypeScriptソースでは `Nullable<T>` をimportせずに使用可能とする。
+
+## 適用方針
+
+BruceおよびACG生成ソースでは、null許容型を原則以下の形式で表現する。
+
+```text
+A | null
+↓
+Nullable<A>
+```
+
+対象例：
+
+```ts
+Nullable<number>
+Nullable<boolean>
+Nullable<Uint8Array>
+Nullable<AppCodeMatchStatusEnum>
+```
+
+FormControlでも同様とする。
+
+```ts
+FormControl<Nullable<AppCodeMatchStatusEnum>>
+```
+
+メソッド引数・戻り値・変数・プロパティなど、型として `A | null` を表現する箇所でも `Nullable<A>` を使用する。
+
+## ACG方針
+
+ACGが生成するTypeScriptコードでは、null許容型を `A | null` ではなく `Nullable<A>` として生成する。
+
+`Nullable<T>` はBruceのグローバル型であるため、ACGは `Nullable` 用のimportを生成しない。
+
+生成済みファイルを直接修正せず、ACG本体の型生成処理を修正する。
+
+## 注意事項
+
+`Nullable<T>` は `T | null` の別名であり、nullそのものを禁止・除去する仕組みではない。
+
+そのため、nullが存在し得る箇所では従来どおりnullチェックまたは型の絞り込みが必要となる。
+
+また、`undefined` は `Nullable<T>` の対象外とする。
+
+<!-- MIGRATION-SOURCE-END 01_ai-document/議事録バックアップ/phase2_Nullable型_決定.md -->
+
+</details>
