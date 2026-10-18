@@ -11,7 +11,10 @@ ComponentBaseを単一基底にする方向で合意。FormControlComponentBase�
 ## 3.3.1 単一ComponentBaseの継承・Input仕様を最終確定
 
 - **作業**：未着手／**設計**：方針合意／**実装**：未着手／**検証**：未検証
-- **議論・決定内容**：上記の中区分の引継ぎ内容を参照する。新しい技術的決定は追加していない。
+- **具体的な対象**：単一ComponentBaseの継承・Input仕様を最終確定。ComponentBaseを単一基底にする方向で合意。FormControlComponentBaseとの整合・Angular Input継承制約は検証が必要。
+- **必要な確認・判断**：既存FormControlComponentBase／Angular継承制約を確認。未確定の方式は既存ソースや原典を確認してから比較・承認する。
+- **成果・完了条件**：既存規則・対象Component・利用側の影響と検証方法を記録する。未着手の工程であり、実装済み・承認済みとは扱わない。
+- **状態**：作業=未着手、設計=方針合意、実装=未着手、検証=未検証。
 - **次の作業**：既存FormControlComponentBase／Angular継承制約を確認
 - **原典**：[phase3_UIデザインシステム標準化_議論記録.md](議事録バックアップ/phase3_UIデザインシステム標準化_議論記録.md)
 
