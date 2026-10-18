@@ -52,6 +52,40 @@
 
 
 
+### 旧Phase 3の補足・変更履歴（原典転記）
+
+> [旧Phase 3議事録](議事録バックアップ/phase3_UIデザインシステム標準化_議論記録.md)の調査・運用履歴。2026-10-15時点の情報であり、現行実装の保証や最終設計承認とは区別する。
+
+### フェーズ3：UIデザインシステム標準化 — 議論記録
+
+> **状態：議論途中の保存版（未実装・未最終承認）**  
+> 記録日：2026-10-15  
+> 対象：`soracity/bruce` / `brf9020-shared-components`  
+> この文書は議論の継続性を確保するための記録。実装指示ではない。
+
+#### 共通コンポーネントの開発方針（追加決定：2026-10-15）
+
+- **AndroidとiPhoneの両方で、見た目が崩れず美しく表示されること。** 画面サイズ、セーフエリア、文字サイズ、タッチ操作、OS間の描画差を考慮し、両プラットフォームで表示確認する。
+- **デザインはTailwind CSSとDaisyUIをベースとすること。** 共通部品のスタイルは原則として両者のユーティリティ・コンポーネント・テーマを活用し、個別CSSの追加は必要性を検討してから行う。
+
+※上記2項目はユーザーが明示的に追加した開発方針。具体的なテスト端末・対応OSバージョン・例外的なCSSの運用は今後決める。
+
+
+
+#### 7. 対象コンポーネントと現行整理
+
+**2026-10-15決定**：`ToggleButtonComponent` は古いため開発対象から除外。`bruce` の `feature/feature-20261015` ブランチで `brf9020-shared-components/toggleButton/components/` の4ファイルを削除（commit `5b2800c`）。別の `brf9014-shared-components` 配下は削除対象外。
+
+- 通常UI：Alert / Button / Date / Fab / Group / Radio / Textbox / Toggle（ToggleButtonは旧式のため除外）。
+- Table：TableContainerLayout / TableRecord / TableRow / TableCell。
+- Swipe：SwipeDirective。
+- Layout：LayoutItem / ItemStackLayout / LayoutSpan。
+- `component-base`、`component-test`、`apidoc` は通常のUI部品一覧とは分けて扱う。
+
+対象数の分類や属性適用範囲は、最新ソースと照合して最終確定する。
+
+
+
 ## 3.1.2 Android・iPhone共通表示品質の検査観点を確定
 
 - **作業**：未着手／**設計**：方針合意／**実装**：未着手／**検証**：未検証
