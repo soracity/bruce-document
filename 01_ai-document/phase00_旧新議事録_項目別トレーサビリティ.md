@@ -411,3 +411,134 @@
 | [191–191](議事録バックアップ/phase1_共通コンポーネント調査.md#L191-L191) | 調査成果物と未確認事項：- 角丸OFF時の表示は追加確認が必要。 | 2026-10-15調査／方針 | [1.1.2](phase1_01_既存資産棚卸し.md) | 一致 | 不要 |
 | [192–192](議事録バックアップ/phase1_共通コンポーネント調査.md#L192-L192) | 調査成果物と未確認事項：- ビルド・実機表示確認は本書作成時には実施していない。 | 2026-10-15調査／方針 | [1.1.2](phase1_01_既存資産棚卸し.md) | 一致 | 不要 |
 | [195–195](議事録バックアップ/phase1_共通コンポーネント調査.md#L195-L195) | 変更管理：本書は復元記録に現行ソースの一次調査結果を追記したもの。調査結果は仕様変更の承認を意味しない。未決事項は後続フェーズで議論する。 | 2026-10-15調査／方針 | [1.1.2](phase1_01_既存資産棚卸し.md) | 一致 | 不要 |
+
+## 項目対応表（旧Phase 2：責務・Form・Domain／前半）
+
+| 旧原典行 | 事項・コード例等の抜粋 | 原典状態 | 新工程小区分 | 判定 | 修正・確認 |
+|---|---|---|---|---|---|
+| [L9–9](議事録バックアップ/phase2_UI設計思想と責務.md#L9-L9) | フェーズ1で確認した現行共通コンポーネントを前提に、画面・共通Component・Layout・Application・Domain・Infrastructureの責務境界を明確にする。 | 調査・検討記録 | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L11–11](議事録バックアップ/phase2_UI設計思想と責務.md#L11-L11) | このフェーズでは「どこに何を書くか」を決める。色・角丸・影などの具体的なデザインシステム標準化はフェーズ3で扱う。 | 調査・検討記録 | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L15–23](議事録バックアップ/phase2_UI設計思想と責務.md#L15-L23) | \| 領域 \| 主な責務 \| 原則として持たせない責務 \| \|---\|---\|---\| \| UI（画面Component） \| 画面表示、ユーザー操作受付、画面固有の表示制 | 調査・検討記録 | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L27–41](議事録バックアップ/phase2_UI設計思想と責務.md#L27-L41) | ```text ユーザー操作     ↓ 画面Component     ↓ FormGroup / DTO     ↓ Application     ↓ Domain     ↓ Rep | 提案・未承認 | [2.7.1](phase2_07_UI・Domain境界.md) | 一致 | 不要 |
+| [L43–43](議事録バックアップ/phase2_UI設計思想と責務.md#L43-L43) | 取得結果は逆方向に戻し、最終的な表示判断を画面Componentが行う。 | 提案・未承認 | [2.7.1](phase2_07_UI・Domain境界.md) | 一致 | 不要 |
+| [L45–45](議事録バックアップ/phase2_UI設計思想と責務.md#L45-L45) | 共通Componentはこの縦方向の業務フローには入らず、画面ComponentとFormControlの間にある再利用可能なUI部品として扱う。 | 提案・未承認 | [2.7.1](phase2_07_UI・Domain境界.md) | 一致 | 不要 |
+| [L47–51](議事録バックアップ/phase2_UI設計思想と責務.md#L47-L51) | ```text 画面Component     ├─ FormControl ── 共通入力Component     └─ イベント  ←── 共通Component ``` | 提案・未承認 | [2.7.1](phase2_07_UI・Domain境界.md) | 一致 | 不要 |
+| [L55–55](議事録バックアップ/phase2_UI設計思想と責務.md#L55-L55) | Validationは種類で分ける。 | 提案・未承認 | [2.6.3](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L59–59](議事録バックアップ/phase2_UI設計思想と責務.md#L59-L59) | 画面入力として機械的に判定できるものを担当する。 | 提案・未承認 | [2.6.3](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L61–61](議事録バックアップ/phase2_UI設計思想と責務.md#L61-L61) | - required | 提案・未承認 | [2.6.3](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L62–62](議事録バックアップ/phase2_UI設計思想と責務.md#L62-L62) | - 文字数 | 提案・未承認 | [2.6.3](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L63–63](議事録バックアップ/phase2_UI設計思想と責務.md#L63-L63) | - 数値形式 | 提案・未承認 | [2.6.3](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L64–64](議事録バックアップ/phase2_UI設計思想と責務.md#L64-L64) | - 日付形式 | 提案・未承認 | [2.6.3](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L65–65](議事録バックアップ/phase2_UI設計思想と責務.md#L65-L65) | - 入力可能範囲など、画面入力として完結する制約 | 提案・未承認 | [2.6.3](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L69–69](議事録バックアップ/phase2_UI設計思想と責務.md#L69-L69) | テニスの意味を理解しないと判定できないものを担当する。 | 提案・未承認 | [2.6.3](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L71–71](議事録バックアップ/phase2_UI設計思想と責務.md#L71-L71) | 例： | 提案・未承認 | [2.6.3](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L73–73](議事録バックアップ/phase2_UI設計思想と責務.md#L73-L73) | - ポイント・ゲーム・セットの状態遷移が成立するか | 提案・未承認 | [2.6.3](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L74–74](議事録バックアップ/phase2_UI設計思想と責務.md#L74-L74) | - 試合状態として矛盾していないか | 提案・未承認 | [2.6.3](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L75–75](議事録バックアップ/phase2_UI設計思想と責務.md#L75-L75) | - 戦術・スタッツ上の業務ルール | 提案・未承認 | [2.6.3](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L77–77](議事録バックアップ/phase2_UI設計思想と責務.md#L77-L77) | 同じ条件を画面とDomainの双方へ重複実装しないことを原則とする。 | 提案・未承認 | [2.6.3](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L81–81](議事録バックアップ/phase2_UI設計思想と責務.md#L81-L81) | 共通Componentは「再利用可能なUI部品」に限定する。 | 提案・未承認 | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L83–83](議事録バックアップ/phase2_UI設計思想と責務.md#L83-L83) | 例えばTextboxComponentは、値の表示・入力、FormControlとの接続、共通Validation表示などを担当してよい。一方、「この画面では試合名が必須だから保存不可」とい | 提案・未承認 | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L85–85](議事録バックアップ/phase2_UI設計思想と責務.md#L85-L85) | ButtonComponentもクリックを親へ通知するところまでとし、保存ApplicationServiceを直接呼び出さない。 | 提案・未承認 | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L87–87](議事録バックアップ/phase2_UI設計思想と責務.md#L87-L87) | この境界により、同じ共通Componentを別画面や将来の機能でも再利用できる状態を維持する。 | 提案・未承認 | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L91–91](議事録バックアップ/phase2_UI設計思想と責務.md#L91-L91) | Layoutは配置だけを担当する。 | 提案・未承認 | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L93–93](議事録バックアップ/phase2_UI設計思想と責務.md#L93-L93) | - 横並び / 縦積み | 提案・未承認 | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L94–94](議事録バックアップ/phase2_UI設計思想と責務.md#L94-L94) | - gap | 提案・未承認 | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L95–95](議事録バックアップ/phase2_UI設計思想と責務.md#L95-L95) | - 必要なレスポンシブ配置 | 提案・未承認 | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L96–96](議事録バックアップ/phase2_UI設計思想と責務.md#L96-L96) | - 子要素の配置比率（採用する場合） | 提案・未承認 | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L98–98](議事録バックアップ/phase2_UI設計思想と責務.md#L98-L98) | 以下はLayoutに持たせない。 | 提案・未承認 | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L100–100](議事録バックアップ/phase2_UI設計思想と責務.md#L100-L100) | - FormControl | 提案・未承認 | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L101–101](議事録バックアップ/phase2_UI設計思想と責務.md#L101-L101) | - disabled判定 | 提案・未承認 | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L102–102](議事録バックアップ/phase2_UI設計思想と責務.md#L102-L102) | - ラベルやメッセージ | 提案・未承認 | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L103–103](議事録バックアップ/phase2_UI設計思想と責務.md#L103-L103) | - Application呼び出し | 提案・未承認 | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L104–104](議事録バックアップ/phase2_UI設計思想と責務.md#L104-L104) | - テニス業務ルール | 提案・未承認 | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L106–106](議事録バックアップ/phase2_UI設計思想と責務.md#L106-L106) | フェーズ1で判明した `LayoutItem` の「折り返し有無」「子を均等幅にするか」は、この責務原則の中で別途決定する。 | 提案・未承認 | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L112–112](議事録バックアップ/phase2_UI設計思想と責務.md#L112-L112) | `BRU1001`では、UI側の`Bru1001Dto`がACGによる自動生成クラスとなっており、`FormGroup`と各`FormControl`の型・初期値・disabled・Angu | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L114–114](議事録バックアップ/phase2_UI設計思想と責務.md#L114-L114) | 現行画面Componentは`readonly dto = new Bru1001Dto()`、`readonly controls = this.dto.formGroup.control | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L116–116](議事録バックアップ/phase2_UI設計思想と責務.md#L116-L116) | HTML側では`@let ctrls = dto.formGroup.controls;`としてテンプレート内だけの短縮名を定義し、共通入力Componentへ`[control]="ctr | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L118–118](議事録バックアップ/phase2_UI設計思想と責務.md#L118-L118) | 一方、Application層の`Bra1001SaveMatchInfoReqDto`は`FormControl`を持たないreadonlyの値DTOであり、UIのReactive For | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L120–120](議事録バックアップ/phase2_UI設計思想と責務.md#L120-L120) | 現行`Bru1001Component`では、画面初期化・Application Service呼び出し・FormGroupへのpatchValue・保存用DTOへの変換に加え、サーブ順やリ | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L124–124](議事録バックアップ/phase2_UI設計思想と責務.md#L124-L124) | 同じ「DTO」という名称でも責務を明確に分ける。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L126–129](議事録バックアップ/phase2_UI設計思想と責務.md#L126-L129) | \| 種類 \| 例 \| 責務 \| 持たせないもの \| \|---\|---\|---\|---\| \| UI Form DTO \| `Bru1001Dto` \| FormGro | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L131–131](議事録バックアップ/phase2_UI設計思想と責務.md#L131-L131) | 現行の`Bru1001Dto`のように画面設計書からFormGroupをACG生成する方向は、UI Form DTOとして責務を限定する限り整合性が高い。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L135–135](議事録バックアップ/phase2_UI設計思想と責務.md#L135-L135) | 画面ComponentはUIのオーケストレーターとする。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L137–137](議事録バックアップ/phase2_UI設計思想と責務.md#L137-L137) | - UI Form DTOをComponentスコープDIで取得する。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L138–138](議事録バックアップ/phase2_UI設計思想と責務.md#L138-L138) | - FormControlを共通Componentへ渡すためのデータ元を提供する。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L139–139](議事録バックアップ/phase2_UI設計思想と責務.md#L139-L139) | - TypeScript側では記述簡略化だけを目的とした`controls`別名を持たない。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L140–140](議事録バックアップ/phase2_UI設計思想と責務.md#L140-L140) | - HTML側で必要に応じて`@let ctrls = dto.formGroup.controls;`を定義し、テンプレート内の参照を簡潔にする。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L141–141](議事録バックアップ/phase2_UI設計思想と責務.md#L141-L141) | - ルートパラメータ・画面初期化・表示/非表示など画面固有状態を扱う。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L142–142](議事録バックアップ/phase2_UI設計思想と責務.md#L142-L142) | - ユーザーイベントを受けてApplication Serviceを呼び出す。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L143–143](議事録バックアップ/phase2_UI設計思想と責務.md#L143-L143) | - UI Form DTOとApplication DTOの境界で値を変換する。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L144–144](議事録バックアップ/phase2_UI設計思想と責務.md#L144-L144) | - Applicationから返った値をFormGroupへ反映する。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L146–146](議事録バックアップ/phase2_UI設計思想と責務.md#L146-L146) | ただし、テニスの意味に依存するルールそのものは画面Componentに置かない。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L150–161](議事録バックアップ/phase2_UI設計思想と責務.md#L150-L161) | \| 現行処理 \| 基本的な配置先 \| \|---\|---\| \| `matchId`のルート取得、初期表示 \| 画面Component \| \| `FormGroup.valu | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L163–163](議事録バックアップ/phase2_UI設計思想と責務.md#L163-L163) | 画面上の利便性のための処理と、保存される試合データの正しさを保証する業務ルールを区別する。後者はUIを経由しない処理から呼ばれても成立する必要があるため、Domain側へ置く。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L167–184](議事録バックアップ/phase2_UI設計思想と責務.md#L167-L184) | ```text 共通Component       ⇅ FormControl 画面Component       ⇅ UI Form DTO（FormGroup）       │ 値を取り | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L186–186](議事録バックアップ/phase2_UI設計思想と責務.md#L186-L186) | Application Serviceへ`FormGroup`や`FormControl`を渡さない。DomainにもAngular依存を持ち込まない。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L188–188](議事録バックアップ/phase2_UI設計思想と責務.md#L188-L188) | Infrastructure側にDAO/DB用DTOが存在する場合、それはApplication DTOとは別責務とし、Repository/Infrastructure境界で変換する。画面 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L192–192](議事録バックアップ/phase2_UI設計思想と責務.md#L192-L192) | - UI Form DTOは画面設計書から生成してよい。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L193–193](議事録バックアップ/phase2_UI設計思想と責務.md#L193-L193) | - 型、初期値、disabled初期状態、Angular Validatorsは生成対象にできる。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L194–194](議事録バックアップ/phase2_UI設計思想と責務.md#L194-L194) | - テニス業務ルールを生成UI DTOへ埋め込まない。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L195–195](議事録バックアップ/phase2_UI設計思想と責務.md#L195-L195) | - Application DTOはユースケース契約としてUI Form DTOとは別生成物にする。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L196–196](議事録バックアップ/phase2_UI設計思想と責務.md#L196-L196) | - 自動生成ファイルを直接修正せず、変更が必要な場合は設計書またはACG生成処理を変更する。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L198–198](議事録バックアップ/phase2_UI設計思想と責務.md#L198-L198) | この整理により、FormGroup生成とDDDの責務分離を両立する。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L202–202](議事録バックアップ/phase2_UI設計思想と責務.md#L202-L202) | UI Form DTOの表現は次の候補を比較する。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L204–209](議事録バックアップ/phase2_UI設計思想と責務.md#L204-L209) | \| 方式 \| 例 \| 評価 \| \|---\|---\|---\| \| A. `class`が`formGroup`を保持 \| `class Bru1001Dto { formG | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L211–211](議事録バックアップ/phase2_UI設計思想と責務.md#L211-L211) | フェーズ2の推奨案は **A：UI Form DTOを通常のclassとして生成し、そのプロパティとしてFormGroupを保持する方式を継続** とする。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L213–213](議事録バックアップ/phase2_UI設計思想と責務.md#L213-L213) | 画面側のDTO取得は次の形を採用する。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L215–217](議事録バックアップ/phase2_UI設計思想と責務.md#L215-L217) | ```ts readonly dto = inject(Bru1001Dto); ``` | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L219–219](議事録バックアップ/phase2_UI設計思想と責務.md#L219-L219) | HTMLでは次の形とする。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L221–223](議事録バックアップ/phase2_UI設計思想と責務.md#L221-L223) | ```html @let ctrls = dto.formGroup.controls; ``` | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L225–225](議事録バックアップ/phase2_UI設計思想と責務.md#L225-L225) | UI Form DTOに独自の業務メソッドを追加してDomainオブジェクト化することはしない。FormGroup定義・初期値・入力ValidationというUI状態定義に責務を限定する。 | 調査・検討記録 | [2.6.4](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L229–230](議事録バックアップ/phase2_UI設計思想と責務.md#L229-L230) | > 状態：**設計承認済み / 実装未着手**   > 承認日：2026-10-15 | 設計承認済み | [2.6.1](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L234–234](議事録バックアップ/phase2_UI設計思想と責務.md#L234-L234) | UI Form DTOはDIで取得する。ただしアプリ全体のシングルトンにはせず、**画面Component単位のインスタンス**とする。 | 設計承認済み | [2.6.1](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L236–236](議事録バックアップ/phase2_UI設計思想と責務.md#L236-L236) | `Bru1001Dto`のFormGroupは画面固有状態であるため、`providedIn: 'root'`によるアプリ全体共有は行わない。 | 設計承認済み | [2.6.1](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L238–238](議事録バックアップ/phase2_UI設計思想と責務.md#L238-L238) | 想定形： | 設計承認済み | [2.6.1](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L240–247](議事録バックアップ/phase2_UI設計思想と責務.md#L240-L247) | ```ts @Injectable() export class Bru1001Dto {   readonly formGroup = new FormGroup({     // ... | 設計承認済み | [2.6.1](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L249–257](議事録バックアップ/phase2_UI設計思想と責務.md#L249-L257) | ```ts @Component({   // ...   providers: [Bru1001Dto], }) export class Bru1001Component {   rea | 設計承認済み | [2.6.1](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L261–261](議事録バックアップ/phase2_UI設計思想と責務.md#L261-L261) | 1. ACGが生成するUI Form DTOの`@Injectable({ providedIn: 'root' })`を、root提供しない形へ変更する。 | 設計承認済み | [2.6.1](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L262–262](議事録バックアップ/phase2_UI設計思想と責務.md#L262-L262) | 2. `Bru1001Component`の`providers`へ`Bru1001Dto`を登録する。 | 設計承認済み | [2.6.1](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L263–263](議事録バックアップ/phase2_UI設計思想と責務.md#L263-L263) | 3. `readonly dto = new Bru1001Dto();`を`readonly dto = inject(Bru1001Dto);`へ変更する。 | 設計承認済み | [2.6.1](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L264–264](議事録バックアップ/phase2_UI設計思想と責務.md#L264-L264) | 4. 記述簡略化だけを目的とする`readonly controls = this.dto.formGroup.controls;`を廃止する。 | 設計承認済み | [2.6.1](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L265–265](議事録バックアップ/phase2_UI設計思想と責務.md#L265-L265) | 5. HTMLで`@let ctrls = dto.formGroup.controls;`を定義し、`ctrls.xxx`で参照する。 | 設計承認済み | [2.6.1](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L266–266](議事録バックアップ/phase2_UI設計思想と責務.md#L266-L266) | 6. 同種のUI Form DTOについても、画面固有状態を持つものは同じComponentスコープDI方針を適用する。 | 設計承認済み | [2.6.1](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L270–270](議事録バックアップ/phase2_UI設計思想と責務.md#L270-L270) | - FormGroupのライフサイクルを画面Componentのライフサイクルと一致させる。 | 設計承認済み | [2.6.1](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L271–271](議事録バックアップ/phase2_UI設計思想と責務.md#L271-L271) | - 画面を開き直した場合や複数画面インスタンスでForm状態を意図せず共有しない。 | 設計承認済み | [2.6.1](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L272–272](議事録バックアップ/phase2_UI設計思想と責務.md#L272-L272) | - DTO生成方法をDIへ統一しつつ、画面状態をシングルトン化しない。 | 設計承認済み | [2.6.1](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L273–273](議事録バックアップ/phase2_UI設計思想と責務.md#L273-L273) | - テスト時に画面単位でUI Form DTOを差し替えやすくする。 | 設計承認済み | [2.6.1](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L277–279](議事録バックアップ/phase2_UI設計思想と責務.md#L277-L279) | ```ts @Injectable({ providedIn: 'root' }) ``` | 設計承認済み | [2.6.1](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L281–281](議事録バックアップ/phase2_UI設計思想と責務.md#L281-L281) | によるUI Form DTOのシングルトン化は採用しない。 | 設計承認済み | [2.6.1](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L283–283](議事録バックアップ/phase2_UI設計思想と責務.md#L283-L283) | また、画面Componentからの直接生成： | 設計承認済み | [2.6.1](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L285–287](議事録バックアップ/phase2_UI設計思想と責務.md#L285-L287) | ```ts readonly dto = new Bru1001Dto(); ``` | 設計承認済み | [2.6.1](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L289–289](議事録バックアップ/phase2_UI設計思想と責務.md#L289-L289) | も今後の方針としては採用しない。 | 設計承認済み | [2.6.1](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L291–291](議事録バックアップ/phase2_UI設計思想と責務.md#L291-L291) | ※本Issueは設計承認の記録であり、このコミットではアプリケーションソースおよびACGソースを変更しない。 | 設計承認済み | [2.6.1](phase2_06_DTO・Form・Validation.md) | 一致 | 不要 |
+| [L295–295](議事録バックアップ/phase2_UI設計思想と責務.md#L295-L295) | - 画面実装は既存の共通コンポーネントを優先して利用する。 | 調査・検討記録 | [2.8.1](phase2_08_AI実装制約.md) | 一致 | 不要 |
+| [L296–296](議事録バックアップ/phase2_UI設計思想と責務.md#L296-L296) | - 画面の入力状態はAngularの`FormGroup` / `FormControl`で扱う。 | 調査・検討記録 | [2.8.1](phase2_08_AI実装制約.md) | 一致 | 不要 |
+| [L297–297](議事録バックアップ/phase2_UI設計思想と責務.md#L297-L297) | - UI Form DTOはDIで取得し、Componentスコープで管理する。シングルトン化しない。 | 調査・検討記録 | [2.8.1](phase2_08_AI実装制約.md) | 一致 | 不要 |
+| [L298–298](議事録バックアップ/phase2_UI設計思想と責務.md#L298-L298) | - 親画面から共通入力コンポーネントへ既存の`FormControl`インスタンスを渡す。 | 調査・検討記録 | [2.8.1](phase2_08_AI実装制約.md) | 一致 | 不要 |
+| [L299–299](議事録バックアップ/phase2_UI設計思想と責務.md#L299-L299) | - 記述簡略化だけを目的とした`readonly controls = this.dto.formGroup.controls;`は画面Componentに定義しない。 | 調査・検討記録 | [2.8.1](phase2_08_AI実装制約.md) | 一致 | 不要 |
+| [L300–300](議事録バックアップ/phase2_UI設計思想と責務.md#L300-L300) | - HTMLでは`@let ctrls = dto.formGroup.controls;`を使用し、テンプレート内で`ctrls.xxx`として参照する。 | 調査・検討記録 | [2.8.1](phase2_08_AI実装制約.md) | 一致 | 不要 |
+| [L301–301](議事録バックアップ/phase2_UI設計思想と責務.md#L301-L301) | - ラベル・メッセージはキーで管理し、既存のラベルキーを優先して再利用する。 | 調査・検討記録 | [2.8.1](phase2_08_AI実装制約.md) | 一致 | 不要 |
+| [L302–302](議事録バックアップ/phase2_UI設計思想と責務.md#L302-L302) | - Enumは共通・画面単位で管理し、ACG（AlfredCodeGenerator）で生成する。 | 調査・検討記録 | [2.8.1](phase2_08_AI実装制約.md) | 一致 | 不要 |
+| [L303–303](議事録バックアップ/phase2_UI設計思想と責務.md#L303-L303) | - AIは自動生成されたEnumやその他の生成コードを直接編集しない。 | 調査・検討記録 | [2.8.1](phase2_08_AI実装制約.md) | 一致 | 不要 |
+| [L304–304](議事録バックアップ/phase2_UI設計思想と責務.md#L304-L304) | - 生成結果を変更する場合は生成元の定義・生成処理を見直す。 | 調査・検討記録 | [2.8.1](phase2_08_AI実装制約.md) | 一致 | 不要 |
+| [L305–305](議事録バックアップ/phase2_UI設計思想と責務.md#L305-L305) | - Layoutから子コンポーネントに画面固有CSSを注入しない。 | 調査・検討記録 | [2.8.1](phase2_08_AI実装制約.md) | 一致 | 不要 |
+| [L306–306](議事録バックアップ/phase2_UI設計思想と責務.md#L306-L306) | - 設計思想から外れる実装を、確認なく採用しない。 | 調査・検討記録 | [2.8.1](phase2_08_AI実装制約.md) | 一致 | 不要 |
+| [L310–311](議事録バックアップ/phase2_UI設計思想と責務.md#L310-L311) | > 状態：**設計承認済み**   > 承認日：2026-10-15 | 設計承認済み | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L315–315](議事録バックアップ/phase2_UI設計思想と責務.md#L315-L315) | 画面・LayoutManager・共通Componentの責務を次のように分離する。 | 設計承認済み | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L317–325](議事録バックアップ/phase2_UI設計思想と責務.md#L317-L325) | \| 層 \| 責務 \| \|---\|---\| \| 画面Component \| 何を表示するか、どの順番で置くか、データ・イベントの接続 \| \| ItemStackLayout | 設計承認済み | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L327–327](議事録バックアップ/phase2_UI設計思想と責務.md#L327-L327) | 基本原則は次のとおりとする。 | 設計承認済み | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L329–329](議事録バックアップ/phase2_UI設計思想と責務.md#L329-L329) | > **画面は「配置を記述」するが、「配置をCSSで実装」しない。** | 設計承認済み | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L331–331](議事録バックアップ/phase2_UI設計思想と責務.md#L331-L331) | 画面はLayoutManagerと共通Componentを組み合わせて画面構造を定義する。画面固有CSSによって、共通Componentの外部配置や内部デザインを変更しない。 | 設計承認済み | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L333–333](議事録バックアップ/phase2_UI設計思想と責務.md#L333-L333) | 許可する例： | 設計承認済み | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L335–346](議事録バックアップ/phase2_UI設計思想と責務.md#L335-L346) | ```html &lt;app-item-stack-layout>   &lt;app-layout-item>     &lt;app-textbox ... />     &lt;ap | 設計承認済み | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L348–348](議事録バックアップ/phase2_UI設計思想と責務.md#L348-L348) | 禁止する例： | 設計承認済み | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L350–354](議事録バックアップ/phase2_UI設計思想と責務.md#L350-L354) | ```html &lt;div class="flex gap-4 mt-3 w-full">   ... &lt;/div> ``` | 設計承認済み | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L356–359](議事録バックアップ/phase2_UI設計思想と責務.md#L356-L359) | ```html &lt;app-textbox class="w-1/2" ... /> &lt;app-textbox classContainer="m-4" ... /> ``` | 設計承認済み | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L361–361](議事録バックアップ/phase2_UI設計思想と責務.md#L361-L361) | 幅比率など、レイアウト上必要な指定はLayoutManagerが提供する仕組みを利用する。 | 設計承認済み | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L363–368](議事録バックアップ/phase2_UI設計思想と責務.md#L363-L368) | ```html &lt;app-layout-item>   &lt;app-textbox [appLayoutSpan]="70" ... />   &lt;app-textbox [a | 設計承認済み | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L372–372](議事録バックアップ/phase2_UI設計思想と責務.md#L372-L372) | `classContainer`、`classInput`、`classLabel`、`classSpan`等、画面側から共通Component内部へ任意CSSを注入するAPIは原則廃止する | 設計承認済み | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L374–374](議事録バックアップ/phase2_UI設計思想と責務.md#L374-L374) | - コンポーネントの外側配置はLayoutManagerが担当する。 | 設計承認済み | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L375–375](議事録バックアップ/phase2_UI設計思想と責務.md#L375-L375) | - コンポーネント内部の配置・見た目は共通Component自身が担当する。 | 設計承認済み | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L376–376](議事録バックアップ/phase2_UI設計思想と責務.md#L376-L376) | - 見た目の差分が必要な場合は、任意CSS文字列ではなく`variant`、`appearance`、`size`等の意味を持つ限定的なAPIを使用する。 | 設計承認済み | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L380–380](議事録バックアップ/phase2_UI設計思想と責務.md#L380-L380) | AIに画面実装を依頼する場合も、自由なCSSレイアウトを生成させず、既存のLayoutManagerと共通Componentを使用させる。 | 設計承認済み | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
+| [L382–382](議事録バックアップ/phase2_UI設計思想と責務.md#L382-L382) | これにより、AI生成コードでも画面間の一貫性と設計思想を維持する。 | 設計承認済み | [2.1.1](phase2_01_責務境界.md) | 一致 | 不要 |
