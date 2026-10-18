@@ -114,13 +114,6 @@ LayoutManagerはComponentに**どれだけの領域を与えるか**を決める
 
 上記は50:50。
 
-```html
-<app-layout-item>
-  <app-textbox ... />
-  <app-date ... />
-  <app-radio ... />
-</app-layout-item>
-```
 
 上記は3等分とする。
 
@@ -179,7 +172,6 @@ AIが画面を実装する場合も次を遵守する。
 - `appLayoutSpan`を使う場合は同一`LayoutItem`内の全兄弟へ明示し、合計100とする。
 - `appLayoutSpan`をCSSの`width:%`へ単純変換しない。
 - 画面Componentで`w-*`等のwidth系CSSを直接使って配置を調整しない。
-
 
 
 ### 旧再開サマリの工程別原文（2026-10-15の履歴）
@@ -301,14 +293,6 @@ LayoutItemが担当するのは `app-button` ホストへ割り当てる領域�
 
 ### 基本原則
 
-LayoutManagerはComponentに**どれだけの領域を与えるか**を決める。共通Componentは**与えられた領域の中でどう描画するか**を決める。画面ComponentはCSSで幅を直接決めない。
-
-| 対象 | 責務 |
-|---|---|
-| LayoutItem | 子Componentへ割り当てる横方向の領域を管理する |
-| LayoutSpan | LayoutItem内における子Componentの幅比率を指定する |
-| Textbox / Date / Radio / Button等 | LayoutManagerから与えられた領域内で自身を描画する |
-| 画面Component | 画面上意味のある比率だけをLayoutSpanで指定する。CSSのwidth系classを直接指定しない |
 
 ### Component内部の100%幅は許容する
 
@@ -334,7 +318,6 @@ input {
 
 Radio内部の選択肢を等幅にする等の処理はRadioComponent自身の内部レイアウト責務とする。
 
-Buttonについても、LayoutManagerは`app-button`ホストへ割り当てる領域までを担当し、内部のネイティブ`button`を全面幅にするか内容幅にするかはButtonComponentのデザイン責務とする。
 
 画面Componentから`w-full`等を注入して決定しない。
 
