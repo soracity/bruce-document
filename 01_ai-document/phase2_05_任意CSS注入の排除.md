@@ -270,6 +270,52 @@ AIが画面・共通Componentを実装する場合も次を遵守する。
 
 
 
+### 旧再開サマリの工程別原文（2026-10-15の履歴）
+
+> 以下は移行時点の原文であり、当時の提案や未決は現在の承認ではありません。後日の正式承認事項を優先してください。
+<!-- HISTORICAL-SUMMARY-SECTIONS: 1.5 -->
+
+#### 1.5 任意CSS注入APIの方針
+
+基本方針は合意済み。
+
+`classContainer`、`classInput`、`classLabel`、`classSpan`、`classButton`、`classRadioItem`、`classLabelSpan`、alert内部用class input等の、**画面側から任意CSS文字列を注入するAPIは原則廃止する方向**。
+
+理由：
+
+- 画面側が共通Component内部DOMを意識することになる。
+- Layout責務とComponent内部デザイン責務が混在する。
+- AIが独自CSSを注入して画面ごとの一貫性を崩しやすい。
+
+代替：
+
+- Component内部の固定スタイル
+- `variant`
+- `appearance`
+- `size`
+- `density`
+- `level`
+- `color`
+
+等、意味のある型付き・限定的なAPIを使う。
+
+##### 移行の方向性
+
+過去調査での推奨順：
+
+1. LayoutItemの幅・grow等の仕様決定
+2. ItemStackLayoutのdirection/gap/wrap/alignment決定
+3. textbox/date等の外側 `m-4` をLayout側へ移行
+4. textbox/date等の `w-full` をホスト幅＋内部input標準幅へ整理
+5. `classContainer` と専用外周divを削除
+6. 未使用class input削除
+7. その他任意class inputを段階削除
+8. groupのARIA・内部DOM整理
+9. radio/toggle内部DOM整理
+10. component-test / APIドキュメントをLayoutManager利用例へ更新
+
+---
+
 ## 2.5.2 現行のclass注入Inputと呼び出し箇所を棚卸し
 
 - **作業**：未着手／**設計**：検討中／**実装**：未確認／**検証**：未検証
