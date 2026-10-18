@@ -335,6 +335,110 @@ LayoutItemが担当するのは `app-button` ホストへ割り当てる領域�
 
 
 
+### 旧再開サマリの工程別原文（2026-10-15の履歴）
+
+> 以下は移行時点の原文であり、当時の提案や未決は現在の承認ではありません。後日の正式承認事項を優先してください。
+<!-- HISTORICAL-SUMMARY-SECTIONS: 1.7 -->
+
+#### 1.7 フェーズ2-2：幅の責務（2026-10-15時点の議論案・未承認）
+
+> **重要：以下はまだユーザー承認前。次回、この内容の承認判断から再開する。**
+
+##### 基本案
+
+幅を「割り当て幅」と「内部の消費幅」に分ける。
+
+| 対象 | 責務案 |
+|---|---|
+| LayoutItem | 子Componentへどれだけの横幅を割り当てるか |
+| LayoutSpan | LayoutItem内での幅比率 |
+| Textbox / Date / Radio等 | 与えられた幅の中で自分自身をどう描画するか |
+| 画面Component | 1:1、7:3等、意味のある配置指定のみ行う |
+
+##### 均等割り案
+
+`appLayoutSpan` を指定しない兄弟Componentは均等割りとする案。
+
+```html
+<app-layout-item>
+  <app-textbox ... />
+  <app-date ... />
+</app-layout-item>
+```
+
+上記を 1:1 とする。
+
+##### 比率指定案
+
+```html
+<app-layout-item>
+  <app-textbox [appLayoutSpan]="7" ... />
+  <app-date [appLayoutSpan]="3" ... />
+</app-layout-item>
+```
+
+上記を 7:3 とする。
+
+##### 混在禁止案
+
+比率指定する行では兄弟Componentすべてに `appLayoutSpan` を明示する。
+
+以下のような「指定あり・指定なし」の混在は禁止する案。
+
+```html
+<app-layout-item>
+  <app-textbox [appLayoutSpan]="7" ... />
+  <app-date ... />
+</app-layout-item>
+```
+
+理由：人間にもAIにも規則が明確で、挙動を予測しやすくするため。
+
+##### `w-full` の考え方
+
+画面側から以下のように指定しない。
+
+```html
+<app-textbox classInput="w-full" ... />
+```
+
+一方、Textbox内部のinputが
+
+```css
+input {
+  width: 100%;
+}
+```
+
+となることは許容する案。
+
+この `100%` は「画面全体の100%」ではなく、**LayoutManagerから割り当てられた領域の100%をComponent内部で消費する**という意味。
+
+##### Radio等の内部等幅
+
+Radioの選択肢を `flex-1` で等幅化する処理等は、Radio自身を成立させる内部デザインなのでComponent側に残す。
+
+LayoutItemが決める「Radio Component自体の割り当て幅」とは別責務。
+
+##### Button
+
+LayoutItemが担当するのは `app-button` ホストへ割り当てる領域まで。
+
+内部のネイティブ `<button>` が親幅いっぱいに広がるか、内容幅になるかはButtonComponentのデザイン責務とする案。
+
+画面側から `w-full` を注入して決めない。
+
+##### フェーズ2-2の次回確認事項
+
+次回はまず上記の幅責務案について、ユーザー承認を取る。
+
+承認された場合：
+
+- `phase2_UI設計思想と責務.md` に「承認済みIssue：幅の責務」として追記する。
+- その後フェーズ2-3「余白・gap・padding・marginの責務」へ進む。
+
+---
+
 ## 2.2.3 Layout外部割当幅と共通Component内部100%を分離
 
 - **作業**：完了／**設計**：承認済／**実装**：一部実装／**検証**：静的確認済
