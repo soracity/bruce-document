@@ -38,6 +38,122 @@ ACG／画面定義／生成物を整合させ、UI Form DTOのDI対応とCSS移�
 - **次の作業**：2.6.6〜2.6.14とACG／画面定義／生成結果を比較する
 - **原典**：[phase2_Nullable型_決定.md](議事録バックアップ/phase2_Nullable型_決定.md)、[phase2_TypeScriptTypeEnum_決定.md](議事録バックアップ/phase2_TypeScriptTypeEnum_決定.md)、[phase2_画面DTO項目_型別指定可能パターン_決定.md](議事録バックアップ/phase2_画面DTO項目_型別指定可能パターン_決定.md)、[phase2_ACG形式チェック_決定.md](議事録バックアップ/phase2_ACG形式チェック_決定.md)、[phase2_ACG必須チェック_空白文字列_決定.md](議事録バックアップ/phase2_ACG必須チェック_空白文字列_決定.md)、[phase2_ACGデフォルト値_決定.md](議事録バックアップ/phase2_ACGデフォルト値_決定.md)、[phase2_画面設計書_日付日時の形式列化_決定.md](議事録バックアップ/phase2_画面設計書_日付日時の形式列化_決定.md)、[phase2_UIヘッダー明細DTO分離_決定.md](議事録バックアップ/phase2_UIヘッダー明細DTO分離_決定.md)、[phase2_ACG実装追加方針_決定.md](議事録バックアップ/phase2_ACG実装追加方針_決定.md)、[phase2_phase3_20261017追記_再開情報.md](議事録バックアップ/phase2_phase3_20261017追記_再開情報.md)
 
+### 旧2026-10-17再開情報の詳細（復旧スナップショット）
+
+> [旧ACG/Bruce再開情報](議事録バックアップ/phase2_phase3_20261017追記_再開情報.md)を転記。**ロールバック・ブランチ情報は当時の事実**であり、現在のブランチ状態を保証しない。未承認の技術提案を承認済みに変更しない。
+
+#### 2. 2026-10-16〜17に発生した寄り道の経緯
+
+ACGで `Nullable<T>`、Enum型FormControl等の生成仕様を変更し、Bruceを再生成したところ、多数のビルドエラーが発生した。
+
+その後、Bruce側でビルドエラーを手修正していたが、修正途中で以下が同時に混在した。
+
+- Enum型になったFormControlへの対応
+- RadioComponentのFormControl型対応
+- ToggleComponentの値・checked・FormControl型対応
+- `eventKey` の型対応
+- UI Form DTOとApplication DTO間の変換
+- BRU1001 / BRU1002の画面ロジック修正
+
+その結果、単に「ビルドを通すための修正」と「本来共通ComponentやACG側で直すべき修正」が混ざり、設計上の正しさに自信を持てない状態になった。
+
+このため、個別エラーをそのまま潰し続けず、**いったん修正前へ戻して依存関係の順にやり直す**方針とした。
+
+---
+
+
+
+#### 3. Bruceのロールバック状態
+
+対象ブランチ：
+
+```text
+soracity/bruce
+feature/feature-20261015
+```
+
+ACG再生成・手修正後にバックアップとしてPUSHされていたコミット：
+
+```text
+1回目 869d16621ae325cfbc10cc7fe7c30c22d85f284d
+2回目 fbfa8698744ee930155393443ae0d4e430ea5faa
+3回目 8eb35d3da7a8e3570c0e368ddb548b66054718c3
+```
+
+2026-10-17、履歴を失わないように次のバックアップブランチを作成した。
+
+```text
+backup/pre-rollback-20261017
+```
+
+このバックアップブランチは、手修正途中の `8eb35d3...` を保持する。
+
+その後、`feature/feature-20261015` はACG再生成前のファイル状態へ戻した。
+
+ロールバックコミット：
+
+```text
+831b496036d8bc1f33ffe3f91fd81131b91b22bb
+revert: restore Bruce to pre-ACG-regeneration state
+```
+
+このコミットのツリーは、ACG再生成前の基準点である次のコミットと同じ状態。
+
+```text
+48548c8dda81a24bc621c8470a8911a260b49d9d
+feat: add global Nullable type
+```
+
+したがって、`Nullable<T>` の導入自体は残した状態で、ACG再生成・Bruce手修正をやり直せる。
+
+注意：上記はGitHubリモートの状態。ローカル作業ツリーは再開時にGitHubと同期状態を確認すること。
+
+---
+
+
+
+#### 6. ACG再生成後のBruce対応は順序を固定する
+
+次回は大量のビルドエラーを1件ずつ場当たり的に直さない。
+
+次の順序で進める。
+
+```text
+1. Bruceをロールバック基準点へ同期
+   ↓
+2. 修正版ACGで再生成
+   ↓
+3. 手修正を始める前に「ACG再生成直後」をコミット
+   ↓
+4. ビルドしてエラーを原因別に分類
+   ↓
+5. 共通型・Enum契約・global型の不足を確認
+   ↓
+6. RadioComponentを整理
+   ↓
+7. ToggleComponentを整理
+   ↓
+8. eventKey / AppEventKeyTypeの責務を整理
+   ↓
+9. UI Form DTO ⇔ Application DTO境界変換を整理
+   ↓
+10. BRU1001を修正
+   ↓
+11. BRU1002等へ同種修正を横展開
+   ↓
+12. ビルド確認
+   ↓
+13. 本来のAI画面開発の議論へ戻る
+```
+
+重要：同じ原因のエラーは個別ファイルごとに潰さず、共通原因を先に直して横展開する。
+
+生成ファイルの問題はBruce側で手修正せず、ACG/設計書へ戻す。
+
+---
+
+
+
 ## 旧議事録（原文・承認日・検討経緯）
 
 - [phase2_Nullable型_決定.md](議事録バックアップ/phase2_Nullable型_決定.md)
