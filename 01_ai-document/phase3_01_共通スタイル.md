@@ -18,6 +18,40 @@
 - **次の作業**：既定値・適用対象を最終レビュー
 - **原典**：[phase3_UIデザインシステム標準化_議論記録.md](議事録バックアップ/phase3_UIデザインシステム標準化_議論記録.md)
 
+### 旧議事録の具体的内容（方針合意・未承認を区別）
+
+> [旧議事録の原典](議事録バックアップ/phase3_UIデザインシステム標準化_議論記録.md)を転記。Phase 3は最終承認前であり、これを実装済みとは扱わない。
+
+#### 2. 共通デザイン属性
+
+呼び出し側はオブジェクトをまとめて渡す `[uiStyle]="{...}"` ではなく、**各属性を個別Inputで指定**する。
+
+例：
+
+```html
+<app-textbox [border]="true" [roundedSize]="8" />
+```
+
+| Input | 型 | 原則既定値 | 補足 |
+|---|---|---|---|
+| `border` | `boolean` | `true` | 枠線の有無 |
+| `borderWidth` | `UiBorderWidth` | `1` | px: 0, 0.5, 1, 2, 4 |
+| `rounded` | `boolean` | `true` | 角丸の有無 |
+| `roundedSize` | `UiRoundedSize` | `8` | px: 0, 4, 8, 16, 24。FABは円形を既定とする |
+| `shadow` | `boolean` | `false` | FABは `true` を既定とする |
+| `shadowSize` | `UiShadowSize` | `'md'` | sm, md, lg。FABはlg既定 |
+| `padding` | `UiPadding` | `8` | px: 0, 4, 8, 12, 16, 24, 32 |
+| `backgroundColor` | `UiColor` | 部品別 | DaisyUIの意味色 |
+| `textColor` | `UiColor` | 部品別 | DaisyUIの意味色 |
+| `visible` | `boolean` | `true` | `false` は `hidden`（display:none） |
+| `disabled` | — | **共通化しない** | 入力系はFormControl、ボタン等は個別の責務 |
+
+`UiColor` 候補：`primary`, `secondary`, `accent`, `neutral`, `base-100`, `base-200`, `base-300`, `info`, `success`, `warning`, `error`。
+
+数値指定の単位はpx。
+
+
+
 ## 3.1.2 Android・iPhone共通表示品質の検査観点を確定
 
 - **作業**：未着手／**設計**：方針合意／**実装**：未着手／**検証**：未検証
@@ -27,6 +61,40 @@
 - **状態の区別**：作業=未着手、設計=方針合意、実装=未着手、検証=未検証。本記録は作業計画の具体化であり、設計仕様や実装の承認・完了を意味しない。
 - **次の作業**：端末条件・セーフエリア・タップ領域を整理
 - **原典**：[phase3_UIデザインシステム標準化_議論記録.md](議事録バックアップ/phase3_UIデザインシステム標準化_議論記録.md)
+
+### 旧議事録の具体的内容（方針合意・未承認を区別）
+
+> [旧議事録の原典](議事録バックアップ/phase3_UIデザインシステム標準化_議論記録.md)を転記。Phase 3は最終承認前であり、これを実装済みとは扱わない。
+
+#### 2. 共通デザイン属性
+
+呼び出し側はオブジェクトをまとめて渡す `[uiStyle]="{...}"` ではなく、**各属性を個別Inputで指定**する。
+
+例：
+
+```html
+<app-textbox [border]="true" [roundedSize]="8" />
+```
+
+| Input | 型 | 原則既定値 | 補足 |
+|---|---|---|---|
+| `border` | `boolean` | `true` | 枠線の有無 |
+| `borderWidth` | `UiBorderWidth` | `1` | px: 0, 0.5, 1, 2, 4 |
+| `rounded` | `boolean` | `true` | 角丸の有無 |
+| `roundedSize` | `UiRoundedSize` | `8` | px: 0, 4, 8, 16, 24。FABは円形を既定とする |
+| `shadow` | `boolean` | `false` | FABは `true` を既定とする |
+| `shadowSize` | `UiShadowSize` | `'md'` | sm, md, lg。FABはlg既定 |
+| `padding` | `UiPadding` | `8` | px: 0, 4, 8, 12, 16, 24, 32 |
+| `backgroundColor` | `UiColor` | 部品別 | DaisyUIの意味色 |
+| `textColor` | `UiColor` | 部品別 | DaisyUIの意味色 |
+| `visible` | `boolean` | `true` | `false` は `hidden`（display:none） |
+| `disabled` | — | **共通化しない** | 入力系はFormControl、ボタン等は個別の責務 |
+
+`UiColor` 候補：`primary`, `secondary`, `accent`, `neutral`, `base-100`, `base-200`, `base-300`, `info`, `success`, `warning`, `error`。
+
+数値指定の単位はpx。
+
+
 
 ## 旧議事録（原文・承認日・検討経緯）
 
