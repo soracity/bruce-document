@@ -18,6 +18,23 @@ Cell明示＞Record明示＞Table明示＞既定値の継承方向を議論。�
 - **次の作業**：未指定undefinedと明示falseを区別する方式が未決
 - **原典**：[phase3_UIデザインシステム標準化_議論記録.md](議事録バックアップ/phase3_UIデザインシステム標準化_議論記録.md)
 
+### 旧議事録の具体的内容（方針合意・未承認を区別）
+
+> [旧議事録の原典](議事録バックアップ/phase3_UIデザインシステム標準化_議論記録.md)を転記。Phase 3は最終承認前であり、これを実装済みとは扱わない。
+
+#### 5. Tableスタイル継承（未決）
+
+議論済みの方向性：
+
+- スタイルの既定値を `TableContainerLayout → TableRecord → TableCell` に伝播させる。TableRowは構造・sticky等を担う。
+- 優先順位：**Cellの明示指定 > Recordの明示指定 > Tableの明示指定 > 共通既定値**。
+- 子が**未指定（undefined）**なら親から継承し、子が明示的に `false` を指定した場合は `false` を優先する。
+- `zebra`、`recordGap`、`sticky`、`colSpan`、`rowSpan` 等のTable固有属性は共通デザイン属性と区別する。
+
+**未解決の技術論点**：基底 `ComponentBase` が既定値を持つInputを定義した場合、子で「未指定」と「既定値」を区別しにくい。Table子クラスでInputを `undefined` 許容に再定義する案は出たが、AngularのInput継承・TypeScriptの型互換性を未検証。**まだ実装方式を決定していない**。
+
+
+
 ## 3.4.2 Table固有属性と共通スタイルの境界を確定
 
 - **作業**：未着手／**設計**：検討中／**実装**：未着手／**検証**：未検証
@@ -27,6 +44,23 @@ Cell明示＞Record明示＞Table明示＞既定値の継承方向を議論。�
 - **状態**：作業=未着手、設計=検討中、実装=未着手、検証=未検証。
 - **次の作業**：zebra／recordGap／colSpan等と共通属性を分離
 - **原典**：[phase3_UIデザインシステム標準化_議論記録.md](議事録バックアップ/phase3_UIデザインシステム標準化_議論記録.md)
+
+### 旧議事録の具体的内容（方針合意・未承認を区別）
+
+> [旧議事録の原典](議事録バックアップ/phase3_UIデザインシステム標準化_議論記録.md)を転記。Phase 3は最終承認前であり、これを実装済みとは扱わない。
+
+#### 5. Tableスタイル継承（未決）
+
+議論済みの方向性：
+
+- スタイルの既定値を `TableContainerLayout → TableRecord → TableCell` に伝播させる。TableRowは構造・sticky等を担う。
+- 優先順位：**Cellの明示指定 > Recordの明示指定 > Tableの明示指定 > 共通既定値**。
+- 子が**未指定（undefined）**なら親から継承し、子が明示的に `false` を指定した場合は `false` を優先する。
+- `zebra`、`recordGap`、`sticky`、`colSpan`、`rowSpan` 等のTable固有属性は共通デザイン属性と区別する。
+
+**未解決の技術論点**：基底 `ComponentBase` が既定値を持つInputを定義した場合、子で「未指定」と「既定値」を区別しにくい。Table子クラスでInputを `undefined` 許容に再定義する案は出たが、AngularのInput継承・TypeScriptの型互換性を未検証。**まだ実装方式を決定していない**。
+
+
 
 ## 旧議事録（原文・承認日・検討経緯）
 
