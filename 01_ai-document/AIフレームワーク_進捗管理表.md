@@ -16,7 +16,7 @@
 - **現在の大区分**：**Phase 2 設計思想・責務の議論**。
 - **現在の中区分**：**2.5 任意CSS注入の排除**（2.4.3の受入条件設計完了）。
 - **現在の小区分**：**2.5.3 段階的廃止の優先順位・置換先を決定**（2.5.2のUI実装棚卸し完了）。
-- **次の議論**：**2.5.3 TableCellのEnum詳細とHeader／TabBarの任意class Inputの置換方針**。TableCellのEnum化とcellClasses廃止、および画面から仕様で許された方法のみ表示指定する原則は承認済み。具体名・値・置換詳細は未決。
+- **次の議論**：**2.5.3 TableCellのEnum詳細とHeader／TabBarの任意class Inputの置換方針**。TableCellのEnum化とcellClasses廃止、および画面から仕様で許された方法のみ表示指定する原則は承認済み。EnumにCSSクラス文字列を格納せずTableCell内部で固定CSSを管理することは承認済み。具体名・値・置換詳細は未決。
 - **その次**：2.6.3 FormControlとDomainの責務、2.6.4 UI Form DTO方式など。
 - **運用開始までの主要関門**：Phase 2・3の**全議論終了** → **Phase 4：議事録に基づく体系的設計書と最終承認** → Phase 5実装 → Phase 6 AI実装手順 → Phase 7人間の保守性を含めた検証 → Phase 8運用。
 - **直近の技術確認**：2026-10-17、BRU1001／BRU1002のEnum FormControl互換修正後に`npx ng build`成功（バンドルサイズ警告は残存）。これは**AIフレームワーク完了・実機動作完了を意味しない**。
@@ -82,7 +82,7 @@
 | 2 | 2.4 レスポンシブ・折り返し | **2.4.3** | スマートフォン操作性の受入条件を確定 | 完了 | 受入条件承認済 | 未着手 | 未検証 | 2026-10-19、スマホ受入条件No.1〜6を一括承認。No.2はユーザー指示により修正し、Buttonの寸法・padding・タップ領域・配置は画面設計書、共通Component仕様、承認済みLayoutManagerに準拠し、AI独自の判断で追加・変更しない。No.1重なり・画面外はみ出し防止、No.3文字サイズ維持、No.4文字拡大時操作性、No.5マーキーとButton操作の両立、No.6全文読み上げ・動きを減らす設定尊重も承認済み。具体寸法・CSS・速度は今回決定しておらずPhase 5実装／Phase 7検証に引き継ぐ | [議事録](phase2_04_レスポンシブ・折り返し.md) |
 | 2 | 2.5 任意CSS注入の排除 | **2.5.1** | classContainer等を原則廃止する方針を決定 | 完了 | 承認済 | 未確認 | 未検証 | 一括削除せずPhase 5で段階移行 | [議事録](phase2_05_任意CSS注入の排除.md) |
 | 2 | 2.5 任意CSS注入の排除 | **2.5.2** | 現行のclass注入Inputと呼び出し箇所を棚卸し | 完了 | 棚卸し確定・原則承認済 | 未変更 | 未検証 | 2026-10-19、実行時UIのHTML25件・Component等TS27件を照合。任意CSS注入は3経路14箇所：BRU1002のTableCellで固定class11・動的[class]1、AppLayoutからHeaderのclassContainer1・TabBarのclassTabBar1。共通Component内の定義済みclassは対象外。ACG生成元やテスト・バックアップは調査範囲外。TableCell Enum化・cellClasses廃止の基本方針承認済み。置換詳細は2.5.3 | [議事録](phase2_05_任意CSS注入の排除.md) |
-| 2 | 2.5 任意CSS注入の排除 | **2.5.3** | 段階的廃止の優先順位・置換先を決定 | 進行中 | TableCell基本方針承認済・詳細検討中 | 未着手 | 未検証 | TableCell背景色Enum化・cellClasses廃止承認済み。Enum名・値・デフォルト・Input名・CSS優先関係を整理。HeaderのclassContainerとTabBarのclassTabBarも実利用があるため置換方針を検討。既存表示の維持を前提としAI独自CSSは禁止 | [議事録](phase2_05_任意CSS注入の排除.md) |
+| 2 | 2.5 任意CSS注入の排除 | **2.5.3** | 段階的廃止の優先順位・置換先を決定 | 進行中 | TableCell基本方針承認済・詳細検討中 | 未着手 | 未検証 | TableCell背景色Enum化・cellClasses廃止承認済み。EnumへCSSクラス文字列を格納せず、TableCell内部の固定CSSで管理する方針は2026-10-20承認済み。Enum名・値・デフォルト・Input名・CSS優先関係を整理。HeaderのclassContainerとTabBarのclassTabBarも実利用があるため置換方針を検討。既存表示の維持を前提としAI独自CSSは禁止 | [議事録](phase2_05_任意CSS注入の排除.md) |
 | 2 | 2.6 DTO・Form・Validation | **2.6.1** | UI Form DTOのComponentスコープDI方針を決定 | 完了 | 承認済 | 未着手 | 未検証 | ACGと画面実装への反映はPhase 5 | [議事録](phase2_06_DTO・Form・Validation.md) |
 | 2 | 2.6 DTO・Form・Validation | **2.6.2** | Enum FormControlとApplication string codeの境界変換 | 完了 | 承認済 | 完了 | ビルド確認済 | 保存→再表示等の動作確認はPhase 7 | [議事録](phase2_06_DTO・Form・Validation.md) |
 | 2 | 2.6 DTO・Form・Validation | **2.6.3** | FormControl ValidationとDomain Validationの境界を確定 | 未着手 | 検討中 | 未着手 | 未検証 | 具体例で重複なく責務を分ける | [議事録](phase2_06_DTO・Form・Validation.md) |
