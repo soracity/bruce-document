@@ -169,13 +169,24 @@ AIが画面・共通Componentを実装する場合も次を遵守する。
 
 ## 2.5.2 現行のclass注入Inputと呼び出し箇所を棚卸し
 
-- **作業**：未着手／**設計**：検討中／**実装**：未確認／**検証**：未検証
+- **作業**：進行中／**設計**：検討中／**実装**：未確認／**検証**：未検証
 - **対象と背景**：classContainer・classInput・classLabel等の画面側からのCSS注入は原則廃止し、既存画面を壊さず段階的に移行する。
 - **この小区分で扱う具体事項**：現行のclass注入Inputと呼び出し箇所を棚卸し。今後の検討・実施対象であり、具体的な技術方式や受入基準は未承認。
 - **確認・引継ぎ内容**：既存ソースから使用箇所と互換性を把握。関連する画面・共通Component・ACG・試験のどこに影響するかを明示し、設計決定は原典とユーザー承認で確認する。
 - **状態の区別**：作業=未着手、設計=検討中、実装=未確認、検証=未検証。本記録は作業計画の具体化であり、設計仕様や実装の承認・完了を意味しない。
 - **次の作業**：既存ソースから使用箇所と互換性を把握
 - **原典**：[phase2_UI設計思想と責務.md](議事録バックアップ/phase2_UI設計思想と責務.md)
+
+### 2026-10-19：開発ブランチのclass注入状況・一次棚卸し（調査結果、設計未承認）
+
+- **調査対象**：`soracity/bruce` の `feature/feature-20261015`、`src/app/brf9000/brf9020-shared-components` 内の主要共通Component TS、およびBRU1001・BRU1002・BRU8011・ComponentTestの画面HTML。ブランチのソースと画面呼出し例をGitHubから実取得。
+- **主要共通Componentの現状**：Button、Textbox、Date、Radio、Toggle、Group、Fab、AlertのTS定義から、`classContainer`/`paramClass`/`classInput`等の専用Inputは確認されなかった。LayoutItemとItemStackLayoutにも該当Inputを確認できなかった。調査した範囲に限る結果であり、全ファイルの不在証明ではない。
+- **発見した動的なクラス注入**：`table/table-cell/components/table-cell.component.ts` の`get cellClasses()`がホストの`elementRef.nativeElement.className`を返し、`table-cell.component.html`内部のth/tdへ`[class]="cellClasses"`で渡す。これは専用class Inputではないが、画面からの任意CSSクラス注入の実質的な経路。
+- **画面側使用の証拠**：`src/app/brf1000/brf1002/ui/components/bru1002.component.html`の行42で`<app-table-cell [class]="getMatchStatusColor(...)">`、45/50/55/60/65行等で`class="bg-base-200"`。動的／静的クラス指定を利用している。
+- **区別**：ネイティブ`<button class="...">`のクラス、共通Component内部の静的CSSクラス、共通Componentのホストへ指定して内部セルに転送するクラスは同じではない。廃止・代替の判断を混同しない。
+- **現時点の結論**：TableCellに実利用があるため、確認なしの一括削除は既存画面を壊し得る。削除も存続も未承認。画面側独自CSSの禁止方針との整合を別途判断する。
+- **未完了**：他のHTMLテンプレート・ディレクティブ・ACG生成箇所を含む網羅的な全件照合、利用件数集計、影響範囲確定。Phase 2.5.2は継続調査。実装変更・検証なし。
+- **次の検討**：TableCellの背景色と状態色を、自由class指定のままにするか、Enum/限定パラメーター等の明示仕様へ移行するか。
 
 ## 2.5.3 段階的廃止の優先順位・置換先を決定
 
