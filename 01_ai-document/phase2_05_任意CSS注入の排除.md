@@ -251,7 +251,7 @@ AIが画面・共通Componentを実装する場合も次を遵守する。
 
 - **承認根拠**：ユーザーが直前に提示された3件の一括承認案（TableCell、Header、TabBar）に「1」と回答。
 - **TableCell列挙型**：`AppComponentTableCellBackgroundEnum`、ファイル`app-component-table-cell-background.enum.ts`。列挙名と値は`DEFAULT/default`、`LABEL/label`、`ERROR/error`、`INFO/info`、`WARNING/warning`、`SUCCESS/success`。公開Inputは`backgroundColor`、省略時`DEFAULT`。
-- **TableCellスタイル**：Enumの値にTailwindクラスを格納せず、Component内部の固定CSSへ対応付ける。従来の`bg-base-200`、`bg-error/20`、`bg-info/20`、`bg-warning/20`、`bg-success/20`と同等の表示にする。`cellClasses`による任意CSS転送は既存画面の置換後に廃止する。ACG生成用の[列挙型設計書](../06_列挙型設計書/01_CODE/06_列挙型設計書(AppComponentTableCellBackgroundEnum：テーブルセル背景色).md)を作成。TS Enumを手で書かない。
+- **TableCellスタイル**：Enumの値にTailwindクラスを格納せず、Component内部の固定CSSへ対応付ける。従来の`bg-base-200`、`bg-error/20`、`bg-info/20`、`bg-warning/20`、`bg-success/20`と同等の表示にする。`cellClasses`による任意CSS転送は既存画面の置換後に廃止する。ACG生成用の[列挙型設計書](../06_列挙型設計書/02_COMPONENT/06_列挙型設計書(AppComponentTableCellBackgroundEnum：テーブルセル背景色).md)を作成。TS Enumを手で書かない。
 - **Header**：`classContainer` Inputを廃止し、AppLayoutが現在渡している`navbar bg-base-300 shadow-sm h-[4rem] shrink-0`と同等のデザインをHeader内部へ移管する。既存表示は維持する。
 - **TabBar**：`classTabBar` Inputを廃止し、AppLayoutが現在渡している`bg-base-300 h-[4rem] shrink-0 flex items-center justify-around`と同等のデザインをTabBar内部へ移管する。既存表示は維持する。
 - **移行順序**：TableCellの背景色11固定・1動的箇所、HeaderとTabBar各1呼出し箇所を置換してから、外部CSS注入Input・転送処理を廃止する。外部からの任意CSS注入を別名で再導入しない。
