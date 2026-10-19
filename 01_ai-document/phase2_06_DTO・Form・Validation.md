@@ -277,12 +277,12 @@ Application / DB の string code
 
 ## 2.6.3 FormControl ValidationとDomain Validationの境界を確定
 
-- **作業**：未着手／**設計**：検討中／**実装**：未着手／**検証**：未検証
+- **作業**：完了／**設計**：承認済／**実装**：未着手／**検証**：未検証
 - **対象と背景**：UI Form DTO・FormControl・ACG生成とApplication値DTOの責務を分ける。既承認のACG詳細は旧原典の承認状態を優先する。
-- **この小区分で扱う具体事項**：FormControl ValidationとDomain Validationの境界を確定。今後の検討・実施対象であり、具体的な技術方式や受入基準は未承認。
+- **この小区分で扱う具体事項**：FormControl ValidationとDomain Validationの境界を確定。2026-10-20に責務分離原則をユーザー承認済み。
 - **確認・引継ぎ内容**：具体例で重複なく責務を分ける。関連する画面・共通Component・ACG・試験のどこに影響するかを明示し、設計決定は原典とユーザー承認で確認する。
-- **状態の区別**：作業=未着手、設計=検討中、実装=未着手、検証=未検証。本記録は作業計画の具体化であり、設計仕様や実装の承認・完了を意味しない。
-- **次の作業**：具体例で重複なく責務を分ける
+- **状態の区別**：作業=完了、設計=承認済、実装=未着手、検証=未検証。
+- **次の作業**：Phase 5で画面入力Validator・Domain側の実装を整合させ、Phase 7で検証する
 - **原典**：[phase2_UI設計思想と責務.md](議事録バックアップ/phase2_UI設計思想と責務.md)、[phase2_Nullable型_決定.md](議事録バックアップ/phase2_Nullable型_決定.md)、[phase2_TypeScriptTypeEnum_決定.md](議事録バックアップ/phase2_TypeScriptTypeEnum_決定.md)、[phase2_画面DTO項目_型別指定可能パターン_決定.md](議事録バックアップ/phase2_画面DTO項目_型別指定可能パターン_決定.md)、[phase2_ACG形式チェック_決定.md](議事録バックアップ/phase2_ACG形式チェック_決定.md)、[phase2_ACG必須チェック_空白文字列_決定.md](議事録バックアップ/phase2_ACG必須チェック_空白文字列_決定.md)、[phase2_ACGデフォルト値_決定.md](議事録バックアップ/phase2_ACGデフォルト値_決定.md)、[phase2_画面設計書_日付日時の形式列化_決定.md](議事録バックアップ/phase2_画面設計書_日付日時の形式列化_決定.md)、[phase2_UIヘッダー明細DTO分離_決定.md](議事録バックアップ/phase2_UIヘッダー明細DTO分離_決定.md)、[phase2_ACG実装追加方針_決定.md](議事録バックアップ/phase2_ACG実装追加方針_決定.md)、[phase2_phase3_20261017追記_再開情報.md](議事録バックアップ/phase2_phase3_20261017追記_再開情報.md)
 
 ### 旧Phase 2原典の完全な記録（追加照合）
@@ -314,6 +314,15 @@ Validationは種類で分ける。
 
 同じ条件を画面とDomainの双方へ重複実装しないことを原則とする。
 
+
+### 2026-10-20：FormControlとDomainのValidation責務分離を承認
+
+- **承認根拠**：ユーザーは「Validationの責務を、この方針で確定してよいでしょうか？ 1. 承認する」という提示に「1」と回答。
+- **UI Form DTO（FormGroup／FormControl）**：required・最大文字数・数値形式・日付形式・画面入力だけで完結する入力可能範囲などの機械的な入力Validationを保持する。ACGの既承認の型・形式・必須・初期値生成規則は変更しない。
+- **Domain**：テニスの意味・業務状態に依存する不変条件と判定規則（ポイント加算・ゲーム／セット成立、サーブ／リターン順、試合状態の整合性、戦術・スタッツ上の業務ルール等）を担う。ゲーム終了後のポイント加算可否などはUI Form DTOで判定しない。
+- **重複防止**：同一の業務判定アルゴリズムをUIとDomainへ二重実装しない。入力範囲であっても業務的な意味を持つ制約はDomainで保証する。UI入力の利便性検査とDomain不変条件の検査は目的が異なるため、必要な保証を省略しない。
+- **画面Component／Application境界**：画面はFormControlの状態とValidation結果を表示し、必要時にApplication Serviceを呼んで業務判定結果をUIに反映する。Application DTOやDomainへAngularのFormControl／FormGroupを渡さず、既承認のMapper非作成方針を維持する。
+- **工程区別**：Phase 2.6.3の責務設計を完了。ACG／画面／Domainの実装はPhase 5、実効検証はPhase 7に引き継ぐ。新たな具体ValidatorやDomain APIの物理名は今回未決定。
 
 ## 2.6.4 UI Form DTOのclass＋formGroup方式を最終確定
 
