@@ -222,12 +222,12 @@ AIが画面・共通Componentを実装する場合も次を遵守する。
 
 ## 2.5.3 段階的廃止の優先順位・置換先を決定
 
-- **作業**：進行中／**設計**：TableCellの基本方針承認済・その他と詳細検討中／**実装**：未着手／**検証**：未検証
+- **作業**：完了／**設計**：置換仕様承認済／**実装**：未着手／**検証**：未検証
 - **対象と背景**：classContainer・classInput・classLabel等の画面側からのCSS注入は原則廃止し、既存画面を壊さず段階的に移行する。
-- **この小区分で扱う具体事項**：段階的廃止の優先順位・置換先を決定。今後の検討・実施対象であり、具体的な技術方式や受入基準は未承認。
+- **この小区分で扱う具体事項**：TableCellのEnum指定およびHeader・TabBarの外部CSS注入廃止と内部スタイルへの移管方法を確定した。
 - **確認・引継ぎ内容**：Layout移行／内部標準CSS／限定APIを整理。関連する画面・共通Component・ACG・試験のどこに影響するかを明示し、設計決定は原典とユーザー承認で確認する。
-- **状態の区別**：作業=未着手、設計=検討中、実装=未着手、検証=未検証。本記録は作業計画の具体化であり、設計仕様や実装の承認・完了を意味しない。
-- **次の作業**：Layout移行／内部標準CSS／限定APIを整理
+- **状態の区別**：作業=完了、設計=承認済、実装=未着手、検証=未検証。既存表示との一致は後工程で検証する。
+- **次の作業**：Phase 5でACG Enum生成・Componentおよび呼出し箇所を段階的に改修し、Phase 7で回帰検証する
 - **原典**：[phase2_UI設計思想と責務.md](議事録バックアップ/phase2_UI設計思想と責務.md)
 
 ### 2026-10-19：2.5.3 置換詳細の提案（未承認）
@@ -246,6 +246,17 @@ AIが画面・共通Componentを実装する場合も次を遵守する。
 - **確定済み**：TableCell背景色Enum化、`cellClasses`廃止、画面はEnum指定、Component内部がCSS責務を持つ、EnumへCSSクラス文字列を格納しない。
 - **引き続き未決**：Enumの物理名・値・デフォルト、Input名、CSS優先順位、Header／TabBarのCSS入力廃止の具体案。今回の「ok」は直前のTailwindリスク対策の承認であり、前回提示した2.5.3詳細案を一括承認したものとしない。
 - **状態**：2.5.3設計継続中／実装未着手／検証未検証。
+
+### 2026-10-20：2.5.3の詳細仕様を一括承認
+
+- **承認根拠**：ユーザーが直前に提示された3件の一括承認案（TableCell、Header、TabBar）に「1」と回答。
+- **TableCell列挙型**：`AppComponentTableCellBackgroundEnum`、ファイル`app-component-table-cell-background.enum.ts`。列挙名と値は`DEFAULT/default`、`LABEL/label`、`ERROR/error`、`INFO/info`、`WARNING/warning`、`SUCCESS/success`。公開Inputは`backgroundColor`、省略時`DEFAULT`。
+- **TableCellスタイル**：Enumの値にTailwindクラスを格納せず、Component内部の固定CSSへ対応付ける。従来の`bg-base-200`、`bg-error/20`、`bg-info/20`、`bg-warning/20`、`bg-success/20`と同等の表示にする。`cellClasses`による任意CSS転送は既存画面の置換後に廃止する。ACG生成用の[列挙型設計書](../06_列挙型設計書/01_CODE/06_列挙型設計書(AppComponentTableCellBackgroundEnum：テーブルセル背景色).md)を作成。TS Enumを手で書かない。
+- **Header**：`classContainer` Inputを廃止し、AppLayoutが現在渡している`navbar bg-base-300 shadow-sm h-[4rem] shrink-0`と同等のデザインをHeader内部へ移管する。既存表示は維持する。
+- **TabBar**：`classTabBar` Inputを廃止し、AppLayoutが現在渡している`bg-base-300 h-[4rem] shrink-0 flex items-center justify-around`と同等のデザインをTabBar内部へ移管する。既存表示は維持する。
+- **移行順序**：TableCellの背景色11固定・1動的箇所、HeaderとTabBar各1呼出し箇所を置換してから、外部CSS注入Input・転送処理を廃止する。外部からの任意CSS注入を別名で再導入しない。
+- **検証引継ぎ**：通常背景色・試合状態別4色、テーマ変更、zebra／selected／stickyとの優先関係、Header／TabBarの高さ・背景色・配置の回帰検証をPhase 7で行う。詳細なCSS記述・適用順序は表示仕様を維持する範囲でPhase 5の実装設計に委ねる。仕様外の変更をAIが独断で追加しない。
+- **工程区別**：2.5.3の設計決定作業は完了。Phase 5実装・Phase 7検証は未着手。
 
 ## 旧議事録（原文・承認日・検討経緯）
 
