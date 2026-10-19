@@ -718,6 +718,15 @@ Build failed.
 - **状態**：2.2.4の設計方針を承認済み。実際の`package.json`や検査器・CIは変更しておらず、実装未着手・検証未実施。
 - **次の議題**：公式`npm run build`の**既定構成**を本番用／開発用のどちらにするか検討する（現状の`package.json`は未調査）。
 
+### 2026-10-19：公式npm run buildの既定構成はproduction（ユーザー承認済み）
+
+- **承認根拠**：本会話で「1. A：本番用（推奨）」にユーザーが「1」と回答。
+- **承認内容**：公式`npm run build`は**production（本番用）構成を既定**として起動する。開発用ビルドは`npm run build:development`のような別の明示的な入口とする。静的検査器と後続Angularビルドに同一構成を渡し、検査エラー時にビルドを止める既承認方針を維持する。
+- **設計例（未実装）**：`build` → `build:production`、`build:production` → `check:layout --configuration production` 成功後に `ng build --configuration production`。開発用は双方にdevelopmentを明示する。
+- **未決**：実際の`package.json`・`angular.json`の現状調査、スクリプト名・Angularプロジェクト選択、CIの接続先・具体的ワークフロー、検査器実装・テスト。
+- **状態**：設計のみ承認済み。実際の設定ファイル、静的検査器およびCIは**変更していない**。工程2.2.4は進行中、実装未着手、検証未実施。
+- **次の議題**：Angularのビルド対象プロジェクトが複数ある場合、検査器とビルドの対象プロジェクトをどう一致させるか。
+
 ## 2.2.5 LayoutItem・LayoutSpan現行実装と承認設計の差分を確認
 
 - **作業**：**進行中**／**設計**：承認済／**実装**：一部実装／**検証**：静的確認済
