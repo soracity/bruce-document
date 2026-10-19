@@ -169,12 +169,12 @@ AIが画面・共通Componentを実装する場合も次を遵守する。
 
 ## 2.5.2 現行のclass注入Inputと呼び出し箇所を棚卸し
 
-- **作業**：進行中／**設計**：検討中／**実装**：未確認／**検証**：未検証
+- **作業**：完了／**設計**：棚卸し結果確定・基本原則承認済／**実装**：未変更／**検証**：未検証
 - **対象と背景**：classContainer・classInput・classLabel等の画面側からのCSS注入は原則廃止し、既存画面を壊さず段階的に移行する。
-- **この小区分で扱う具体事項**：現行のclass注入Inputと呼び出し箇所を棚卸し。今後の検討・実施対象であり、具体的な技術方式や受入基準は未承認。
+- **この小区分で扱う具体事項**：現在の実行時UIソースからclass注入Inputと呼び出し箇所を棚卸す（2026-10-19に作業完了）。置換設計の詳細は2.5.3に引き継ぐ。
 - **確認・引継ぎ内容**：既存ソースから使用箇所と互換性を把握。関連する画面・共通Component・ACG・試験のどこに影響するかを明示し、設計決定は原典とユーザー承認で確認する。
-- **状態の区別**：作業=未着手、設計=検討中、実装=未確認、検証=未検証。本記録は作業計画の具体化であり、設計仕様や実装の承認・完了を意味しない。
-- **次の作業**：既存ソースから使用箇所と互換性を把握
+- **状態の区別**：棚卸し作業=完了、設計原則=承認済、置換の詳細設計=2.5.3で継続、実装=未変更、検証=未検証。
+- **次の作業**：2.5.3で置換優先順位・限定入力仕様・既存表示の維持方法を決定
 - **原典**：[phase2_UI設計思想と責務.md](議事録バックアップ/phase2_UI設計思想と責務.md)
 
 ### 2026-10-19：開発ブランチのclass注入状況・一次棚卸し（調査結果、設計未承認）
@@ -207,9 +207,22 @@ AIが画面・共通Componentを実装する場合も次を遵守する。
 - ACGでEnumを生成する。現在は設計方針の承認のみで、ソース変更・実装・検証は行わない。
 - 2.5.2の棚卸しは継続中。2.5.3全体の完了扱いにはしない。
 
+### 2026-10-19：実行時UIテンプレート・Componentの全件棚卸しを完了
+
+- **GitHubの対象ブランチ**：`soracity/bruce` の `feature/feature-20261015`。
+- **照合した範囲と件数**：`src/app`配下のHTMLテンプレート25ファイルと実行時のComponent／Directive／基底ComponentのTypeScript 27ファイルを照合（.spec.ts、バックアップ／コピー、Enum定義を除く）。画面側の`<app-*>`呼出しについて、直接`class`・`[class]`指定やclass系Inputを照合し、受け手のTS／HTML実装まで確認した。
+- **経路① TableCell（12箇所）**：`brf1000/brf1002/ui/components/bru1002.component.html`の`app-table-cell`で、`class="bg-base-200"`による固定背景色11箇所（45、50、55、60、65、71、84、97、111、119、127行）、`[class]="getMatchStatusColor(...)"`による動的色1箇所（39-43行）。受け手は`table-cell.component.ts`の`cellClasses`→`table-cell.component.html`内部`td/th`の`[class]`。
+- **経路② Header（1箇所）**：`brf8000/brf8010/ui/components/app-layout/app-layout.component.html`から`<app-header [classContainer]="'navbar bg-base-300 shadow-sm h-[4rem] shrink-0'">`を指定。受け手は`header.component.ts`の`classContainer = input<string>('')`と`header.component.html`の`<header [class]="classContainer()">`。
+- **経路③ TabBar（1箇所）**：同`app-layout.component.html`から`<app-tab-bar [classTabBar]="'bg-base-300 h-[4rem] shrink-0 flex items-center justify-around'">`を指定。受け手は`tab-bar.component.ts`の`classTabBar = input<string>('')`と`tab-bar.component.html`の`<nav [class]="classTabBar()">`。
+- **合計**：今回照合した実行時UIテンプレート内で自由なクラス文字列を渡す経路は3種類・14箇所。主要なBRF9020共通Componentの`classContainer`・`classInput`・`classLabel`などの専用Inputは見つからなかった。ただしHeader／TabBarはBRF8010であり、こちらには上記Inputが残存する。
+- **対象外との区別**：共通Component内部の静的クラス、`selected`・`sticky`・`zebra`等の限定されたフラグ由来のクラス適用、画面のネイティブHTMLへの直接class指定は、「共通Component内部への任意class注入」と同一ではない。ネイティブHTMLのレイアウト方針は必要に応じ別途レビュー対象。
+- **重要な制約**：この全件棚卸しは現在の`src/app`実行時UIソースに限定する。別リポジトリのACG生成元、未利用のテスト・バックアップファイル、将来追加される画面まで不在を保証したものではない。
+- **承認との整合**：TableCellのEnum化と`cellClasses`廃止はユーザー承認済み。Header／TabBarに対する具体的な廃止・置換APIは未承認。2.5.3で検討する。既存ソースは変更していない。
+- **工程判定**：2.5.2の棚卸し作業は完了。2.5.3で置換設計を続け、Phase 5の実装とPhase 7の検証へ引き継ぐ。
+
 ## 2.5.3 段階的廃止の優先順位・置換先を決定
 
-- **作業**：未着手／**設計**：検討中／**実装**：未着手／**検証**：未検証
+- **作業**：進行中／**設計**：TableCellの基本方針承認済・その他と詳細検討中／**実装**：未着手／**検証**：未検証
 - **対象と背景**：classContainer・classInput・classLabel等の画面側からのCSS注入は原則廃止し、既存画面を壊さず段階的に移行する。
 - **この小区分で扱う具体事項**：段階的廃止の優先順位・置換先を決定。今後の検討・実施対象であり、具体的な技術方式や受入基準は未承認。
 - **確認・引継ぎ内容**：Layout移行／内部標準CSS／限定APIを整理。関連する画面・共通Component・ACG・試験のどこに影響するかを明示し、設計決定は原典とユーザー承認で確認する。
