@@ -865,12 +865,21 @@ Build failed.
 
 ## 2.2.5 LayoutItem・LayoutSpan現行実装と承認設計の差分を確認
 
-- **作業**：**進行中**／**設計**：承認済／**実装**：一部実装／**検証**：静的確認済
+- **作業**：**完了（差分調査）**／**設計**：承認済／**実装**：一部実装／**検証**：静的確認済
 - **具体的な規則・調査事実**：現行LayoutItemの`flex-1`・`basis-0`、LayoutSpanDirectiveの`flex-grow`により、表示される要素の比率による配置自体は可能。
 - **具体例・根拠**：ただし全兄弟明示・合計100・数値リテラル限定をコードが静的保証しているわけではない。LayoutSpanが0や不正値をgrow=1へ補正する挙動も検出方針とは異なる。
 - **未完了事項・引継ぎ**：2.2.4で検査仕様を決定した後にPhase 5で実装、Phase 7で条件付き非表示と通常構成をテストする。未変更のコードを承認済み実装と扱わない。
 - **次の作業**：現行flex-grow／basis-0と規則の対応を確認
 - **原典**：[phase2_UI設計思想と責務.md](議事録バックアップ/phase2_UI設計思想と責務.md)、[phase1_共通コンポーネント調査.md](議事録バックアップ/phase1_共通コンポーネント調査.md)、[phase2_phase3_再開用完全サマリ.md](議事録バックアップ/phase2_phase3_再開用完全サマリ.md)、[phase2_phase3_20261017追記_再開情報.md](議事録バックアップ/phase2_phase3_20261017追記_再開情報.md)
+
+### 2026-10-19：2.2.5 featureブランチ実ソースの差分調査
+
+- **調査対象**：`soracity/bruce` の `feature/feature-20261015`、`src/app/brf9000/brf9020-shared-components/layout/` 配下の `layout-item/components/layout-item.component.ts`、`layout-item.component.html`、`layout-span/directives/layout-span.directive.ts`。**mainではない**ことを画像で確認し、指定ブランチから取得。
+- **一致・既存実装**：LayoutItemのHTMLは `flex gap-2 [&>*]:min-w-0 [&>*]:flex-1 [&>*]:basis-0` と `<ng-content>` を採用。表示兄弟に均等幅を与える基本CSSがある。LayoutSpanDirectiveは`flex-grow`・`flex-basis:0px`・`min-width:0px`をホストに設定し、正の有限値なら重みとして使用する。
+- **差分（Phase 5実装対象）**：LayoutItemのComponent TSには検査処理がなく、Spanの合計100・全兄弟明示・数値リテラル限定・直接テキストや@for等の静的検査は保証されない。LayoutSpanDirectiveは`number | string`を受け取り`Number(value)`へ変換し、0・不正値などは**エラーとせずgrow=1に補正**する。この動作は承認済みの不正指定エラー方針と一致しない。専用のビルド前静的検査器、npm・CI統合の実装は今回未確認であり、実装済みとは判定しない。
+- **動作面の留保**：条件によるDOM要素の増減時のCSS flex再配分は可能な構造だが、Angular投影・ng-container多段・全分岐・デバイス幅の動作確認は実施していない。特に複雑な投影・ビルド結果の整合はPhase 5・7で検証する。
+- **結論**：2.2.5の**現行実装との差分調査を完了**。設計仕様に適合済みとの意味ではない。既存実装は一部のみ、動作検証は未完了。コード変更なし。
+- **証跡**：`soracity/bruce@feature/feature-20261015` の上記3ファイル（GitHub取得）。
 
 ## 旧議事録（原文・承認日・検討経緯）
 
