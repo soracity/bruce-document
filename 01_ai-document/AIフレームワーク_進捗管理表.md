@@ -15,9 +15,9 @@
 
 - **現在の大区分**：**Phase 2 設計思想・責務の議論**。
 - **現在の中区分**：**2.6 DTO・Form・Validation**（2.5.3設計完了）。
-- **現在の小区分**：**2.6.3 FormControl ValidationとDomain Validationの境界を確定**（次の検討対象）。
-- **次の議論**：**2.6.3 FormControl ValidationとDomain Validationの責務境界を確定**。2.5.3のTableCell Enum・Header／TabBarのCSS注入廃止方式は承認済み。
-- **その次**：2.6.4 UI Form DTO方式、2.7.1 UI・Domain境界など。
+- **現在の小区分**：**2.6.4 UI Form DTOのclass＋formGroup方式を最終確定**（次の検討対象）。
+- **次の議論**：**2.6.4 UI Form DTOのclass＋formGroup方式の最終確定**。2.6.3の入力Validation／Domain不変条件の責務分離は承認済み。
+- **その次**：2.7.1 UI・Domain境界、2.7.2 Domain移管APIの設計など。
 - **運用開始までの主要関門**：Phase 2・3の**全議論終了** → **Phase 4：議事録に基づく体系的設計書と最終承認** → Phase 5実装 → Phase 6 AI実装手順 → Phase 7人間の保守性を含めた検証 → Phase 8運用。
 - **直近の技術確認**：2026-10-17、BRU1001／BRU1002のEnum FormControl互換修正後に`npx ng build`成功（バンドルサイズ警告は残存）。これは**AIフレームワーク完了・実機動作完了を意味しない**。
 
@@ -41,10 +41,10 @@
 | 進捗指標 | 項目数 | 解釈 |
 |---|---:|---|
 | 小区分総数 | **79** | 現時点のWBS。必要に応じ追加・統合する |
-| 作業完了 | **32** | 当該**小区分単位**の完了。上位Phase全体の完成とは別 |
+| 作業完了 | **33** | 当該**小区分単位**の完了。上位Phase全体の完成とは別 |
 | 現在進行中 | **0** | 進捗確認・議論対象の小区分 |
-| 未着手 | **47** | 開始条件待ちも含む |
-| **残り（進行中＋未着手）** | **47** | 完了していない管理項目。工数・残日数ではない |
+| 未着手 | **46** | 開始条件待ちも含む |
+| **残り（進行中＋未着手）** | **46** | 完了していない管理項目。工数・残日数ではない |
 
 - **Phase 1**は16共通部品の**一次調査完了**。性能・実機・回帰テストは後のPhase 7で管理。
 - **Phase 2**は責務ルールの一部承認済みだが、全議論終了ではない。
@@ -85,7 +85,7 @@
 | 2 | 2.5 任意CSS注入の排除 | **2.5.3** | 段階的廃止の優先順位・置換先を決定 | 完了 | 詳細仕様承認済 | 未着手 | 未検証 | TableCell背景色Enum化・cellClasses廃止承認済み。EnumへCSSクラス文字列を格納せず、TableCell内部の固定CSSで管理する方針は2026-10-20承認済み。Enum名・値・デフォルト・Input名・CSS優先関係を整理。HeaderのclassContainerとTabBarのclassTabBarも実利用があるため置換方針を検討。既存表示の維持を前提としAI独自CSSは禁止 | [議事録](phase2_05_任意CSS注入の排除.md) |
 | 2 | 2.6 DTO・Form・Validation | **2.6.1** | UI Form DTOのComponentスコープDI方針を決定 | 完了 | 承認済 | 未着手 | 未検証 | ACGと画面実装への反映はPhase 5 | [議事録](phase2_06_DTO・Form・Validation.md) |
 | 2 | 2.6 DTO・Form・Validation | **2.6.2** | Enum FormControlとApplication string codeの境界変換 | 完了 | 承認済 | 完了 | ビルド確認済 | 保存→再表示等の動作確認はPhase 7 | [議事録](phase2_06_DTO・Form・Validation.md) |
-| 2 | 2.6 DTO・Form・Validation | **2.6.3** | FormControl ValidationとDomain Validationの境界を確定 | 未着手 | 検討中 | 未着手 | 未検証 | 具体例で重複なく責務を分ける | [議事録](phase2_06_DTO・Form・Validation.md) |
+| 2 | 2.6 DTO・Form・Validation | **2.6.3** | FormControl ValidationとDomain Validationの境界を確定 | 完了 | 承認済 | 未着手 | 未検証 | 2026-10-20承認：FormControl/UI Form DTOはrequired・文字数・数値／日付形式等の画面入力Validation、Domainはポイント／ゲーム／セット・サーブ順・試合状態等の業務不変条件を担当。業務判定をUIとDomainに二重実装せず、Domain保証を省略しない。ACG既決仕様とMapper非作成方針を維持。実装Phase 5、検証Phase 7 | [議事録](phase2_06_DTO・Form・Validation.md) |
 | 2 | 2.6 DTO・Form・Validation | **2.6.4** | UI Form DTOのclass＋formGroup方式を最終確定 | 未着手 | 推奨案 | 既存実装 | 静的確認済 | 既存方針とAngularの扱いをレビュー | [議事録](phase2_06_DTO・Form・Validation.md) |
 | 2 | 2.6 DTO・Form・Validation | **2.6.5** | 専用Mapperを作成しないルールを確定 | 完了 | 承認済 | 一部実装 | 静的確認済 | 画面実装ルールへ反映して確認 | [議事録](phase2_06_DTO・Form・Validation.md) |
 | 2 | 2.6 DTO・Form・Validation | **2.6.6** | Nullable<T>共通型・global.d.tsの設計 | 完了 | 承認済 | 未確認 | 未検証 | ACG／生成物との適合は5.4.3で確認 | [議事録](phase2_06_DTO・Form・Validation.md) |
