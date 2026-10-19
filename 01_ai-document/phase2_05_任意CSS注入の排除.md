@@ -230,6 +230,15 @@ AIが画面・共通Componentを実装する場合も次を遵守する。
 - **次の作業**：Layout移行／内部標準CSS／限定APIを整理
 - **原典**：[phase2_UI設計思想と責務.md](議事録バックアップ/phase2_UI設計思想と責務.md)
 
+### 2026-10-19：2.5.3 置換詳細の提案（未承認）
+
+- **背景色入力案**：TableCellに`backgroundColor` Inputを追加。型はACG生成の`AppComponentTableCellBackgroundEnum`（物理名候補）とし、デフォルトは`DEFAULT`。Enum値候補は`DEFAULT`（追加背景色なし）、`LABEL`（現行`bg-base-200`）、`ERROR`（`bg-error/20`）、`INFO`（`bg-info/20`）、`WARNING`（`bg-warning/20`）、`SUCCESS`（`bg-success/20`）。Enum値はCSSクラス文字列そのものではなく意味のある識別値とし、クラス対応はTableCell内部で管理。候補の物理名・列挙値・デフォルト等は未承認。
+- **Header提案**：`classContainer` Inputを削除する代わりに、AppLayoutが渡している`navbar bg-base-300 shadow-sm h-[4rem] shrink-0`に相当する現行表示をHeader内部の標準スタイルへ移管し、画面からの任意classの注入を無くす。
+- **TabBar提案**：`classTabBar` Inputを削除する代わりに、AppLayoutが渡している`bg-base-300 h-[4rem] shrink-0 flex items-center justify-around`に相当する現行表示をTabBar内部の標準スタイルへ移管する。
+- **互換性維持**：既存の高さ・余白・背景色・動的状態色等の表示結果を勝手に変更しない。TableCellは12呼出し箇所、HeaderとTabBarは各1呼出し箇所をPhase 5で修正し、コンポーネント本体のclass転送コードは移行後に削除する。
+- **検証**：Phase 7で通常背景色、試合状態4色、テーマ変更、zebra／selected／stickyとの優先順位、およびHeader／TabBarの位置・サイズを比較する。
+- **承認状態**：提案段階。上記詳細案のユーザー承認待ち。実装未着手、検証未実施。
+
 ## 旧議事録（原文・承認日・検討経緯）
 
 - [phase2_UI設計思想と責務.md](議事録バックアップ/phase2_UI設計思想と責務.md)
