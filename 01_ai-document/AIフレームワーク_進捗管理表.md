@@ -14,10 +14,10 @@
 ## 1. 今どこか／次は何か
 
 - **現在の大区分**：**Phase 2 設計思想・責務の議論**。
-- **現在の中区分**：**2.5 任意CSS注入の排除**（2.4.3の受入条件設計完了）。
-- **現在の小区分**：**2.5.3 段階的廃止の優先順位・置換先を決定**（2.5.2のUI実装棚卸し完了）。
-- **次の議論**：**2.5.3 TableCellのEnum詳細とHeader／TabBarの任意class Inputの置換方針**。TableCellのEnum化とcellClasses廃止、および画面から仕様で許された方法のみ表示指定する原則は承認済み。EnumにCSSクラス文字列を格納せずTableCell内部で固定CSSを管理することは承認済み。具体名・値・置換詳細は未決。
-- **その次**：2.6.3 FormControlとDomainの責務、2.6.4 UI Form DTO方式など。
+- **現在の中区分**：**2.6 DTO・Form・Validation**（2.5.3設計完了）。
+- **現在の小区分**：**2.6.3 FormControl ValidationとDomain Validationの境界を確定**（次の検討対象）。
+- **次の議論**：**2.6.3 FormControl ValidationとDomain Validationの責務境界を確定**。2.5.3のTableCell Enum・Header／TabBarのCSS注入廃止方式は承認済み。
+- **その次**：2.6.4 UI Form DTO方式、2.7.1 UI・Domain境界など。
 - **運用開始までの主要関門**：Phase 2・3の**全議論終了** → **Phase 4：議事録に基づく体系的設計書と最終承認** → Phase 5実装 → Phase 6 AI実装手順 → Phase 7人間の保守性を含めた検証 → Phase 8運用。
 - **直近の技術確認**：2026-10-17、BRU1001／BRU1002のEnum FormControl互換修正後に`npx ng build`成功（バンドルサイズ警告は残存）。これは**AIフレームワーク完了・実機動作完了を意味しない**。
 
