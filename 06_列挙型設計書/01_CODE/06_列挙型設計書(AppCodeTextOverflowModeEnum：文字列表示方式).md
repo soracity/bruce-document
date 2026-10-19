@@ -39,10 +39,10 @@ app\brf9000\brf9011-enum\code
   - 数値：number
 - 列挙型定義テーブルの型はすべて同じ必要があります
 - ACGによるTypeScript列挙型の自動生成用設計書。生成対象のTypeScriptソースを手書きで追加するものではありません。
-- 本列挙型は共通LabelComponentの長文表示方式をComponentパラメーターから指定する用途を想定します。
-- **LabelComponentで当該パラメーターが省略された場合、WRAP（折り返し）を適用します。**
+- 本列挙型は共通LabelComponentおよびButtonComponentの長文表示方式を、各Componentのパラメーターから指定するために使用します。
+- **LabelComponent・ButtonComponentのいずれも当該パラメーターを省略した場合は、WRAP（折り返し）を適用します。**
 - WRAP／MARQUEE_BOUNCE／MARQUEE_RESTART／ELLIPSISは互いに排他的な表示方式であり、Componentの同一パラメーターから1つ選択します。
 - マーキーの方向指定用に別の列挙型やComponentパラメーターを設けません。旧AppCodeMarqueeModeEnumの案は本設計に統合して廃止します。
 - Componentの幅が縮小されても、文字サイズは自動縮小しません（Phase 2.4.2承認事項）。
-- **設計状態**：パラメーターによる表示方式の選択は承認済み。**WRAP・MARQUEE_BOUNCE・MARQUEE_RESTART・ELLIPSISの4種類と各値はユーザー提示に基づき承認済み**です。**表示方式パラメーター省略時の既定値はWRAP（wrap）とすることを2026-10-19にユーザー承認済み**です。物理名・ファイル名は未承認の設計案です。
-- **未決事項**：表示方式パラメーターの正式名称、マーキーの速度・停止時間などの詳細、Button等ほかのComponentへの適用範囲。実装・ACG生成・検証は未着手です。
+- **設計状態**：パラメーターによる表示方式の選択は承認済み。**WRAP・MARQUEE_BOUNCE・MARQUEE_RESTART・ELLIPSISの4種類と各値はユーザー提示に基づき承認済み**です。**Label・Button両Componentの表示方式パラメーター省略時の既定値はWRAP（wrap）とすることを2026-10-19にユーザー承認済み**です。物理名・ファイル名は未承認の設計案です。
+- **未決事項**：表示方式パラメーターの正式名称、マーキーの速度・停止時間などの詳細、Label・Button以外のComponentへの適用範囲、およびButtonでのアニメーションと押下操作・フォーカスの両立条件。実装・ACG生成・検証は未着手です。
