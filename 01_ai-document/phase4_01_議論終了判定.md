@@ -227,6 +227,9 @@ AIフレームワークを**実装だけでなく運用開始まで**追跡で�
 <details>
 <summary>原典全文：phase00_議事録と工程ID_対応一覧.md（歴史的記録）</summary>
 
+[原典を開く](議事録バックアップ/phase00_議事録と工程ID_対応一覧.md)
+
+~~~~~markdown
 <!-- MIGRATION-SOURCE-BEGIN 01_ai-document/議事録バックアップ/phase00_議事録と工程ID_対応一覧.md -->
 # Phase別・工程ID別 既存議事録対応一覧
 
@@ -292,12 +295,16 @@ AIフレームワークを**実装だけでなく運用開始まで**追跡で�
 - [Phase 00：進捗・議事録運用](phase00_進捗管理と議事録運用_議事録.md)
 
 <!-- MIGRATION-SOURCE-END 01_ai-document/議事録バックアップ/phase00_議事録と工程ID_対応一覧.md -->
+~~~~~
 
 </details>
 
 <details>
 <summary>原典全文：phase00_進捗管理と議事録運用_議事録.md（歴史的記録）</summary>
 
+[原典を開く](議事録バックアップ/phase00_進捗管理と議事録運用_議事録.md)
+
+~~~~~markdown
 <!-- MIGRATION-SOURCE-BEGIN 01_ai-document/議事録バックアップ/phase00_進捗管理と議事録運用_議事録.md -->
 # Phase 00：進捗管理・議事録運用 議事録
 
@@ -386,5 +393,6 @@ AIフレームワークを**実装だけでなく運用開始まで**追跡で�
 > 補足：ユーザーが新しい議論をした後、GitHubへの記録が実際に完了した際にそのリンク・コミットを返す。チャットの会話だけでGitHubに保存されたとは扱わない。
 
 <!-- MIGRATION-SOURCE-END 01_ai-document/議事録バックアップ/phase00_進捗管理と議事録運用_議事録.md -->
+~~~~~
 
 </details>
