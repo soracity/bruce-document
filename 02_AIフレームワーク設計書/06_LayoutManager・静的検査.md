@@ -314,3 +314,19 @@ templateUrlは直接文字列リテラル、templateは直接文字列／テン�
 | RESP-PEND-06 | Angular AST API、インラインソース位置変換、診断コードとCI設定の具体化 | 未承認 |
 
 **設計レビュー上の判定**：本追補は責務境界と入出力を整理したもので、未確定の実装アルゴリズム・APIを承認したものではない。全件監査・実装可能性の合格判定は変更しない。
+
+## Phase 2.3 余白責務の原典照合（2026-10-21）
+
+根拠：`01_ai-document/phase2_03_余白の責務.md` 2.3.1〜2.3.3。
+
+| ID | 現行承認事項 | 禁止・注意 |
+|---|---|---|
+| GAP-01 | 同一LayoutItem内の兄弟間の横gapはLayoutItemが管理 | 個別Componentにmr-*／ml-*で代用しない |
+| GAP-02 | LayoutItem同士の縦gapはItemStackLayoutが管理 | 個別行・Componentのmt-*／mb-*で代用しない |
+| GAP-03 | 共通Component内部のpadding／gapは当該Componentが管理 | 画面側から内部CSSを注入しない |
+| GAP-04 | 画面上下左右の外周paddingは上位Containerが管理 | LayoutItem／ItemStackLayoutが外周paddingを重複管理しない |
+| GAP-05 | 標準gapを使い、現段階でgapSize等の追加Input／Enumを新設しない | 要件が具体化した場合のみ再検討 |
+
+外周Containerの名称（原典のapp-screen-container）は仮称。新規ScreenLayoutComponentやpadding=16pxなどの数値は未承認。既存上位Containerで担保できるかの実装時確認が必要。2.3.2の管理位置は2026-10-19承認済みだが、具体的実装・実機検証は未実施。原典の節冒頭に残る古い「外周位置未決」という引継ぎ文より後日の明示承認を優先する。
+
+受入テスト観点（設計のみ）：GAP-T01 横gapの所有者、GAP-T02 縦gapの所有者、GAP-T03 内部paddingの所有者、GAP-T04 外周Containerの責務、GAP-T05 個別marginでの代替禁止、GAP-T06 不要なgapSize Input追加禁止。実行0件。
