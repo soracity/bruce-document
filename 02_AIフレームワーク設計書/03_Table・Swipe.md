@@ -9,14 +9,14 @@
 | BRUCE-TABLE-003 | TableContainerLayoutはzebra/recordGapなど表固有、TableRecordは行固有、TableCellはcolSpan/rowSpan/stickyなどセル固有を管理。汎用属性はComponentBase。 |
 | BRUCE-TABLE-004 | cellClassesによる任意CSS注入は移行後廃止。背景・文字はAppUiColorEnumと固定マッピングを使用。 |
 | BRUCE-TABLE-005 | ERROR/INFO/WARNING/SUCCESSのTableCell状態背景は20%透明度相当を維持。動的Tailwind文字列の生成は禁止。 |
-| BRUCE-TABLE-006 | 旧AppComponentTableCellBackgroundEnumは当時の承認履歴として保持。共通AppUiColorEnumとの移行・重複整理を実装時に行う。旧専用Enumと共通Enumを両方同時に正本とみなさない。 |
+| BRUCE-TABLE-006 | 現行の色指定は共通AppUiColorEnumのみ。旧AppComponentTableCellBackgroundEnumは履歴専用で、新規生成・新規参照は禁止。旧画面の移行対応はPhase 5着手前に設計で確定する。 |
 | BRUCE-SWIPE-001 | SwipeComponentは独立した操作Component。ジェスチャー判定をComponentBase/LayoutManagerへ移さない。 |
 | BRUCE-SWIPE-002 | LayoutManagerは配置のみ担当。SwipeComponentにComponentBase継承を一律強制しない。 |
 | BRUCE-SWIPE-003 | Table横スクロールとの競合はPhase 7で実機検証する。 |
 
 ## 追加の原典照合が必要な事項
 
-[2.5.3の旧承認](../01_ai-document/phase2_05_任意CSS注入の排除.md)にはTableCell専用Enumの物理名・6値とHeader/TabBarのCSS注入廃止が記録されている。後続の共通Enum承認との時系列を追い、最終的な置換対象と互換性を確認する。Header/TabBarの外部CSSをComponent内部に移す方針は継続。実装・検証未実施。
+[2.5.3の旧承認](../01_ai-document/phase2_05_任意CSS注入の排除.md)にはTableCell専用Enumの物理名・6値とHeader/TabBarのCSS注入廃止が記録されている。後日承認された共通AppUiColorEnumを現行仕様として優先する。旧専用Enumは実装指示ではない。既存画面の具体的な置換対応と互換性は設計上の未決事項として管理する。Header/TabBarの外部CSSをComponent内部に移す方針は継続。実装・検証未実施。
 
 ## Phase 3.1／3.4 後日承認の詳細設計照合（2026-10-21）
 
@@ -25,7 +25,7 @@
 ### 現行色Enumと旧設計の優先順位
 
 - **現行**：共通 `AppUiColorEnum` の11色を一般ComponentとTableCellで共用する。EnumはACG生成対象。画面は意味色を指定し、固定CSSクラスへの変換は共通 `UiStyleUtil` が担当する。
-- **履歴**：旧 `AppComponentTableCellBackgroundEnum` の6値・`backgroundColor` Input案はPhase 2.5.3時点の承認。後日共通Enum方式が優先するため、旧専用Enumを新実装の正本として扱わない。
+- **履歴**：旧 `AppComponentTableCellBackgroundEnum` の6値はPhase 2.5.3時点の承認履歴であり、現行の実装指示ではない。`backgroundColor`の現行の値型は共通`AppUiColorEnum | undefined`。旧Enumは新規生成・新規利用しない。
 - **セル固有表現**：TableCellのERROR/INFO/WARNING/SUCCESSの状態背景は従来の透明度20%相当を維持。一般ComponentのERRORは通常のエラー色。透明度はEnumの値ではなくComponentの表示責務。別Input `backgroundOpacity` は設けない。
 - **禁止**：任意class転送 `cellClasses` の継続、EnumへのCSSクラス文字列格納、Tailwindクラス名の動的文字列組立て。
 
