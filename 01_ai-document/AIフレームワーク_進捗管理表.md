@@ -111,7 +111,7 @@
 | 3 | 3.1 共通スタイル | **3.1.1** | 個別デザインInputと意味色の仕様を最終確定 | 進行中 | 共通スタイル属性の基底クラス集約を承認済（全仕様は未確定） | 未着手 | ASIS一部静的確認済 | ComponentBaseへの共通Input集約・UiStyleUtil変換方針を承認。既存FormControlComponentBaseとの継承関係、適用対象、既定値・意味色の最終確定が残る | [議事録](phase3_01_共通スタイル.md) |
 | 3 | 3.1 共通スタイル | **3.1.2** | Android・iPhone共通表示品質の検査観点を確定 | 未着手 | 方針合意 | 未着手 | 未検証 | 端末条件・セーフエリア・タップ領域を整理 | [議事録](phase3_01_共通スタイル.md) |
 | 3 | 3.2 UiStyleUtil | **3.2.1** | 静的ユーティリティAPIと静的CSSクラス対応を確定 | 未着手 | 方針合意 | 未着手 | 未検証 | Tailwindのビルド時検出と型制約を検証 | [議事録](phase3_02_UiStyleUtil.md) |
-| 3 | 3.3 ComponentBase | **3.3.1** | 単一ComponentBaseの継承・Input仕様を最終確定 | 未着手 | 方針合意 | 未着手 | 未検証 | 既存FormControlComponentBase／Angular継承制約を確認 | [議事録](phase3_03_ComponentBase.md) |
+| 3 | 3.3 ComponentBase | **3.3.1** | ComponentBaseとFormControlComponentBaseの責務分離・継承仕様を最終確定 | 進行中 | 分離・継承構造は承認済（Input詳細は後続確認） | 未着手 | 未検証 | ComponentBase→FormControlComponentBase<T>→入力Componentを承認。FormControl不要の部品はComponentBaseを直接継承。Angular Input継承・既存変更検知・対象部品を実装時確認 | [議事録](phase3_03_ComponentBase.md) |
 | 3 | 3.4 Table | **3.4.1** | Table→Record→Cellスタイル継承の方式を決定 | 未着手 | 未決 | 未着手 | 未検証 | 未指定undefinedと明示falseを区別する方式が未決 | [議事録](phase3_04_Table.md) |
 | 3 | 3.4 Table | **3.4.2** | Table固有属性と共通スタイルの境界を確定 | 未着手 | 検討中 | 未着手 | 未検証 | zebra／recordGap／colSpan等と共通属性を分離 | [議事録](phase3_04_Table.md) |
 | 3 | 3.5 Swipe・Layout | **3.5.1** | Swipeのスタイル適用部分・ジェスチャー境界を確認 | 未着手 | 方針合意 | 既存実装 | 静的確認済 | Table横スクロールとの競合確認はPhase 7 | [議事録](phase3_05_Swipe・Layout.md) |
