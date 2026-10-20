@@ -94,7 +94,7 @@ requiredTrimは値自体を書き換えない。trim対象はJavaScriptのString
 | 日時＋2026-10-16T06:24:00.000Z | Exception |
 | 日付/日時＋- | '' |
 
-日付/日時は-または対応予約語のみ。一般文字列の「任意文字列可」の例外。予約語文字列をそのままFormControlへ渡さない。
+日付/日時は-または対応予約語のみ。一般文字列の「任意文字列可」の例外。予約語文字列をそのままFormControlへ渡さない。予約語はSYSTEM_DATE/SYSTEM_DATETIMEの2語に限定する。NOW/TODAY/NULL/EMPTYを新たな予約語にしない。これら4文字列は一般文字列項目では通常の指定文字列として生成し、日付/日時では許可表にないため拒否する。
 
 AppDateUtilは既存`src/app/brf9000/brf9017-utils/app-date.util.ts`。getSysDateIso8601():stringは端末システム日付のYYYY-MM-DD、getSysDateTimeUtcIso8601():stringはnew Date().toISOString()。ACG生成時点の日時を定数として埋め込まず、DTOインスタンス生成時のメソッド呼出しを出力する。独自の日付取得コードをACGに作らない。
 
