@@ -55,6 +55,14 @@ export abstract class ComponentBase {
 
 
 
+
+### 2026-10-20 正式承認：ComponentBaseとFormControlComponentBaseの分離
+
+- **設計判断：承認済み**。ユーザーが「分割OK」と明示。従来の「1つのComponentBaseに任意FormControlも集約する」案は**撤回**。上記「旧議事録の具体的内容」は履歴として保存し、現行の実装指示には使用しない。
+- **承認構造**：`ComponentBase` は角丸・シャドー・枠線・背景色などの共通スタイルInputを一元管理。既存の `FormControlComponentBase<T>` は `ComponentBase` を継承し、FormControlとその変更検知を管理する。FormControl不要のButton・TableCell・Group等は `ComponentBase` を直接継承。Textbox・Date・Radio等のFormControl利用Componentは `FormControlComponentBase<T>` を継承する（各Componentの実際のFormControl利用有無は実装時に確認）。
+- **理由**：共通スタイルの一元管理とFormControlの責務分離を両立し、不要なFormControlプロパティを非入力Componentに持たせない。
+- **実装・検証**：未着手・未検証。AngularのInput継承、既存変更検知との整合、適用対象をPhase 5で検証する。設計決定はこの承認を優先し、旧統合案に戻さない。
+
 ## 旧議事録（原文・承認日・検討経緯）
 
 - [phase3_UIデザインシステム標準化_議論記録.md](議事録バックアップ/phase3_UIデザインシステム標準化_議論記録.md)
