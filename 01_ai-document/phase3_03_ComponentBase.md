@@ -70,3 +70,10 @@ export abstract class ComponentBase {
 ## 議事録更新ルール
 
 この工程の新しい議論は対応する小区分見出しの下へ日時・検討案・決定／未決・理由・次の作業を追記し、同時に[進捗管理表](AIフレームワーク_進捗管理表.md)を更新する。旧議事録は改変しない。
+
+### 2026-10-20 追加承認：共通Signal InputとComponent別既定値
+- 共通Signal Inputは`ComponentBase`で一元定義し、子Componentでは再定義しない。
+- Component固有の既定値は基底クラスの既定値取得メソッドを子Componentでoverrideする方式とする。画面の明示指定値を最優先し、未指定時にComponent固有既定値を適用する。
+- 概念例：`roundedSize = input<UiRoundedSize>()`、`getDefaultRoundedSize()`をTableCell等でoverrideし、実効値は`this.roundedSize() ?? this.getDefaultRoundedSize()`とする。
+- `FormControlComponentBase<T>`は`ComponentBase`を継承し、FormControl関連責務を維持する。
+- 設計承認済み。Angular Signal Input継承時の実動作確認、実装・検証は未実施。
