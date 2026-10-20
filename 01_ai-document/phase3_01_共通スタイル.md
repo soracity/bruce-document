@@ -115,6 +115,14 @@
 
 > 旧サマリの「2026-10-15終了時点の現在位置」「再開時の運用ルール」「明日の再開用の一文」は共通スタイル仕様ではないため、[旧サマリ原典](議事録バックアップ/phase2_phase3_再開用完全サマリ.md)の履歴に集約。現行の設計判断には用いない。
 
+
+### 2026-10-20 追加承認：共通スタイル属性の基底クラス集約
+
+- **設計状態：原則承認済み（3.1.1の全項目最終確定ではない）**。ユーザーはASIS（各Componentにスタイル指定が分散）からTOBE（共通スタイルプロパティの定義と処理を抽象化・一元管理）への変更を「OK」で承認。
+- **TOBE**：角丸・シャドー・枠線・背景色等の汎用スタイルInputは共通の基底クラス `ComponentBase` に集約し、適用対象のComponentは継承して利用する。CSSクラスへの変換は `UiStyleUtil` に集約。Component固有の属性（例：TableContainerLayoutのレコード単位の `recordShadow`）は別責務として維持可能。
+- **ASIS静的確認**：`soracity/bruce` の `feature/feature-20261015` で、Textboxは `FormControlComponentBase<T>` を継承（FormControlの値・状態変更時の変更検知を担当）。TableCellとTableContainerLayoutは基底クラス非継承。Textbox/ButtonのHTMLではDaisyUI/Tailwindクラスを直接指定し、TableContainerLayoutは独自 `recordShadow` InputとSCSSで描画。共通スタイル基底クラスによる一元管理は未実装。これは調査したファイルに基づく静的確認であり、全Componentの実装確認完了ではない。
+- **実装・検証**：未実施。既存の `FormControlComponentBase` との単一継承上の関係、適用対象、各Inputの既定値・意味色、移行方法は後続の設計で明確化する。既存コードをこの承認だけで変更しない。
+
 ## 3.1.2 Android・iPhone共通表示品質の検査観点を確定
 
 - **作業**：未着手／**設計**：方針合意／**実装**：未着手／**検証**：未検証
