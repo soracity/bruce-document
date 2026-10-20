@@ -98,7 +98,7 @@ Cell paddingは未指定なら現行0.125rem/0.25rem。明示paddingは02章の�
 </div>
 ```
 
-RecordはrecordGap>0でaria-hiddenのspacer tbodyを直前に作り、先頭RecordのスペーサーをCSSでdisplay:none。データtbodyへaria-selectedとclick handlerを設定する。onClick():voidはclickable=true時のみrecordClick.emit()。Swipeのcapture抑止後はこのhandlerまで届かない。
+RecordはrecordGap>0でaria-hiddenのspacer tbodyを直前に作り、先頭の可視Recordのスペーサーをdisplay:none（表示順収集は28章）。データtbodyへaria-selectedとclick handlerを設定する。onClick():voidはclickable=true時のみrecordClick.emit()。Swipeのcapture抑止後はこのhandlerまで届かない。
 
 Rowはtrへ上固定クラスを適用する。Cellは一つの投影templateを用意し、headerによりth/tdを排他的に作る。colspan/rowspan、align.value、verticalAlign.value、data-table-radiusを設定する。ホストのclassNameは一切読み取らず、内部td/thのclassへ転送しない。
 
@@ -131,7 +131,7 @@ app-table-container-layout .app-table-corner-overlay { position:absolute; pointe
 
 `tableGridOffset(tableRect, groupRects):{x:number,y:number}`：幅・高さ>0のtbody矩形の左L/上T/右R/下Bを取得。x=table.x+(table.width−(R−L))/2−L、yも同様。対象なしは0/0。UA名でBlink/WebKitを分岐しない。
 
-`tableCornerGeometry(width,height,cells,requestedRadius)`はDOMなしの純粋関数。各cellはx/y/width/height/radiusPosition/borderedを持つ。基準半径r=max(0,min(requestedRadius,cell.width/2,cell.height/2))。四隅の原点は(x,y)、(x+w,y)、(x,y+h)、(x+w,y+h)。left/rightは該当する上下2隅、allは4隅を選ぶ。r=0/NONEは追加clipなし。全体矩形pathへ四隅の除去pathを追加し、evenoddで抜く。罫線ありは内側半径max(0,r−borderWidth/2)、SVGで外側の弧を描画する。Cell別の半径・罫線幅は追加の内部測定値として保持し、弧を同じstroke-widthごとに分けて描く。1px固定の旧計算を4px指定へそのまま適用しない。
+`tableCornerGeometry(width,height,cells,requestedRadius)`はDOMなしの純粋関数。各cellはx/y/width/height/radiusPosition/borderWidthと任意radiusを持つ。基準半径r=max(0,min(requestedRadius,cell.width/2,cell.height/2))。四隅の原点は(x,y)、(x+w,y)、(x,y+h)、(x+w,y+h)。left/rightは該当する上下2隅、allは4隅を選ぶ。r=0/NONEは追加clipなし。全体矩形pathへ四隅の除去pathを追加し、evenoddで抜く。罫線ありは内側半径max(0,r−borderWidth/2)、SVGで外側の弧を描画する。Cell別の半径・罫線幅は追加の内部測定値として保持し、弧を同じstroke-widthごとに分けて描く。1px固定の旧計算を4px指定へそのまま適用しない。
 
 clip-pathは同一documentの絶対URL＋clipIDとする。base href/深いルートで壊さない。半径NONEしかなければclip-pathを空にする。SVGはaria-hidden/focusable=false、背景を不透明パッチで隠さない。rowspan/colspanの実際の結合結果はブラウザーの矩形から取得する。
 
@@ -211,3 +211,5 @@ template=nullはportalなし、panel幅0/非表示は開かない、破棄後の
 ## TABLE-07 keyboard操作の利用側契約
 
 Record.clickableによるtbodyクリックだけを、keyboard利用者の唯一の選択手段にしない。利用画面は同じ選択/詳細処理を呼ぶ既存Button等をCellへ投影する。Buttonのclick/Enter/Spaceが同じ画面handlerへ到達することをT-DEVICE-03/08で検証する。tbodyへbutton roleを付けてtableの行構造を壊したり、共通基盤からアプリ固有の列・選択文言を勝手に追加したりしない。Swipeも既存open()/close()を呼ぶ利用側の操作経路を持つ。英語固定Actionsは現行互換値として保持するが、多言語ラベルの正式APIは原典未決であり実装済みとしない。
+
+実装補完：[28章](28_Table・Swipeの実装補完.md)で全実体HTML、zebra/先頭spacer、影の座標、Portal生成、Pointer再入/解除を具体化する。

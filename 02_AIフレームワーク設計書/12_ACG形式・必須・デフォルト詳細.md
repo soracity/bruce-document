@@ -140,3 +140,5 @@ readonly formGroup = new FormGroup({
 ## DEFAULT-05 試験
 
 T-ACG-01〜20により、許可表全11行・禁止列・必須の空白・数値0・真偽false・Enum null・デフォルト全13行・予約語不一致・引用符/backslash/改行・import重複・再生成一致を検証する。既存Javaテストの存在と今回実行した試験は区別する。
+
+JavaScript正規表現／生成TS構文の検査を実装するクラス・引数・プロセス処理・前提不足時の失敗は[29章](29_静的検査器・ACGの実装補完.md)に定義する。

@@ -34,6 +34,7 @@ export function tableCornerGeometry(width, height, cells, requestedRadius) {
   const arcsByWidth = new Map();
   for (const cell of cells) {
     if (![cell.x,cell.y].every(Number.isFinite) || ![cell.width,cell.height,cell.borderWidth].every(finiteNonNegative)) throw Error('BRUCE_TABLE_GEOMETRY');
+    if (![0,0.5,1,2,4].includes(cell.borderWidth)) throw Error('BRUCE_TABLE_GEOMETRY');
     if (!['none','top-left','top-right','bottom-left','bottom-right','left','right','all'].includes(cell.radiusPosition)) throw Error('BRUCE_TABLE_RADIUS');
     const desired = cell.radius ?? requestedRadius;
     if (!finiteNonNegative(desired)) throw Error('BRUCE_TABLE_RADIUS');
@@ -145,3 +146,22 @@ check(f(100,40,[{...cell,borderWidth:0.5},{...cell,x:50,borderWidth:4}],8).arcs.
 for(const patch of [{width:-1},{borderWidth:NaN},{radiusPosition:'bad'},{radius:-1}]){assert.throws(()=>f(100,40,[{...cell,...patch}],8));checks++;}
 console.log(JSON.stringify({pureGeometryChecks:checks,result:'passed',browserRendering:'not executed'}));
 ```
+
+
+## HTML-03 AppLayoutの全体構造とroute状態
+
+AppLayoutComponentはOnPush、imports=[HeaderComponent,TabBarComponent,RouterOutlet]。公開Input/Outputなし。private router:Router／route:ActivatedRouteをinject、pageTitle:WritableSignal<string>=''、showHeader/showTabBar:WritableSignal<boolean>=true、retUrl:WritableSignal<string>=''。AppLayoutRouteData={title?:string,retUrl?:string,showHeader?:boolean,showTabBar?:boolean}。
+
+```html
+<div class="mx-auto md:max-w-4xl h-dvh flex flex-col text-base-content overflow-hidden">
+  @if (showHeader()) { <app-header [@in.title]="pageTitle()" [title]="pageTitle()" /> }
+  <main class="flex-1 min-h-0 overflow-y-auto overflow-x-auto" role="main"><router-outlet /></main>
+  @if (showTabBar()) { <app-tab-bar /> }
+</div>
+```
+
+classContainer／classTabBarだけを削除した形である。CSS .main-contentを利用する場合はflex:1 1 auto;min-height:0;overflow:auto。現在のmainは上記utilityで同じ責務を持つ。タイトルアニメーションtrigger('in.title')の:enterはopacity0→1を1000ms ease-in、:leaveは1→0を1000ms ease-out。新しいアニメーション効果は追加しない。
+
+constructorはrouter.eventsをNavigationEndだけfilterしてsubscribeしupdateLayoutData():voidを呼ぶ。初回も1回呼ぶ。getLayoutData():AppLayoutRouteDataはroute.snapshotからfirstChildを末端までたどりdataを返す。updateLayoutDataはtitle??''、showHeader??true、showTabBar??true、retUrl??''を各Signalへ設定。hideHeaderAndNav():voidは両表示false、showHeaderAndNav():voidはtrue、isShowHeaderAndNav():booleanは両方のAND。購読はtakeUntilDestroyed（DestroyRef）で解除する。
+
+既存テンプレートではretUrlをHeader.backUrlへバインドしていない。今回のCSS注入廃止に便乗して戻る動作を新設しない。Headerを単独利用する呼出しはHTML-01のbackUrl契約を使う。routeや画面の業務処理を変更しない。T-UI-12/13とT-MIG-04で表示条件・height・入力削除を検査する。

@@ -171,3 +171,5 @@ AcgClassModelはisInjectableとprovidedInRootを分離する。isInjectable=true
 再生成比較では、生成日時/元ファイルmtime等の可変ヘッダーだけを比較から分離し、型・import・初期値・Validator・readonly・decorator・プロパティ順は一致させる。生成物直接修正を正本にせず、定義/解析器/モデル/生成器/テストを直す。
 
 テスト：T-FORM-01〜08、T-ACG-01〜20。HTML/CSSはこの生成器の出力対象ではない。画面HTMLは01/06/13章に従って手書きまたはAIが実装する。
+
+実装補完：[29章](29_静的検査器・ACGの実装補完.md)にJavaScript検証ブリッジ、Enum定義入力の必須メタデータ、旧専用Enumの除外を記す。

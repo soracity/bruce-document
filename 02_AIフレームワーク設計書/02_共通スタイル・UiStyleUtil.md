@@ -94,7 +94,7 @@ export abstract class ComponentBase {
 
 明示時の適用単位：border群＝borderまたはborderWidthの指定、rounded群＝roundedまたはroundedSize、shadow群＝shadowまたはshadowSize、padding群＝padding、色群＝各色の指定/継承。明示`border=false`なら幅0、`rounded=false`なら半径0、`shadow=false`なら影なし。真偽をfalseにしても他の群を消さない。
 
-FABの円形は既存`btn-circle`を維持する。24pxを「円形の承認値」として設定しない。明示roundedSizeがある場合だけ固定半径指定を適用する。visible=falseはレイアウトボックス自体を消し、操作・フォーカス対象から外す。display:contentsのRecord/Cellは実体のtbody/td/thとRecordスペーサーにも同じ非表示を反映する。Row自体の条件付き除去は画面の@ifで行い、今回visible Inputを独自追加しない。
+FABの円形は既存`btn-circle`を維持する。24pxを「円形の承認値」として設定しない。明示roundedSizeがある場合だけ固定半径指定を適用する。visible=falseはレイアウトボックス自体を消し、操作・フォーカス対象から外す。display:contentsのRecord/CellはRecord非表示は自身のtbody/Recordスペーサーへ、Cell非表示は自身のtd/thだけへ反映する。Row自体の条件付き除去は画面の@ifで行い、今回visible Inputを独自追加しない。
 
 ## STYLE-04 UiStyleUtilの完全契約
 
@@ -171,3 +171,5 @@ Inputの参照が変わる場合にも追従するため、effectからbindContr
 型を迂回した不正値も許容表で検査する。undefinedは既定/継承、nullはスタイル未指定値として採用しない。純粋UtilにHTML/CSSはない。基底のHTMLはなく、13章・03章の実体要素へ適用する。
 
 テスト：T-STYLE-01〜10。全数値・11色・false/0・未指定・override・Table色・影非継承・Input再接続・破棄を検査する。Angular Signal Input継承とCSS生成の実測はPhase 5で実行し、文書レビューのみで合格扱いしない。
+
+実装補完：[27章](27_共通UI・計測・日付の実装補完.md)で群ごとの適用・null検査・固定CSSの範囲と優先順位・FormControl通知フックを規定する。

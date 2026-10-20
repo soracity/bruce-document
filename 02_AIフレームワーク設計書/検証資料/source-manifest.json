@@ -1,0 +1,274 @@
+[
+  {
+    "path": "01_ai-document/phase1_01_既存資産棚卸し.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 37969,
+    "lines": 449,
+    "gitBlob": "bf49f3d3417b313984d72d1545f2cc456dbce734",
+    "sha256": "cfbbc35d5121a566f72eea24e2c795f0043acdf67f667a0f645f22193fa93fac"
+  },
+  {
+    "path": "01_ai-document/phase2_01_責務境界.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 9178,
+    "lines": 170,
+    "gitBlob": "97a28d02445b33ff26c167a7f4a2131aaced2fef",
+    "sha256": "939cf4a7d21131a715e61a810ff3d96ba03fad73586cb2cbf12e692d4a5bdb4c"
+  },
+  {
+    "path": "01_ai-document/phase2_02_幅の責務.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 102255,
+    "lines": 893,
+    "gitBlob": "4da2f18548a9100e38bc0a398fb3bfc7635bb732",
+    "sha256": "73b2e674e71e63be470111360ee5339f33d5fae26b390c2e5890b4d99a5ac174"
+  },
+  {
+    "path": "01_ai-document/phase2_03_余白の責務.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 9384,
+    "lines": 165,
+    "gitBlob": "950d99fa2bd9d666778431138eb8d54b5461a34f",
+    "sha256": "e19e04d145bb217d57ecec78d8baf4660dc61de372ce13d83af416615536a999"
+  },
+  {
+    "path": "01_ai-document/phase2_04_レスポンシブ・折り返し.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 28932,
+    "lines": 298,
+    "gitBlob": "cb6d11cac5269f83e077f55085d418484c35a12d",
+    "sha256": "65d4945025e8be1669e192b0482a8cce3aaa8761050707df57b1e1c4518e501c"
+  },
+  {
+    "path": "01_ai-document/phase2_05_任意CSS注入の排除.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 23558,
+    "lines": 267,
+    "gitBlob": "10cc22fd21de4c3a37909d4dfe419819ecf1f0b6",
+    "sha256": "3d300c82250cda2e75df1eb7db496b5e9df21782b33b75dae2674e68451f6dea"
+  },
+  {
+    "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 106125,
+    "lines": 2809,
+    "gitBlob": "f1dda782c3ef9d3bca945c425bea4d66890cd929",
+    "sha256": "4933979562540c8e8c8571913823582a16550afca80c2772cd016675271c9fcd"
+  },
+  {
+    "path": "01_ai-document/phase2_07_UI・Domain境界.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 5264,
+    "lines": 79,
+    "gitBlob": "851687e08a1dc94993ec12988ec37bb2605fe05f",
+    "sha256": "26b76253421b0538d86d89776f68ffaad37906e1fa5309b8ccc9af7b917ad228"
+  },
+  {
+    "path": "01_ai-document/phase2_08_AI実装制約.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 22715,
+    "lines": 412,
+    "gitBlob": "968f0a91ccf2eb8c59d93a73f4bce78fdb0ec808",
+    "sha256": "c37a618f91cad7ae3c3c83854b6491189d7abdc2a8bfec4d96bbcc83057dd815"
+  },
+  {
+    "path": "01_ai-document/phase2_09_Phase 2最終承認.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 67109,
+    "lines": 1707,
+    "gitBlob": "9862ea2fc83c4dc4a936716f1ac2297e1d2c5532",
+    "sha256": "ce05d39d1fcc970bd037215f0f49fe10a9b2400675ceed84f94efbf7c54817ed"
+  },
+  {
+    "path": "01_ai-document/phase3_01_共通スタイル.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 19439,
+    "lines": 224,
+    "gitBlob": "6bcd62b5a5c13815a1a864c1575a6c8e138aac44",
+    "sha256": "66e8ef22f6c85b4a59ca380ffe06250be7440c0fdf584fad98bacdf7c1c2ef7d"
+  },
+  {
+    "path": "01_ai-document/phase3_02_UiStyleUtil.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 5950,
+    "lines": 89,
+    "gitBlob": "4ee3f2d4b02a0444bd9ab409dd619854e6cd280a",
+    "sha256": "1e7f014e64c3f7b644300ac3363d876c35924bc8c66547646afe05dae2751ded"
+  },
+  {
+    "path": "01_ai-document/phase3_03_ComponentBase.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 6984,
+    "lines": 87,
+    "gitBlob": "af116187c81fcefba04961efce5452c0910b7558",
+    "sha256": "4f417bbf1d7aa47ab2e93f24d19a3612702130c3b94b6dc61bfccf1221f9284b"
+  },
+  {
+    "path": "01_ai-document/phase3_04_Table.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 9638,
+    "lines": 137,
+    "gitBlob": "94f36334a0e3314e7082f4e87419559eb8c07dc2",
+    "sha256": "db86460944940bc19906dcef40bf387b5283df229ab54ace1fc8bc04872cd00a"
+  },
+  {
+    "path": "01_ai-document/phase3_05_Swipe・Layout.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 4387,
+    "lines": 60,
+    "gitBlob": "567771eb6a1cadc3e72959955a5093fdf0d9c407",
+    "sha256": "783864a5c270a35d0de812400e93c3489d4bcca387945bc5512c804590e6b1a2"
+  },
+  {
+    "path": "01_ai-document/phase3_06_Phase 3最終承認.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 13292,
+    "lines": 222,
+    "gitBlob": "157d9cca4a21ac25d021847655af63a09fbc9ea4",
+    "sha256": "9211e5b50c284978cb1038fd3324ef15c8c9334e69876371c01b0108df551c7a"
+  },
+  {
+    "path": "01_ai-document/phase4_01_議論終了判定.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 57475,
+    "lines": 484,
+    "gitBlob": "f7953067e2ff78eaeabfeb620b44aa73eb083836",
+    "sha256": "df85691a7ba1a941bdd758f3a8d7ebfd295206d1cd5670474062267fc0f8d372"
+  },
+  {
+    "path": "01_ai-document/phase4_02_体系的設計書.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 19381,
+    "lines": 186,
+    "gitBlob": "d5394d9a19c8d532b1afe6b3076ac49bbc65efae",
+    "sha256": "262fe4d2cbe09dbf6b1d3068e877930cc9f3c857fbde484df59e7bcd2ff7efea"
+  },
+  {
+    "path": "01_ai-document/phase4_03_設計書承認.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 3920,
+    "lines": 44,
+    "gitBlob": "62c905eeab75034cedfdda4834d91fe73da7373e",
+    "sha256": "8e25c1d98ae82f5699c2540f6e8c9c73f03355cfe72251058f13e5f990263450"
+  },
+  {
+    "path": "01_ai-document/phase5_01_LayoutManager実装.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 4084,
+    "lines": 38,
+    "gitBlob": "4b8d6f00d0762546b1372fd14e03c29d6e00b5f7",
+    "sha256": "f9e85d06fbc49d441592c3df47870a8f498fdf03bf9713f512618746d20aff3f"
+  },
+  {
+    "path": "01_ai-document/phase5_02_共通UI実装.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 3799,
+    "lines": 38,
+    "gitBlob": "e2793c49f2b77f2b21a79363a8f1b95dfc230e84",
+    "sha256": "e79e1f6ff48e0ded15a3af85bfa95f41b3e1adb65185dc4abf25358892c3a6c2"
+  },
+  {
+    "path": "01_ai-document/phase5_03_Table・Swipe実装.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 3805,
+    "lines": 38,
+    "gitBlob": "5819a8d2701539b376b972b4a2744a2f68e0617e",
+    "sha256": "64907616db902044b0034d4c6551498d2d399f4d1ed5380a1e6e76ed1d6e9c08"
+  },
+  {
+    "path": "01_ai-document/phase5_04_ACG・画面の移行.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 26705,
+    "lines": 529,
+    "gitBlob": "d4d5375f1f390d160937316a303a13ab5b21ad13",
+    "sha256": "09e87f4522be69bc8883dedd790e543d80e3d3ad62ab704243d56b3f034570f0"
+  },
+  {
+    "path": "01_ai-document/phase5_05_実装テスト.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 2314,
+    "lines": 27,
+    "gitBlob": "6583c0e9d8d7bc61e9e068574f56ce726f6769cb",
+    "sha256": "e0d18328167bc39202bbc3e43a442f6f902659d62a5dda06298ef3187f78b623"
+  },
+  {
+    "path": "01_ai-document/phase6_01_AI利用規則.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 3883,
+    "lines": 38,
+    "gitBlob": "90648e751deb93809d5640d1f9b3ba4b6ccc8a85",
+    "sha256": "1932e1c5788089c4012e70ee8d271203340db1a2b69288864fc4702041f7cb8f"
+  },
+  {
+    "path": "01_ai-document/phase6_02_AI作業手順.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 3622,
+    "lines": 37,
+    "gitBlob": "bde3839113485213b2dda0a9153049221af10cf7",
+    "sha256": "521a2dc20db419162c2b047f2e38a9d05c1d877026538d94bce3c7cd60d1028e"
+  },
+  {
+    "path": "01_ai-document/phase6_03_AIレビュー.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 2345,
+    "lines": 27,
+    "gitBlob": "293459500e82468db3300fa067d352e522e5eb67",
+    "sha256": "fa2d784a29083f4a608b795570ae532f0b38c7a96502aa83b3c249e9a3c5d268"
+  },
+  {
+    "path": "01_ai-document/phase7_01_AI画面試作.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 3475,
+    "lines": 37,
+    "gitBlob": "79902087558ec53abfb9febbb1ec71f479f01862",
+    "sha256": "b5b00dddfe591f6da8442accf1905aed8d6cf0050d07d2df12f7cd7f6233fec0"
+  },
+  {
+    "path": "01_ai-document/phase7_02_人間による保守性評価.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 3633,
+    "lines": 37,
+    "gitBlob": "d660c7d15e755fc5e0f3893ba13b20e556f4d8f8",
+    "sha256": "8e2412e8e3a29aae05c3431e717a24c2041c18efee6c83551a1e1dc0f6dadab1"
+  },
+  {
+    "path": "01_ai-document/phase7_03_実機・品質検証.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 3964,
+    "lines": 38,
+    "gitBlob": "9e143c0d2a030ee9a42f1941d05ec48fcddc3908",
+    "sha256": "86730be0a15211d649a08cb3ce69636fedd49a06993435f99835635aae5c4a4b"
+  },
+  {
+    "path": "01_ai-document/phase7_04_受入判定.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 2241,
+    "lines": 27,
+    "gitBlob": "a5a4d9baefac64d43f21f88675dcc42f2efbde3e",
+    "sha256": "d7b269c8ce9c8c5fb85279df5c9ff1428ca7e6efb33ca5e0003c99c405654ce1"
+  },
+  {
+    "path": "01_ai-document/phase8_01_運用準備.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 3480,
+    "lines": 37,
+    "gitBlob": "3925e5ff7f052d91ee14817aadb3585d1a048c51",
+    "sha256": "623e95f32949aa537c804fa1edc9ca42f58aceeebc2a0af6d3cc7e2151d66c39"
+  },
+  {
+    "path": "01_ai-document/phase8_02_変更管理.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 3512,
+    "lines": 37,
+    "gitBlob": "edfa25b70dae02838d925e515576e54e809da23e",
+    "sha256": "d7efb746290bff553d6ead6851bc31747182091871d41ac3f30b44ecde93162d"
+  },
+  {
+    "path": "01_ai-document/phase8_03_本格運用.md",
+    "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+    "bytes": 3590,
+    "lines": 37,
+    "gitBlob": "b450ae8bc317e96e852bb71c4951d010a5726357",
+    "sha256": "596853c9fc2c1cfd30b6ee03e2846a13cc71c7c00ffa63098d3c04ee912a048c"
+  }
+]

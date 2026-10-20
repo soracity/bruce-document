@@ -15,7 +15,7 @@
 
 内部MeasureEntryは{measure?:()=>number,listeners:Set<()=>void>}。watchは未登録要素にもlistenersを準備できる。register時に既存measureがある場合だけ二重登録の構成エラーとし、watch用entryの存在だけではエラーにしない。register解除は自分のmeasureを除去し、watch解除は自分のcallbackだけを全要素から除去する。空entryはWeakMapから削除する。invalidateは現在のlistenersを複製して順に通知し、通知中の購読解除で反復を壊さない。破棄時に登録・購読を解除する。呼出し側へ内部Mapを公開しない。measureが負数/非有限値を返す場合は構成エラーとし、grow=1等へ隠して補正しない。
 
-`LayoutMeasureUtil.measure(element:HTMLElement):number`は未登録の通常HTML要素の必要幅を返す。`measureContent(element, targetSelectors):number`はComponent自身が指定した内部対象を計測する。出力はborder-box幅、px。DOMなし/非表示または親の利用可能幅0の間は再計算を保留し、表示後に再測定する。空文字のLabel等で必要幅0になること自体は正常とし、0を不正値や未指定に置換しない。
+`LayoutMeasureUtil.measure(element:HTMLElement):number`は未登録の通常HTML要素の必要幅を返す。`measureContent(element, targets:readonly MeasureTarget[]):number`はComponent自身が指定した内部対象を計測する。出力はborder-box幅、px。DOMなし/非表示または親の利用可能幅0の間は再計算を保留し、表示後に再測定する。空文字のLabel等で必要幅0になること自体は正常とし、0を不正値や未指定に置換しない。
 
 ## DISPLAY-02 測定手順
 
@@ -92,7 +92,9 @@ LabelとButtonに`textOverflowMode: InputSignal<AppCodeTextOverflowModeEnum>`、
 
 ```css
 .bruce-text-viewport { display:block; min-width:0; max-width:100%; }
-.bruce-text-track { display:inline-block; }
+.bruce-text-track { display:inline; }
+.bruce-text-marquee .bruce-text-track { display:inline; }
+.bruce-text-marquee .bruce-text-track { display:inline-block; }
 .bruce-text-wrap { white-space:normal; overflow-wrap:anywhere; }
 .bruce-text-ellipsis { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .bruce-text-marquee { overflow:hidden; white-space:nowrap; }
@@ -124,3 +126,5 @@ D<=0ならモードがMARQUEEでも静止する。境界は実測小数pxで判�
 文字が収まれば動かない、幅縮小でも文字サイズを下げない、文字拡大時も内容を参照できる、省略時も全文アクセシブル、Button本体・タップ領域は仕様どおり、文字移動が押下を妨げないこと。テーブルの内部スクロールは画面全体の横はみ出しと区別する。
 
 テスト：T-LAY-01〜12、T-TEXT-01〜08、T-DEVICE-01〜08。実機・スクリーンリーダーの結果は未実施として管理する。
+
+実装補完：[27章](27_共通UI・計測・日付の実装補完.md)に測定対象の完全型、native inputの自然幅、登録・再購読・解除、ELLIPSISの実体displayを記す。

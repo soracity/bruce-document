@@ -1,5 +1,7 @@
 ## 列挙型設計書
 
+> 承認履歴として保持。現在の実装はAppUiColorEnumとTableCell内部20%変換へ統合。今回の現行ACG生成対象から除外する。旧承認を削除・再承認した記録ではない。
+
 #### 列挙型名称
 - 論理名：テーブルセル背景色
 - 物理名：AppComponentTableCellBackgroundEnum

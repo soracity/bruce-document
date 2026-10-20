@@ -44,13 +44,13 @@ selector=app-date、extends FormControlComponentBase<Nullable<string>>。Input�
 | fromInputValue | raw:string,type→stringまたは入力異常 | 日付は暦日。日時は端末ローカルからUTC ISOへ変換 |
 | onInput | event:Event→void | native validityを確認、変換成功時だけcontrolへ設定、dirty更新 |
 | onBlur | なし→void | touched更新 |
-| syncFromControl | なし→void | 値・status変更時に表示文字列とdisabledを更新 |
+| syncFromControl | なし→void | 値変更で表示文字列を更新。status変更ではdisabledだけを更新し入力途中文字列を保持 |
 
 ```html
 <label class="floating-label">
   <span>{{ labelKey() ? (labelKey() | brf9018I18nLabel) : label() }}</span>
   <input class="input text-input font-input date-input border focus:border-neutral py-2 appearance-none"
-    [type]="type().value" [value]="displayValue()" [disabled]="requireControl().disabled"
+    step="any" [type]="type().value" [value]="displayValue()" [disabled]="requireControl().disabled"
     (input)="onInput($event)" (blur)="onBlur()" />
 </label>
 ```
@@ -76,7 +76,7 @@ selector=app-radio、`RadioComponent<T extends Nullable<AppComponentValueType>> 
 | eventKey | AppComponentEventKeyType='' |
 | radioChange | Output<AppComponentEventKeyType> |
 
-onChange():voidは、FormControlがnative radioで更新された後、eventKeyを1回emitする。選択値をeventKeyへ置き換えない。Enum値はvalues配列へEnumインスタンスを渡し、FormControlも同じインスタンス群を保持する。`.value`のコード文字列とEnumインスタンスを混在させない。
+onChange():voidは、FormControlがnative radioで更新された後、eventKeyを1回emitする。更新順の保証は27章のmicrotask通知を使う。選択値をeventKeyへ置き換えない。Enum値はvalues配列へEnumインスタンスを渡し、FormControlも同じインスタンス群を保持する。`.value`のコード文字列とEnumインスタンスを混在させない。
 
 選択肢iの表示はlabelKey[i]→label[i]→String(option)の順。ラベル配列が短い場合のフォールバックを明示し、undefinedを表示しない。groupNameは同一ラジオ群で共通、別群とは別名。@forは部品内部なのでLayoutItem直下反復禁止と混同しない。
 
@@ -179,3 +179,5 @@ mainは既存flex-1/min-h-0/overflowを維持する。外周paddingを管理す�
 ## UI-12 異常処理と後片付け
 
 構成エラーは明示Error、入力異常はFormControl errors、Application異常は画面へ委譲する。全部品でdestroy後のobserver callbackがDOMへ書かない。ComponentテストにHTML/CSSの実体・イベント・値・disabled・ARIA・幅を含め、createできるだけのテストを合格根拠にしない。
+
+実装補完：[27章](27_共通UI・計測・日付の実装補完.md)のDate Validator所有、Control通知、Radio/Toggle全テンプレートとLabel/Buttonの表示状態を適用する。

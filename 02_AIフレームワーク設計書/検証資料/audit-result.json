@@ -1,0 +1,61 @@
+{
+  "executedAtUtc": "2026-10-20T22:15:33.244076+00:00",
+  "sourceCommit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+  "structure": {
+    "result": "passed",
+    "newMinutes": 34,
+    "sourceLines": 9804,
+    "uniqueBlocks": 1789,
+    "sourceOccurrences": 2945,
+    "rules": 168,
+    "implementationTargets": 39,
+    "testSpecifications": 168,
+    "missingLocalLinks": [],
+    "unclosedFences": [],
+    "wbsRows": 79,
+    "wbsStates": {
+      "完了": 49,
+      "進行中": 1,
+      "未着手": 29
+    },
+    "codeFilesHashChecked": 156,
+    "errors": [],
+    "semanticApproval": "manual review required; not decided by this script",
+    "applicationTests": "not executed"
+  },
+  "pureCalculations": [
+    {
+      "command": "node 02_AIフレームワーク設計書/検証資料/test-geometry.mjs",
+      "result": {
+        "pureGeometryChecksIncludingRuntimeGuards": 31,
+        "result": "passed",
+        "browserRendering": "not executed"
+      }
+    },
+    {
+      "command": "node 02_AIフレームワーク設計書/検証資料/test-reference-functions.mjs",
+      "result": {
+        "pureReferenceChecks": 63,
+        "result": "passed",
+        "applicationTests": "not executed",
+        "unresolved": [
+          "U-01",
+          "U-02",
+          "U-03"
+        ]
+      }
+    }
+  ],
+  "manualAudits": {
+    "coverage": "A passed; see 24_新議事録・後日承認の確定照合.md",
+    "implementability": "B not passed; see 25_実装可能性監査.md",
+    "unresolved": [
+      "U-01",
+      "U-02",
+      "U-03"
+    ]
+  },
+  "applicationImplementation": "not performed",
+  "angularJavaCiDeviceTests": "not executed",
+  "gitDiffCheck": "passed"
+}

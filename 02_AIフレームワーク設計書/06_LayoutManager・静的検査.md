@@ -12,7 +12,7 @@ ItemStackLayout HTMLは`<div class="bruce-item-stack"><ng-content /></div>`。CS
 
 元の兄弟が全てspan未指定なら重み1で均等配分する。明示する場合は全て数値リテラルで合計100。spanはCSSの幅%ではない。利用可能幅から同一行のgapを引いて重みで割る。`70% + 30% + gap`の実装は禁止。
 
-LayoutSpanDirectiveは内部CSS変数`--bruce-layout-weight`とflex-grow、flex-basis:0へ重みを反映する。未指定要素は重み1。不正な0・負数・非有限値を1へ補正しない。`ngOnChanges`またはSignal effectで正の有限数を検査し、違反は`BRUCE_SPAN_VALUE`をthrowする。実行時に表示中の合計100は検査しない。条件付き非表示で100未満になるのは正常である。
+LayoutSpanDirectiveは内部CSS変数`--bruce-layout-weight`へ重みを反映する。未計測時のgrow/basisはLayoutItemの内部CSSがこの値から設定し、計測後はLayoutItemが外側flexを所有する。Directiveの変更検知が計測後のflex-basisを上書きしない。未指定要素は重み1。不正な0・負数・非有限値を1へ補正しない。`ngOnChanges`またはSignal effectで正の有限数を検査し、違反は`BRUCE_SPAN_VALUE`をthrowする。実行時に表示中の合計100は検査しない。条件付き非表示で100未満になるのは正常である。
 
 ## LAY-02 条件と表示項目の規則
 
@@ -206,3 +206,5 @@ Total: 1 error. Angular build was not started.
 テスト：T-CHECK-01〜25、T-LAY-01〜12、T-CI-01〜04。内部Class/CLIにHTML/CSSはない。実行時の必要幅と行分割は05章。
 
 補助API確認：TypeScript 5.9.2の[公式commandLineParser.ts](https://github.com/microsoft/TypeScript/blob/v5.9.2/src/compiler/commandLineParser.ts#L2243)でparseConfigFileTextToJson(fileName,jsonText)がparseJsonTextを使い{config,error}を返すことを確認した。返却errorがあれば設定を正常扱いしない。AngularのParseTemplateOptions確認と同様、実装時はアプリlockfileの実バージョンで検証する。
+
+実装補完：[29章](29_静的検査器・ACGの実装補完.md)にProgram、fileReplacements、inline range、全内部関数、終了処理を記す。
