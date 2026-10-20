@@ -77,3 +77,11 @@ export abstract class ComponentBase {
 - 概念例：`roundedSize = input<UiRoundedSize>()`、`getDefaultRoundedSize()`をTableCell等でoverrideし、実効値は`this.roundedSize() ?? this.getDefaultRoundedSize()`とする。
 - `FormControlComponentBase<T>`は`ComponentBase`を継承し、FormControl関連責務を維持する。
 - 設計承認済み。Angular Signal Input継承時の実動作確認、実装・検証は未実施。
+
+### 2026-10-20 追加承認：ComponentBase共通Input一元定義と既定値override（Phase 3.3.1）
+- 共通スタイルInputは`ComponentBase`に一度だけ宣言し、子Componentでは再定義しない。
+- 子Component固有の既定値は`protected`な既定値取得メソッドのoverrideで実現し、画面の明示指定を最優先する（例：`this.roundedSize() ?? this.getDefaultRoundedSize()`）。
+- `FormControlComponentBase<T>`は`ComponentBase`を継承し、FormControlと変更検知の責務を持つ。FormControl不要のComponentは`ComponentBase`を直接継承し、不要なcontrolを持たない。
+- FABの円形表現は維持し、設計例の24pxをFABの確定値とはしない。
+- AngularのSignal Input継承・既存Componentとの互換性・変更検知はPhase 5で検証する。
+- 状態：継承方式の設計承認済み。実装・検証未実施。
