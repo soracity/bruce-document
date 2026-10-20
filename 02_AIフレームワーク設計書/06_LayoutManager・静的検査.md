@@ -176,3 +176,46 @@ templateUrlは直接文字列リテラル、templateは直接文字列／テン�
 - 他のPhase 2議事録・後日承認との**全件双方向照合**。
 
 この残件があるため、本章の「設計書だけで実装可能」判定は**未合格**とする。
+
+
+## Phase 2.3 余白の責務：原典照合・実装境界（2026-10-21）
+
+照合対象：[phase2_03_余白の責務.md](../01_ai-document/phase2_03_余白の責務.md) の 2.3.1、2.3.2、2.3.3 および2026-10-19追記。これは**当該ファイルとの照合**であり、旧議事録全件との双方向照合完了を意味しない。
+
+| 原典小区分 | 承認済み設計 | 実装上の帰結 | 状態・残件 |
+|---|---|---|---|
+| 2.3.1 | 横gap=LayoutItem、縦gap=ItemStackLayout、内部padding/gap=共通Component | 画面HTMLはLayoutItem単位で行を分け、共通Componentへのmargin指定で配置を調整しない | 設計承認済み、実装一部、検証は原典の「静的確認済」を超えて主張しない |
+| 2.3.2 | 画面外周の上下左右paddingは**上位Container**。LayoutManagerとの二重管理方式は採用しない | 既存上位Containerを確認して外周paddingを一箇所に集約。LayoutItemとItemStackLayoutへ外周paddingを追加しない | 2026-10-19方式A承認、実装未着手・検証未実施 |
+| 2.3.3 | 現段階でgapSize等の追加Input/Enumは設けない | 標準gapを共通値として使う。画面固有のgap変更Inputを勝手に追加しない | 設計承認済み。追加APIは対象外 |
+
+**2.3.2の注意**：原典の節冒頭には「作業：完了／設計：承認済」と、同節の古い引継ぎ文中に「作業=未着手／設計=検討中」が併存する。後日の2026-10-19承認記録が基本設計の現在状態を確定しているため、後者を現時点の未承認扱いにしない。ただし、**具体的なContainerクラス名、DOM構造、padding数値、CSS変数名は未確定**。説明用の \`app-screen-container\` を新規採用済みとみなさない。
+
+### 画面と部品のHTML実装例（承認済み構造の説明）
+
+~~~html
+<!-- 画面の上位Containerは既存実装を利用する。ここでは新規タグを仮定しない -->
+<app-item-stack-layout>
+  <app-layout-item>
+    <app-textbox [appLayoutSpan]="70" />
+    <app-date [appLayoutSpan]="30" />
+  </app-layout-item>
+  <app-layout-item>
+    <app-button />
+  </app-layout-item>
+</app-item-stack-layout>
+~~~
+
+この例の行内gapはLayoutItem、行間gapはItemStackLayoutが担当する。画面全体のpaddingは上位Containerに属し、共通Componentの内部paddingは各Componentに閉じる。幅70/30は配置説明用の例であり、画面ごとの正式幅を一律70/30に決めるものではない。
+
+### Phase 5へ渡す受入試験（設計検証用）
+
+| 試験 | 条件 | 合格基準 |
+|---|---|---|
+| GAP-01 | 同一LayoutItemにTextboxとDate | 横間隔の管理箇所がLayoutItemのみ |
+| GAP-02 | ItemStackLayout内にLayoutItemが2行 | 行間の管理箇所がItemStackLayoutのみ |
+| GAP-03 | 共通Button、Alert、Radio、Toggle | 各内部padding/gapを画面CSSから操作しない |
+| GAP-04 | 画面上位Containerに外周padding | LayoutItem/ItemStackLayoutと外周paddingを二重管理しない |
+| GAP-05 | 画面実装でmr-*/ml-*/mt-*/mb-*を配置目的に追加 | レビューで違反として検出（**現行AST静的検査器で自動検出するとまでは未承認**） |
+| GAP-06 | gapSize等の新規Inputを導入する変更 | 追加要件と設計承認なしでは採用しない |
+
+**実装に必要な未確定事項**：既存上位Containerの実体、標準gapの参照元と値、CSSの既存実装、画面別外周paddingの適用位置。これらはソース調査と承認記録照合で確定する。未確認の値を設計済みとして補わない。
