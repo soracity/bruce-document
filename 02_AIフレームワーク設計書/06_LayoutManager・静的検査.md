@@ -345,3 +345,22 @@ templateUrlは直接文字列リテラル、templateは直接文字列／テン�
 原典にある古い7:3表記は承認前の履歴であり、現行の100等分（70:30）へ読み替えて採用する。既存LayoutSpanDirectiveの不正値補正・flex-grow設定という調査事実は、静的検査の完成を意味しない。
 
 検証観点（未実行）：WIDTH-T01 均等幅2/3項目、T02 明示合計100、T03 混在拒否、T04 gap除外、T05 Component内部100%許容、T06 Button/Radio内部幅の責務、T07 元の合計不正を拒否。実装・実機検証は未完了。
+
+## Phase 2.2.5 現行ソースとの差分台帳（2026-10-21）
+
+根拠：`01_ai-document/phase2_02_幅の責務.md` 2.2.5「2026-10-19 featureブランチ実ソースの差分調査」。これは**当時の調査結果の設計書転記**であり、今回ソースを再取得・実行した結果ではない。
+
+調査対象：`soracity/bruce` の `feature/feature-20261015`、`src/app/brf9000/brf9020-shared-components/layout/` 以下のLayoutItem Component TS/HTMLとLayoutSpan Directive TS。mainの状態とは区別する。
+
+| 差分ID | 原典で確認された既存動作 | 承認設計との差・今後の確認 |
+|---|---|---|
+| LDIFF-01 | LayoutItem HTMLは`flex gap-2 [&>*]:min-w-0 [&>*]:flex-1 [&>*]:basis-0`と`ng-content`を使用 | 均等幅の基礎は存在するが、条件付き表示や投影を実機確認していない |
+| LDIFF-02 | LayoutSpanDirectiveは`flex-grow`、`flex-basis:0px`、`min-width:0px`を設定 | gapを除く相対配分の基礎はあるが、全兄弟明示・合計100を保証しない |
+| LDIFF-03 | Directiveは`number \| string`を受け`Number(value)`で変換 | 承認済みの数値リテラル限定を静的に保証しない |
+| LDIFF-04 | 0や不正値をエラーにせず`grow=1`へ補正 | 承認済みの違反検出・ビルド停止と不一致 |
+| LDIFF-05 | LayoutItem Component TSに静的検査処理なし | AST検査器は別途実装・CI統合が必要。既存実装済みと判断しない |
+| LDIFF-06 | flex配置によるDOM変化時の相対配分は可能な構造 | ng-container多段、Angular投影、分岐、端末幅の実動作は未検証 |
+
+対応順序案（**実装計画であり新規承認ではない**）：既存ソースとブランチを再照合し、静的検査器の入力対象・判定・診断を確定してから、既存レイアウトの動作回帰をPhase 5／7で確認する。現時点でソース変更、ビルド、試験は行っていない。
+
+受入観点（未実行）：LDIFF-T01 合計90拒否、T02 Span混在拒否、T03 動的式拒否、T04 不正値補正による見逃し防止、T05 投影／ng-container分岐、T06 Tableを含む実機幅回帰。正式エラーコードやAST実装APIは未決。
