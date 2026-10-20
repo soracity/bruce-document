@@ -54,3 +54,37 @@
 **相互参照のルール**：章ごとに対応工程ID・現行議事録への相対リンク・承認日を記載し、旧原文は履歴としてのみ参照。重複する規則は主たる章で一度だけ定義し他章から参照。未承認事項を承認済みに昇格させない。章立ては文書整理上の作業成果であり、新たなUI設計仕様の承認ではない。
 
 - **4.2.1作業判定：完了**。次は4.2.2としてこの構成に沿い設計書本文・仕様表・実装規則を作成する。設計書全体のユーザー最終承認は4.3.1で行う。
+
+### 2026-10-20 4.2.2 設計書本文（第1次草案・進行中）
+
+> 本節は承認済みPhase 2・3議事録を編集した草案。新規仕様の承認、実装完了、検証合格を意味しない。最終承認は4.3.1で実施する。
+
+#### 1. 責務とLayout
+画面は表示・イベント・画面固有制御、LayoutManagerは配置・外側幅・gap・折り返し、共通Componentは部品内部の見た目と汎用操作、Applicationはユースケース、Domainは業務規則を担当する。テニス固有の規則はBruce共通仕様に含めない。画面独自のflex/grid/widthでLayoutManagerを迂回しない。
+
+LayoutItem／LayoutSpanは承認された比率・合計100・兄弟明示・条件分岐・静的検査規則に従う。横gapはLayoutItem、縦gapはItemStackLayout、部品内部paddingはComponent、画面外周paddingは上位Containerの責務。新しいgap Inputや未承認の特殊for例外は追加しない。実装検査器のAPI・AST・CI設定はPhase 5で確定する。
+
+根拠：[2.1](phase2_01_責務境界.md)、[2.2](phase2_02_幅の責務.md)、[2.3](phase2_03_余白の責務.md)、[2.7](phase2_07_UI・Domain境界.md)。
+
+#### 2. 表示とCSS制約
+文字あふれはWRAP／MARQUEE_BOUNCE／MARQUEE_RESTART／ELLIPSIS。文字が収まる場合はマーキー不要。Buttonの寸法・タップ領域をAIが独自変更しない。画面から共通Componentへの任意CSS転送を廃止する方向で移行し、意味Enum・規定Input・内部固定スタイルを使う。Tailwindクラスの動的連結は禁止する。
+
+TableCell背景色はAppComponentTableCellBackgroundEnum（DEFAULT、LABEL、ERROR、INFO、WARNING、SUCCESS）をbackgroundColorで指定。Enum値にCSSクラス文字列を持たせず、cellClassesは既存画面移行後に廃止する。
+
+根拠：[2.4](phase2_04_レスポンシブ・折り返し.md)、[2.5](phase2_05_任意CSS注入の排除.md)。
+
+#### 3. 共通Component・Table・Swipe
+ComponentBaseは共通Signal Inputを一元定義し、FormControlComponentBase<T>はそれを継承してFormControl責務を持つ。子Component固有の既定値はprotectedメソッドのoverrideで提供する。UiStyleUtilは固定CSSクラスへ変換する状態なしstaticユーティリティであり、動的クラス生成はしない。
+
+Table→Record→Cellのスタイル継承はbackgroundColorとtextColorのみ。優先順位はCell明示＞Record明示＞Table明示＞Cell既定。border、rounded、shadow、padding等は継承しない。Table固有のzebra／recordGapとCell固有のcolSpan／rowSpan／stickyをComponentBaseに移さない。Swipeは独立Componentとし、ジェスチャー処理をLayoutManagerへ移さない。
+
+根拠：[3.1](phase3_01_共通スタイル.md)、[3.2](phase3_02_UiStyleUtil.md)、[3.3](phase3_03_ComponentBase.md)、[3.4](phase3_04_Table.md)、[3.5](phase3_05_Swipe・Layout.md)。
+
+#### 4. ACG・AI実装と後続工程
+DTO／Form／Validationは画面入力の責務。表示用DTOはACG生成対象で、承認済みreadonly方針を守る。生成物を直接編集しない。AIが設計逸脱を要するときは作業を止め、理由・影響・代替案を提示して承認を得る。中断時は承認済み原案・変更・エラー・ビルド状況・再開手順をGitHubへ記録する。
+
+Phase 5は実装・ビルド、Phase 6はAI運用ルール、Phase 7は実機・アクセシビリティ・回帰検証を担当する。設計承認と実装・検証は区別する。
+
+根拠：[2.6](phase2_06_DTO・Form・Validation.md)、[2.8](phase2_08_AI実装制約.md)。
+
+**残作業**：各章の詳細仕様表、LayoutSpan条件分岐パターン、ACG規則の逐条照合、相互参照検証。4.2.2は進行中。
