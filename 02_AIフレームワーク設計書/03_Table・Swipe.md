@@ -137,7 +137,7 @@ const foreground = resolveCellColor(
 原典：`01_ai-document/phase3_05_Swipe・Layout.md`、2026-10-20追加承認。
 
 - SWIPE-01：SwipeComponentは独立Componentとしてジェスチャー判定と操作を担当する。ComponentBaseへ操作ロジックを移動しない。
-- SWIPE-02：LayoutItem、ItemStackLayout等のLayoutManagerは配置を担当し、Swipe操作ロジックを持たない。
+- SWIPE-02：LayoutItem、ItemStackLayout、LayoutSpan等のLayoutManagerは配置を担当し、Swipe操作ロジックを持たない。配置専用のため、原則としてUiStyleUtilの共通スタイル管理対象外とする。
 - SWIPE-03：共通スタイルの適用対象はSwipeのアクションパネル部分。ジェスチャー制御とスタイル変換を分離する。
 - SWIPE-04：ComponentBaseの利用は共通スタイルInputが必要なComponentで検討する。SwipeComponentに継承を一律強制しない。
 - SWIPE-05：Table横スクロールとのジェスチャー競合はPhase 7で実機検証する。競合時の優先順位は未決。
