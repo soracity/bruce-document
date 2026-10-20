@@ -103,3 +103,8 @@ Table子クラスで `undefined` 許容Inputを再定義する案は出たが、
 ## 議事録更新ルール
 
 この工程の新しい議論は対応する小区分見出しの下へ日時・検討案・決定／未決・理由・次の作業を追記し、同時に[進捗管理表](AIフレームワーク_進捗管理表.md)を更新する。旧議事録は改変しない。
+
+### 2026-10-20 追加承認：共通色EnumとTableCell状態色の整合
+- 色の意味は一般Componentと同じ`AppUiColorEnum`で統一する。TableCellの状態色（ERROR/INFO/WARNING/SUCCESS）は従来の透明度20%の表示を維持する。
+- 透明度はTableCell側の表示表現として固定CSSに隠蔽する。`backgroundOpacity`は追加せず、CSSクラスの動的組立てを禁止する。
+- 旧`AppComponentTableCellBackgroundEnum`設計書は移行前の承認履歴として保持し、共通Enumとの重複・移行方法を実装設計時に整理する。ACG生成・実装・検証は未実施。
