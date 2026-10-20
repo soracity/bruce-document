@@ -115,7 +115,7 @@
 | 3 | 3.4 Table | **3.4.1** | Table→Record→Cellスタイル継承の方式を決定 | 設計承認済み | 背景色・文字色のCell＞Record＞Table＞Cell既定値、他の汎用スタイル非継承を承認済 | 未着手 | 未検証 | backgroundColor/textColorのみ未指定undefinedで親を継承。border/rounded/shadow/padding関連は指定Component自身に適用。Angular値伝播・CSS優先順位は実装時検証 | [議事録](phase3_04_Table.md) |
 | 3 | 3.4 Table | **3.4.2** | Table固有属性と共通スタイルの境界を確定 | 設計承認済み | 共通属性とTable固有属性の責務分離を承認 | 未着手 | 未検証 | TableContainerLayoutはzebra／recordGap、TableCellはcolSpan／rowSpan／stickyを管理し、ComponentBaseへTable固有属性を追加しない。TableCell背景色・文字色は共通Enum＋UiStyleUtilを共有する方式を承認済、cellClasses廃止を維持 | [議事録](phase3_04_Table.md) |
 | 3 | 3.5 Swipe・Layout | **3.5.1** | Swipeのスタイル適用部分・ジェスチャー境界を確認 | 設計承認済み | Swipe独立・Layout配置専任・継承非強制を承認 | 既存実装 | 静的確認済 | ジェスチャー処理はSwipe専任。Table横スクロールとの競合確認はPhase 7 | [議事録](phase3_05_Swipe・Layout.md) |
-| 3 | 3.6 Phase 3最終承認 | **3.6.1** | 共通Componentデザイン案を全体レビュー・承認 | 未着手 | 未着手 | 未着手 | 未検証 | 3.1〜3.5の未決を終了しユーザー最終承認 | [議事録](phase3_06_Phase 3最終承認.md) |
+| 3 | 3.6 Phase 3最終承認 | **3.6.1** | 共通Componentデザイン案を全体レビュー・承認 | 設計承認済み | Phase 3全8小区分の最終設計を承認 | 未着手 | 未検証 | 3.1〜3.5の承認済み設計を全体レビューし最終承認。実装はPhase 5、検証はPhase 5・7へ引継ぎ | [議事録](phase3_06_Phase 3最終承認.md) |
 
 ### Phase 4：議論終了後の体系的設計書作成
 
