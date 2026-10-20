@@ -50,3 +50,11 @@ SwipeDirectiveの共通スタイルはアクションパネルへ適用、ジェ
 ## 議事録更新ルール
 
 この工程の新しい議論は対応する小区分見出しの下へ日時・検討案・決定／未決・理由・次の作業を追記し、同時に[進捗管理表](AIフレームワーク_進捗管理表.md)を更新する。旧議事録は改変しない。
+
+### 2026-10-20 追加承認：Swipe・Layoutの責務境界（Phase 3.5.1）
+- `SwipeComponent`は独立したComponentとして維持し、ジェスチャー判定・スワイプ操作を担当する。
+- Swipeの操作ロジックを`ComponentBase`やLayoutManagerへ移動しない。
+- `LayoutItem`、`ItemStackLayout`等のLayoutManagerは配置を担当し、Swipeの操作ロジックを持たない。
+- 共通スタイルInputが必要なComponentのみ`ComponentBase`の利用を検討し、SwipeComponentへの継承を一律には強制しない。
+- Table横スクロールとのジェスチャー競合はPhase 7で実機検証する。
+- 設計承認済み。追加実装・実機検証は未実施。
