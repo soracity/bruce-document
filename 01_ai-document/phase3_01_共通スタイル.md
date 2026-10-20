@@ -214,3 +214,11 @@
 - `AppUiColorEnum`に「未指定」用の値は追加しない。未指定は`undefined`で区別する。
 - Tableの色継承は既承認のCell明示値＞Record明示値＞Table明示値＞Cell既定値を維持する。
 - Component別の具体的な既定色・CSSマッピングの全件確定は継続検討。設計方式のみ承認済み、実装・検証未実施。
+
+### 2026-10-20 最終設計承認：Component別既定値・全11色固定マッピング（Phase 3.1.1）
+- 共通基準値：border=true、borderWidth=1px、rounded=true、roundedSize=8px、shadow=false、shadowSize=md、padding=8px、backgroundColor=undefined、textColor=undefined、visible=true。
+- Component別既定色：Button=背景SECONDARY／文字未指定（既存btn-secondary尊重）、Textbox・Date・Radio・Group・Alert・Toggle=背景／文字とも未指定、TableCell=親から継承（親指定なしは既存テーマ）、FAB=背景PRIMARY／文字未指定（円形・影あり）。
+- AppUiColorEnum全11値の背景／文字固定マッピング：PRIMARY=bg-primary/text-primary、SECONDARY=bg-secondary/text-secondary、ACCENT=bg-accent/text-accent、NEUTRAL=bg-neutral/text-neutral、BASE_100=bg-base-100/text-base-100、BASE_200=bg-base-200/text-base-200、BASE_300=bg-base-300/text-base-300、INFO=bg-info/text-info、SUCCESS=bg-success/text-success、WARNING=bg-warning/text-warning、ERROR=bg-error/text-error。
+- TableCell状態背景色20%の専用変換を維持する。
+- DaisyUI固有クラスを優先し、共通スタイル指定で既存の見た目を壊さない。共通基準値を全ComponentのDOMに無条件適用する意味ではない。実際の適用要素は既存構造を踏まえPhase 5で実装・検証する。
+- 状態：Phase 3.1.1の設計承認済み。実装・検証未実施。
