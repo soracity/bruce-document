@@ -88,3 +88,62 @@ Phase 5は実装・ビルド、Phase 6はAI運用ルール、Phase 7は実機・
 根拠：[2.6](phase2_06_DTO・Form・Validation.md)、[2.8](phase2_08_AI実装制約.md)。
 
 **残作業**：各章の詳細仕様表、LayoutSpan条件分岐パターン、ACG規則の逐条照合、相互参照検証。4.2.2は進行中。
+
+### 2026-10-20 4.2.2 詳細仕様・根拠・受入引継ぎ（統合版）
+
+#### A. Layout静的検査の仕様表
+| 分類 | 確定仕様 | 根拠 |
+|---|---|---|
+| Span | 明示指定する兄弟の合計100、数値リテラル限定、指定・未指定の混在禁止 | [2.2.4](phase2_02_幅の責務.md) |
+| 条件 | 単独@ifの検査、排他は@else if、独立した複数@ifは成立し得る全表示構成で合計100を検査、非表示時は残存項目の比率を維持して再配分 | [2.2.4](phase2_02_幅の責務.md) |
+| 構造 | LayoutItem直下の@forは原則禁止、ng-containerは再帰的に展開し条件分岐も検査、直下の補間テキストを禁止 | [2.2.4](phase2_02_幅の責務.md) |
+| 対象 | 自作Componentの外部HTMLとTypeScriptインラインテンプレート。node_modules・dist等は除外。ACGはAngular HTMLを生成しないため、旧「ACG生成テンプレート」対象想定を撤回 | [2.2.4](phase2_02_幅の責務.md) |
+| 解析 | @angular/compilerによるAngular ASTとTypeScript Compiler APIを併用。詳細APIはPhase 5 | [2.2.4](phase2_02_幅の責務.md) |
+| 失敗 | 解析不能はエラー、可能な限り他ファイルも検査し全件収集。エラー診断は英語、識別コード・ファイル・行列・違反内容、必要に応じ期待値と実際値 | [2.2.4](phase2_02_幅の責務.md) |
+| ビルド | npm run buildのAngularビルド前に実行し、違反・解析エラーで非ゼロ終了。Push時CI検査、正式公開時はCI合格必須 | [2.2.4](phase2_02_幅の責務.md) |
+| 未確定 | エラーコードの正式番号、AST API詳細、パス探索、CI定義、検査テスト、特殊な@for例外 | Phase 5実装設計／例外は別途承認 |
+
+#### B. 幅不足・長文表示の仕様表
+| 項目 | 確定仕様 |
+|---|---|
+| 折り返し | 各Componentの必要幅を使って判定し、折り返し後の各行でSpanを再配分 |
+| 必要最小幅 | 共通Componentが管理し、表示内容に応じ変化する。画面幅超過時は利用可能幅へ縮小 |
+| 文字サイズ | Component幅が縮んでも自動縮小しない |
+| 文字表示方式 | WRAP、MARQUEE_BOUNCE、MARQUEE_RESTART、ELLIPSIS。Labelは省略時WRAP。Buttonも同じ4方式を選択可能 |
+| マーキー | 実際にはみ出す場合だけ動作。Button本体・タップ領域は変更しない |
+| 受入 | 画面外はみ出し・文字拡大・全文アクセシビリティ・スクロール競合等をPhase 7で検証 |
+根拠：[2.4](phase2_04_レスポンシブ・折り返し.md)。マーキー速度・計測アルゴリズム・Input物理名は未確定。
+
+#### C. UI Form DTO・表示用DTO・ACG
+| 対象 | 承認済み設計 | 引継ぎ |
+|---|---|---|
+| UI Form DTO | classでありFormGroupを継承しない。型付きFormGroupをreadonlyプロパティとして直接保持し、宣言時に初期化。別FormGroupクラスを作らない | Phase 5で生成結果検証 |
+| 表示用DTO | ACGが1行単位のTypeScript typeを生成。各プロパティreadonly。一覧の配列は利用側が保持し、画面で型を手書きしない | 既存生成機構はユーザー申告、ソース検証は未実施 |
+| ACG変更 | 生成済みファイルを直接修正しない。生成器・定義・テストで修正 | Phase 5 |
+| その他のACG詳細 | 2.6.5〜2.6.14のMapper禁止、Nullable、型解決、形式・必須・デフォルト、日付日時、ヘッダー明細分離、文字種Enum等の承認原典を適用 | [2.6](phase2_06_DTO・Form・Validation.md)の各節を実装時の規範とする |
+
+#### D. 共通スタイル基準と色
+| Input | 共通基準値 |
+|---|---|
+| border / borderWidth | true / 1px |
+| rounded / roundedSize | true / 8px |
+| shadow / shadowSize | false / md |
+| padding | 8px |
+| backgroundColor / textColor | undefined / undefined |
+| visible | true |
+
+AppUiColorEnumはPRIMARY、SECONDARY、ACCENT、NEUTRAL、BASE_100、BASE_200、BASE_300、INFO、SUCCESS、WARNING、ERRORの11値。通常の背景／文字クラスは固定マッピング、未指定はundefined。Buttonの既定背景SECONDARY、FABはPRIMARY。TableCell状態背景色は20%透過。これらは全DOM要素へ無条件適用する指示ではない。
+UiStyleUtilの承認済みメソッド群：getBorderClass、getRoundedClass、getShadowClass、getPaddingClass、getBackgroundColorClass、getTextColorClass、getVisibleClass、getTableCellStatusColorClass。動的クラス名の連結は禁止。
+根拠：[3.1](phase3_01_共通スタイル.md)、[3.2](phase3_02_UiStyleUtil.md)。
+
+#### E. 実装・検証への引継ぎと優先順位
+1. 設計承認の範囲：Phase 2.9.1およびPhase 3.6.1。実装済みや試験合格を意味しない。
+2. 既存の工程テンプレートの「未決」より、後日のユーザー正式承認を優先する。旧原文は監査履歴として保持する。
+3. CSS／Angular継承／Table色伝播／Swipe競合／実機表示の実装確認はPhase 5・7。AI作業手順・例外運用はPhase 6で文書化する。
+4. 新しい例外・設計逸脱はユーザー承認を要する。実装詳細の選択が承認済み基本設計を変更してはならない。
+5. 本設計書の最終ユーザー承認は4.3.1で別途実施する。
+
+#### F. 4.2.2完了判定
+**作業完了**：Phase 2・3の承認済み基本仕様、詳細仕様表、主要な禁止・例外・未実装事項、後続工程の責務、原典リンクを統合した。個々のACG生成パターンの詳細コード例や静的検査器の実装APIは、原典の2.6節と2.2.4節を規範としてPhase 5で確認する。これらの実装詳細を本工程で未承認のまま創作しない。
+
+**検証範囲**：主要仕様の原典への照合と相互参照先の確認。全コード例の実行試験・全段落の意味的総当たり検査は行っていない。4.3.1でユーザーレビュー・必要な訂正・版確定を実施する。
