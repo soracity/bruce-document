@@ -9,19 +9,19 @@
 | API | 引数・戻り値 | 処理 |
 |---|---|---|
 | register | element:HTMLElement, measure:()=>number → ()=>void | 必要幅取得関数を登録。返却関数で解除 |
-| requiredWidth | element:HTMLElement → numberまたはundefined | 登録関数の正の有限値。未登録はundefined |
+| requiredWidth | element:HTMLElement → numberまたはundefined | 登録関数の非負の有限値。未登録/未接続はundefined |
 | invalidate | element:HTMLElement → void | 当該要素を監視するLayoutへ再計算通知 |
 | watch | elements:readonly HTMLElement[], callback:()=>void → ()=>void | 要素集合の通知を購読。返却関数で解除 |
 
-同じelementの二重登録は構成エラー。破棄時に登録・購読を解除する。呼出し側へ内部Mapを公開しない。measureが非有限値を返す場合は構成エラーとし、grow=1等へ隠して補正しない。
+内部MeasureEntryは{measure?:()=>number,listeners:Set<()=>void>}。watchは未登録要素にもlistenersを準備できる。register時に既存measureがある場合だけ二重登録の構成エラーとし、watch用entryの存在だけではエラーにしない。register解除は自分のmeasureを除去し、watch解除は自分のcallbackだけを全要素から除去する。空entryはWeakMapから削除する。invalidateは現在のlistenersを複製して順に通知し、通知中の購読解除で反復を壊さない。破棄時に登録・購読を解除する。呼出し側へ内部Mapを公開しない。measureが負数/非有限値を返す場合は構成エラーとし、grow=1等へ隠して補正しない。
 
-`LayoutMeasureUtil.measure(element:HTMLElement):number`は未登録の通常HTML要素の必要幅を返す。`measureContent(element, targetSelectors):number`はComponent自身が指定した内部対象を計測する。出力はborder-box幅、px。DOMなし/非表示/幅0の間は再計算を保留し、表示後に再測定する。
+`LayoutMeasureUtil.measure(element:HTMLElement):number`は未登録の通常HTML要素の必要幅を返す。`measureContent(element, targetSelectors):number`はComponent自身が指定した内部対象を計測する。出力はborder-box幅、px。DOMなし/非表示または親の利用可能幅0の間は再計算を保留し、表示後に再測定する。空文字のLabel等で必要幅0になること自体は正常とし、0を不正値や未指定に置換しない。
 
 ## DISPLAY-02 測定手順
 
 1. 初回描画後に実行する。現在のfont-family/font-size/font-weight/letter-spacing、border、padding、テーマCSS変数を取得する。
-2. 対象の非操作・aria-hidden・inertな測定用複製を作る。ID・name・フォーカス属性を取り除き、document外の専用測定領域へ一時配置する。複製上でアプリイベントやフォーム接続を生成しない。
-3. width:max-content、max-width:none、transform:none、animation:noneとし、現在の幅割当の影響を除く。inputのvalue/placeholder、選択された表示、アイコンを反映する。元DOMのstyleを一時変更しない。
+2. 対象の非操作・aria-hidden・inertな測定用複製を作る。ID・name・フォーカス属性を取り除き、投影先の外でdocument.bodyに接続した専用測定領域へ一時配置する。複製上でアプリイベントやフォーム接続を生成しない。
+3. width:max-content、max-width:none、transform:none、animation:noneとし、現在の幅割当の影響を除く。inputのvalue/placeholder、選択された表示、アイコンを反映する。元DOMのstyleを一時変更しない。測定領域はposition:fixed、left:-100000px、top:0、visibility:hidden、pointer-events:none。display:noneやDOM未接続の複製では幅0になるため使わない。部品のhostで有効なfont/テーマcustom propertyを領域へコピーし、祖先セレクターに依存する装飾は対象自身のgetComputedStyleから反映する。複製の幅/折返し/animationだけを測定用に上書きし、元の割当済みpx幅を必要幅として循環利用しない。
 4. getBoundingClientRect().widthを取得。padding/borderを二重加算しない。測定後、複製を必ずfinallyで除去する。
 5. 内容・i18n文字列・フォント読込・OS文字拡大・内部スタイル変更時にinvalidateする。document.fonts.ready、ResizeObserver、MutationObserver、Signal入力の変化を通知源とする。
 

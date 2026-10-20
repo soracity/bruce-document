@@ -103,9 +103,9 @@ type Diagnostic = {
 
 ## CHECK-02 ビルド設定とComponent列挙
 
-1. wrapperが引数を一度だけ解釈し、project/configurationを固定する。configuration省略はproduction。空文字・重複指定・未知引数は設定エラー。
-2. angular.jsonのprojectsのうち、applicationでbuild targetと選択configurationを持つ候補を得る。実測対象builderは`@angular/build:application`。未対応builderを推測して通さない。
-3. project省略で候補1件のみ自動選択。0件・複数件は診断し中止。明示projectが不在/ビルド不可/構成不在なら中止。他名へフォールバックしない。
+1. wrapperが引数を一度だけ解釈し、project/configurationを固定する。configuration省略はproduction。--project NAME/--project=NAME、--configuration NAME/--configuration=NAMEの両記法を受ける。位置引数、空文字、重複指定（両記法の重複も含む）、未知引数は設定エラー。npmの区切り--はnpm側で除去される前提で、wrapperへ来た未知の単独--を無視しない。
+2. angular.jsonはTypeScriptのparseConfigFileTextToJson等でコメント/末尾カンマを含む設定JSONとして解析し、解析エラーを設定診断にする。通常JSON.parseで有効な設定を誤拒否しない。projectsのうち、applicationでbuild targetと選択configurationを持つ候補を得る。実測対象builderは`@angular/build:application`。未対応builderを推測して通さない。
+3. project省略で候補1件のみ自動選択。0件・複数件は診断し中止。複数候補の診断には候補名を辞書順に列挙する。明示projectが不在/ビルド不可/構成不在なら対象名と不正理由を示して中止。利用可能なproject/configuration名を取得できる場合は診断の参考情報として列挙する。他名へフォールバックしない。
 4. build.optionsへ選択configurationのoptionsを重ね、tsConfigとfileReplacementsを確定する。複数configurationのカンマ指定は現在の公式入口で受け付けず、必要時に別設計する。
 5. `ts.readConfigFile`と`ts.parseJsonConfigFileContent`でextends/include/exclude/filesを解決する。読込・解析エラーを収集する。
 6. `ts.createCompilerHost`/`ts.createProgram`を作成。rootNamesとimport解決にfileReplacementsを同じマップで適用する。replacementの実体ファイル名をComponentSourceへ記録し、templateUrlはその実体ディレクトリを基準にする。
@@ -173,7 +173,7 @@ APIはAngular 21.0.0の公式ソース`packages/compiler/src/render3/view/templa
 | BRUCE-LAYOUT-009 | 未定義の特殊構造。未承認の許可を追加しない |
 | BRUCE-INTERNAL-001 | 検査器内部障害 |
 
-コード番号は今回の実装詳細であり、以前の例示番号の正式承認を得たと主張しない。各診断にfile・1始まりline/column・messageを必須とする。値が表せる場合はexpected/actual、特定できる場合はcomponentを付ける。英語のみ。標準エラーへ出力し、パス→行→列→コードの安定順。file/位置/code/内容が同じ診断のみ重複排除し、異なる違反を件数制限で隠さない。
+コード番号は今回の実装詳細であり、以前の例示番号の正式承認を得たと主張しない。各診断にfile・1始まりline/column・messageを必須とする。値が表せる場合はexpected/actual、特定できる場合はcomponentを付ける。英語のみ。標準エラーへ出力し、パス→行→列→コードの安定順。設定診断のfileはangular.json/対象tsconfig/読込不能な対象ファイル、CLI引数不正は起動wrapperのパスを示す。設定内の該当位置が取得できない時はline=1/column=1を使い、実際に特定できた行だと偽らない。file/位置/code/内容が同じ診断のみ重複排除し、異なる違反を件数制限で隠さない。
 
 ```text
 ERROR BRUCE-LAYOUT-001 src/app/sample/sample.component.html:12:3
@@ -204,3 +204,5 @@ Total: 1 error. Angular build was not started.
 直接npx ng buildは専用検査を回避できる。技術的禁止を達成したと表示せず、正式成果物は04章のCI合格ゲートで守る。Push時にアプリCIで公式入口を起動し、正式公開は同じコミットの検査・Angularビルド合格を必須とする。Android/iOSのネイティブビルド・署名合格とは別。
 
 テスト：T-CHECK-01〜25、T-LAY-01〜12、T-CI-01〜04。内部Class/CLIにHTML/CSSはない。実行時の必要幅と行分割は05章。
+
+補助API確認：TypeScript 5.9.2の[公式commandLineParser.ts](https://github.com/microsoft/TypeScript/blob/v5.9.2/src/compiler/commandLineParser.ts#L2243)でparseConfigFileTextToJson(fileName,jsonText)がparseJsonTextを使い{config,error}を返すことを確認した。返却errorがあれば設定を正常扱いしない。AngularのParseTemplateOptions確認と同様、実装時はアプリlockfileの実バージョンで検証する。

@@ -15,7 +15,7 @@
 
 table→colgroup/Record→tbody→Row→tr→Cell→td/thの実体構造を維持する。Record/Row/Cellのホストはdisplay:contents。colSpan/rowSpanと角丸はDOM順推測で置き換えない。ViewEncapsulation.Noneのセレクターは`app-table-container-layout`等の接頭辞で範囲を限定し、別テーブルへ漏らさない。
 
-ComponentBaseをTableContainer/Record/Cellが利用する。Rowは構造・sticky責務を維持する。共通Signal Inputは基底一箇所、固有Inputは各Componentのみで定義する。
+ComponentBaseをTableContainer/Record/Cellが利用する。Rowは構造・sticky責務を維持し、今回共通スタイルInputの追加対象へ含めない。Rowの条件付き除去は画面の@ifで行う。共通Signal Inputは基底一箇所、固有Inputは各Componentのみで定義する。
 
 ## TABLE-02 全公開API
 
@@ -74,7 +74,9 @@ AppUiColorEnumのERROR/INFO/WARNING/SUCCESSはCellで20%背景。一般UIでは�
 
 背景の優先順位は、Cell/Record/Tableの明示色解決→Cell既定→状態のフォールバック。selectedはRecordの下地primary/text-primary-content、zebraは未選択Recordのbase-200、通常は既存テーマ。Cellに明示色がある場合はその色を維持する。透明20%色と選択下地の混色は現行表示との比較で検証する。色指定でselectedフラグ自体を変更しない。
 
-stickyセル/行には、明示色がない場合のみbase-100の不透明な下地を使用する。明示色を`bg-base-100`が無条件上書きしない。重なり順：通常0、左固定10、上固定20、両方の交点25、角丸オーバーレイ30、Swipe40。交点判定はCell.stickyと祖先Row.stickyの組合せ。
+stickyセル/行の不透明な下地は、selected Recordならprimary、未選択zebraの対象Recordならbase-200、その他base-100。明示背景Enumが通常の不透明色ならその色を使う。明示状態色20%は同じ不透明下地の上に20%色を重ね、スクロールした他行を透けさせない。明示色をbg-base-100が無条件上書きしない。状態色とstickyの合成は固定CSSで定義する。例stickyかつbg-error/20ならbackground-image:linear-gradient(color-mix(in oklab,var(--color-error) 20%,transparent),color-mix(in oklab,var(--color-error) 20%,transparent))、background-colorは上記下地。INFO/WARNING/SUCCESSも4通りを静的記述し、既存の20%という割合を変えない。非stickyは従来の20%背景を維持する。
+
+重なり順：通常0、左固定10、上固定20、両方の交点25、角丸オーバーレイ30、Swipe40。交点判定はCell.stickyと祖先Row.stickyの組合せ。
 
 罫線はCellの明示border/widthがある場合にそれを最優先し、なければRecord.cellBorderによる1px base-300を使用する。セル一括罫線と個別のborder=falseを両立するため、従来の無条件!importantセレクターを、明示なしセルだけへ限定する。新しい任意class Inputは追加しない。
 
@@ -205,3 +207,7 @@ touch-action:pan-y pinch-zoomの現行方式は縦scroll/zoomを維持するが�
 template=nullはportalなし、panel幅0/非表示は開かない、破棄後の予約callbackは何もしない。pointer capture失敗時もdocumentリスナーで継続し、無限例外を出さない。document/windowのない環境ではafterNextRenderのDOM処理を起動しない。
 
 テスト：T-TABLE-01〜14、T-SWIPE-01〜12。U-02未解決の複合横操作について実装可能性監査は保留。その他は既存正常系を維持する設計である。
+
+## TABLE-07 keyboard操作の利用側契約
+
+Record.clickableによるtbodyクリックだけを、keyboard利用者の唯一の選択手段にしない。利用画面は同じ選択/詳細処理を呼ぶ既存Button等をCellへ投影する。Buttonのclick/Enter/Spaceが同じ画面handlerへ到達することをT-DEVICE-03/08で検証する。tbodyへbutton roleを付けてtableの行構造を壊したり、共通基盤からアプリ固有の列・選択文言を勝手に追加したりしない。Swipeも既存open()/close()を呼ぶ利用側の操作経路を持つ。英語固定Actionsは現行互換値として保持するが、多言語ラベルの正式APIは原典未決であり実装済みとしない。

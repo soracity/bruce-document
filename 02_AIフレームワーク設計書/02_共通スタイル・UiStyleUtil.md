@@ -90,11 +90,11 @@ export abstract class ComponentBase {
 | TableContainer | table/外側wrapper | 色の指定はCellへ伝播。影はwrapper自身 |
 | Record | tbody/専用影レイヤー | 色はCellへ伝播。影は当該Recordのみ |
 | Cell | td/th | 色は親継承、角丸なし、既存padding 0.125rem 0.25rem |
-| Row | tr | 構造・上固定のみ。色継承の中継者にしない |
+| Row | tr | 構造・上固定のみ。今回共通スタイルInputの追加対象にせず、色継承の中継者にしない |
 
 明示時の適用単位：border群＝borderまたはborderWidthの指定、rounded群＝roundedまたはroundedSize、shadow群＝shadowまたはshadowSize、padding群＝padding、色群＝各色の指定/継承。明示`border=false`なら幅0、`rounded=false`なら半径0、`shadow=false`なら影なし。真偽をfalseにしても他の群を消さない。
 
-FABの円形は既存`btn-circle`を維持する。24pxを「円形の承認値」として設定しない。明示roundedSizeがある場合だけ固定半径指定を適用する。visible=falseはレイアウトボックス自体を消し、操作・フォーカス対象から外す。display:contentsのTable部品は実体のtbody/tr/tdとRecordスペーサーにも同じ非表示を反映する。
+FABの円形は既存`btn-circle`を維持する。24pxを「円形の承認値」として設定しない。明示roundedSizeがある場合だけ固定半径指定を適用する。visible=falseはレイアウトボックス自体を消し、操作・フォーカス対象から外す。display:contentsのRecord/Cellは実体のtbody/td/thとRecordスペーサーにも同じ非表示を反映する。Row自体の条件付き除去は画面の@ifで行い、今回visible Inputを独自追加しない。
 
 ## STYLE-04 UiStyleUtilの完全契約
 
