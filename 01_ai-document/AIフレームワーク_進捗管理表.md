@@ -15,8 +15,8 @@
 
 - **現在の大区分**：**Phase 2 設計思想・責務の議論**。
 - **現在の中区分**：**2.6 DTO・Form・Validation**（2.5.3設計完了）。
-- **現在の小区分**：**2.6.4 UI Form DTOのclass＋formGroup方式を最終確定**（次の検討対象）。
-- **次の議論**：**2.6.4 UI Form DTOのclass＋formGroup方式の最終確定**。2.6.3の入力Validation／Domain不変条件の責務分離は承認済み。
+- **現在の小区分**：**2.6.4 UI Form DTOのclass＋formGroup方式を最終確定**（2026-10-20承認済、表示用DTO readonlyは未決）。
+- **次の議論**：**表示用DTOプロパティのreadonly要否の決定**。2.6.4のUI Form DTO構造は2026-10-20承認済み。2.6.3の入力Validation／Domain不変条件の責務分離は承認済み。
 - **その次**：2.7.1 UI・Domain境界、2.7.2 Domain移管APIの設計など。
 - **運用開始までの主要関門**：Phase 2・3の**全議論終了** → **Phase 4：議事録に基づく体系的設計書と最終承認** → Phase 5実装 → Phase 6 AI実装手順 → Phase 7人間の保守性を含めた検証 → Phase 8運用。
 - **直近の技術確認**：2026-10-17、BRU1001／BRU1002のEnum FormControl互換修正後に`npx ng build`成功（バンドルサイズ警告は残存）。これは**AIフレームワーク完了・実機動作完了を意味しない**。
@@ -86,7 +86,7 @@
 | 2 | 2.6 DTO・Form・Validation | **2.6.1** | UI Form DTOのComponentスコープDI方針を決定 | 完了 | 承認済 | 未着手 | 未検証 | ACGと画面実装への反映はPhase 5 | [議事録](phase2_06_DTO・Form・Validation.md) |
 | 2 | 2.6 DTO・Form・Validation | **2.6.2** | Enum FormControlとApplication string codeの境界変換 | 完了 | 承認済 | 完了 | ビルド確認済 | 保存→再表示等の動作確認はPhase 7 | [議事録](phase2_06_DTO・Form・Validation.md) |
 | 2 | 2.6 DTO・Form・Validation | **2.6.3** | FormControl ValidationとDomain Validationの境界を確定 | 完了 | 承認済 | 未着手 | 未検証 | 2026-10-20承認：FormControl/UI Form DTOはrequired・文字数・数値／日付形式等の画面入力Validation、Domainはポイント／ゲーム／セット・サーブ順・試合状態等の業務不変条件を担当。業務判定をUIとDomainに二重実装せず、Domain保証を省略しない。ACG既決仕様とMapper非作成方針を維持。実装Phase 5、検証Phase 7 | [議事録](phase2_06_DTO・Form・Validation.md) |
-| 2 | 2.6 DTO・Form・Validation | **2.6.4** | UI Form DTOのclass＋formGroup方式を最終確定 | 未着手 | 推奨案 | 既存実装 | 静的確認済 | 既存方針とAngularの扱いをレビュー | [議事録](phase2_06_DTO・Form・Validation.md) |
+| 2 | 2.6 DTO・Form・Validation | **2.6.4** | UI Form DTOのclass＋formGroup方式を最終確定 | 完了 | 承認済 | 既存実装 | 静的確認済 | 2026-10-20承認：DTO内に型付きreadonly formGroupを直接保持・宣言時初期化・非継承。表示用DTOは別生成、1行単位、配列は利用側保持。表示用DTOプロパティreadonlyは未決。ACG実装反映はPhase 5 | [議事録](phase2_06_DTO・Form・Validation.md) |
 | 2 | 2.6 DTO・Form・Validation | **2.6.5** | 専用Mapperを作成しないルールを確定 | 完了 | 承認済 | 一部実装 | 静的確認済 | 画面実装ルールへ反映して確認 | [議事録](phase2_06_DTO・Form・Validation.md) |
 | 2 | 2.6 DTO・Form・Validation | **2.6.6** | Nullable<T>共通型・global.d.tsの設計 | 完了 | 承認済 | 未確認 | 未検証 | ACG／生成物との適合は5.4.3で確認 | [議事録](phase2_06_DTO・Form・Validation.md) |
 | 2 | 2.6 DTO・Form・Validation | **2.6.7** | TypeScriptTypeEnum／Enum実型解決の設計 | 完了 | 承認済 | 未確認 | 未検証 | Enum実型・参照箇所の実装確認は5.4.3 | [議事録](phase2_06_DTO・Form・Validation.md) |
