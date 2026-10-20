@@ -200,3 +200,10 @@
 - 一般Componentの基準値：`border=true`、`borderWidth=1px`、`rounded=true`、`roundedSize=8px`、`shadow=false`、`shadowSize=md`、`padding=8px`、`visible=true`。
 - `backgroundColor`と`textColor`の既定値はComponentごとに定義する。例：TableCellは角丸なし、FABは円形。
 - Angular Signal Input継承時の既定値変更方式は実装設計で検証する。設計承認済み、実装・検証は未実施。
+
+### 2026-10-20 追加承認：Android・iPhone共通表示品質の検査観点（Phase 3.1.2）
+- 共通検査対象は①画面サイズへの適応、②セーフエリア、③設計書で指定したタップ領域、④承認済み文字あふれ制御（WRAP／MARQUEE_BOUNCE／MARQUEE_RESTART／ELLIPSIS）、⑤縦横スクロールとSwipe競合、⑥キーボード表示時の操作性、⑦テーマ変更時の判読性、⑧Android・iPhone間の機能・配置・操作性の一貫性とする。
+- OS固有の表示差は許容するが、ピクセル単位の一致ではなく設計仕様と操作性の一致を合格基準とする。
+- タップ領域は既存の承認済み仕様を優先し、AI判断で拡大・縮小しない。
+- Phase 5でComponent実装時の表示・操作確認、Phase 7で端末・画面幅・テーマ等を変えた最終検証を行う。既存画面との意図しない差異も確認する。
+- 状態：検査観点の設計承認済み。実装・実機検証は未実施。
