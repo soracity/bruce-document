@@ -13,3 +13,50 @@
 ## 注意
 
 この文書は関連議事録の全文照合前の暫定整理。マーキーの移動方向・停止・再開の厳密な動作条件や既存例外、各Componentの詳細値は原典抽出・照合を追加する。ここにない項目を「存在しない」と判断してはならない。
+
+## Phase 2.5 任意CSS注入排除：原典照合・移行設計（2026-10-21）
+
+照合元：[Phase 2.5](../01_ai-document/phase2_05_任意CSS注入の排除.md) の2.5.1〜2.5.3。**同議事録との照合であり、全旧新議事録の双方向監査完了ではない**。
+
+### 承認された責務境界
+
+画面は**共通Componentの公開仕様で許された表示設定**を指定できる。画面による背景色選択自体は禁止しない。ただし共通Component内部のDOM構造・CSS実現方法・指定可能な値は共通Componentが管理し、画面から任意class文字列を注入しない。外部配置はLayoutManagerが担当する。内部CSS（Radioの選択肢、Alertのアイコン、Textboxのinput、Buttonの文字など）は各Componentが管理する。variant/size等の意味的Inputは**実要件がある場合のみ**追加する。
+
+段階廃止対象の例：classContainer、classInput、classLabel、classSpan、classButton、classRadioItem、classLabelSpan、classMessageContainer、classButtonContainer、classAlertBox、classMessage、classMessageIcon。上記以外の同種APIも同じ原則で扱う。設計承認を理由に即時一括削除して既存画面を破壊しない。
+
+### 2.5.2 ソース調査の事実（2026-10-19時点）
+
+対象は `soracity/bruce` の `feature/feature-20261015`、`src/app` 内の実行時HTML **25ファイル**、Component/Directive/基底TS **27ファイル**（テスト・バックアップ・Enum除外）。**これは当時の議事録記載の調査結果であり、今回の最新ソース再調査を意味しない。**
+
+| 対象 | 当時の検出数 | 呼出元と実際の注入経路 |
+|---|---:|---|
+| TableCell | 12 | `brf1000/brf1002/ui/components/bru1002.component.html`：`class="bg-base-200"` 11箇所（45,50,55,60,65,71,84,97,111,119,127行）、`[class]="getMatchStatusColor(...)"` 1箇所（39〜43行）。ホストclass→`cellClasses`→内部td/thの[class] |
+| Header | 1 | `brf8000/brf8010/ui/components/app-layout/app-layout.component.html`：`[classContainer]`→Header内部header[class] |
+| TabBar | 1 | 同AppLayout：`[classTabBar]`→TabBar内部nav[class] |
+
+計 **3経路・14箇所**。主要BRF9020共通Componentの専用class注入Inputは調査範囲内で検出されなかったが、Header/TabBarには残存。ネイティブHTMLのclass、Component内部固定class、限定フラグ由来のclassはこの14件と混同しない。
+
+### 2.5.3 承認済みの置換仕様と作業順
+
+1. **TableCell**：背景色を画面から意味的Enumで指定し、内部CSSに対応付ける。既存の固定11件・動的1件の呼出しを置換してから、`cellClasses` と内部セルへの任意class転送を廃止する。
+2. **Header**：`classContainer` Inputを廃止し、既存 `navbar bg-base-300 shadow-sm h-[4rem] shrink-0` 相当の見た目をHeader内部の標準スタイルへ移管する。
+3. **TabBar**：`classTabBar` Inputを廃止し、既存 `bg-base-300 h-[4rem] shrink-0 flex items-center justify-around` 相当の見た目をTabBar内部の標準スタイルへ移管する。
+4. 置換後に未使用の任意CSS Input・転送処理を削除し、Componentテスト・API利用例を更新する。新しい別名の任意CSS注入APIで代替しない。
+
+2026-10-20時点の**専用TableCell Enum承認履歴**：`AppComponentTableCellBackgroundEnum`、`app-component-table-cell-background.enum.ts`、`DEFAULT/default`・`LABEL/label`・`ERROR/error`・`INFO/info`・`WARNING/warning`・`SUCCESS/success`、公開Input `backgroundColor`、省略時DEFAULT。EnumはACG生成対象で、手書きしない。CSSクラス文字列をEnum値に格納せず、Component内部の固定CSSにマッピングする。Tailwindの `bg-${color}/20` のような動的組立てはCSS抽出漏れのため禁止。
+
+**時系列注意**：後日の[Phase 3.1](../01_ai-document/phase3_01_共通スタイル.md)および[Phase 3.4](../01_ai-document/phase3_04_Table.md)で**共通AppUiColorEnumへの統合**が承認されたと[監査AUD-002](08_監査・未完了管理.md)に記録されている。したがって上記専用Enumは**2026-10-20当時の承認履歴**として保持し、現行実装にそのまま採用してよいとは判断しない。最終的なEnum/API・DEFAULT/LABELの移行対応は後日原典と照合して確定する。**未承認の互換処理は補わない。**
+
+### 回帰テストと完了条件
+
+| ID | 対象 | 合格条件 |
+|---|---|---|
+| CSS-01 | TableCell固定背景11箇所 | 置換前後で従来のbg-base-200相当の表示を維持 |
+| CSS-02 | TableCell動的背景1箇所 | 試合状態ごとの4色を維持 |
+| CSS-03 | TableCell共通状態 | テーマ変更、zebra/selected/stickyとの優先関係を確認 |
+| CSS-04 | Header | 既存の高さ・背景色・影・配置を維持 |
+| CSS-05 | TabBar | 既存の高さ・背景色・配置を維持 |
+| CSS-06 | API廃止 | 呼出し置換後に任意class転送を廃止、画面から内部DOMを操作しない |
+| CSS-07 | ACG・利用例 | 最新承認のEnumをACG生成し、Componentテスト・API例を更新 |
+
+**状態**：2.5.1〜2.5.3の基本方針・置換方針は承認済み。実装未着手、回帰検証未実施。最新Enumとの整合、既存コードの再調査、CSS優先順位の実装詳細は未完了。Phase 5開始の許可ではない。
