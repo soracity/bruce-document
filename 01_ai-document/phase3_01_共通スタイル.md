@@ -123,6 +123,14 @@
 - **ASIS静的確認**：`soracity/bruce` の `feature/feature-20261015` で、Textboxは `FormControlComponentBase<T>` を継承（FormControlの値・状態変更時の変更検知を担当）。TableCellとTableContainerLayoutは基底クラス非継承。Textbox/ButtonのHTMLではDaisyUI/Tailwindクラスを直接指定し、TableContainerLayoutは独自 `recordShadow` InputとSCSSで描画。共通スタイル基底クラスによる一元管理は未実装。これは調査したファイルに基づく静的確認であり、全Componentの実装確認完了ではない。
 - **実装・検証**：未実施。既存の `FormControlComponentBase` との単一継承上の関係、適用対象、各Inputの既定値・意味色、移行方法は後続の設計で明確化する。既存コードをこの承認だけで変更しない。
 
+
+### 2026-10-20 追加承認：共通Inputの既定値とComponent別上書き
+
+- **設計判断：承認済み**。共通スタイルInputの型・意味・制御方式は `ComponentBase` に統一する。一方、**既定値は各Componentの用途に応じて変更可能**とする。共通基底の既定値を全Componentに一律強制しない。
+- 例：一般的な角丸サイズは8pxを基準としつつ、FABの円形やTableCellの角丸なし等、Component固有の既定表示を許容する。例示したComponent別具体値は個別仕様と照合して確定する。
+- **実装上の検討事項（未決）**：Angular signal inputの継承下で、共通Inputの公開契約を維持しながらComponent別既定値を安全に実現する具体的方法。既存実装を変更せずPhase 5で検証する。
+- **状態**：基本方針承認済み。全Inputの型・許容値・Component別既定値一覧・意味色の適用範囲は引き続き最終確認が必要。実装・動作検証は未実施。
+
 ## 3.1.2 Android・iPhone共通表示品質の検査観点を確定
 
 - **作業**：未着手／**設計**：方針合意／**実装**：未着手／**検証**：未検証
