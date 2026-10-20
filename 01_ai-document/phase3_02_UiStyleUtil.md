@@ -71,3 +71,11 @@ Tailwindのビルド時クラス検出を考慮し、許容値とクラス名を
 ## 議事録更新ルール
 
 この工程の新しい議論は対応する小区分見出しの下へ日時・検討案・決定／未決・理由・次の作業を追記し、同時に[進捗管理表](AIフレームワーク_進捗管理表.md)を更新する。旧議事録は改変しない。
+
+### 2026-10-20 追加承認：UiStyleUtilの責務分離と変換方式
+- `UiStyleUtil`は状態を持たない静的ユーティリティとして、Enumや規定の数値から事前定義された固定CSSクラスへ変換する。CSSクラス名の動的連結は禁止する。
+- 画面はEnum・数値を指定し、`ComponentBase`は共通Input・既定値を管理し、各Componentは固有の表示ルールと適用優先順位を管理する。
+- 一般背景色の例：`UiStyleUtil.backgroundColor(AppUiColorEnum.ERROR)` → `bg-error`。
+- TableCell状態色の例：`UiStyleUtil.tableCellStatusColor(AppUiColorEnum.ERROR)` → `bg-error/20`。状態色の透明度20%を維持する。API名・具体的実装コードは説明例であり、実装時に整合性を確認する。
+- TailwindのCSS生成を確実にする固定クラスの検出・生成方法は実装時に検証する。
+- 状態：設計承認済み。実装・検証は未実施。
