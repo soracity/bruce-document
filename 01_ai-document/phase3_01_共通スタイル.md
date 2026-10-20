@@ -194,3 +194,9 @@
 - 一般Componentの`ERROR`は通常のエラー色、TableCellの状態色`ERROR`は既存と同等の透明度20%のエラー背景色とする。INFO/WARNING/SUCCESSの状態色も既存の20%表示を維持する。
 - 透明度等の具体的な表示表現は各Componentの責務とし、固定定義されたCSSへの変換を共通側で管理する。動的CSSクラス組立ては禁止。
 - `backgroundOpacity`は新設しない。ACG生成、実装、表示検証は未実施。
+
+### 2026-10-20 追加承認：共通スタイルの基準既定値
+- `ComponentBase`で共通スタイルInputを定義し、各Componentは用途に応じた既定値を持つ。画面からの明示指定値を優先する。
+- 一般Componentの基準値：`border=true`、`borderWidth=1px`、`rounded=true`、`roundedSize=8px`、`shadow=false`、`shadowSize=md`、`padding=8px`、`visible=true`。
+- `backgroundColor`と`textColor`の既定値はComponentごとに定義する。例：TableCellは角丸なし、FABは円形。
+- Angular Signal Input継承時の既定値変更方式は実装設計で検証する。設計承認済み、実装・検証は未実施。
