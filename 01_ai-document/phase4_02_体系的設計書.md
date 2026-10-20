@@ -35,3 +35,22 @@
 ## 議事録更新ルール
 
 この工程の新しい議論は対応する小区分見出しの下へ日時・検討案・決定／未決・理由・次の作業を追記し、同時に[進捗管理表](AIフレームワーク_進捗管理表.md)を更新する。旧議事録は改変しない。
+
+### 2026-10-20 4.2.1 設計書の章立て・用語・参照構造（作業完了、設計書本文は未作成）
+**設計書の章立て**（各章に「適用範囲／承認済み仕様／禁止事項／例外／実装引継ぎ／検証項目／根拠」を設ける）：
+1. 目的・適用範囲・設計思想：`phase2_01`、`phase2_09`、`phase3_06`
+2. 責務境界：画面／LayoutManager／共通Component／Domain：`phase2_01`、`phase2_07`
+3. LayoutManager：LayoutItem／LayoutSpan／gap／padding／wrap／静的検査：`phase2_02`、`phase2_03`、`phase2_04`
+4. 共通UIとデザイン：ComponentBase／FormControlComponentBase／Input／色Enum／UiStyleUtil：`phase3_01`〜`phase3_03`
+5. Table／Swipe：TableContainer／Record／Cell／継承優先順位／スクロール／ジェスチャー：`phase3_04`、`phase3_05`
+6. DTO・Form・Validation・ACG：型、生成物、readonly、直接編集禁止：`phase2_06`、`phase2_08`
+7. UI表示・CSS・文字あふれ・スマートフォン操作性：`phase2_04`、`phase2_05`
+8. AI実装規則・禁止事項・例外停止／再開：`phase2_08`、`phase2_09`
+9. 実装・移行・検証の引継ぎ：Phase 5〜7の各工程議事録
+10. 用語集・仕様トレーサビリティ・承認履歴：`phase00_旧新議事録_項目別トレーサビリティ.md`、`phase00_新議事録_逆方向根拠監査.md`、WBS
+
+**用語統一**：`画面`＝画面固有のデータ・イベントと構成、`LayoutManager`＝配置・外側幅・余白・折り返し、`共通Component`＝部品内部の表示と振る舞い、`Domain`＝業務意味・ルール、`ACG`＝定義からソースを生成する仕組み、`設計承認`≠`実装完了`≠`検証合格`。`ComponentBase`と`FormControlComponentBase<T>`は別責務。Tableの色継承は`backgroundColor`と`textColor`のみ。
+
+**相互参照のルール**：章ごとに対応工程ID・現行議事録への相対リンク・承認日を記載し、旧原文は履歴としてのみ参照。重複する規則は主たる章で一度だけ定義し他章から参照。未承認事項を承認済みに昇格させない。章立ては文書整理上の作業成果であり、新たなUI設計仕様の承認ではない。
+
+- **4.2.1作業判定：完了**。次は4.2.2としてこの構成に沿い設計書本文・仕様表・実装規則を作成する。設計書全体のユーザー最終承認は4.3.1で行う。
