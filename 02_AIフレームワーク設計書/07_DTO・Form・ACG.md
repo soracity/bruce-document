@@ -274,3 +274,38 @@ type Nullable<T> = T | null;
 | ACG-T40 | Enum・Enum型指定、必須〇 | 許可、Enum用必須Validatorを生成 |
 
 **状態**：型別11行の原典→本書転記と対応テスト観点は作成済み。表の全組合せの自動生成テスト、実コード・旧文書との双方向照合、ACG例外型・診断メッセージは未検証／未決。Phase 5実装禁止を維持する。
+
+## Phase 2.6 原典対照台帳：承認規則・禁止事項・残差（2026-10-21）
+
+この台帳は原典の小区分ごとの**代表的な仕様原子**と本書の対応箇所を双方向に確認するための索引。全原子の機械照合ではない。旧決定文書の本文は[Phase 2.6](../01_ai-document/phase2_06_DTO・Form・Validation.md)に原文保存されている。
+
+| 原典節 | 追跡する仕様原子（例外・禁止含む） | 07の対応 | 未解決／要実証 |
+|---|---|---|---|
+| 2.6.1 | Component単位DI、root禁止、`new`禁止、`controls`別名禁止 | ACG-DI | 生成物のproviders/inject照合 |
+| 2.6.2 | UI Enum／Application code分離、`toEnum`／`.value`、Enum FALSEのtruthy禁止 | ACG-BOUNDARY | ToggleとRadioの実値契約 |
+| 2.6.3 | 入力ValidationとDomain不変条件分離 | ACG-VALIDATION | Domain経路のテスト |
+| 2.6.4 | `class`＋型付き`readonly formGroup`、表示行`type`＋`readonly`、後続承認優先 | ACG-DI／ACG-DTO | 実ACG生成の照合 |
+| 2.6.5 | Mapper/Converter/Assemblerの無断新設禁止 | ACG-MAPPER | 画面実装の監査 |
+| 2.6.6 | `Nullable<T>`はnullのみ、global.d.ts非module、import不要 | ACG-NULLABLE | 生成ソース型検査 |
+| 2.6.7 | TypeScriptTypeEnumの5値、DATE系削除、ENUM実型列必須 | ACG-TYPE | DAO等全参照点の検査 |
+| 2.6.8 | 許容11行、7拒否例、日付日時形式ValidatorをACG生成しない | 第3次一括詳細化 | 全組合せ自動試験 |
+| 2.6.9 | 6形式、ASCIIスペース許容、正規表現列の指定 | ACG-FORMAT／第3次 | 正規表現の生成と実行 |
+| 2.6.10 | 文字列trim後必須、数値/Enum required、真偽requiredTrue | ACG-REQUIRED | 共通Validatorの実型とAPI |
+| 2.6.11 | 型別初期値、予約語1対1、物理名による推測禁止 | ACG-DEFAULT／ACG-DATE-STRICT | 生成結果 |
+| 2.6.12 | 日付は暦日、日時はUTC ISO8601、ロケール表示 | ACG-DATETIME | 入力Component／表示試験 |
+| 2.6.13 | 検索条件と明細分離、表示はDTO配列、編集はFormArray/FormGroup、同一項目のngModel混用禁止 | ACG-DETAIL | 編集明細のACG生成範囲 |
+| 2.6.14 | 文字種Enum配置、DIフラグ分離、ENUM型解決、日付デフォルトFail Fast | ACG-MODEL／ACG-TYPE／ACG-DATE-STRICT | ACG本体ソース照合 |
+
+### 追加の原典明示事項
+
+- `src/global.d.ts`は**import/exportを置かず非モジュールのグローバル宣言**とする。単にファイルに型を書くことだけでは条件を満たさない。
+- 検索結果は**同一Componentインスタンスの生存中**にクライアントメモリで保持。画面を跨いだ永続化やグローバルキャッシュはこの承認から導かない。
+- **1画面内の複数FormGroupは許可**。検索条件と編集明細を無理に統合しない。**同一入力項目でReactive Formsと`[(ngModel)]`を併用しない**。
+- 自動生成ファイルは直接編集せず、ACG本体・設計書解析・内部モデル・生成・チェック・テスト側を修正対象とする。
+- `形式=日付`は**非推奨だが許容**。日時と日付の両方を一律禁止にしない。
+
+### 双方向検査の範囲
+
+- **原典→07**：14小区分ごとに代表規則と対応節を確認。
+- **07→原典**：上表の規則は各原典節に対応する。ただし07内の擬似コード、受入テスト、説明用の型名は**承認済み実装APIではなく設計補助**。
+- **未実施**：旧決定原典の全文を仕様・設計理由・禁止・例外・コード例・未決事項へ分解した全原子ID採番、旧→新／新→旧の機械的な全件突合、旧議事録16件／新議事録との横断照合。したがって「全件移行完了」と判定しない。
