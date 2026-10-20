@@ -99,3 +99,56 @@ class ExampleCell extends ComponentBase {
 | BASE-09 | iOS/Androidのテーマ切替 | 意図しない既存表示の変化なし |
 
 **実装阻害・未決**：Angular Signal Inputの継承下での具体的な宣言・overrideの動作、既存`FormControlComponentBase<T>`の変更検知、各Componentの実際の継承対象、各Enumの実型、スタイルのDOM適用先、Component別既定値の網羅的な確認。Phase 5のソース変更・Phase 7の実機検証は未実施。
+
+## Phase 3.2 UiStyleUtil API別責務・固定CSS変換契約（2026-10-21）
+
+原典：[Phase 3.2.1](../01_ai-document/phase3_02_UiStyleUtil.md) 2026-10-20追加承認。旧議事録中の「想定API」は**後日の8メソッド承認により具体化された履歴**として扱う。以下は既承認のAPI名と変換責務の詳細整理であり、未承認のクラス対応を補完しない。
+
+### 公開メソッド一覧
+
+| メソッド（static） | 入力の意味 | 出力・責務 |
+|---|---|---|
+| `getBorderClass` | border, borderWidth | 有無と規定幅を固定クラスに変換 |
+| `getRoundedClass` | rounded, roundedSize | 角丸の有無と規定サイズを固定クラスに変換 |
+| `getShadowClass` | shadow, shadowSize | 影の有無と規定サイズを固定クラスに変換 |
+| `getPaddingClass` | padding | 規定padding値を固定クラスに変換 |
+| `getBackgroundColorClass` | AppUiColorEnumまたはundefined | 共通11色の固定背景クラス、undefinedなら空文字列 |
+| `getTextColorClass` | AppUiColorEnumまたはundefined | 共通11色の固定文字クラス、undefinedなら空文字列 |
+| `getVisibleClass` | visible | 表示・非表示の規定表現に変換 |
+| `getTableCellStatusColorClass` | 状態色のAppUiColorEnum | ERROR/INFO/WARNING/SUCCESSの状態背景を20%相当の固定クラスに変換 |
+
+**型とAPIの注意**：上記は正式承認済み**メソッド名**。引数のTypeScript型名、引数順序、戻り値型の完全な宣言は既存Enum設計書・現行ソースとの整合確認が必要。旧議事録の`UiColor`等の仮名を現行確定型として転用しない。
+
+### 背景色・文字色・状態色の固定対応
+
+- 一般背景／文字の11値の対応は本書BRUCE-STYLE-006に従う。
+- TableCell状態背景は次の4値のみが承認された対象：`ERROR` → `bg-error/20`、`INFO` → `bg-info/20`、`WARNING` → `bg-warning/20`、`SUCCESS` → `bg-success/20`。
+- これらは**CSSソース上に文字列として完全な形で記述**する。例：`'bg-error/20'`。実行時の`'bg-' + color + '/20'`やテンプレートリテラルでの組立ては禁止。
+- `undefined` → `''` が承認されているのは**色変換**。状態色変換の対象外値・undefinedの動作は未決であり、勝手に例外や空文字を仕様化しない。
+- `backgroundOpacity` Inputは設けない。通常背景色とTableCell状態背景色を選択する責務はComponent側に残し、Utilに画面状態の判定をさせない。
+
+### 非担当範囲と呼出し順
+
+```text
+画面（Enum／規定値を指定）
+  → ComponentBase（Input・明示値／Component既定値の解決）
+  → 各Component（適用先DOM、状態色の扱い、CSS優先順位）
+  → UiStyleUtil（状態なし、規定値→固定CSSクラス）
+```
+
+`UiStyleUtil`はレイアウト配置、FormControl、disabled、Component固有状態、画面別CSS注入を扱わない。固定クラスを返すことと、Tailwindビルド成果物に該当CSSが存在することは**別の検証項目**。
+
+### 受入テスト（設計上の期待）
+
+| ID | 条件 | 期待 |
+|---|---|---|
+| UTIL-01 | 背景色ERROR | `bg-error` |
+| UTIL-02 | 文字色ERROR | `text-error` |
+| UTIL-03 | TableCell状態色ERROR | `bg-error/20` |
+| UTIL-04 | 状態色INFO/WARNING/SUCCESS | それぞれ`bg-info/20`/`bg-warning/20`/`bg-success/20` |
+| UTIL-05 | 背景色・文字色undefined | `''` |
+| UTIL-06 | 全11色の背景／文字 | 承認済み22通りの固定マッピングに一致 |
+| UTIL-07 | ビルド済CSS | 固定クラスが生成され、テーマ変更でも意図どおり描画 |
+| UTIL-08 | 無効な任意class注入 | Component APIに文字列転送口を再導入しない |
+
+**未完了**：border/rounded/shadow/padding/visibleの各許容値とCSSクラスの全対応表、型宣言・引数順、状態色の対象外値の動作、実CSS抽出とDaisyUIの優先順位。原典にない詳細は承認済みとして確定しない。Phase 5実装・Phase 7検証は未着手。
