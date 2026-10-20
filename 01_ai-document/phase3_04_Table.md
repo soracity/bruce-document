@@ -121,3 +121,11 @@ Table子クラスで `undefined` 許容Inputを再定義する案は出たが、
 - TableCellの状態色ERROR/INFO/WARNING/SUCCESSは既存の透明度20%表示を維持する。
 - `shadow`は既承認どおり継承対象外であり、指定されたComponent自身にのみ適用する。
 - 設計承認済み。Angular実装・CSS優先順位・表示検証は未実施。
+
+### 2026-10-20 追加承認：Table固有属性と共通スタイルの責務分離（Phase 3.4.2）
+- `ComponentBase`：`border`、`borderWidth`、`rounded`、`roundedSize`、`shadow`、`shadowSize`、`padding`、`backgroundColor`、`textColor`、`visible`など汎用属性を管理する。
+- `TableContainerLayout`：`zebra`、`recordGap`などTable固有属性を管理する。
+- `TableRecord`：Record固有属性を管理する。
+- `TableCell`：`colSpan`、`rowSpan`、`sticky`などセル固有属性を管理する。
+- Table固有属性は`ComponentBase`へ追加しない。既承認の`cellClasses`廃止方針を維持する。
+- 設計承認済み。実装・検証は未実施。
