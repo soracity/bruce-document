@@ -43,9 +43,9 @@
 3. **TabBar**：`classTabBar` Inputを廃止し、既存 `bg-base-300 h-[4rem] shrink-0 flex items-center justify-around` 相当の見た目をTabBar内部の標準スタイルへ移管する。
 4. 置換後に未使用の任意CSS Input・転送処理を削除し、Componentテスト・API利用例を更新する。新しい別名の任意CSS注入APIで代替しない。
 
-2026-10-20時点の**専用TableCell Enum承認履歴**：`AppComponentTableCellBackgroundEnum`、`app-component-table-cell-background.enum.ts`、`DEFAULT/default`・`LABEL/label`・`ERROR/error`・`INFO/info`・`WARNING/warning`・`SUCCESS/success`、公開Input `backgroundColor`、省略時DEFAULT。EnumはACG生成対象で、手書きしない。CSSクラス文字列をEnum値に格納せず、Component内部の固定CSSにマッピングする。Tailwindの `bg-${color}/20` のような動的組立てはCSS抽出漏れのため禁止。
+**現行仕様（後日承認優先）**：TableCellと一般Componentの背景・文字色は共通`AppUiColorEnum`（11色）で指定し、共通`UiStyleUtil`の固定クラス変換を利用する。未指定は`undefined`。TableCellの状態色ERROR/INFO/WARNING/SUCCESSは従来の20%背景表示を維持し、`backgroundOpacity` Inputは追加しない。`cellClasses`による任意クラス転送とTailwindクラス名の動的組立ては禁止する。
 
-**時系列注意**：後日の[Phase 3.1](../01_ai-document/phase3_01_共通スタイル.md)および[Phase 3.4](../01_ai-document/phase3_04_Table.md)で**共通AppUiColorEnumへの統合**が承認されたと[監査AUD-002](08_監査・未完了管理.md)に記録されている。したがって上記専用Enumは**2026-10-20当時の承認履歴**として保持し、現行実装にそのまま採用してよいとは判断しない。最終的なEnum/API・DEFAULT/LABELの移行対応は後日原典と照合して確定する。**未承認の互換処理は補わない。**
+**旧仕様（履歴のみ・実装指示ではない）**：2026-10-20のPhase 2.5.3では専用`AppComponentTableCellBackgroundEnum`（DEFAULT/LABEL/ERROR/INFO/WARNING/SUCCESS）と省略時DEFAULTが承認されていた。その後のPhase 3.1/3.4承認で共通`AppUiColorEnum`に統合されたため、**旧専用Enumの新規ACG生成・新規利用は禁止**する。旧DEFAULTは現行の未指定`undefined`と同一とは断定せず、旧LABELの表示は共通BASE_200との対応を既存表示と照合する。旧画面からの具体的な置換、状態色と通常色の識別、CSS優先順位は設計未決としてPhase 5着手前に解消する。
 
 ### 回帰テストと完了条件
 
