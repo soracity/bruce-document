@@ -79,3 +79,11 @@ Tailwindのビルド時クラス検出を考慮し、許容値とクラス名を
 - TableCell状態色の例：`UiStyleUtil.tableCellStatusColor(AppUiColorEnum.ERROR)` → `bg-error/20`。状態色の透明度20%を維持する。API名・具体的実装コードは説明例であり、実装時に整合性を確認する。
 - TailwindのCSS生成を確実にする固定クラスの検出・生成方法は実装時に検証する。
 - 状態：設計承認済み。実装・検証は未実施。
+
+### 2026-10-20 追加承認：UiStyleUtilのAPIと固定CSS変換規則（Phase 3.2.1）
+- 属性ごとの`static`メソッドで構成する。対象は`getBorderClass`、`getRoundedClass`、`getShadowClass`、`getPaddingClass`、`getBackgroundColorClass`、`getTextColorClass`、`getVisibleClass`、`getTableCellStatusColorClass`。
+- Tailwind CSS／DaisyUIのクラス名を許容値ごとに固定対応させ、動的な文字列連結でクラス名を生成しない。
+- 色の`undefined`は空文字列を返す。`AppUiColorEnum`の全11値を通常の背景色・文字色変換で扱う。
+- TableCellの状態背景色20%は専用変換メソッドで扱う。適用対象となる状態色は既承認のERROR／INFO／WARNING／SUCCESSを維持する。
+- FormControlやComponent固有の状態は管理しない。実際のクラス生成・CSS適用はPhase 5／7で検証する。
+- 状態：API・変換方針の設計承認済み。実装・検証未実施。
