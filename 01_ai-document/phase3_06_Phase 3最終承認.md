@@ -212,3 +212,11 @@ export abstract class ComponentBase {
 <!-- MIGRATION-SOURCE-END 01_ai-document/議事録バックアップ/phase3_UIデザインシステム標準化_議論記録.md -->
 
 </details>
+
+### 2026-10-20 正式最終承認：Phase 3全体（3.6.1）
+- ユーザーの明示承認により、Phase 3の全8小区分（3.1.1、3.1.2、3.2.1、3.3.1、3.4.1、3.4.2、3.5.1、3.6.1）の**設計を最終承認**した。
+- 共通スタイル・既定値と11意味色、Android/iPhone表示品質8観点、UiStyleUtil固定CSS変換、ComponentBase／FormControlComponentBase責務分離とSignal Input一元化、Tableの背景・文字色継承と他スタイル非継承、Table固有属性分離、Swipe・Layout責務境界を承認済み設計として引き継ぐ。
+- 過去の議事録にある未決・旧方式は変更履歴として保持し、後日の個別承認・本最終承認を優先する。未承認事項を承認済みに変更するものではない。
+- **設計：最終承認済み／実装：Phase 5で実施（未完了）／検証：Phase 5・7で実施（未完了）**。
+- Angular Signal Input継承、Table値伝播・CSS優先順位、Tailwindの固定クラス検出、既存デザイン互換性、端末表示品質は実装・検証工程に引き継ぐ。技術的な問題が見つかった場合は独断で設計変更せず再協議する。
+- Phase 3の設計工程を完了し、次はPhase 4へ進む。
