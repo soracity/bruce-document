@@ -330,3 +330,18 @@ templateUrlは直接文字列リテラル、templateは直接文字列／テン�
 外周Containerの名称（原典のapp-screen-container）は仮称。新規ScreenLayoutComponentやpadding=16pxなどの数値は未承認。既存上位Containerで担保できるかの実装時確認が必要。2.3.2の管理位置は2026-10-19承認済みだが、具体的実装・実機検証は未実施。原典の節冒頭に残る古い「外周位置未決」という引継ぎ文より後日の明示承認を優先する。
 
 受入テスト観点（設計のみ）：GAP-T01 横gapの所有者、GAP-T02 縦gapの所有者、GAP-T03 内部paddingの所有者、GAP-T04 外周Containerの責務、GAP-T05 個別marginでの代替禁止、GAP-T06 不要なgapSize Input追加禁止。実行0件。
+
+## Phase 2.2.1〜2.2.3 幅の責務：原典対照（2026-10-21）
+
+根拠：`01_ai-document/phase2_02_幅の責務.md` の2.2.1〜2.2.3（2026-10-16承認済み）。
+
+- WIDTH-01：同一LayoutItem内の全兄弟でSpan未指定ならgapを除いた領域を均等割り。2項目50:50、3項目は各約3分の1。
+- WIDTH-02：Spanを明示する場合は全兄弟に指定し、元の構成の合計を100とする。指定・未指定の混在を禁止。
+- WIDTH-03：SpanはCSSのwidthパーセントではなく、gapを除いた幅を分配する重み。70+30+gapを70%+30%+gapとしてはみ出させない。
+- WIDTH-04：LayoutItemはComponentホストへの割当幅を管理し、内部のinput等が割当領域の100%を使うのはComponentの責務として許容。
+- WIDTH-05：Radio内部の選択肢等幅、Button内部の全面幅・内容幅はそれぞれ共通Componentの責務。画面からw-fullやclassInputで内部幅を指定しない。
+- WIDTH-06：元のSpanが70+20=90のように不正なら、実行時の再配分で静的な設計違反を隠さない。
+
+原典にある古い7:3表記は承認前の履歴であり、現行の100等分（70:30）へ読み替えて採用する。既存LayoutSpanDirectiveの不正値補正・flex-grow設定という調査事実は、静的検査の完成を意味しない。
+
+検証観点（未実行）：WIDTH-T01 均等幅2/3項目、T02 明示合計100、T03 混在拒否、T04 gap除外、T05 Component内部100%許容、T06 Button/Radio内部幅の責務、T07 元の合計不正を拒否。実装・実機検証は未完了。
