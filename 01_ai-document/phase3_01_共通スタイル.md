@@ -207,3 +207,10 @@
 - タップ領域は既存の承認済み仕様を優先し、AI判断で拡大・縮小しない。
 - Phase 5でComponent実装時の表示・操作確認、Phase 7で端末・画面幅・テーマ等を変えた最終検証を行う。既存画面との意図しない差異も確認する。
 - 状態：検査観点の設計承認済み。実装・実機検証は未実施。
+
+### 2026-10-20 追加承認：Component別既定色の管理方式（Phase 3.1.1）
+- `ComponentBase`の`backgroundColor`・`textColor`は原則`undefined`とし、指定しない限り既存のDaisyUIテーマ・CSSによる表示を尊重する。
+- 必要なComponentのみ個別の既定色を設定し、画面からの明示指定値を最優先する。
+- `AppUiColorEnum`に「未指定」用の値は追加しない。未指定は`undefined`で区別する。
+- Tableの色継承は既承認のCell明示値＞Record明示値＞Table明示値＞Cell既定値を維持する。
+- Component別の具体的な既定色・CSSマッピングの全件確定は継続検討。設計方式のみ承認済み、実装・検証未実施。
