@@ -113,7 +113,7 @@
 | 3 | 3.2 UiStyleUtil | **3.2.1** | 静的ユーティリティAPIと静的CSSクラス対応を確定 | 進行中 | 静的・無状態、固定CSS変換、責務分離を承認済 | 未着手 | 未検証 | 具体的API名・マッピング網羅性、Tailwindのビルド時検出と型制約を実装設計で検証 | [議事録](phase3_02_UiStyleUtil.md) |
 | 3 | 3.3 ComponentBase | **3.3.1** | ComponentBaseとFormControlComponentBaseの責務分離・継承仕様を最終確定 | 進行中 | 分離・継承構造、共通Signal Input一元定義、子Component既定値overrideを承認済 | 未着手 | 未検証 | ComponentBase→FormControlComponentBase<T>→入力Componentを承認。FormControl不要の部品はComponentBaseを直接継承。画面明示値優先・未指定時Component既定値を承認。Angular Input継承・既存変更検知・対象部品を実装時確認 | [議事録](phase3_03_ComponentBase.md) |
 | 3 | 3.4 Table | **3.4.1** | Table→Record→Cellスタイル継承の方式を決定 | 進行中 | 背景色のCell＞Record＞Table＞Cell既定値、shadow非継承を承認済 | 未着手 | 未検証 | 背景色は未指定undefinedで親を継承、明示値優先を承認。その他の属性の継承対象・CSS優先順位は引き続き検討 | [議事録](phase3_04_Table.md) |
-| 3 | 3.4 Table | **3.4.2** | Table固有属性と共通スタイルの境界を確定 | 未着手 | 検討中 | 未着手 | 未検証 | zebra／recordGap／colSpan等と共通属性を分離。TableCell背景色・文字色は共通Enum＋UiStyleUtilを共有する方式を承認済、cellClasses廃止を維持 | [議事録](phase3_04_Table.md) |
+| 3 | 3.4 Table | **3.4.2** | Table固有属性と共通スタイルの境界を確定 | 設計承認済み | 共通属性とTable固有属性の責務分離を承認 | 未着手 | 未検証 | TableContainerLayoutはzebra／recordGap、TableCellはcolSpan／rowSpan／stickyを管理し、ComponentBaseへTable固有属性を追加しない。TableCell背景色・文字色は共通Enum＋UiStyleUtilを共有する方式を承認済、cellClasses廃止を維持 | [議事録](phase3_04_Table.md) |
 | 3 | 3.5 Swipe・Layout | **3.5.1** | Swipeのスタイル適用部分・ジェスチャー境界を確認 | 未着手 | 方針合意 | 既存実装 | 静的確認済 | Table横スクロールとの競合確認はPhase 7 | [議事録](phase3_05_Swipe・Layout.md) |
 | 3 | 3.6 Phase 3最終承認 | **3.6.1** | 共通Componentデザイン案を全体レビュー・承認 | 未着手 | 未着手 | 未着手 | 未検証 | 3.1〜3.5の未決を終了しユーザー最終承認 | [議事録](phase3_06_Phase 3最終承認.md) |
 
