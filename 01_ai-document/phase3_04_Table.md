@@ -108,3 +108,9 @@ Table子クラスで `undefined` 許容Inputを再定義する案は出たが、
 - 色の意味は一般Componentと同じ`AppUiColorEnum`で統一する。TableCellの状態色（ERROR/INFO/WARNING/SUCCESS）は従来の透明度20%の表示を維持する。
 - 透明度はTableCell側の表示表現として固定CSSに隠蔽する。`backgroundOpacity`は追加せず、CSSクラスの動的組立てを禁止する。
 - 旧`AppComponentTableCellBackgroundEnum`設計書は移行前の承認履歴として保持し、共通Enumとの重複・移行方法を実装設計時に整理する。ACG生成・実装・検証は未実施。
+
+### 2026-10-20 追加承認：shadowの適用対象
+- `shadow`は指定されたComponent自身にのみ適用し、Table→Record→Cellへ自動継承しない。
+- 例：`<app-table-record [shadow]="true">`はRecord自身にのみ影を付け、TableやCellには影を付けない。
+- 背景色など継承可能なスタイルと、shadowなど適用先固有のスタイルを区別する。継承対象の全属性と明示指定時の優先順位は引き続き設計する。
+- 設計承認済み。実装・検証は未実施。
