@@ -151,7 +151,7 @@
 ### 2026-10-20 ACG用列挙型設計書ドラフト作成
 
 - [AppUiColorEnum：共通UI意味色](../06_列挙型設計書/02_COMPONENT/06_列挙型設計書(AppUiColorEnum：共通UI意味色).md) を既存の列挙型設計書形式で作成。
-- 共通色Enumを一般ComponentとTableCellで共用する**方式は承認済み**。Enum物理名・11定数と値は**提案・未承認**。ACG生成と実装は未実施。
+- 共通色Enumを一般ComponentとTableCellで共用する**方式は承認済み**。Enum物理名`AppUiColorEnum`・11定数と文字列値は**2026-10-20正式承認済み**。ACG生成と実装は未実施。
 
 ## 3.1.2 Android・iPhone共通表示品質の検査観点を確定
 
