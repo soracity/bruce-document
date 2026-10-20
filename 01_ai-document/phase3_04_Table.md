@@ -114,3 +114,10 @@ Table子クラスで `undefined` 許容Inputを再定義する案は出たが、
 - 例：`<app-table-record [shadow]="true">`はRecord自身にのみ影を付け、TableやCellには影を付けない。
 - 背景色など継承可能なスタイルと、shadowなど適用先固有のスタイルを区別する。継承対象の全属性と明示指定時の優先順位は引き続き設計する。
 - 設計承認済み。実装・検証は未実施。
+
+### 2026-10-20 追加承認：背景色の継承優先順位
+- 背景色はTable→Record→Cellの順に継承可能とし、**Cell明示値 ＞ Record明示値 ＞ Table明示値 ＞ Cell既定値**を適用する。
+- 入力未指定は`undefined`として扱い、親の指定値がある場合に継承する。親にも指定がない場合はCell固有の既定値を適用する。
+- TableCellの状態色ERROR/INFO/WARNING/SUCCESSは既存の透明度20%表示を維持する。
+- `shadow`は既承認どおり継承対象外であり、指定されたComponent自身にのみ適用する。
+- 設計承認済み。Angular実装・CSS優先順位・表示検証は未実施。
