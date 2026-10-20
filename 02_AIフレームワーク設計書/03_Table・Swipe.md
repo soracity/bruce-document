@@ -76,3 +76,58 @@
 | COLOR-10 | 旧TableCell専用EnumとcellClassesを使う既存画面 | 共通Enum指定へ置換後、任意class転送を廃止する |
 
 **未完了**：Angular Signal Input継承とComponent別既定値の両立、Table→Record→Cellの値伝達API、TableCell状態色と通常背景色の識別契約、CSS優先順位、既存コードの再調査、ACG生成・実装・端末検証。Phase 3.1.1および3.4の**設計承認**を実装・検証完了と読み替えない。
+
+## Table色解決の純粋関数契約・実装前検証仕様（2026-10-21）
+
+本節は[Phase 3.1](../01_ai-document/phase3_01_共通スタイル.md)と[Phase 3.4](../01_ai-document/phase3_04_Table.md)の**承認済み優先順位をテスト可能な形に記述した設計補助**。Angular Component間の値伝達方式を新たに承認したものではない。
+
+### 属性別の解決関数（参照擬似コード）
+
+```ts
+// 型名は説明用。公開API名・ファイル配置を承認したものではない。
+type Color = AppUiColorEnum | undefined;
+
+function resolveCellColor(
+  cell: Color,
+  record: Color,
+  table: Color,
+  cellDefault: Color,
+): Color {
+  return cell ?? record ?? table ?? cellDefault;
+}
+
+const background = resolveCellColor(
+  cellBackground, recordBackground, tableBackground, cellDefaultBackground
+);
+const foreground = resolveCellColor(
+  cellText, recordText, tableText, cellDefaultText
+);
+```
+
+- 入力が`undefined`の場合のみ親へフォールバックする。色Enumに「未指定」定数を追加しない。
+- 背景と文字を**別々**に解決する。背景の継承元がRecordでも、文字の継承元はTableになり得る。
+- `ComponentBase`で基準既定値を持つ非継承属性（例：`border=true`）と、色Inputの未指定判定を混同しない。
+- この純粋関数は値選択の**意味的な参照実装**。Angular Signal Input、DI、親参照、Contextのどれで値を渡すかは未決であり、採用を示唆しない。
+- `??` は本節でEnum/undefinedに限定した場合の意味表現。boolean型の共通属性には流用しない。非継承属性の`false`を親の`true`で上書きしてはならない。
+
+### テストベクトル（背景と文字の独立性）
+
+| ID | Cell / Record / Table / Cell既定 | 期待 |
+|---|---|---|
+| RESOLVE-01 | undefined / undefined / undefined / undefined | undefined（既存テーマ表示） |
+| RESOLVE-02 | undefined / undefined / PRIMARY / undefined | PRIMARY |
+| RESOLVE-03 | undefined / SECONDARY / PRIMARY / undefined | SECONDARY |
+| RESOLVE-04 | ERROR / SECONDARY / PRIMARY / undefined | ERROR |
+| RESOLVE-05 | undefined / undefined / undefined / BASE_100 | BASE_100 |
+| RESOLVE-06 | 背景Cell=ERROR、文字Cell=undefined・Record=undefined・Table=PRIMARY | 背景ERROR、文字PRIMARY |
+| RESOLVE-07 | Record shadow=true、Cell shadow=false | Recordに影あり、Cellに影なし（親の影を継承しない） |
+
+### 色の解決とCSS表現は別処理
+
+1. 背景色・文字色それぞれの**有効Enum値を解決**する。
+2. 共通`UiStyleUtil`の**固定マッピング**を使って色を表現する。
+3. TableCell状態色の20%透明度相当は**Componentの表示責務**として処理する。
+
+**残る仕様上の曖昧さ**：同じ`ERROR`を通常背景色として使う場合と「試合状態のエラー色」として使う場合を区別する入力契約が原典で未確定。すべてのTableCell ERRORを無条件に20%表示する、あるいは勝手に`stateColor` Inputを増設する、といった判断は行わない。実装前に既存状態色利用箇所と承認事項を照合して決定する。
+
+**完了状態**：参照関数と7ベクトルは仕様の検証材料。正式なTypeScript API、Component連携、状態色判定、CSS適用順、ACG生成、Phase 7回帰試験は未完了。完成監査の合格を意味しない。
