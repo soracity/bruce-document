@@ -131,3 +131,17 @@ const foreground = resolveCellColor(
 **残る仕様上の曖昧さ**：同じ`ERROR`を通常背景色として使う場合と「試合状態のエラー色」として使う場合を区別する入力契約が原典で未確定。すべてのTableCell ERRORを無条件に20%表示する、あるいは勝手に`stateColor` Inputを増設する、といった判断は行わない。実装前に既存状態色利用箇所と承認事項を照合して決定する。
 
 **完了状態**：参照関数と7ベクトルは仕様の検証材料。正式なTypeScript API、Component連携、状態色判定、CSS適用順、ACG生成、Phase 7回帰試験は未完了。完成監査の合格を意味しない。
+
+## Phase 3.5.1 Swipeの責務境界（2026-10-21 原典照合）
+
+原典：`01_ai-document/phase3_05_Swipe・Layout.md`、2026-10-20追加承認。
+
+- SWIPE-01：SwipeComponentは独立Componentとしてジェスチャー判定と操作を担当する。ComponentBaseへ操作ロジックを移動しない。
+- SWIPE-02：LayoutItem、ItemStackLayout等のLayoutManagerは配置を担当し、Swipe操作ロジックを持たない。
+- SWIPE-03：共通スタイルの適用対象はSwipeのアクションパネル部分。ジェスチャー制御とスタイル変換を分離する。
+- SWIPE-04：ComponentBaseの利用は共通スタイルInputが必要なComponentで検討する。SwipeComponentに継承を一律強制しない。
+- SWIPE-05：Table横スクロールとのジェスチャー競合はPhase 7で実機検証する。競合時の優先順位は未決。
+
+状態：責務境界は設計承認済み。原典には既存実装・静的確認の記録があるが、追加実装と実機検証は未実施。実装済みの範囲を過大評価しない。
+
+未実行テスト観点：SWIPE-T01 独立Componentで操作が成立、SWIPE-T02 LayoutManagerが操作を持たない、SWIPE-T03 アクションパネルの共通スタイルと操作ロジックの分離、SWIPE-T04 Table横スクロールとの競合、SWIPE-T05 ComponentBase非継承でもSwipe操作が成立。
