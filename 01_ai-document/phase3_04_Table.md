@@ -129,3 +129,9 @@ Table子クラスで `undefined` 許容Inputを再定義する案は出たが、
 - `TableCell`：`colSpan`、`rowSpan`、`sticky`などセル固有属性を管理する。
 - Table固有属性は`ComponentBase`へ追加しない。既承認の`cellClasses`廃止方針を維持する。
 - 設計承認済み。実装・検証は未実施。
+
+### 2026-10-20 追加承認：Tableスタイルの継承対象を確定（Phase 3.4.1）
+- `backgroundColor`および`textColor`はTable→Record→Cellで継承する。優先順位は**Cell明示値 ＞ Record明示値 ＞ Table明示値 ＞ Cell既定値**。未指定（`undefined`）は親を継承する。
+- `border`、`borderWidth`、`rounded`、`roundedSize`、`shadow`、`shadowSize`、`padding`は継承しない。指定したComponent自身にのみ適用する。
+- TableCellの状態背景色の透明度20%は既承認どおり維持する。
+- 継承対象と優先順位の設計は承認済み。実装・検証は未実施。CSS優先順位とAngularでの値伝播は実装時に確認する。
