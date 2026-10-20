@@ -142,3 +142,78 @@ type Nullable<T> = T | null;
 | ACG-T12 | 表示専用明細 | 通常DTO配列で保持しFormArrayを強制しない |
 
 **監査判定**：AUD-001は**一部補完・未解決**。2.6.6〜2.6.14の型別全組合せ、コード例、例外条件、ACG生成詳細と旧決定原典9件との双方向照合は残る。全14節を照合済み・実装可能と称さない。Phase 5着手は禁止のまま。
+
+## Phase 2.6 第2次一括詳細化：型分類・ACG内部モデル・例外（2026-10-21）
+
+原典：[2.6.4〜2.6.14](../01_ai-document/phase2_06_DTO・Form・Validation.md)および同文書に収録された旧ACG決定原文。**この節の各規則は原典で明示された承認内容に限定する**。前節の第1次抽出に追加する。
+
+### ACG-TYPE：TypeScriptTypeEnumと型解決
+
+- `TypeScriptPrimitiveTypeEnum`を`TypeScriptTypeEnum`へ改称する。
+- 型分類は`STRING`、`NUMBER`、`BOOLEAN`、`UINT8ARRAY`、`ENUM`。日付・日時はTypeScript上では文字列のため`DATE`、`DATE_TIME`を削除し、画面設計書の「形式」で表す。
+- `ENUM`は固定TypeScript型名を持たない。画面設計書の`Enum型`列から実型を取得する。`型=Enum`・`Enum型=AppCodeMatchTypeEnum`の場合、`FormControl<Nullable<AppCodeMatchTypeEnum>>`を生成する。
+- Enum型名が必要なのに型分類Enumだけから固定型名を求めた場合、推測せず**Fail Fast**。
+- UI専用の別型分類Enumは新設しない。現行ACGパッケージは`io.github.soracity.alfred`、`com.github.soracity.alfred`は旧パッケージ。
+
+### ACG-MODEL：ACG生成モデルとDI
+
+| `AcgClassModel`項目 | UI Form DTO | root提供が必要なDAO等 |
+|---|---|---|
+| `isInjectable` | `true` | `true` |
+| `providedInRoot` | `false` | `true` |
+| 生成デコレータ | `@Injectable()` | `@Injectable({ providedIn: 'root' })` |
+
+`isInjectable`と`providedInRoot`は**別プロパティ**。Injectableだからといって一律root提供しない。
+
+`AcgUiFormCharacterTypeEnum`は`io.github.soracity.alfred.generator.user.uispec.uispecenum`へ配置。旧決定でIssue #8に委ねた**パッケージ全体再編は本件に含めない**。
+
+### ACG-DATE-STRICT：日付・日時のデフォルト許可値を限定
+
+前節の型別初期値表に対する**必須の例外**。通常の文字列は任意のデフォルト文字列を指定できるが、`形式=日付`／`形式=日時`では任意の固定文字列を許可しない。
+
+| 形式 | デフォルト | 判定／生成 |
+|---|---|---|
+| 日付 | `-` | `''` |
+| 日付 | `SYSTEM_DATE` | `AppDateUtil.getSysDateIso8601()` |
+| 日付 | `SYSTEM_DATETIME` | Exception |
+| 日付 | `2026-10-16` | Exception |
+| 日時 | `-` | `''` |
+| 日時 | `SYSTEM_DATETIME` | `AppDateUtil.getSysDateTimeUtcIso8601()` |
+| 日時 | `SYSTEM_DATE` | Exception |
+| 日時 | `2026-10-16T06:24:00.000Z` | Exception |
+| 日付・日時以外 | `SYSTEM_DATE`または`SYSTEM_DATETIME` | Exception |
+
+不正な組合せは自動補正・警告継続をせず、**生成停止**する。前節の「明示デフォルト」欄はこの制限を前提に読む。
+
+### ACG-DTO：UI Form DTOと表示DTOの承認履歴の整理
+
+- **UI Form DTO**：`class`、型付き`readonly formGroup`をプロパティ宣言時に初期化。`FormGroup`を継承せず、FormGroup専用の別クラスを作らない。ComponentスコープDI。
+- **表示用DTO**：ACGが**1行分のTypeScript `type`**を生成し、**各プロパティは`readonly`**。一覧全体の配列は利用側で保持。生成対象の型を画面側で手書きしない。
+- 2026-10-20の原典には表示用DTOを`class`とする途中承認・`type`推奨・readonly未決の履歴があるが、**同日の後続正式承認（`type`＋`readonly`）を現行仕様として優先**する。
+- 既存ACGの`type`生成機構はユーザー申告で実装済み。現行ソースの照合・表示DTO生成結果の検証は未実施であり、実装済み判定の根拠にしない。
+
+### ACG-MAPPER：禁止する無断抽象化
+
+画面ComponentでForm値→Application Request DTOの明示変換と、Application Response→`patchValue`を行う。**項目数・処理行数・重複・一般的DDD推奨**を理由に、`XxxMapper`、`XxxConverter`、`XxxAssembler`等の同等責務の新クラス／サービス／Utilityを無断で追加しない。必要性がある場合は実装前に設計確認する。
+
+### 第2次受入・失敗テスト
+
+| ID | 入力／操作 | 期待 |
+|---|---|---|
+| ACG-T13 | 型分類ENUM、Enum型指定あり | 指定Enum実型のNullable FormControl |
+| ACG-T14 | ENUMに固定TypeScript型名を要求 | Fail Fast |
+| ACG-T15 | TypeScriptTypeEnumの分類 | 5値、DATE/DATE_TIMEなし |
+| ACG-T16 | UI Form DTOのInjectable生成 | `@Injectable()`、root提供なし |
+| ACG-T17 | root提供DAOのInjectable生成 | `@Injectable({ providedIn: 'root' })` |
+| ACG-T18 | 日付形式に固定日付文字列 | Exception、生成停止 |
+| ACG-T19 | 日時形式に固定UTC日時文字列 | Exception、生成停止 |
+| ACG-T20 | 日付形式にSYSTEM_DATE | AppDateUtil日付取得呼出し |
+| ACG-T21 | 日付・日時以外にSYSTEM_DATETIME | Exception、生成停止 |
+| ACG-T22 | 表示DTOの生成 | 1行分の`type`、全プロパティreadonly |
+| ACG-T23 | UI Form DTOの生成 | `class`＋型付きreadonly FormGroup、継承なし |
+| ACG-T24 | Mapper等の新設をAIが提案 | 承認前の自動追加をしない |
+| ACG-T25 | `Nullable<T>`生成 | `src/global.d.ts`で宣言、import不要、undefinedを含まない |
+
+### 残る詳細照合
+
+2.6.8の**型×文字種×形式×必須×初期値の許容組合せ全件**、2.6.9の形式別正規表現と日付日時入力検査、2.6.13の編集明細の生成契約、2.6.14のACG内部モデル各プロパティの実ソース照合、旧決定文書9件の**仕様原子単位双方向追跡**は未完了。これらを完了したことにはしない。
