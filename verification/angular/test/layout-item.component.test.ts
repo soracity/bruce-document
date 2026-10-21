@@ -40,7 +40,7 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
       vi.unstubAllGlobals();
     }
   });
-  it('clears stale allocated widths when container shrinks to zero', () => {
+  it('defers allocation writes when container shrinks to zero', () => {
     const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
     const child = {style:{flexBasis:'200px',flexGrow:'0'},getClientRects:()=>[{}]} as unknown as HTMLElement;
     const wrapper = {children:[child],clientWidth:0,getBoundingClientRect:()=>({width:0})} as unknown as HTMLElement;
