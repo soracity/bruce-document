@@ -104,8 +104,13 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
       this.resizeObserver.observe(wrapper);
     }
     if (typeof MutationObserver !== 'undefined') {
-      this.mutationObserver = new MutationObserver(refresh);
-      this.mutationObserver.observe(wrapper, { childList: true, subtree: false, attributes: true, attributeFilter: ['hidden', 'class'] });
+      this.mutationObserver = new MutationObserver(records => {
+        const childrenChanged = records.some(record => record.type === 'childList' && record.target === wrapper);
+        if (childrenChanged) refresh();
+        else if (records.some(record => record.type === 'attributes' &&
+          (record.target as HTMLElement).parentElement === wrapper)) this.schedule(wrapper);
+      });
+      this.mutationObserver.observe(wrapper, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden', 'class'] });
     }
     refresh();
   }
