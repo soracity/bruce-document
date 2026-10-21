@@ -12,7 +12,7 @@ function setup() {
   ], null as never);
   const component = runInInjectionContext(injector, () => new DateComponent());
   const control = new FormControl<string | null>('2024-01-01', { validators: Validators.required });
-  component['onControlBound'](undefined, control);
+  component['bindControl'](control);
   return { injector, component, control };
 }
 
