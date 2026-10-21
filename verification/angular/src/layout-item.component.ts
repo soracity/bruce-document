@@ -34,40 +34,62 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
   private frame?: number;
   private disposed = false;
   private originalStyles?: Map<HTMLElement, {
-    flexBasis: string; flexGrow: string; lastBasis: string; lastGrow: string;
+    basis: string; grow: string; basisPriority: string; growPriority: string;
+    lastBasis: string; lastGrow: string; lastBasisPriority: string; lastGrowPriority: string;
   }>;
 
   private allocations(): NonNullable<LayoutItemComponent['originalStyles']> {
     return this.originalStyles ??= new Map();
   }
 
+  private priority(element: HTMLElement, name: string): string {
+    return element.style.getPropertyPriority?.(name) ?? '';
+  }
+
+  private setFlex(element: HTMLElement, name: 'flex-basis' | 'flex-grow', value: string, priority: string): void {
+    if (element.style.setProperty) element.style.setProperty(name, value, priority);
+    else if (name === 'flex-basis') element.style.flexBasis = value;
+    else element.style.flexGrow = value;
+  }
+
   private writeAllocation(element: HTMLElement, basis: string, grow: string): void {
     let saved = this.allocations().get(element);
     if (!saved) {
       saved = {
-        flexBasis: element.style.flexBasis, flexGrow: element.style.flexGrow,
+        basis: element.style.flexBasis, grow: element.style.flexGrow,
+        basisPriority: this.priority(element, 'flex-basis'),
+        growPriority: this.priority(element, 'flex-grow'),
         lastBasis: element.style.flexBasis, lastGrow: element.style.flexGrow,
+        lastBasisPriority: this.priority(element, 'flex-basis'),
+        lastGrowPriority: this.priority(element, 'flex-grow'),
       };
       this.allocations().set(element, saved);
     }
-    if (element.style.flexBasis === saved.lastBasis) {
-      element.style.flexBasis = basis;
+    if (element.style.flexBasis === saved.lastBasis &&
+        this.priority(element, 'flex-basis') === saved.lastBasisPriority) {
+      this.setFlex(element, 'flex-basis', basis, '');
       saved.lastBasis = basis;
+      saved.lastBasisPriority = '';
     }
-    if (element.style.flexGrow === saved.lastGrow) {
-      element.style.flexGrow = grow;
+    if (element.style.flexGrow === saved.lastGrow &&
+        this.priority(element, 'flex-grow') === saved.lastGrowPriority) {
+      this.setFlex(element, 'flex-grow', grow, '');
       saved.lastGrow = grow;
+      saved.lastGrowPriority = '';
     }
   }
 
   private restoreAllocation(element: HTMLElement): void {
     const saved = this.allocations().get(element);
     if (!saved) return;
-    if (element.style.flexBasis === saved.lastBasis) element.style.flexBasis = saved.flexBasis;
-    if (element.style.flexGrow === saved.lastGrow) element.style.flexGrow = saved.flexGrow;
+    if (element.style.flexBasis === saved.lastBasis &&
+        this.priority(element, 'flex-basis') === saved.lastBasisPriority)
+      this.setFlex(element, 'flex-basis', saved.basis, saved.basisPriority);
+    if (element.style.flexGrow === saved.lastGrow &&
+        this.priority(element, 'flex-grow') === saved.lastGrowPriority)
+      this.setFlex(element, 'flex-grow', saved.grow, saved.growPriority);
     this.allocations().delete(element);
   }
-
 
   ngAfterViewInit(): void {
     const wrapper = this.host.nativeElement.querySelector('.bruce-layout-items') as HTMLElement | null;
