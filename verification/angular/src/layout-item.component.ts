@@ -48,7 +48,7 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
     }
     if (typeof MutationObserver !== 'undefined') {
       this.mutationObserver = new MutationObserver(refresh);
-      this.mutationObserver.observe(wrapper, { childList: true, subtree: false, attributes: true, attributeFilter: ['hidden', 'class', 'style'] });
+      this.mutationObserver.observe(wrapper, { childList: true, subtree: false, attributes: true, attributeFilter: ['hidden', 'class'] });
     }
     refresh();
   }
