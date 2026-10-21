@@ -1,8 +1,45 @@
 import '@angular/compiler';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { LayoutItemComponent } from '../src/layout-item.component.js';
 
 describe('IMP-06 LayoutItemComponent independent structure', () => {
+  it('reallocates 60:40 across the available width after subtracting gap', () => {
+    const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
+    const first = {style:{flexBasis:'',flexGrow:''},getClientRects:()=>[{}]} as unknown as HTMLElement;
+    const second = {style:{flexBasis:'',flexGrow:''},getClientRects:()=>[{}]} as unknown as HTMLElement;
+    const wrapper = {children:[first,second],clientWidth:210} as unknown as HTMLElement;
+    const previous = globalThis.getComputedStyle;
+    vi.stubGlobal('getComputedStyle',(element:HTMLElement) => ({
+      display:'block',columnGap:'10px',
+      getPropertyValue:() => element === first ? '60' : '40',
+    }));
+    try {
+      component.distribute(wrapper);
+      expect(first.style.flexBasis).toBe('120px');
+      expect(second.style.flexBasis).toBe('80px');
+    } finally {
+      if (previous) vi.stubGlobal('getComputedStyle',previous);
+      else vi.unstubAllGlobals();
+    }
+  });
+  it('excludes hidden children and reallocates remaining weight', () => {
+    const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
+    const first = {style:{flexBasis:'',flexGrow:''},getClientRects:()=>[{}]} as unknown as HTMLElement;
+    const hidden = {style:{flexBasis:'20px',flexGrow:'0'},getClientRects:()=>[]} as unknown as HTMLElement;
+    const wrapper = {children:[first,hidden],clientWidth:210} as unknown as HTMLElement;
+    vi.stubGlobal('getComputedStyle',(element:HTMLElement) => ({
+      display:'block',columnGap:'10px',
+      getPropertyValue:() => element === first ? '60' : '40',
+    }));
+    try {
+      component.distribute(wrapper);
+      expect(first.style.flexBasis).toBe('210px');
+      expect(hidden.style.flexBasis).toBe('');
+      expect(hidden.style.flexGrow).toBe('');
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
   it('uses standalone app-layout-item selector', () => {
     expect(LayoutItemComponent.ɵcmp.selectors).toEqual([['app-layout-item']]);
     expect(LayoutItemComponent.ɵcmp.standalone).toBe(true);
