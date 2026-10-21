@@ -217,3 +217,45 @@ describe('IMP-10 UIIMPL-04 DST overlap and unchanged original', () => {
     if (result.ok) expect(result.value).not.toBe('not-a-date');
   });
 });
+
+describe('IMP-10 cross-timezone conversion and error boundaries', () => {
+  it.each([
+    ['Asia/Tokyo', '2024-01-01T00:00:00Z', '2024-01-01T09:00:00.000'],
+    ['America/New_York', '2024-01-01T00:00:00Z', '2023-12-31T19:00:00.000'],
+  ])('converts UTC to native local display in %s', (zone, utc, expected) => {
+    const previous = process.env.TZ;
+    try {
+      process.env.TZ = zone;
+      const result = toInput(utc, 'DATE_TIME');
+      expect(result.ok).toBe(true);
+      if (result.ok) {
+        expect(result.value.text).toBe(expected);
+        expect(fromInput(result.value.text, 'DATE_TIME', result.value.original)).toEqual({
+          ok: true, value: utc,
+        });
+      }
+    } finally {
+      if (previous === undefined) delete process.env.TZ;
+      else process.env.TZ = previous;
+    }
+  });
+  it('rejects invalid stored UTC without mutating input', () => {
+    const original = '2024-02-30T12:00:00Z';
+    expect(toInput(original, 'DATE_TIME')).toEqual({
+      ok: false, error: { reason: 'invalidStoredValue', raw: original },
+    });
+    expect(original).toBe('2024-02-30T12:00:00Z');
+  });
+  it('returns outOfRange for UTC year zero converted to local display', () => {
+    const previous = process.env.TZ;
+    try {
+      process.env.TZ = 'UTC';
+      expect(toInput('0000-01-01T00:00:00Z', 'DATE_TIME')).toEqual({
+        ok: false, error: { reason: 'outOfRange', raw: '0000-01-01T00:00:00Z' },
+      });
+    } finally {
+      if (previous === undefined) delete process.env.TZ;
+      else process.env.TZ = previous;
+    }
+  });
+});
