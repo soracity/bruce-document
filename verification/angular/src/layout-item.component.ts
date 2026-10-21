@@ -61,7 +61,7 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
   }
 
   private restoreAllocation(element: HTMLElement): void {
-    const saved = this.originalStyles.get(element);
+    const saved = this.allocations().get(element);
     if (!saved) return;
     if (element.style.flexBasis === saved.lastBasis) element.style.flexBasis = saved.flexBasis;
     if (element.style.flexGrow === saved.lastGrow) element.style.flexGrow = saved.flexGrow;
