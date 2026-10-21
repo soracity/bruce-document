@@ -1,0 +1,262 @@
+{
+  "schema_version": 1,
+  "repository": "soracity/bruce-document",
+  "branch": "docs/bruce-detail-20261020",
+  "stage": 1,
+  "stage_name": "不足・矛盾の特定",
+  "status": "work_complete_awaiting_stage_approval",
+  "stage_approval": "not_received",
+  "last_completed_unit": "S1-06",
+  "next_action": "工程①成果全体の承認を1回だけ求める。承認取得後に工程②を開始する。",
+  "next_work_unit": "S2-01（承認前は実行禁止）",
+  "investigation_remaining": [],
+  "unapplied_findings": [
+    "F01",
+    "F02",
+    "F03",
+    "F04",
+    "F05",
+    "F06",
+    "F07",
+    "F08",
+    "F09",
+    "F10",
+    "F11",
+    "F12",
+    "F13",
+    "F14",
+    "F15",
+    "F16",
+    "F17",
+    "F18",
+    "F19",
+    "F20",
+    "F21",
+    "F22",
+    "F23",
+    "F24",
+    "F25",
+    "F26",
+    "F27",
+    "F28",
+    "F29"
+  ],
+  "units": [
+    {
+      "id": "S1-01",
+      "title": "GitHubのmain・監査・進捗・詳細設計を取得し追加監査を取り込む",
+      "status": "complete"
+    },
+    {
+      "id": "S1-02",
+      "title": "Phase1〜4の19原典と関連4定義、追加承認の範囲を固定",
+      "status": "complete"
+    },
+    {
+      "id": "S1-03",
+      "title": "原典→設計の意味・条件・例・禁止・理由・例外を照合",
+      "status": "complete"
+    },
+    {
+      "id": "S1-04",
+      "title": "設計→原典の159対象内規則と本文147節・39対象・期待条件を照合",
+      "status": "complete"
+    },
+    {
+      "id": "S1-05",
+      "title": "main監査を再判定し29修正対象・原典根拠・範囲を確定",
+      "status": "complete"
+    },
+    {
+      "id": "S1-06",
+      "title": "進捗・監査結果・再開情報を同期して保存前整合を確認",
+      "status": "complete"
+    }
+  ],
+  "inputs": {
+    "source_commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
+    "design_commit": "b8117fec26b6992551fbdeafb1cf702bf6951e29",
+    "design_branch_commit": "9ad5464f768cdaf4d7395c20c43565c0dbaf1360",
+    "previous_saved_checkpoint": "38aa6da334130b9054deefcec815d42e9bfdbd0e",
+    "source_files": [
+      {
+        "path": "01_ai-document/phase1_01_既存資産棚卸し.md",
+        "blob": "bf49f3d3417b313984d72d1545f2cc456dbce734",
+        "lines": 449,
+        "sha256": "cfbbc35d5121a566f72eea24e2c795f0043acdf67f667a0f645f22193fa93fac",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240"
+      },
+      {
+        "path": "01_ai-document/phase2_01_責務境界.md",
+        "blob": "97a28d02445b33ff26c167a7f4a2131aaced2fef",
+        "lines": 170,
+        "sha256": "939cf4a7d21131a715e61a810ff3d96ba03fad73586cb2cbf12e692d4a5bdb4c",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240"
+      },
+      {
+        "path": "01_ai-document/phase2_02_幅の責務.md",
+        "blob": "4da2f18548a9100e38bc0a398fb3bfc7635bb732",
+        "lines": 893,
+        "sha256": "73b2e674e71e63be470111360ee5339f33d5fae26b390c2e5890b4d99a5ac174",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240"
+      },
+      {
+        "path": "01_ai-document/phase2_03_余白の責務.md",
+        "blob": "950d99fa2bd9d666778431138eb8d54b5461a34f",
+        "lines": 165,
+        "sha256": "e19e04d145bb217d57ecec78d8baf4660dc61de372ce13d83af416615536a999",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240"
+      },
+      {
+        "path": "01_ai-document/phase2_04_レスポンシブ・折り返し.md",
+        "blob": "cb6d11cac5269f83e077f55085d418484c35a12d",
+        "lines": 298,
+        "sha256": "65d4945025e8be1669e192b0482a8cce3aaa8761050707df57b1e1c4518e501c",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240"
+      },
+      {
+        "path": "01_ai-document/phase2_05_任意CSS注入の排除.md",
+        "blob": "10cc22fd21de4c3a37909d4dfe419819ecf1f0b6",
+        "lines": 267,
+        "sha256": "3d300c82250cda2e75df1eb7db496b5e9df21782b33b75dae2674e68451f6dea",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240"
+      },
+      {
+        "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
+        "blob": "f1dda782c3ef9d3bca945c425bea4d66890cd929",
+        "lines": 2809,
+        "sha256": "4933979562540c8e8c8571913823582a16550afca80c2772cd016675271c9fcd",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240"
+      },
+      {
+        "path": "01_ai-document/phase2_07_UI・Domain境界.md",
+        "blob": "851687e08a1dc94993ec12988ec37bb2605fe05f",
+        "lines": 79,
+        "sha256": "26b76253421b0538d86d89776f68ffaad37906e1fa5309b8ccc9af7b917ad228",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240"
+      },
+      {
+        "path": "01_ai-document/phase2_08_AI実装制約.md",
+        "blob": "968f0a91ccf2eb8c59d93a73f4bce78fdb0ec808",
+        "lines": 412,
+        "sha256": "c37a618f91cad7ae3c3c83854b6491189d7abdc2a8bfec4d96bbcc83057dd815",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240"
+      },
+      {
+        "path": "01_ai-document/phase2_09_Phase 2最終承認.md",
+        "blob": "9862ea2fc83c4dc4a936716f1ac2297e1d2c5532",
+        "lines": 1707,
+        "sha256": "ce05d39d1fcc970bd037215f0f49fe10a9b2400675ceed84f94efbf7c54817ed",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240"
+      },
+      {
+        "path": "01_ai-document/phase3_01_共通スタイル.md",
+        "blob": "6bcd62b5a5c13815a1a864c1575a6c8e138aac44",
+        "lines": 224,
+        "sha256": "66e8ef22f6c85b4a59ca380ffe06250be7440c0fdf584fad98bacdf7c1c2ef7d",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240"
+      },
+      {
+        "path": "01_ai-document/phase3_02_UiStyleUtil.md",
+        "blob": "4ee3f2d4b02a0444bd9ab409dd619854e6cd280a",
+        "lines": 89,
+        "sha256": "1e7f014e64c3f7b644300ac3363d876c35924bc8c66547646afe05dae2751ded",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240"
+      },
+      {
+        "path": "01_ai-document/phase3_03_ComponentBase.md",
+        "blob": "af116187c81fcefba04961efce5452c0910b7558",
+        "lines": 87,
+        "sha256": "4f417bbf1d7aa47ab2e93f24d19a3612702130c3b94b6dc61bfccf1221f9284b",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240"
+      },
+      {
+        "path": "01_ai-document/phase3_04_Table.md",
+        "blob": "94f36334a0e3314e7082f4e87419559eb8c07dc2",
+        "lines": 137,
+        "sha256": "db86460944940bc19906dcef40bf387b5283df229ab54ace1fc8bc04872cd00a",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240"
+      },
+      {
+        "path": "01_ai-document/phase3_05_Swipe・Layout.md",
+        "blob": "567771eb6a1cadc3e72959955a5093fdf0d9c407",
+        "lines": 60,
+        "sha256": "783864a5c270a35d0de812400e93c3489d4bcca387945bc5512c804590e6b1a2",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240"
+      },
+      {
+        "path": "01_ai-document/phase3_06_Phase 3最終承認.md",
+        "blob": "157d9cca4a21ac25d021847655af63a09fbc9ea4",
+        "lines": 222,
+        "sha256": "9211e5b50c284978cb1038fd3324ef15c8c9334e69876371c01b0108df551c7a",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240"
+      },
+      {
+        "path": "01_ai-document/phase4_01_議論終了判定.md",
+        "blob": "f7953067e2ff78eaeabfeb620b44aa73eb083836",
+        "lines": 484,
+        "sha256": "df85691a7ba1a941bdd758f3a8d7ebfd295206d1cd5670474062267fc0f8d372",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240"
+      },
+      {
+        "path": "01_ai-document/phase4_02_体系的設計書.md",
+        "blob": "d5394d9a19c8d532b1afe6b3076ac49bbc65efae",
+        "lines": 186,
+        "sha256": "262fe4d2cbe09dbf6b1d3068e877930cc9f3c857fbde484df59e7bcd2ff7efea",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240"
+      },
+      {
+        "path": "01_ai-document/phase4_03_設計書承認.md",
+        "blob": "62c905eeab75034cedfdda4834d91fe73da7373e",
+        "lines": 44,
+        "sha256": "8e25c1d98ae82f5699c2540f6e8c9c73f03355cfe72251058f13e5f990263450",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240"
+      }
+    ],
+    "supplementary_sources": [
+      {
+        "path": "01_ai-document/04_画面設計書(ai-sample：AI指示用サンプル).md",
+        "role": "ACG入力の現行補助正本。16列・範囲・診断・import規則",
+        "commit": "9ad5464f768cdaf4d7395c20c43565c0dbaf1360",
+        "blob": "fb3d375e79e9f339fafe3f097ae01230e34265e7",
+        "sha256": "05a17491cc67e8e32240c4d1048fe3063d4d83914b5198e80141219df36bb4f3"
+      },
+      {
+        "path": "01_ai-document/AIフレームワーク設計_TODO.md",
+        "role": "決定事項として保存されたSymbol Brand方針",
+        "commit": "9ad5464f768cdaf4d7395c20c43565c0dbaf1360",
+        "blob": "bbaad459ab39e7c092cddd188ceb15a9079f2b4d",
+        "sha256": "badd70572bc3d36d67feb8e64aadd1bbb1589b989ba213b678a2d4755e2652f2"
+      },
+      {
+        "path": "06_列挙型設計書/02_COMPONENT/06_列挙型設計書(AppUiColorEnum：共通UI意味色).md",
+        "role": "共通11色の関連承認・生成定義。末尾の入力整備は実装具体化",
+        "commit": "9ad5464f768cdaf4d7395c20c43565c0dbaf1360",
+        "blob": "3ae2074871d92313358aecca50756fec8199140a",
+        "sha256": "5f9563efd0ce8560b24e58e9aea8b7246d0f920d6dde5f1efd5efa377c724cfd"
+      },
+      {
+        "path": "06_列挙型設計書/01_CODE/06_列挙型設計書(AppCodeTextOverflowModeEnum：文字列表示方式).md",
+        "role": "4値とWRAP既定の関連承認。物理名は設計案と明示",
+        "commit": "9ad5464f768cdaf4d7395c20c43565c0dbaf1360",
+        "blob": "0c3ba00b545b4e5507528879eeb3c3a082487981",
+        "sha256": "4577e633bd53407544225a1be78309e5dc20dd0dd33b61054da986b791351d2a"
+      }
+    ]
+  },
+  "output_commit": "このファイルを含むGit commit（自己参照SHAは書き込まない。再開時にGitHubから取得）",
+  "approval_policy": "工程①完了までは質問・確認・承認依頼なし。工程ごとの成果全体に1回。再実行や途中保存の承認は不要。",
+  "resume_protocol": [
+    "同じブランチのHEADと作業再開.md・本JSON・09台帳を取得する。",
+    "チャットの最終表示だけを根拠に成功/失敗を決めず、GitHubの実際のcommit/tree/blobを確認する。",
+    "書込み結果が不明なら既存commitとファイルを読み、同じ内容の保存済み処理を繰り返さない。",
+    "入力blobが固定版と同じなら完了済みの照合を再実行しない。変更があればその入力に依存する照合単位だけ再開する。",
+    "未保存のローカル作業が残っていれば差分を確認し、他の変更を保持する。",
+    "未完了の最小単位を実行し、結果・残件・次の着手位置を同一commitに保存する。",
+    "工程①が完了し未承認の間は工程②を始めない。"
+  ],
+  "limits": [
+    "画面やサービスの中断を防止する機能ではない。保存済み地点からの再開で損失範囲を減らす。",
+    "実装本文・検証コードの修正、Angular/Java/ブラウザー/CI/実機試験は未実施。"
+  ]
+}
