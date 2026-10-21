@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseDate } from '../src/local-date-time-codec.js';
+import { parseDate, parseLocal } from '../src/local-date-time-codec.js';
 describe('IMP-10 UIIMPL-04 parseDate (partial codec)', () => {
   it.each([
     ['2024-02-29', 2024, 2, 29], ['2000-02-29', 2000, 2, 29],
@@ -19,4 +19,31 @@ describe('IMP-10 UIIMPL-04 parseDate (partial codec)', () => {
     'rejects malformed date %s', raw => {
       expect(parseDate(raw)).toEqual({ ok: false, error: { reason: 'incomplete', raw } });
     });
+});
+
+describe('IMP-10 UIIMPL-04 parseLocal (partial codec)', () => {
+  it.each([
+    ['2024-02-29T23:59', 23, 59, 0, 0],
+    ['2024-02-29T00:00:01', 0, 0, 1, 0],
+    ['2024-02-29T12:30:45.1', 12, 30, 45, 100],
+    ['2024-02-29T12:30:45.12', 12, 30, 45, 120],
+    ['2024-02-29T12:30:45.123', 12, 30, 45, 123],
+  ])('parses local datetime %s', (raw, hour, minute, second, millisecond) => {
+    expect(parseLocal(raw)).toEqual({
+      ok: true, value: { year: 2024, month: 2, day: 29, hour, minute, second, millisecond },
+    });
+  });
+  it.each(['2024-02-29T24:00', '2024-02-29T23:60', '2024-02-29T23:59:60'])(
+    'rejects invalid time %s', raw => {
+      expect(parseLocal(raw)).toEqual({ ok: false, error: { reason: 'invalidLocalValue', raw } });
+    });
+  it.each(['2024-02-29 12:30', '2024-02-29T12', '2024-02-29T12:30.1', '2024-02-29T12:30:00.1234'])(
+    'rejects malformed datetime %s', raw => {
+      expect(parseLocal(raw)).toEqual({ ok: false, error: { reason: 'incomplete', raw } });
+    });
+  it('rejects nonexistent leap date in local datetime', () => {
+    expect(parseLocal('2023-02-29T12:30')).toEqual({
+      ok: false, error: { reason: 'invalidDate', raw: '2023-02-29T12:30' },
+    });
+  });
 });
