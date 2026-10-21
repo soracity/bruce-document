@@ -1,6 +1,6 @@
 # ⚡️ MatchForge — Live Tennis Scoring
 
-> **AIフレームワーク議事録の移動先**：[catw-document / 01_ai-document](https://github.com/soracity/catw-document/tree/main/01_ai-document)（2026-10-21移動済み）。[詳細設計書](https://github.com/soracity/bruce-document/tree/docs/bruce-detail-20261020/02_AIフレームワーク設計書)は引き続きこのリポジトリで管理します。
+> **AIフレームワーク議事録の移動先**：[catw-document / 01_ai-document](https://github.com/soracity/catw-document/tree/main/01_ai-document)（2026-10-21移動済み）。[詳細設計書](https://github.com/soracity/catw-document/tree/main/02_AIフレームワーク設計書)もcatw-documentへ移動しました。
 
 <!-- Badges -->
 ![Angular](https://img.shields.io/badge/Angular-21-red?logo=angular&logoColor=white)
