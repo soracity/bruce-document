@@ -2,13 +2,13 @@
   "schema_version": 1,
   "repository": "soracity/bruce-document",
   "branch": "docs/bruce-detail-20261020",
-  "stage": 3,
-  "stage_name": "設計単独実装検証",
-  "status": "in_progress_partial_verified",
+  "stage": 4,
+  "stage_name": "詳細設計書の最終完成判定",
+  "status": "completed_user_accepted",
   "stage_approval": "stage1_approved_stage3_execution_explicitly_approved",
-  "last_completed_unit": "S3_部分検証_IMP30_31_37_38",
-  "next_action": "verification/工程3_IMP39_詳細契約突合台帳.md を根拠に全39件の未検証契約を実装と突合。現時点コードが少なくとも一部存在する22件/未着手17件。全契約合格0件、工程③未完了。工程④最終判定はまだ行わない。",
-  "next_work_unit": "S3-04c_remaining_39",
+  "last_completed_unit": "S4_user_accepted_design",
+  "next_action": "Phase 5の本番実装と実装後のテストへ進む。工程③の仮実装・技術検証はユーザーが中止し、工程④の文書受入は完了。",
+  "next_work_unit": "Phase5_production_implementation",
   "stage3_execution_approval": {
     "date": "2026-10-21",
     "evidence": "ユーザー発言：③の実行を承認します",
@@ -311,5 +311,12 @@
     "never": "承認済み仕様の再質問、テスト数を成果指標とした膨張、未検証の成功認定、新しい工程の無断追加",
     "status_rule": "全契約合格/設計不備/未検証の件数は合計39。部分実装と全契約合格を区別。",
     "restart": "作業再開.md、resume-state.json、IMP39台帳、本ルールを先に取得"
+  },
+  "user_scope_decision": {
+    "date": "2026-10-21",
+    "stage3": "cancelled_by_user_no_mock_implementation_or_technical_validation",
+    "stage4": "completed_by_user_document_acceptance",
+    "phase5": "not_started",
+    "note": "工程④完了は双方向照合・29件修正・文書整合性確認済みの詳細設計書の受入を意味し、39実装対象の動作実証合格を意味しない。旧stage3_checkpointと検証台帳は履歴。"
   }
 }
