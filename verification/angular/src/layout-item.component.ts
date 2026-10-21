@@ -167,6 +167,7 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
     const available = Math.max(0, wrapper.getBoundingClientRect().width -
       px(wrapperStyle.paddingLeft) - px(wrapperStyle.paddingRight) -
       px(wrapperStyle.borderLeftWidth) - px(wrapperStyle.borderRightWidth));
+    if (available <= 0 || !Number.isFinite(available)) return;
     const rows = LayoutRowUtil.partition(metrics,available,gap);
     if (!rows.length) {
       for (const element of visible) this.restoreAllocation(element);
