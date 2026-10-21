@@ -1,6 +1,6 @@
 import '@angular/compiler';
 import { describe, expect, it } from 'vitest';
-import { ChangeDetectorRef, createEnvironmentInjector, ɵChangeDetectionScheduler as ChangeDetectionScheduler, runInInjectionContext } from '@angular/core';
+import { ChangeDetectorRef, createEnvironmentInjector, ɵChangeDetectionScheduler as ChangeDetectionScheduler, ɵEffectScheduler as EffectScheduler, runInInjectionContext } from '@angular/core';
 import { FormControl, FormControlStatus } from '@angular/forms';
 import { FormControlComponentBase } from '../src/form-control-component-base.js';
 
@@ -21,6 +21,7 @@ function setup() {
   let marked = 0;
   const injector = createEnvironmentInjector([
     { provide: ChangeDetectionScheduler, useValue: { notify: () => {} } },
+    { provide: EffectScheduler, useValue: { add: () => {}, flush: () => {}, remove: () => {} } },
     { provide: ChangeDetectorRef, useValue: { markForCheck: () => { marked++; } } },
   ], null as never);
   const probe = runInInjectionContext(injector, () => new Probe());
