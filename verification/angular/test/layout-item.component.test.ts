@@ -173,6 +173,23 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
       expect(child.style.flexGrow).toBe('3');
     } finally { vi.unstubAllGlobals(); }
   });
+  it('restores original min-width and box-sizing after layout destruction', () => {
+    const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
+    const child = {style:{flexBasis:'',flexGrow:'',minWidth:'24px',boxSizing:'content-box'},getClientRects:()=>[{}]} as unknown as HTMLElement;
+    const wrapper = {children:[child],getBoundingClientRect:()=>({width:200})} as unknown as HTMLElement;
+    vi.stubGlobal('getComputedStyle',() => ({
+      display:'block',columnGap:'8px',paddingLeft:'0px',paddingRight:'0px',
+      borderLeftWidth:'0px',borderRightWidth:'0px',getPropertyValue:() => '1',
+    }));
+    try {
+      component.distribute(wrapper);
+      expect(child.style.minWidth).toBe('0px');
+      expect(child.style.boxSizing).toBe('border-box');
+      component.ngOnDestroy();
+      expect(child.style.minWidth).toBe('24px');
+      expect(child.style.boxSizing).toBe('content-box');
+    } finally { vi.unstubAllGlobals(); }
+  });
   it('schedules redistribution when required-width notification fires', () => {
     const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
     const child = {} as HTMLElement;
