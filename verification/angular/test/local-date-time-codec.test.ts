@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseDate, parseLocal, parseUtc } from '../src/local-date-time-codec.js';
+import { parseDate, parseLocal, parseUtc, toInput } from '../src/local-date-time-codec.js';
 describe('IMP-10 UIIMPL-04 parseDate (partial codec)', () => {
   it.each([
     ['2024-02-29', 2024, 2, 29], ['2000-02-29', 2000, 2, 29],
@@ -74,5 +74,37 @@ describe('IMP-10 UIIMPL-04 parseUtc', () => {
     expect(parseUtc('+999999-01-01T00:00:00Z')).toEqual({
       ok: false, error: { reason: 'outOfRange', raw: '+999999-01-01T00:00:00Z' },
     });
+  });
+});
+
+describe('IMP-10 UIIMPL-04 toInput', () => {
+  it.each(['DATE', 'DATE_TIME'] as const)('treats null and empty as unset for %s', type => {
+    expect(toInput(null, type)).toEqual({ ok: true, value: { text: '' } });
+    expect(toInput('', type)).toEqual({ ok: true, value: { text: '' } });
+  });
+  it('normalizes DATE leading zeros and retains calendar semantics', () => {
+    expect(toInput('00002024-02-29', 'DATE')).toEqual({ ok: true, value: { text: '2024-02-29' } });
+  });
+  it('rejects invalid stored DATE without clearing it', () => {
+    expect(toInput('2023-02-29', 'DATE')).toEqual({
+      ok: false, error: { reason: 'invalidStoredValue', raw: '2023-02-29' },
+    });
+  });
+  it('keeps original UTC string alongside local input for roundtrip', () => {
+    const utc = '2024-02-29T12:30:45.12Z';
+    const result = toInput(utc, 'DATE_TIME');
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value.original).toEqual({ utc, input: result.value.text });
+      expect(parseLocal(result.value.text).ok).toBe(true);
+    }
+  });
+  it('rejects invalid stored UTC', () => {
+    expect(toInput('not-a-date', 'DATE_TIME')).toEqual({
+      ok: false, error: { reason: 'invalidStoredValue', raw: 'not-a-date' },
+    });
+  });
+  it('rejects unknown type as configuration error', () => {
+    expect(() => toInput('2024-01-01', 'BAD' as never)).toThrow('BRUCE_DATE_TYPE');
   });
 });
