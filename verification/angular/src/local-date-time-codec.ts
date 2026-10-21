@@ -81,3 +81,46 @@ export function toInput(value: string | null, type: DateInputType): Result<DateI
     '.' + three(date.getMilliseconds());
   return { ok: true, value: { text: input, original: { utc: value, input } } };
 }
+
+/** UIIMPL-04: native入力値を保存値へ変換し、未編集UTCは元の表現を維持する。 */
+export function fromInput(
+  raw: string,
+  type: DateInputType,
+  original?: { utc: string; input: string },
+): Result<string> {
+  if (type !== 'DATE' && type !== 'DATE_TIME') throw new Error('BRUCE_DATE_TYPE');
+  if (raw === '') return { ok: true, value: '' };
+  if (type === 'DATE') {
+    const parsed = parseDate(raw);
+    if (!parsed.ok) return parsed;
+    const { year, month, day } = parsed.value;
+    return { ok: true, value: formatYear(year) + '-' + two(month) + '-' + two(day) };
+  }
+  const parsed = parseLocal(raw);
+  if (!parsed.ok) return parsed;
+  const { year, month, day, hour, minute, second, millisecond } = parsed.value;
+  if (original) {
+    const previous = parseLocal(original.input);
+    const utc = parseUtc(original.utc);
+    if (previous.ok && utc.ok &&
+        previous.value.year === year && previous.value.month === month &&
+        previous.value.day === day && previous.value.hour === hour &&
+        previous.value.minute === minute && previous.value.second === second &&
+        previous.value.millisecond === millisecond) {
+      return { ok: true, value: original.utc };
+    }
+  }
+  const date = new Date(0);
+  date.setFullYear(year, month - 1, day);
+  date.setHours(hour, minute, second, millisecond);
+  if (!Number.isFinite(date.getTime())) return fail(raw, 'outOfRange');
+  if (date.getFullYear() !== year || date.getMonth() !== month - 1 ||
+      date.getDate() !== day || date.getHours() !== hour ||
+      date.getMinutes() !== minute || date.getSeconds() !== second ||
+      date.getMilliseconds() !== millisecond) return fail(raw, 'nonexistentLocalTime');
+  try {
+    return { ok: true, value: date.toISOString() };
+  } catch {
+    return fail(raw, 'outOfRange');
+  }
+}
