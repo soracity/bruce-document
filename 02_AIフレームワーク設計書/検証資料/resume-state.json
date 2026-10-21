@@ -2,13 +2,13 @@
   "schema_version": 1,
   "repository": "soracity/bruce-document",
   "branch": "docs/bruce-detail-20261020",
-  "stage": 1,
-  "stage_name": "不足・矛盾の特定",
-  "status": "work_complete_awaiting_stage_approval",
-  "stage_approval": "not_received",
-  "last_completed_unit": "S1-06",
-  "next_action": "工程①成果全体の承認を1回だけ求める。承認取得後に工程②を開始する。",
-  "next_work_unit": "S2-01（承認前は実行禁止）",
+  "stage": 2,
+  "stage_name": "設計書全体の修正",
+  "status": "in_progress",
+  "stage_approval": "stage1_approved_stage2_not_requested",
+  "last_completed_unit": "S2-01",
+  "next_action": "通常UI・Form通知・Date・幅計測・文字表示の設計修正を行う。工程②完了まで途中の質問・承認依頼は行わない。",
+  "next_work_unit": "S2-02",
   "investigation_remaining": [],
   "unapplied_findings": [
     "F01",
@@ -43,34 +43,34 @@
   ],
   "units": [
     {
-      "id": "S1-01",
-      "title": "GitHubのmain・監査・進捗・詳細設計を取得し追加監査を取り込む",
+      "id": "S2-01",
+      "title": "工程①承認と工程②開始の記録",
       "status": "complete"
     },
     {
-      "id": "S1-02",
-      "title": "Phase1〜4の19原典と関連4定義、追加承認の範囲を固定",
-      "status": "complete"
+      "id": "S2-02",
+      "title": "通常UI・Form通知・Date・計測・文字表示の修正",
+      "status": "pending"
     },
     {
-      "id": "S1-03",
-      "title": "原典→設計の意味・条件・例・禁止・理由・例外を照合",
-      "status": "complete"
+      "id": "S2-03",
+      "title": "Table・Swipeの構造・描画・操作接続の修正",
+      "status": "pending"
     },
     {
-      "id": "S1-04",
-      "title": "設計→原典の159対象内規則と本文147節・39対象・期待条件を照合",
-      "status": "complete"
+      "id": "S2-04",
+      "title": "静的検査器・ACG・公開証跡の契約の修正",
+      "status": "pending"
     },
     {
-      "id": "S1-05",
-      "title": "main監査を再判定し29修正対象・原典根拠・範囲を確定",
-      "status": "complete"
+      "id": "S2-05",
+      "title": "移行・根拠・テスト仕様・承認境界の同期",
+      "status": "pending"
     },
     {
-      "id": "S1-06",
-      "title": "進捗・監査結果・再開情報を同期して保存前整合を確認",
-      "status": "complete"
+      "id": "S2-06",
+      "title": "29件の修正内容を点検し工程②成果を保存",
+      "status": "pending"
     }
   ],
   "inputs": {
@@ -245,7 +245,7 @@
     ]
   },
   "output_commit": "このファイルを含むGit commit（自己参照SHAは書き込まない。再開時にGitHubから取得）",
-  "approval_policy": "工程①完了までは質問・確認・承認依頼なし。工程ごとの成果全体に1回。再実行や途中保存の承認は不要。",
+  "approval_policy": "工程①成果は本チャットで承認済み。工程②完了まで質問・確認・承認依頼なし。工程②の成果全体に1回。再実行や途中保存の承認は不要。",
   "resume_protocol": [
     "同じブランチのHEADと作業再開.md・本JSON・09台帳を取得する。",
     "チャットの最終表示だけを根拠に成功/失敗を決めず、GitHubの実際のcommit/tree/blobを確認する。",
@@ -253,10 +253,16 @@
     "入力blobが固定版と同じなら完了済みの照合を再実行しない。変更があればその入力に依存する照合単位だけ再開する。",
     "未保存のローカル作業が残っていれば差分を確認し、他の変更を保持する。",
     "未完了の最小単位を実行し、結果・残件・次の着手位置を同一commitに保存する。",
-    "工程①が完了し未承認の間は工程②を始めない。"
+    "工程①を再承認依頼しない。工程②の完了前は工程③を開始しない。"
   ],
   "limits": [
     "画面やサービスの中断を防止する機能ではない。保存済み地点からの再開で損失範囲を減らす。",
     "実装本文・検証コードの修正、Angular/Java/ブラウザー/CI/実機試験は未実施。"
-  ]
+  ],
+  "stage1_approval": {
+    "status": "approved",
+    "date": "2026-10-21",
+    "evidence": "本チャットのユーザー発言「承認します。」（工程①完了の説明に対する承認）",
+    "result_commit": "9189e2610eb6bd86ff1fbf3200a0bca676e87eca"
+  }
 }
