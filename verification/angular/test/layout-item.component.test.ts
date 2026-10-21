@@ -92,6 +92,38 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
       vi.unstubAllGlobals();
     }
   });
+  it('restores original !important priorities after layout destruction', () => {
+    const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
+    const values = new Map([['flex-basis', '24px'], ['flex-grow', '2']]);
+    const priorities = new Map([['flex-basis', 'important'], ['flex-grow', 'important']]);
+    const style = {
+      get flexBasis() { return values.get('flex-basis') ?? ''; },
+      set flexBasis(value: string) { values.set('flex-basis', value); },
+      get flexGrow() { return values.get('flex-grow') ?? ''; },
+      set flexGrow(value: string) { values.set('flex-grow', value); },
+      getPropertyPriority: (name: string) => priorities.get(name) ?? '',
+      setProperty: (name: string, value: string, priority = '') => {
+        values.set(name, value);
+        priorities.set(name, priority);
+      },
+    };
+    const child = {style,getClientRects:()=>[{}]} as unknown as HTMLElement;
+    const wrapper = {children:[child],getBoundingClientRect:()=>({width:200})} as unknown as HTMLElement;
+    vi.stubGlobal('getComputedStyle',() => ({
+      display:'block',columnGap:'8px',paddingLeft:'0px',paddingRight:'0px',
+      borderLeftWidth:'0px',borderRightWidth:'0px',getPropertyValue:() => '1',
+    }));
+    try {
+      component.distribute(wrapper);
+      expect(style.flexBasis).toBe('200px');
+      expect(style.getPropertyPriority('flex-basis')).toBe('');
+      component.ngOnDestroy();
+      expect(style.flexBasis).toBe('24px');
+      expect(style.flexGrow).toBe('2');
+      expect(style.getPropertyPriority('flex-basis')).toBe('important');
+      expect(style.getPropertyPriority('flex-grow')).toBe('important');
+    } finally { vi.unstubAllGlobals(); }
+  });
   it('schedules redistribution when required-width notification fires', () => {
     const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
     const child = {} as HTMLElement;
