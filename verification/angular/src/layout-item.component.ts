@@ -95,6 +95,10 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
     const wrapper = this.host.nativeElement.querySelector('.bruce-layout-items') as HTMLElement | null;
     if (!wrapper) return;
     const refresh = () => {
+      const current = new Set(Array.from(wrapper.children) as HTMLElement[]);
+      for (const element of this.allocations().keys()) {
+        if (!current.has(element)) this.restoreAllocation(element);
+      }
       this.unsubscribe?.();
       this.unsubscribe = this.metrics.watch(Array.from(wrapper.children) as HTMLElement[], () => this.schedule(wrapper));
       this.schedule(wrapper);
