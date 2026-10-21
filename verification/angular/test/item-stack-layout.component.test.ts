@@ -1,3 +1,4 @@
+import '@angular/compiler';
 import { describe, expect, it } from 'vitest';
 import { ItemStackLayoutComponent } from '../src/item-stack-layout.component.js';
 
