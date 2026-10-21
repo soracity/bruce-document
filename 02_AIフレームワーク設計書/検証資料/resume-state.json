@@ -6,18 +6,11 @@
   "stage_name": "設計書全体の修正",
   "status": "in_progress",
   "stage_approval": "stage1_approved_stage2_not_requested",
-  "last_completed_unit": "S2-04",
-  "next_action": "移行・原典とテスト対応・設計案の承認境界を同期して29件の修正一覧を作る。",
-  "next_work_unit": "S2-05",
+  "last_completed_unit": "S2-05",
+  "next_action": "29件の反映一覧・文書整合を点検する。旧audit-design.pyは34件前提のため現行19件/159規則/194テストへ更新してから実行。工程②は未完了、承認を求めない。",
+  "next_work_unit": "S2-06",
   "investigation_remaining": [],
-  "unapplied_findings": [
-    "F01",
-    "F25",
-    "F26",
-    "F27",
-    "F28",
-    "F29"
-  ],
+  "unapplied_findings": [],
   "units": [
     {
       "id": "S2-01",
@@ -42,7 +35,7 @@
     {
       "id": "S2-05",
       "title": "移行・根拠・テスト仕様・承認境界の同期",
-      "status": "pending"
+      "status": "complete"
     },
     {
       "id": "S2-06",
@@ -241,5 +234,13 @@
     "date": "2026-10-21",
     "evidence": "本チャットのユーザー発言「承認します。」（工程①完了の説明に対する承認）",
     "result_commit": "9189e2610eb6bd86ff1fbf3200a0bca676e87eca"
-  }
+  },
+  "pending_document_verification": [
+    "audit-design.pyを19件/159規則/194テストへ更新",
+    "新規32章の全29行と正本対応を確認",
+    "README/08/進捗/再開/WBSを現在状態に同期",
+    "純粋参照67項目と幾何31項目を現行記述で再確認",
+    "branch/mainの保存先案内とcommit/tree/blob検査"
+  ],
+  "interruption_note": "ユーザーが実行直後のtimeoutを報告。原因説明を優先し、未検証部分を完了扱いせず途中保存。"
 }

@@ -1,0 +1,281 @@
+[
+  {
+    "id": "R-OPS-05",
+    "requirement": "Phase7のAI画面試作/人間保守性/実機と受入、Phase8運用/変更同期を別工程で記録する。",
+    "state": "後工程計画",
+    "sources": [
+      {
+        "repository": "soracity/bruce-document",
+        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "path": "01_ai-document/phase7_04_受入判定.md",
+        "start": 13,
+        "end": 19
+      },
+      {
+        "repository": "soracity/bruce-document",
+        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "path": "01_ai-document/phase8_02_変更管理.md",
+        "start": 13,
+        "end": 29
+      }
+    ],
+    "design": [
+      "04_AI実装・例外運用.md",
+      "08_監査・未完了管理.md",
+      "18_承認履歴・未決事項.md"
+    ],
+    "section": "AI-04/05・OPS-01・18章",
+    "implementations": [
+      "IMP-36",
+      "IMP-38"
+    ],
+    "tests": [
+      "T-MAINT-01",
+      "T-MAINT-03"
+    ]
+  },
+  {
+    "id": "R-PLAN-01",
+    "requirement": "Phase5の実装／生成／回帰は工程計画であり今回の文書作成を実装済みにしない。",
+    "state": "工程計画",
+    "sources": [
+      {
+        "repository": "soracity/bruce-document",
+        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "path": "01_ai-document/phase5_05_実装テスト.md",
+        "start": 9,
+        "end": 19
+      },
+      {
+        "repository": "soracity/bruce-document",
+        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "path": "01_ai-document/phase5_01_LayoutManager実装.md",
+        "start": 9,
+        "end": 29
+      },
+      {
+        "repository": "soracity/bruce-document",
+        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "path": "01_ai-document/phase5_02_共通UI実装.md",
+        "start": 9,
+        "end": 29
+      },
+      {
+        "repository": "soracity/bruce-document",
+        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "path": "01_ai-document/phase5_03_Table・Swipe実装.md",
+        "start": 9,
+        "end": 29
+      },
+      {
+        "repository": "soracity/bruce-document",
+        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "path": "01_ai-document/phase5_04_ACG・画面の移行.md",
+        "start": 9,
+        "end": 29
+      }
+    ],
+    "design": [
+      "15_差分・移行.md"
+    ],
+    "section": "本文の該当実装契約",
+    "implementations": [
+      "IMP-36"
+    ],
+    "tests": [
+      "T-ACG-20",
+      "T-MIG-04"
+    ]
+  },
+  {
+    "id": "R-PLAN-02",
+    "requirement": "Phase6は使用API／禁止例／入力不足検出／例外手順／人間レビューを整備する。",
+    "state": "工程計画",
+    "sources": [
+      {
+        "repository": "soracity/bruce-document",
+        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "path": "01_ai-document/phase6_02_AI作業手順.md",
+        "start": 9,
+        "end": 29
+      },
+      {
+        "repository": "soracity/bruce-document",
+        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "path": "01_ai-document/phase6_01_AI利用規則.md",
+        "start": 9,
+        "end": 29
+      },
+      {
+        "repository": "soracity/bruce-document",
+        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "path": "01_ai-document/phase6_03_AIレビュー.md",
+        "start": 9,
+        "end": 19
+      }
+    ],
+    "design": [
+      "04_AI実装・例外運用.md"
+    ],
+    "section": "本文の該当実装契約",
+    "implementations": [
+      "IMP-36"
+    ],
+    "tests": [
+      "T-AI-01",
+      "T-AI-02"
+    ]
+  },
+  {
+    "id": "R-PLAN-03",
+    "requirement": "Phase7の実画面はユーザー選定。独自CSSなしのAI試作と人間の理解・変更を評価。",
+    "state": "未実施計画・選定未決",
+    "sources": [
+      {
+        "repository": "soracity/bruce-document",
+        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "path": "01_ai-document/phase7_01_AI画面試作.md",
+        "start": 9,
+        "end": 29
+      },
+      {
+        "repository": "soracity/bruce-document",
+        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "path": "01_ai-document/phase7_02_人間による保守性評価.md",
+        "start": 9,
+        "end": 29
+      }
+    ],
+    "design": [
+      "04_AI実装・例外運用.md"
+    ],
+    "section": "本文の該当実装契約",
+    "implementations": [
+      "IMP-36"
+    ],
+    "tests": [
+      "T-MAINT-01"
+    ]
+  },
+  {
+    "id": "R-PLAN-04",
+    "requirement": "Phase7で両OSの狭幅／ラベル／safe-area／keyboard／scroll／Swipe／性能を検証する。",
+    "state": "未実施検証計画",
+    "sources": [
+      {
+        "repository": "soracity/bruce-document",
+        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "path": "01_ai-document/phase7_03_実機・品質検証.md",
+        "start": 9,
+        "end": 29
+      }
+    ],
+    "design": [
+      "14_テスト仕様.md"
+    ],
+    "section": "本文の該当実装契約",
+    "implementations": [
+      "IMP-36"
+    ],
+    "tests": [
+      "T-DEVICE-01",
+      "T-DEVICE-08"
+    ]
+  },
+  {
+    "id": "R-PLAN-05",
+    "requirement": "Phase7受入結果と残件を確認した後に運用準備を判断する。",
+    "state": "未実施計画",
+    "sources": [
+      {
+        "repository": "soracity/bruce-document",
+        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "path": "01_ai-document/phase7_04_受入判定.md",
+        "start": 9,
+        "end": 19
+      }
+    ],
+    "design": [
+      "04_AI実装・例外運用.md"
+    ],
+    "section": "本文の該当実装契約",
+    "implementations": [
+      "IMP-36"
+    ],
+    "tests": [
+      "T-MAINT-03"
+    ]
+  },
+  {
+    "id": "R-PLAN-06",
+    "requirement": "Phase8の設計／共通部品／ACG版・適用範囲と導入手順を固定する。",
+    "state": "運用計画",
+    "sources": [
+      {
+        "repository": "soracity/bruce-document",
+        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "path": "01_ai-document/phase8_01_運用準備.md",
+        "start": 9,
+        "end": 29
+      }
+    ],
+    "design": [
+      "04_AI実装・例外運用.md"
+    ],
+    "section": "本文の該当実装契約",
+    "implementations": [
+      "IMP-36"
+    ],
+    "tests": [
+      "T-MAINT-02"
+    ]
+  },
+  {
+    "id": "R-PLAN-07",
+    "requirement": "仕様変更の理由・承認・影響・検証を議事録／設計／進捗／実装で同期する。",
+    "state": "運用計画",
+    "sources": [
+      {
+        "repository": "soracity/bruce-document",
+        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "path": "01_ai-document/phase8_02_変更管理.md",
+        "start": 9,
+        "end": 29
+      }
+    ],
+    "design": [
+      "04_AI実装・例外運用.md"
+    ],
+    "section": "本文の該当実装契約",
+    "implementations": [
+      "IMP-36"
+    ],
+    "tests": [
+      "T-MAINT-02"
+    ]
+  },
+  {
+    "id": "R-PLAN-08",
+    "requirement": "本格運用の開始と範囲はユーザー判断。運用後も理解容易性・品質を改善する。",
+    "state": "運用開始未承認",
+    "sources": [
+      {
+        "repository": "soracity/bruce-document",
+        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "path": "01_ai-document/phase8_03_本格運用.md",
+        "start": 9,
+        "end": 29
+      }
+    ],
+    "design": [
+      "04_AI実装・例外運用.md"
+    ],
+    "section": "本文の該当実装契約",
+    "implementations": [
+      "IMP-36"
+    ],
+    "tests": [
+      "T-MAINT-03"
+    ]
+  }
+]

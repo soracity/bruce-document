@@ -6,7 +6,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_01_責務境界.md",
         "start": 84,
         "end": 92
@@ -34,7 +34,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_01_責務境界.md",
         "start": 84,
         "end": 92
@@ -62,7 +62,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_01_責務境界.md",
         "start": 84,
         "end": 92
@@ -90,7 +90,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_01_責務境界.md",
         "start": 96,
         "end": 147
@@ -118,7 +118,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 126,
         "end": 150
@@ -146,7 +146,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 15,
         "end": 18
@@ -176,7 +176,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 51,
         "end": 56
@@ -206,7 +206,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 100,
         "end": 102
@@ -235,10 +235,10 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 331,
-        "end": 341
+        "end": 355
       }
     ],
     "design": [
@@ -264,10 +264,10 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
-        "start": 359,
-        "end": 370
+        "start": 368,
+        "end": 390
       }
     ],
     "design": [
@@ -293,7 +293,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 454,
         "end": 465
@@ -322,10 +322,10 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
-        "start": 345,
-        "end": 357
+        "start": 357,
+        "end": 391
       }
     ],
     "design": [
@@ -351,10 +351,10 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 413,
-        "end": 450
+        "end": 445
       }
     ],
     "design": [
@@ -380,7 +380,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 427,
         "end": 427
@@ -409,7 +409,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 429,
         "end": 432
@@ -438,10 +438,10 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
-        "start": 477,
-        "end": 487
+        "start": 480,
+        "end": 514
       }
     ],
     "design": [
@@ -467,7 +467,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 825,
         "end": 830
@@ -496,7 +496,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 834,
         "end": 847
@@ -525,7 +525,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 788,
         "end": 802
@@ -555,7 +555,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 806,
         "end": 812
@@ -584,7 +584,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 806,
         "end": 812
@@ -613,7 +613,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 860,
         "end": 864
@@ -642,7 +642,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 518,
         "end": 527
@@ -668,7 +668,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 713,
         "end": 719
@@ -695,7 +695,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 723,
         "end": 728
@@ -721,7 +721,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 732,
         "end": 776
@@ -747,7 +747,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 645,
         "end": 651
@@ -774,7 +774,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 655,
         "end": 661
@@ -803,7 +803,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 579,
         "end": 586
@@ -829,7 +829,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 673,
         "end": 680
@@ -855,7 +855,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 684,
         "end": 691
@@ -881,7 +881,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 615,
         "end": 641
@@ -908,7 +908,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 590,
         "end": 641
@@ -935,7 +935,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 553,
         "end": 563
@@ -965,7 +965,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_03_余白の責務.md",
         "start": 36,
         "end": 41
@@ -993,7 +993,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_03_余白の責務.md",
         "start": 143,
         "end": 146
@@ -1020,7 +1020,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_03_余白の責務.md",
         "start": 113,
         "end": 115
@@ -1047,7 +1047,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_03_余白の責務.md",
         "start": 123,
         "end": 127
@@ -1074,7 +1074,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_04_レスポンシブ・折り返し.md",
         "start": 143,
         "end": 148
@@ -1105,7 +1105,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_04_レスポンシブ・折り返し.md",
         "start": 152,
         "end": 158
@@ -1136,7 +1136,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_04_レスポンシブ・折り返し.md",
         "start": 162,
         "end": 184
@@ -1172,7 +1172,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_04_レスポンシブ・折り返し.md",
         "start": 188,
         "end": 193
@@ -1203,7 +1203,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_04_レスポンシブ・折り返し.md",
         "start": 197,
         "end": 201
@@ -1234,7 +1234,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_04_レスポンシブ・折り返し.md",
         "start": 230,
         "end": 234
@@ -1268,7 +1268,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_04_レスポンシブ・折り返し.md",
         "start": 238,
         "end": 252
@@ -1299,7 +1299,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_04_レスポンシブ・折り返し.md",
         "start": 256,
         "end": 260
@@ -1331,7 +1331,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_04_レスポンシブ・折り返し.md",
         "start": 221,
         "end": 226
@@ -1358,12 +1358,12 @@
   },
   {
     "id": "R-DISPLAY-10",
-    "requirement": "マーキーの速度・計測・正式Input名等は実装具体化の対象。未承認の移動解釈・静止時表示を承認済みとしない。",
-    "state": "引継ぎ／未決U-01",
+    "requirement": "マーキー細則は05章P-01の一案に固定し工程②全体で承認。動作方式やタップ寸法をAIが変更しない。",
+    "state": "承認済み4mode＋技術具体化P-01",
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_04_レスポンシブ・折り返し.md",
         "start": 264,
         "end": 267
@@ -1395,7 +1395,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_04_レスポンシブ・折り返し.md",
         "start": 278,
         "end": 285
@@ -1427,7 +1427,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_04_レスポンシブ・折り返し.md",
         "start": 287,
         "end": 287
@@ -1459,7 +1459,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_05_任意CSS注入の排除.md",
         "start": 40,
         "end": 51
@@ -1488,7 +1488,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_05_任意CSS注入の排除.md",
         "start": 252,
         "end": 259
@@ -1518,7 +1518,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_05_任意CSS注入の排除.md",
         "start": 202,
         "end": 208
@@ -1547,7 +1547,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_05_任意CSS注入の排除.md",
         "start": 212,
         "end": 221
@@ -1577,7 +1577,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_05_任意CSS注入の排除.md",
         "start": 244,
         "end": 248
@@ -1606,7 +1606,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_05_任意CSS注入の排除.md",
         "start": 252,
         "end": 259
@@ -1635,7 +1635,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 34,
         "end": 66
@@ -1667,7 +1667,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 463,
         "end": 472
@@ -1699,7 +1699,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 61,
         "end": 66
@@ -1731,7 +1731,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 530,
         "end": 540
@@ -1763,7 +1763,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 546,
         "end": 556
@@ -1795,7 +1795,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 253,
         "end": 267
@@ -1828,7 +1828,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 218,
         "end": 273
@@ -1860,7 +1860,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 504,
         "end": 508
@@ -1892,7 +1892,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 1480,
         "end": 1506
@@ -1924,7 +1924,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 320,
         "end": 325
@@ -1956,7 +1956,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 597,
         "end": 605
@@ -1984,7 +1984,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 636,
         "end": 638
@@ -2012,7 +2012,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 678,
         "end": 701
@@ -2040,7 +2040,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 1609,
         "end": 1630
@@ -2068,7 +2068,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 747,
         "end": 759
@@ -2097,7 +2097,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 1329,
         "end": 1334
@@ -2126,7 +2126,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 765,
         "end": 781
@@ -2157,7 +2157,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 787,
         "end": 794
@@ -2187,7 +2187,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 798,
         "end": 807
@@ -2218,7 +2218,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 865,
         "end": 887
@@ -2249,7 +2249,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 809,
         "end": 809
@@ -2279,7 +2279,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 1014,
         "end": 1047
@@ -2309,7 +2309,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 1053,
         "end": 1065
@@ -2339,7 +2339,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 826,
         "end": 848
@@ -2430,7 +2430,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 1089,
         "end": 1103
@@ -2458,7 +2458,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 1105,
         "end": 1127
@@ -2487,7 +2487,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 1152,
         "end": 1173
@@ -2515,7 +2515,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 1175,
         "end": 1196
@@ -2543,7 +2543,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 1634,
         "end": 1672
@@ -2571,7 +2571,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 1356,
         "end": 1396
@@ -2600,12 +2600,12 @@
   },
   {
     "id": "R-DEFAULT-07",
-    "requirement": "DST重複ローカル入力は原典未定義であり、U-03として新規例外を区別する。",
-    "state": "監査検出・未決U-03",
+    "requirement": "UTC保存/ローカル表示、未編集UTC保持。重複時刻の新規入力はP-03案であり既承認と偽らない。",
+    "state": "UTC/ローカルの承認規則＋監査追加例外の具体案P-03",
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 1356,
         "end": 1396
@@ -2663,14 +2663,14 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 665,
         "end": 669
       },
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_08_AI実装制約.md",
         "start": 108,
         "end": 119
@@ -2731,7 +2731,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 1564,
         "end": 1605
@@ -2761,7 +2761,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 1541,
         "end": 1560
@@ -2791,7 +2791,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 1674,
         "end": 1676
@@ -2823,7 +2823,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_07_UI・Domain境界.md",
         "start": 68,
         "end": 71
@@ -2848,7 +2848,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_07_UI・Domain境界.md",
         "start": 68,
         "end": 71
@@ -2873,7 +2873,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_08_AI実装制約.md",
         "start": 108,
         "end": 119
@@ -2898,7 +2898,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_08_AI実装制約.md",
         "start": 108,
         "end": 119
@@ -2922,7 +2922,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_08_AI実装制約.md",
         "start": 405,
         "end": 410
@@ -2946,7 +2946,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_08_AI実装制約.md",
         "start": 405,
         "end": 410
@@ -2971,7 +2971,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_08_AI実装制約.md",
         "start": 405,
         "end": 410
@@ -2995,7 +2995,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_08_AI実装制約.md",
         "start": 394,
         "end": 398
@@ -3019,7 +3019,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_01_共通スタイル.md",
         "start": 27,
         "end": 47
@@ -3057,7 +3057,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_01_共通スタイル.md",
         "start": 35,
         "end": 47
@@ -3097,7 +3097,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_01_共通スタイル.md",
         "start": 198,
         "end": 202
@@ -3135,7 +3135,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_01_共通スタイル.md",
         "start": 211,
         "end": 216
@@ -3173,7 +3173,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_01_共通スタイル.md",
         "start": 218,
         "end": 224
@@ -3211,7 +3211,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_01_共通スタイル.md",
         "start": 218,
         "end": 224
@@ -3249,7 +3249,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_01_共通スタイル.md",
         "start": 218,
         "end": 224
@@ -3289,7 +3289,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_01_共通スタイル.md",
         "start": 192,
         "end": 196
@@ -3327,7 +3327,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_01_共通スタイル.md",
         "start": 35,
         "end": 47
@@ -3365,7 +3365,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_01_共通スタイル.md",
         "start": 204,
         "end": 209
@@ -3406,7 +3406,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_04_レスポンシブ・折り返し.md",
         "start": 197,
         "end": 201
@@ -3445,7 +3445,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_02_UiStyleUtil.md",
         "start": 75,
         "end": 81
@@ -3470,7 +3470,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_02_UiStyleUtil.md",
         "start": 83,
         "end": 89
@@ -3495,7 +3495,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_02_UiStyleUtil.md",
         "start": 83,
         "end": 89
@@ -3520,7 +3520,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_02_UiStyleUtil.md",
         "start": 75,
         "end": 89
@@ -3545,7 +3545,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_03_ComponentBase.md",
         "start": 61,
         "end": 64
@@ -3575,7 +3575,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_03_ComponentBase.md",
         "start": 61,
         "end": 64
@@ -3602,7 +3602,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_03_ComponentBase.md",
         "start": 74,
         "end": 87
@@ -3628,7 +3628,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_03_ComponentBase.md",
         "start": 74,
         "end": 87
@@ -3654,7 +3654,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_04_Table.md",
         "start": 133,
         "end": 137
@@ -3685,7 +3685,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_04_Table.md",
         "start": 133,
         "end": 137
@@ -3715,7 +3715,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_04_Table.md",
         "start": 125,
         "end": 131
@@ -3746,7 +3746,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_04_Table.md",
         "start": 112,
         "end": 116
@@ -3776,7 +3776,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_04_Table.md",
         "start": 107,
         "end": 110
@@ -3807,7 +3807,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase1_01_既存資産棚卸し.md",
         "start": 123,
         "end": 147
@@ -3838,7 +3838,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_05_Swipe・Layout.md",
         "start": 54,
         "end": 60
@@ -3865,7 +3865,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_05_Swipe・Layout.md",
         "start": 54,
         "end": 60
@@ -3888,11 +3888,11 @@
   {
     "id": "R-SWIPE-03",
     "requirement": "Table横scroll競合は後工程確認事項。未決優先規則を試験済みとして閉じない。",
-    "state": "検証引継ぎ／未決U-02",
+    "state": "独立操作責務＋操作境界の具体案P-02",
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_05_Swipe・Layout.md",
         "start": 54,
         "end": 60
@@ -3919,7 +3919,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase4_01_議論終了判定.md",
         "start": 157,
         "end": 161
@@ -3941,12 +3941,12 @@
   },
   {
     "id": "R-OPS-02",
-    "requirement": "新議事録34件と追加承認の根拠を工程・仕様単位で往復追跡する。今回、旧バックアップは監査対象外。",
+    "requirement": "Phase1〜4の19議事録と関連追加承認を往復追跡。バックアップ・Phase5〜8の計画は対象外。",
     "state": "今回のユーザー指示",
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase4_01_議論終了判定.md",
         "start": 477,
         "end": 484
@@ -3964,7 +3964,8 @@
     ],
     "tests": [
       "T-MAINT-02"
-    ]
+    ],
+    "session_basis": "本チャットの対象19件という明示指定"
   },
   {
     "id": "R-OPS-03",
@@ -3973,14 +3974,14 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_09_Phase 2最終承認.md",
         "start": 1701,
         "end": 1707
       },
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_06_Phase 3最終承認.md",
         "start": 216,
         "end": 222
@@ -4007,14 +4008,14 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase4_02_体系的設計書.md",
         "start": 182,
         "end": 186
       },
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase4_03_設計書承認.md",
         "start": 42,
         "end": 44
@@ -4031,41 +4032,6 @@
       "IMP-38"
     ],
     "tests": [
-      "T-MAINT-03"
-    ]
-  },
-  {
-    "id": "R-OPS-05",
-    "requirement": "Phase7のAI画面試作/人間保守性/実機と受入、Phase8運用/変更同期を別工程で記録する。",
-    "state": "後工程計画",
-    "sources": [
-      {
-        "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
-        "path": "01_ai-document/phase7_04_受入判定.md",
-        "start": 13,
-        "end": 19
-      },
-      {
-        "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
-        "path": "01_ai-document/phase8_02_変更管理.md",
-        "start": 13,
-        "end": 29
-      }
-    ],
-    "design": [
-      "04_AI実装・例外運用.md",
-      "08_監査・未完了管理.md",
-      "18_承認履歴・未決事項.md"
-    ],
-    "section": "AI-04/05・OPS-01・18章",
-    "implementations": [
-      "IMP-36",
-      "IMP-38"
-    ],
-    "tests": [
-      "T-MAINT-01",
       "T-MAINT-03"
     ]
   },
@@ -4102,7 +4068,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase1_01_既存資産棚卸し.md",
         "start": 13,
         "end": 50
@@ -4128,7 +4094,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase1_01_既存資産棚卸し.md",
         "start": 67,
         "end": 76
@@ -4154,7 +4120,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase1_01_既存資産棚卸し.md",
         "start": 88,
         "end": 93
@@ -4178,7 +4144,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase1_01_既存資産棚卸し.md",
         "start": 88,
         "end": 93
@@ -4203,7 +4169,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase3_03_ComponentBase.md",
         "start": 81,
         "end": 87
@@ -4228,7 +4194,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase1_01_既存資産棚卸し.md",
         "start": 123,
         "end": 128
@@ -4255,7 +4221,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase1_01_既存資産棚卸し.md",
         "start": 123,
         "end": 128
@@ -4279,7 +4245,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase1_01_既存資産棚卸し.md",
         "start": 123,
         "end": 147
@@ -4306,7 +4272,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase1_01_既存資産棚卸し.md",
         "start": 132,
         "end": 147
@@ -4334,7 +4300,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase1_01_既存資産棚卸し.md",
         "start": 157,
         "end": 165
@@ -4363,7 +4329,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase1_01_既存資産棚卸し.md",
         "start": 157,
         "end": 165
@@ -4389,7 +4355,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase1_01_既存資産棚卸し.md",
         "start": 157,
         "end": 165
@@ -4414,7 +4380,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase1_01_既存資産棚卸し.md",
         "start": 157,
         "end": 165
@@ -4440,7 +4406,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase1_01_既存資産棚卸し.md",
         "start": 169,
         "end": 174
@@ -4466,7 +4432,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 182,
         "end": 214
@@ -4495,7 +4461,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 108,
         "end": 124
@@ -4520,7 +4486,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 518,
         "end": 527
@@ -4545,7 +4511,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 70,
         "end": 73
@@ -4569,7 +4535,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 497,
         "end": 508
@@ -4594,7 +4560,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_06_DTO・Form・Validation.md",
         "start": 1356,
         "end": 1367
@@ -4620,7 +4586,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_08_AI実装制約.md",
         "start": 405,
         "end": 410
@@ -4645,7 +4611,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_04_レスポンシブ・折り返し.md",
         "start": 188,
         "end": 193
@@ -4671,7 +4637,7 @@
     "sources": [
       {
         "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
+        "commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
         "path": "01_ai-document/phase2_02_幅の責務.md",
         "start": 477,
         "end": 487
@@ -4688,250 +4654,6 @@
     "tests": [
       "T-CHECK-09",
       "T-AI-02"
-    ]
-  },
-  {
-    "id": "R-PLAN-01",
-    "requirement": "Phase5の実装／生成／回帰は工程計画であり今回の文書作成を実装済みにしない。",
-    "state": "工程計画",
-    "sources": [
-      {
-        "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
-        "path": "01_ai-document/phase5_05_実装テスト.md",
-        "start": 9,
-        "end": 19
-      },
-      {
-        "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
-        "path": "01_ai-document/phase5_01_LayoutManager実装.md",
-        "start": 9,
-        "end": 29
-      },
-      {
-        "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
-        "path": "01_ai-document/phase5_02_共通UI実装.md",
-        "start": 9,
-        "end": 29
-      },
-      {
-        "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
-        "path": "01_ai-document/phase5_03_Table・Swipe実装.md",
-        "start": 9,
-        "end": 29
-      },
-      {
-        "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
-        "path": "01_ai-document/phase5_04_ACG・画面の移行.md",
-        "start": 9,
-        "end": 29
-      }
-    ],
-    "design": [
-      "15_差分・移行.md"
-    ],
-    "section": "本文の該当実装契約",
-    "implementations": [
-      "IMP-36"
-    ],
-    "tests": [
-      "T-ACG-20",
-      "T-MIG-04"
-    ]
-  },
-  {
-    "id": "R-PLAN-02",
-    "requirement": "Phase6は使用API／禁止例／入力不足検出／例外手順／人間レビューを整備する。",
-    "state": "工程計画",
-    "sources": [
-      {
-        "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
-        "path": "01_ai-document/phase6_02_AI作業手順.md",
-        "start": 9,
-        "end": 29
-      },
-      {
-        "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
-        "path": "01_ai-document/phase6_01_AI利用規則.md",
-        "start": 9,
-        "end": 29
-      },
-      {
-        "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
-        "path": "01_ai-document/phase6_03_AIレビュー.md",
-        "start": 9,
-        "end": 19
-      }
-    ],
-    "design": [
-      "04_AI実装・例外運用.md"
-    ],
-    "section": "本文の該当実装契約",
-    "implementations": [
-      "IMP-36"
-    ],
-    "tests": [
-      "T-AI-01",
-      "T-AI-02"
-    ]
-  },
-  {
-    "id": "R-PLAN-03",
-    "requirement": "Phase7の実画面はユーザー選定。独自CSSなしのAI試作と人間の理解・変更を評価。",
-    "state": "未実施計画・選定未決",
-    "sources": [
-      {
-        "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
-        "path": "01_ai-document/phase7_01_AI画面試作.md",
-        "start": 9,
-        "end": 29
-      },
-      {
-        "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
-        "path": "01_ai-document/phase7_02_人間による保守性評価.md",
-        "start": 9,
-        "end": 29
-      }
-    ],
-    "design": [
-      "04_AI実装・例外運用.md"
-    ],
-    "section": "本文の該当実装契約",
-    "implementations": [
-      "IMP-36"
-    ],
-    "tests": [
-      "T-MAINT-01"
-    ]
-  },
-  {
-    "id": "R-PLAN-04",
-    "requirement": "Phase7で両OSの狭幅／ラベル／safe-area／keyboard／scroll／Swipe／性能を検証する。",
-    "state": "未実施検証計画",
-    "sources": [
-      {
-        "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
-        "path": "01_ai-document/phase7_03_実機・品質検証.md",
-        "start": 9,
-        "end": 29
-      }
-    ],
-    "design": [
-      "14_テスト仕様.md"
-    ],
-    "section": "本文の該当実装契約",
-    "implementations": [
-      "IMP-36"
-    ],
-    "tests": [
-      "T-DEVICE-01",
-      "T-DEVICE-08"
-    ]
-  },
-  {
-    "id": "R-PLAN-05",
-    "requirement": "Phase7受入結果と残件を確認した後に運用準備を判断する。",
-    "state": "未実施計画",
-    "sources": [
-      {
-        "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
-        "path": "01_ai-document/phase7_04_受入判定.md",
-        "start": 9,
-        "end": 19
-      }
-    ],
-    "design": [
-      "04_AI実装・例外運用.md"
-    ],
-    "section": "本文の該当実装契約",
-    "implementations": [
-      "IMP-36"
-    ],
-    "tests": [
-      "T-MAINT-03"
-    ]
-  },
-  {
-    "id": "R-PLAN-06",
-    "requirement": "Phase8の設計／共通部品／ACG版・適用範囲と導入手順を固定する。",
-    "state": "運用計画",
-    "sources": [
-      {
-        "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
-        "path": "01_ai-document/phase8_01_運用準備.md",
-        "start": 9,
-        "end": 29
-      }
-    ],
-    "design": [
-      "04_AI実装・例外運用.md"
-    ],
-    "section": "本文の該当実装契約",
-    "implementations": [
-      "IMP-36"
-    ],
-    "tests": [
-      "T-MAINT-02"
-    ]
-  },
-  {
-    "id": "R-PLAN-07",
-    "requirement": "仕様変更の理由・承認・影響・検証を議事録／設計／進捗／実装で同期する。",
-    "state": "運用計画",
-    "sources": [
-      {
-        "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
-        "path": "01_ai-document/phase8_02_変更管理.md",
-        "start": 9,
-        "end": 29
-      }
-    ],
-    "design": [
-      "04_AI実装・例外運用.md"
-    ],
-    "section": "本文の該当実装契約",
-    "implementations": [
-      "IMP-36"
-    ],
-    "tests": [
-      "T-MAINT-02"
-    ]
-  },
-  {
-    "id": "R-PLAN-08",
-    "requirement": "本格運用の開始と範囲はユーザー判断。運用後も理解容易性・品質を改善する。",
-    "state": "運用開始未承認",
-    "sources": [
-      {
-        "repository": "soracity/bruce-document",
-        "commit": "76868b09f552a3df1ad5f675e4e3f657336f9fbf",
-        "path": "01_ai-document/phase8_03_本格運用.md",
-        "start": 9,
-        "end": 29
-      }
-    ],
-    "design": [
-      "04_AI実装・例外運用.md"
-    ],
-    "section": "本文の該当実装契約",
-    "implementations": [
-      "IMP-36"
-    ],
-    "tests": [
-      "T-MAINT-03"
     ]
   }
 ]

@@ -166,7 +166,7 @@ AcgClassModelはisInjectableとprovidedInRootを分離する。isInjectable=true
 
 ## ACG-05 異常処理・再生成
 
-metadata・全項目・JS regex・生成TS構文の検証を終えてから出力ファイルを置換する。physicalNameは29章のcomputed string keyで出力し、__proto__を通常own controlとして維持する。失敗した定義の中途半端なTSを既存正常ファイルへ上書きしない。Exceptionは物理名・型・Enum型・文字種・不正列・値・理由を含む。静的検査器の全件収集とACGのFail Fastを混同しない。
+metadata・全項目・JS regex・生成TS構文の検証を終えてから出力ファイルを置換する。physicalNameは29章のcomputed string keyで出力し、構造予約名__proto__/hasOwnPropertyは生成前に拒否する。失敗した定義の中途半端なTSを既存正常ファイルへ上書きしない。Exceptionは物理名・型・Enum型・文字種・不正列・値・理由を含む。静的検査器の全件収集とACGのFail Fastを混同しない。
 
 再生成比較では、生成日時/元ファイルmtime等の可変ヘッダーだけを比較から分離し、型・import・初期値・Validator・readonly・decorator・プロパティ順は一致させる。生成物直接修正を正本にせず、定義/解析器/モデル/生成器/テストを直す。
 

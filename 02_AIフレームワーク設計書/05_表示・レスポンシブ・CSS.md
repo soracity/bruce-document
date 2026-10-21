@@ -50,7 +50,7 @@ type LayoutRow = { items:LayoutMetric[]; widths:number[] };
 // partition(items:readonly LayoutMetric[], available:number, gap:number):LayoutRow[]
 ```
 
-表示順を保持したgreedy分割とする。available=A、gap=g、候補行の件数n、重み和Sに対し、gapを除く幅B=max(0,A−g×(n−1))、各割当p[i]=B×w[i]/S。各必要幅はmin(required[i],A)へ制限する。
+表示順を保持したgreedy分割とする。available=A、gap=g、候補行の件数n、重み和Sに対し、gapを除く幅B=max(0,A−g×(n−1))、各割当p[i]=B×w[i]/S。実装では各重みを行内最大重みで除した値に正規化してから合計し、有限重みの加算がInfinityになるのを防ぐ。各必要幅はmin(required[i],A)へ制限する。
 
 既存行の末尾へ次要素を仮追加し、`g×(n−1)<=A`かつ全p[i]が必要幅以上なら同じ行に残す。必要幅0でもgapだけでAを超える候補は分割する。満たさなければ現在行を確定し、次要素から新しい行を始める。単一項目の必要幅がA超過でもその項目はAへ縮小して単独行に置く。割当でフォントや元spanを書き換えない。A=0は描画待ち、空itemsは空配列、負数/非有限の引数・weight<=0は構成エラー。
 

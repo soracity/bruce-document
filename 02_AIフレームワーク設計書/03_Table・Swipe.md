@@ -80,7 +80,7 @@ stickyセル/行の不透明な下地は、selected Recordならprimary、未選
 
 罫線はCellの明示border/widthがある場合にそれを最優先し、なければRecord.cellBorderによる1px base-300を使用する。セル一括罫線と個別のborder=falseを両立するため、従来の無条件!importantセレクターを、明示なしセルだけへ限定する。新しい任意class Inputは追加しない。
 
-Cell paddingは未指定なら現行0.125rem/0.25rem。明示paddingは02章の全方向指定。rounded=falseの明示指定は角丸補正を無効にする。未指定時は既存radiusPositionを使い、NONEなら角丸なし。roundedSize明示時はその値、未指定時は既存--app-table-radius=0.5remを使う。Table/Recordのrounded・shadowをCellへコピーしない。
+Cell paddingは未指定なら現行0.125rem/0.25rem。明示paddingは02章の全方向指定。rounded=falseの明示指定は角丸補正を無効にする。共通rounded群未指定時は既存radiusPositionを使い、NONEなら角丸なし。群を指定した場合は28章のmask規則を使う。roundedSize明示時はその値、未指定時は既存--app-table-radius=0.5remを使う。Table/Recordのrounded・shadowをCellへコピーしない。
 
 ## TABLE-05 実体HTML/CSSの正本
 

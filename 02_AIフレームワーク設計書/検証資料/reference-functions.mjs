@@ -2,7 +2,7 @@
 export function partition(items, available, gap) {
   if (![available,gap].every(v=>Number.isFinite(v)&&v>=0) || items.some(i=>!Number.isFinite(i.required)||i.required<0||!Number.isFinite(i.weight)||i.weight<=0)) throw Error('BRUCE_LAYOUT_METRIC');
   if (available===0 || items.length===0) return [];
-  const widths=xs=>{const sum=xs.reduce((s,i)=>s+i.weight,0),base=Math.max(0,available-gap*(xs.length-1));const out=xs.map(i=>base*i.weight/sum);if(out.length)out[out.length-1]=Math.max(0,base-out.slice(0,-1).reduce((a,b)=>a+b,0));return out;};
+  const widths=xs=>{const maxWeight=xs.reduce((v,i)=>Math.max(v,i.weight),0),sum=xs.reduce((s,i)=>s+i.weight/maxWeight,0),base=Math.max(0,available-gap*(xs.length-1));const out=xs.map(i=>base*(i.weight/maxWeight)/sum);if(out.length)out[out.length-1]=Math.max(0,base-out.slice(0,-1).reduce((a,b)=>a+b,0));return out;};
   const result=[];let row=[];
   const finish=()=>{if(row.length)result.push({items:row,widths:widths(row)});};
   for(const i of items) {

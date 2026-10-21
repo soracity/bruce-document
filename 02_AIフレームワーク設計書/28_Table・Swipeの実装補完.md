@@ -8,7 +8,7 @@ Containerはdocument単位連番ownerId:string、各Recordは同じ規則のreco
 
 RecordはskipSelf注入の必須Container、CellはskipSelfのnearest Container/optional Record/optional Row。Cellで取得したRecord/RowのContainerがCellのnearest Containerと同一である場合だけ利用。別の場合はrecord/rowをundefinedへ落とす。色はCell raw→同一owner Record raw→Container raw→Cell既定。CSSにもownerごとの任意動的色ルールを生成しない。
 
-Containerの内部関数はownWrapperClasses():string（padding/rounded/shadow）、ownTableClasses():string（border）、emptyCellClasses():string（色）、resolvedEmptyMessage():string、collectRecords():RecordView[]、refreshRecords():void。RecordはownFrameClasses():string、needsPaddingFrame:boolean、onClick():void、rawDescriptor():RecordStyle、publishDescriptor():void。CellはresolvedBackground/Text:computed、cellClassesForStyle():string、resolvedRadius():RadiusPosition、isTopSticky/isLeftSticky:boolean。descriptorは次の型。
+Containerの内部関数はownWrapperClasses():string（padding/rounded/shadow）、ownTableClasses():string（border）、emptyCellClasses():string（色）、resolvedEmptyMessage():string、collectRecords():RecordView[]、refreshRecords():void。RecordはownFrameClasses():string（有効な非色群だけを結合し、background/text/visibleは除く）、needsPaddingFrame:boolean、onClick():void、rawDescriptor():RecordStyle、publishDescriptor():void。CellはresolvedBackground/Text:computed、cellClassesForStyle():string、resolvedRadius():RadiusPosition、isTopSticky/isLeftSticky:boolean。descriptorは次の型。
 
 ```ts
 type Raw<T> = T | undefined;
@@ -24,7 +24,7 @@ type RecordView={ownerId:string;recordId:string;body:HTMLTableSectionElement;
  grid:HTMLTableElement;frame?:HTMLDivElement;spacer?:HTMLTableSectionElement};
 ```
 
-raw値と実効値は別属性として発行する。undefined属性は削除、falseは文字列false、0は文字列0。raw/effectiveのprefixはdata-record-raw-*/data-record-effective-*。shadowSizeのみ明示でもshadow群のshouldApplyを有効にし、effectiveShadowに従う。shadow未指定かつ群overrideなしの場合だけContainer.recordShadowの互換経路へ進む。Record自身のshadow=falseはrecordShadow=trueより優先。rounded/border/paddingを子Inputへ代入しない。
+raw値と実効値は別属性として発行する。undefined属性は削除、falseは文字列false、0は文字列0。raw/effectiveのprefixはdata-record-raw-*/data-record-effective-*。末尾はshadow,shadow-size,rounded,rounded-size,border,border-width,paddingの固定7名（camelCaseをDOM名へそのまま渡さない）。shadowSizeのみ明示でもshadow群のshouldApplyを有効にし、effectiveShadowに従う。shadow未指定かつ群overrideなしの場合だけContainer.recordShadowの互換経路へ進む。Record自身のshadow=falseはrecordShadow=trueより優先。rounded/border/paddingを子Inputへ代入しない。
 
 ## TABLEIMPL-02 合法な実体構造
 
@@ -59,7 +59,7 @@ frame用td/trは外側の列結合のためだけでdata cellへ数えない。r
 
 Recordのpaddingがない場合のborder/rounded/shadowは幾何補助のRecord自身の枠・clip・影で描画。padding frameがある場合はdiv自身へ同じ固定スタイルを適用し、Recordの幾何影を重ねない。親Recordのroundedは親の描画領域をclipし、CellのroundedSize/radiusPositionそのものを変更しない。影はRecord一つにつき一経路のみ。Tableのshadowはwrapperだけ。
 
-Rowの実体はtr.app-table-row、stickyは対応Cellのtop stickyへ渡す。Cellはng-template #contentを一つ持ち、headerによりth/tdを排他的に生成。data-bruce-owner/record、native colspan/rowspan、align/verticalAlign、data-table-radius、data-cell-radius-px、data-bruce-border-explicitを設定。visibleはtd/th自身だけ。NgTemplateOutletをimportsへ加え、contentを二重描画しない。
+Rowの実体はtr.app-table-row、stickyは対応Cellのtop stickyへ渡す。Cellはng-template #contentを一つ持ち、headerによりth/tdを排他的に生成。data-bruce-owner/record、native colspan/rowspan、align/verticalAlign、data-table-radius、data-cell-radius-px、data-bruce-border-explicitを設定。rounded群が無指定なら既存radiusPosition、群が有効でeffectiveRounded=falseならNONE、trueならradiusPositionがNONEの時だけALL、それ以外は既存maskを使用する。size無指定かつoverrideなしは既存0.5rem、指定/override時はeffectiveRoundedSize。親の半径は渡さない。visibleはtd/th自身だけ。NgTemplateOutletをimportsへ加え、contentを二重描画しない。
 
 ## TABLEIMPL-03 CSSと装飾の非漏洩
 
@@ -87,7 +87,7 @@ stickyの無指定背景はunderlay。状態20%背景はunderlayの上に同じ2
 
 private observedCells:Set、originalStyles:Map<Element,Map<property,{value,priority,lastWritten}>>、recordLayers:Map<recordId,HTMLElement>、frame?:number、destroyed=falseを所有。collectOwnedCellsはowner一致・data cell・可視のみ、nested Containerは除外。collectRecordsは通常tbodyまたはframe RecordViewで、内部gridをouterの別Recordへ二重計数しない。
 
-MutationObserver attributeFilterはrowspan,colspan,class,style,hidden,data-table-radius,data-cell-radius-px,data-bruce-owner,data-bruce-record、およびdescriptor全16属性。属性名は上記固定型のキーから作る内部固定リストで、公開CSS文字列を解釈しない。ResizeObserverはouter table、各grid、全data cell、radiusProbe。削除要素はunobserve。scroll/resizeをrAF1件に集約し、全read→pure geometry→差分write。自分のSVG/layerへの更新は監視対象外にし、同一属性値を再設定しない。
+MutationObserver attributeFilterはrowspan,colspan,class,style,hidden,data-table-radius,data-cell-radius-px,data-bruce-owner,data-bruce-record、およびdescriptor全14属性。属性名は上記固定型のキーから作る内部固定リストで、公開CSS文字列を解釈しない。ResizeObserverはouter table、各grid、全data cell、radiusProbe。削除要素はunobserve。scroll/resizeをrAF1件に集約し、全read→pure geometry→差分write。自分のSVG/layerへの更新は監視対象外にし、同一属性値を再設定しない。
 
 SVGは各gridに対応するclipPath/arcを持ち、gridのrectを基準に21章tableGridOffset補正を同じgridのgroupRectsへ適用。SVG overlayのwrapper基準原点はleft=gridRect.left-wrapperRect.left-wrapper.clientLeft+wrapper.scrollLeft、topも同様。width/height/viewBoxはgrid実測寸法。clipPathUnits=userSpaceOnUseでgridだけへclip-path=url(絶対document URL#ID)を設定。tableLocal座標とwrapperLocal座標を混ぜない。
 

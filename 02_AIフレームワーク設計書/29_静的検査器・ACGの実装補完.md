@@ -9,11 +9,11 @@
 | 内部関数 | 型／引数／戻り値 |
 |---|---|
 | parseArguments | argv:readonly string[]→Result<BuildOptions> |
-| readWorkspace | root:string→AngularWorkspace。angular.jsonをJSONC解析、projects/options/configurationsの型も検査 |
-| candidateProjects | workspace,configuration:string→readonly string[]。application、build target、対応builder、選択configuration存在で絞る |
+| readWorkspace | root:string→Result<AngularWorkspace>。angular.jsonをJSONC解析、projects/options/configurationsの型も検査 |
+| candidateProjects | workspace→readonly string[]。application、build target、対応builderで絞る。configuration検査はproject決定後 |
 | resolveBuildOptions | workspace,project,configuration→{tsConfig:string,fileReplacements:readonly {replace:string,with:string}[]} |
 | normalizeReplacements | root,entries→ReadonlyMap<string,string>。絶対化・正規化・存在確認。重複replace・循環・同一replaceへの異なるwithは設定エラー |
-| createProgram | context:BuildContext→ts.Program。追加rootや未選択構成を混ぜない |
+| createProgram | context:BuildContext→Result<ts.Program>。追加rootや未選択構成を混ぜない |
 | isOwnSource | path:string,context→boolean。realpathがworkspace内で、成果物／依存除外に一致しないこと |
 
 CompilerHostはreadFile／fileExists／getSourceFileの参照パスをreplacement表で解決する。rootNamesも置換し、resolveModuleNamesではts.resolveModuleNameで解決したresolvedFileNameへ同じ置換を適用して返す。SourceFile.fileNameは置換**実体**のパスとする。HTMLのtemplateUrl解決基準もその実体。原本と置換後を二つの別Componentとして同時列挙しない。
@@ -97,7 +97,7 @@ escapeTsString(String):Stringは単引用符を外側に使い、'→\\'、backs
 
 public validateRegex(List<RegexInput>):void、validateSyntax(List<SourceInfo>):voidを維持。RegexInput(String file,String physicalName,String source)は全String必須、regex sourceは空を形式条件で別検査。SyntaxInputはSourceInfo.sourcePackage()/sourceFileName()/Source()から{file,source}へ写す。ファイル名だけで重複しないようpackageとrelative filenameを結合した識別子をfileとする。Source()は大文字Sの既存アクセサー。
 
-JSONは既存Java JSON serializerを使用し、文字列連結しない。共通request={version:1,mode:'regex'|'syntax',typescriptModulePath:string,items:[...]}。regex item={file,physicalName,source}、syntax item={file,source}。Nodeはversion/modeと全必須フィールド型を検査し、不正要求はstderrに理由を1行、終了2。成功stdout={ok:true}、定義不正stdout={ok:false,index:number,message:string}、正常プロトコルはいずれも終了0。indexは0以上items.length未満。stdoutに他ログを混ぜない。
+JSONはGson 2.13.2を使用し、文字列連結しない。AlfredCodeGenerator/build.gradle.ktsへimplementation("com.google.code.gson:gson:2.13.2")を追加する内部依存設計とし、既存配置済みと偽らない。Gson.toJsonでrequest出力、JsonParser.parseString/JsonObjectでresponseを型・必須field検査する。共通request={version:1,mode:'regex'|'syntax',typescriptModulePath:string,items:[...]}。regex item={file,physicalName,source}、syntax item={file,source}。Nodeはversion/modeと全必須フィールド型を検査し、不正要求はstderrに理由を1行、終了2。成功stdout={ok:true}、定義不正stdout={ok:false,index:number,message:string}、正常プロトコルはいずれも終了0。indexは0以上items.length未満。stdoutに他ログを混ぜない。
 
 リソース/validation/validate-ui-values.mjsをgetResourceAsStreamで読み、専用temp directoryへcopyする。存在しなければAcgSystemException。ProcessBuilder(List.of(nodeExecutable,scriptPath))、shellなし、UTF-8 JSONをstdinへ書きclose。stdout/stderrはExecutorServiceの2 taskで同時に読み、各maxOutputBytesを超えたらプロセスを終了してシステム例外。waitFor(timeout)がfalseならdestroy→短い終了猶予→destroyForcibly、task.cancel。InterruptedExceptionはdestroyForcibly→interruptフラグを戻す→AcgSystemException。finallyでstream close、task終了、executor shutdownNow、script/tempを削除。削除失敗は主例外のsuppressedへ添付し、検証成功を捏造しない。
 
@@ -197,8 +197,10 @@ AcgClassCodeGenerator.generateByClassModel(model):Stringの後でbridge.validate
 
 ## ACGIMPL-05 物理名キー・出力の安全性
 
-項目physicalNameはnull/空/空白だけ/重複を生成前に拒否。業務上のcamelCase等の命名制約は追加しない。全object propertyの出力をcomputed string keyに統一し、例として`['name']:...`、`['__proto__']:...`を出す。`__proto__:...`や単なる引用符keyはprototype setterになるため使用しない。AcgClassCodeGenerator.appendObjectValueはescapeTsString(propertyName)の前後へ[ ]を付けてから:を出力。通常項目名でも出力規則を切り替えない。文字列escapeの定義は本章ACGIMPL-01。
+項目physicalNameはnull/空/空白だけ/重複を生成前に拒否。業務上のcamelCase等の命名制約は追加しない。全object propertyの出力をcomputed string keyに統一し、例として`['name']:...`、`['a-b']:...`を出す。一般objectモデルでも`__proto__:...`や単なる引用符の__proto__ keyはprototype setterになるため使用しない。UI項目の__proto__自体は次の構造予約名として拒否する。AcgClassCodeGenerator.appendObjectValueはescapeTsString(propertyName)の前後へ[ ]を付けてから:を出力。通常項目名でも出力規則を切り替えない。文字列escapeの定義は本章ACGIMPL-01。
 
-TypeScriptの型推論はcomputed literal keyを保持する。画面の@let ctrlsは維持し、非identifier名はctrls['a-b']等で参照、FormGroup.getは区切り付き文字列でなくget(['a.b'])を使用する。Angular既存controls実装が同名のhasOwnPropertyメソッドへ依存するため、その1キーはframeworkの構造予約名として定義エラー（業務命名制約ではない）。constructor/__proto__等の安全なown keyは生成後Object.hasOwnとFormGroup.controls/getの操作で確認する。
+TypeScriptの型推論はcomputed literal keyを保持する。画面の@let ctrlsは維持し、非identifier名はctrls['a-b']等で参照、FormGroup.getは区切り付き文字列でなくget(['a.b'])を使用する。Angular既存controls実装が同名のhasOwnPropertyメソッドへ依存するため、加えてFormGroup.value/getRawValueの通常object accumulatorが__proto__をown値として保持できないため、hasOwnPropertyと__proto__の2キーはframeworkの構造予約名として定義エラー（業務命名制約ではない）。constructor/a-b等の安全なown keyは生成後Object.hasOwnとFormGroup.controls/getの操作で確認する。
 
 AcgSourceSelectorは正規化済みroot相対パス完全一致の除外だけを使い、旧専用色Enumの定義pathを実行リストへ明記する。root外候補はシステムエラー、除外候補は履歴に記録。生成先も正規化してroot内を要求する。検証完了前に既存ファイルを置換せず、全SourceInfoをtempへ書き終えてから出力制御が置換する。部分出力を正常終了にしない。
+
+構造予約名の一次根拠：[Angular 21 FormGroup.contains/_reduceValue](https://github.com/angular/angular/blob/21.0.0/packages/forms/src/model/form_group.ts)。この2名を拒否するのは入力の欠落やprototype変更を防ぐ生成境界であり、業務名の自由な制限ではない。
