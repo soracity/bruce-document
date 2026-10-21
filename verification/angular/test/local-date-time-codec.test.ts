@@ -177,3 +177,43 @@ describe('IMP-10 UIIMPL-04 fromInput', () => {
     expect(() => fromInput('', 'BAD' as never)).toThrow('BRUCE_DATE_TYPE');
   });
 });
+
+describe('IMP-10 UIIMPL-04 DST overlap and unchanged original', () => {
+  it('selects the earlier UTC instant for a newly entered repeated New York time', () => {
+    const previous = process.env.TZ;
+    try {
+      process.env.TZ = 'America/New_York';
+      expect(fromInput('2024-11-03T01:30', 'DATE_TIME')).toEqual({
+        ok: true, value: '2024-11-03T05:30:00.000Z',
+      });
+    } finally {
+      if (previous === undefined) delete process.env.TZ;
+      else process.env.TZ = previous;
+    }
+  });
+  it('preserves the later UTC instant when repeated local time is unchanged', () => {
+    const previous = process.env.TZ;
+    try {
+      process.env.TZ = 'America/New_York';
+      const laterUtc = '2024-11-03T06:30:00Z';
+      const displayed = toInput(laterUtc, 'DATE_TIME');
+      expect(displayed.ok).toBe(true);
+      if (displayed.ok) {
+        expect(displayed.value.text).toBe('2024-11-03T01:30:00.000');
+        expect(fromInput(displayed.value.text, 'DATE_TIME', displayed.value.original)).toEqual({
+          ok: true, value: laterUtc,
+        });
+      }
+    } finally {
+      if (previous === undefined) delete process.env.TZ;
+      else process.env.TZ = previous;
+    }
+  });
+  it('does not trust invalid original UTC even if the local input matches', () => {
+    const result = fromInput('2024-11-03T01:30', 'DATE_TIME', {
+      utc: 'not-a-date', input: '2024-11-03T01:30',
+    });
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.value).not.toBe('not-a-date');
+  });
+});
