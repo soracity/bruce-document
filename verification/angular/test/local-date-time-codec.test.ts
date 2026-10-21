@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseDate, parseLocal } from '../src/local-date-time-codec.js';
+import { parseDate, parseLocal, parseUtc } from '../src/local-date-time-codec.js';
 describe('IMP-10 UIIMPL-04 parseDate (partial codec)', () => {
   it.each([
     ['2024-02-29', 2024, 2, 29], ['2000-02-29', 2000, 2, 29],
@@ -44,6 +44,35 @@ describe('IMP-10 UIIMPL-04 parseLocal (partial codec)', () => {
   it('rejects nonexistent leap date in local datetime', () => {
     expect(parseLocal('2023-02-29T12:30')).toEqual({
       ok: false, error: { reason: 'invalidDate', raw: '2023-02-29T12:30' },
+    });
+  });
+});
+
+describe('IMP-10 UIIMPL-04 parseUtc', () => {
+  it.each([
+    ['2024-02-29T12:30:45Z', '2024-02-29T12:30:45.000Z'],
+    ['2024-02-29T12:30:45.1Z', '2024-02-29T12:30:45.100Z'],
+    ['2024-02-29T12:30:45.12Z', '2024-02-29T12:30:45.120Z'],
+    ['2024-02-29T12:30:45.123Z', '2024-02-29T12:30:45.123Z'],
+    ['0000-01-01T00:00:00Z', '0000-01-01T00:00:00.000Z'],
+    ['+010000-01-01T00:00:00Z', '+010000-01-01T00:00:00.000Z'],
+  ])('accepts UTC %s', (raw, expected) => {
+    const result = parseUtc(raw);
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.value.toISOString()).toBe(expected);
+  });
+  it.each([
+    '2023-02-29T00:00:00Z', '2024-04-31T00:00:00Z',
+    '2024-01-01T24:00:00Z', '2024-01-01T00:60:00Z',
+    '2024-01-01T00:00:60Z', '2024-00-01T00:00:00Z',
+    '2024-01-01T00:00:00+09:00', '2024-01-01T00:00Z',
+    '2024-01-01T00:00:00.1234Z',
+  ])('rejects invalid UTC %s', raw => {
+    expect(parseUtc(raw)).toEqual({ ok: false, error: { reason: 'invalidUtc', raw } });
+  });
+  it('rejects UTC year beyond TimeClip range', () => {
+    expect(parseUtc('+999999-01-01T00:00:00Z')).toEqual({
+      ok: false, error: { reason: 'outOfRange', raw: '+999999-01-01T00:00:00Z' },
     });
   });
 });
