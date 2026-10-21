@@ -33,6 +33,37 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
   private unsubscribe?: () => void;
   private frame?: number;
   private disposed = false;
+  private readonly originalStyles = new Map<HTMLElement, {
+    flexBasis: string; flexGrow: string; lastBasis: string; lastGrow: string;
+  }>();
+
+  private writeAllocation(element: HTMLElement, basis: string, grow: string): void {
+    let saved = this.originalStyles.get(element);
+    if (!saved) {
+      saved = {
+        flexBasis: element.style.flexBasis, flexGrow: element.style.flexGrow,
+        lastBasis: element.style.flexBasis, lastGrow: element.style.flexGrow,
+      };
+      this.originalStyles.set(element, saved);
+    }
+    if (element.style.flexBasis === saved.lastBasis) {
+      element.style.flexBasis = basis;
+      saved.lastBasis = basis;
+    }
+    if (element.style.flexGrow === saved.lastGrow) {
+      element.style.flexGrow = grow;
+      saved.lastGrow = grow;
+    }
+  }
+
+  private restoreAllocation(element: HTMLElement): void {
+    const saved = this.originalStyles.get(element);
+    if (!saved) return;
+    if (element.style.flexBasis === saved.lastBasis) element.style.flexBasis = saved.flexBasis;
+    if (element.style.flexGrow === saved.lastGrow) element.style.flexGrow = saved.flexGrow;
+    this.originalStyles.delete(element);
+  }
+
 
   ngAfterViewInit(): void {
     const wrapper = this.host.nativeElement.querySelector('.bruce-layout-items') as HTMLElement | null;
@@ -72,6 +103,7 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
     this.unsubscribe?.();
     if (this.frame !== undefined && typeof cancelAnimationFrame === 'function') cancelAnimationFrame(this.frame);
     this.frame = undefined;
+    for (const element of this.originalStyles.keys()) this.restoreAllocation(element);
   }
   /** Recalculate visible projected siblings after DOM changes. */
   distribute(wrapper: HTMLElement, requiredWidth: (element: HTMLElement) => number = () => 0): void {
@@ -80,8 +112,7 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
       getComputedStyle(element).display !== 'none');
     for (const element of children) {
       if (!visible.includes(element)) {
-        element.style.flexBasis = '';
-        element.style.flexGrow = '';
+        this.restoreAllocation(element);
       }
     }
     if (!visible.length) return;
@@ -103,16 +134,12 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
       px(wrapperStyle.borderLeftWidth) - px(wrapperStyle.borderRightWidth));
     const rows = LayoutRowUtil.partition(metrics,available,gap);
     if (!rows.length) {
-      for (const element of visible) {
-        element.style.flexBasis = '';
-        element.style.flexGrow = '';
-      }
+      for (const element of visible) this.restoreAllocation(element);
       return;
     }
     for (const row of rows) {
       row.items.forEach((item,index) => {
-        item.element.style.flexGrow = '0';
-        item.element.style.flexBasis = row.widths[index] + 'px';
+        this.writeAllocation(item.element, row.widths[index] + 'px', '0');
       });
     }
   }
