@@ -190,6 +190,28 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
       expect(child.style.boxSizing).toBe('content-box');
     } finally { vi.unstubAllGlobals(); }
   });
+  it('applies and restores the original flex shorthand when supported', () => {
+    const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
+    const values = new Map([['flex','2 1 24px'],['flex-basis','24px'],['flex-grow','2']]);
+    const style = {
+      get flex(){return values.get('flex') ?? '';},
+      get flexBasis(){return values.get('flex-basis') ?? '';},
+      get flexGrow(){return values.get('flex-grow') ?? '';},
+      getPropertyPriority:()=>'',setProperty:(name:string,value:string) => {values.set(name,value);},
+    };
+    const child = {style,getClientRects:()=>[{}]} as unknown as HTMLElement;
+    const wrapper = {children:[child],getBoundingClientRect:()=>({width:200})} as unknown as HTMLElement;
+    vi.stubGlobal('getComputedStyle',() => ({
+      display:'block',columnGap:'8px',paddingLeft:'0px',paddingRight:'0px',
+      borderLeftWidth:'0px',borderRightWidth:'0px',getPropertyValue:() => '1',
+    }));
+    try {
+      component.distribute(wrapper);
+      expect(style.flex).toBe('0 0 200px');
+      component.ngOnDestroy();
+      expect(style.flex).toBe('2 1 24px');
+    } finally { vi.unstubAllGlobals(); }
+  });
   it('schedules redistribution when required-width notification fires', () => {
     const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
     const child = {} as HTMLElement;
