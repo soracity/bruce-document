@@ -265,11 +265,12 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
     wrapper.children = [child] as unknown as HTMLCollection;
     const watch = vi.fn(() => vi.fn());
     let mutationCallback: MutationCallback | undefined;
+    const observe = vi.fn();
     const raf = vi.fn((_callback:FrameRequestCallback) => 9);
     vi.stubGlobal('requestAnimationFrame',raf);
     vi.stubGlobal('MutationObserver',class {
       constructor(callback:MutationCallback){mutationCallback=callback;}
-      observe=vi.fn();
+      observe=observe;
       disconnect=vi.fn();
     });
     try {
@@ -279,7 +280,10 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
       });
       component.ngAfterViewInit();
       expect(watch).toHaveBeenCalledOnce();
+      expect(observe).toHaveBeenCalledWith(wrapper, expect.objectContaining({attributeFilter:['hidden','class','style']}));
       mutationCallback!([{type:'attributes',target:child,attributeName:'hidden'} as MutationRecord],{} as MutationObserver);
+      expect(watch).toHaveBeenCalledOnce();
+      mutationCallback!([{type:'attributes',target:child,attributeName:'style'} as MutationRecord],{} as MutationObserver);
       expect(watch).toHaveBeenCalledOnce();
       const pending = (component as unknown as {frame?:number}).frame;
       expect(pending).toBe(9);
