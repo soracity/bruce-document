@@ -40,6 +40,38 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
       vi.unstubAllGlobals();
     }
   });
+  it('disconnects observers, unsubscribes metrics and cancels pending frame on destroy', () => {
+    const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
+    const resizeDisconnect = vi.fn();
+    const mutationDisconnect = vi.fn();
+    const unsubscribe = vi.fn();
+    const cancel = vi.fn();
+    vi.stubGlobal('cancelAnimationFrame',cancel);
+    try {
+      Object.assign(component, {
+        resizeObserver:{disconnect:resizeDisconnect},
+        mutationObserver:{disconnect:mutationDisconnect},
+        unsubscribe,
+        frame:42,
+        disposed:false,
+      });
+      component.ngOnDestroy();
+      expect(resizeDisconnect).toHaveBeenCalledOnce();
+      expect(mutationDisconnect).toHaveBeenCalledOnce();
+      expect(unsubscribe).toHaveBeenCalledOnce();
+      expect(cancel).toHaveBeenCalledWith(42);
+      expect((component as unknown as {disposed:boolean}).disposed).toBe(true);
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+  it('does not recalculate after destruction', () => {
+    const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
+    Object.assign(component,{disposed:true});
+    const distribute = vi.spyOn(component,'distribute');
+    (component as unknown as {schedule:(wrapper:HTMLElement)=>void}).schedule({} as HTMLElement);
+    expect(distribute).not.toHaveBeenCalled();
+  });
   it('uses standalone app-layout-item selector', () => {
     expect(LayoutItemComponent.ɵcmp.selectors).toEqual([['app-layout-item']]);
     expect(LayoutItemComponent.ɵcmp.standalone).toBe(true);
