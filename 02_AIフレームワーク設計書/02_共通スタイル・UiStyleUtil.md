@@ -75,7 +75,7 @@ export abstract class ComponentBase {
 
 ## STYLE-03 既定値と適用要素
 
-共通基準値を全DOMへ無条件に追加するとDaisyUIの既存表示が変わるため、**既存内部スタイルは省略時に維持し、明示された属性群だけを共通変換で上書きする**。既存仕様で固定されている既定色・FABの影は省略時も適用する。
+共通基準値を全DOMへ無条件に追加するとDaisyUIの既存表示が変わるため、**既存内部スタイルは基底既定だけの場合に維持し、明示Inputまたは部品によるprotected既定値overrideのある属性群を共通変換する**。既存仕様のButton意味色はbtn-secondaryで維持し、未指定時にbg-secondaryを強制しない。FABの影は既定値overrideから1種類だけ生成する。群の有効化とCSSの正本は27章。
 
 | 部品 | スタイル適用先 | 省略時の表示/個別既定 |
 |---|---|---|
@@ -92,7 +92,7 @@ export abstract class ComponentBase {
 | Cell | td/th | 色は親継承、角丸なし、既存padding 0.125rem 0.25rem |
 | Row | tr | 構造・上固定のみ。今回共通スタイルInputの追加対象にせず、色継承の中継者にしない |
 
-明示時の適用単位：border群＝borderまたはborderWidthの指定、rounded群＝roundedまたはroundedSize、shadow群＝shadowまたはshadowSize、padding群＝padding、色群＝各色の指定/継承。明示`border=false`なら幅0、`rounded=false`なら半径0、`shadow=false`なら影なし。真偽をfalseにしても他の群を消さない。
+適用群は27章のshouldApplyで判定する。Inputに加え、当該群の既定値メソッドを部品がoverrideした場合にも有効化する（戻り値が基底と同じでもよい）。基底既定値だけの群は無指定時に既存表示を維持する。明示時の適用単位：border群＝borderまたはborderWidthの指定、rounded群＝roundedまたはroundedSize、shadow群＝shadowまたはshadowSize、padding群＝padding、色群＝各色の指定/継承。明示`border=false`なら幅0、`rounded=false`なら半径0、`shadow=false`なら影なし。真偽をfalseにしても他の群を消さない。
 
 FABの円形は既存`btn-circle`を維持する。24pxを「円形の承認値」として設定しない。明示roundedSizeがある場合だけ固定半径指定を適用する。visible=falseはレイアウトボックス自体を消し、操作・フォーカス対象から外す。display:contentsのRecord/CellはRecord非表示は自身のtbody/Recordスペーサーへ、Cell非表示は自身のtd/thだけへ反映する。Row自体の条件付き除去は画面の@ifで行い、今回visible Inputを独自追加しない。
 
@@ -159,10 +159,10 @@ rootフォント100%案は旧提案。現行ソースの16px設定をこの作�
 | destroyRef | private DestroyRef | 破棄フック |
 | controlSubscription | private Subscriptionまたはundefined | 現在のcontrolのvalue/status購読 |
 | requireControl() | protected、引数なし→FormControl<T> | undefinedならBRUCE_CONTROL_REQUIREDをthrow |
-| bindControl(control) | private、FormControl<T>またはundefined→void | 旧購読解除、新controlのvalueChanges/statusChangesをmerge購読 |
+| bindControl(control) | private、FormControl<T>またはundefined→void | 旧購読解除、新controlのvalueChanges/statusChangesを個別購読（27章の順序） |
 | ngOnDestroy() | public→void | 購読解除。派生クラスがoverrideする場合superを呼ぶ |
 
-Inputの参照が変わる場合にも追従するため、effectからbindControlを呼ぶ。control参照が同じなら再購読しない。購読の各通知でmarkForCheck。undefinedを許すのは既存Toggleのcontrol省略モードを維持するためであり、Textbox/Date/Radioは初回描画前にrequireControlで必須検査する。required inputへ切替えてToggleの既存契約を壊さない。ダミーcontrol・不要なnon-null assertionは使わない。
+Inputの参照が変わる場合にも追従するため、effectからbindControlを呼ぶ。control参照が同じなら再購読しない。各通知は27章のonControlValue/onControlStatusを先に呼び、最後にmarkForCheckする。undefinedを許すのは既存Toggleのcontrol省略モードを維持するためであり、Textbox/Date/Radioは初回描画前にrequireControlで必須検査する。required inputへ切替えてToggleの既存契約を壊さない。ダミーcontrol・不要なnon-null assertionは使わない。
 
 値更新やdisabled変更の際に基底からOutputを発火しない。値とeventKeyを同じ型パラメーターにしない。ComponentBaseにFormControlを戻さない。
 

@@ -6,26 +6,14 @@
   "stage_name": "設計書全体の修正",
   "status": "in_progress",
   "stage_approval": "stage1_approved_stage2_not_requested",
-  "last_completed_unit": "S2-01",
-  "next_action": "通常UI・Form通知・Date・幅計測・文字表示の設計修正を行う。工程②完了まで途中の質問・承認依頼は行わない。",
-  "next_work_unit": "S2-02",
+  "last_completed_unit": "S2-02",
+  "next_action": "Table/Swipeの実体構造・座標・イベント接続を修正する。工程②完了まで承認を求めない。",
+  "next_work_unit": "S2-03",
   "investigation_remaining": [],
   "unapplied_findings": [
     "F01",
-    "F02",
-    "F03",
-    "F04",
-    "F05",
-    "F06",
-    "F07",
-    "F08",
-    "F09",
-    "F10",
-    "F11",
-    "F12",
     "F13",
     "F14",
-    "F15",
     "F16",
     "F17",
     "F18",
@@ -50,7 +38,7 @@
     {
       "id": "S2-02",
       "title": "通常UI・Form通知・Date・計測・文字表示の修正",
-      "status": "pending"
+      "status": "complete"
     },
     {
       "id": "S2-03",

@@ -52,11 +52,11 @@ type LayoutRow = { items:LayoutMetric[]; widths:number[] };
 
 表示順を保持したgreedy分割とする。available=A、gap=g、候補行の件数n、重み和Sに対し、gapを除く幅B=max(0,A−g×(n−1))、各割当p[i]=B×w[i]/S。各必要幅はmin(required[i],A)へ制限する。
 
-既存行の末尾へ次要素を仮追加し、全p[i]が必要幅以上なら同じ行に残す。満たさなければ現在行を確定し、次要素から新しい行を始める。単一項目の必要幅がA超過でもその項目はAへ縮小して単独行に置く。割当でフォントや元spanを書き換えない。A=0は描画待ち、空itemsは空配列、負数/非有限の引数・weight<=0は構成エラー。
+既存行の末尾へ次要素を仮追加し、`g×(n−1)<=A`かつ全p[i]が必要幅以上なら同じ行に残す。必要幅0でもgapだけでAを超える候補は分割する。満たさなければ現在行を確定し、次要素から新しい行を始める。単一項目の必要幅がA超過でもその項目はAへ縮小して単独行に置く。割当でフォントや元spanを書き換えない。A=0は描画待ち、空itemsは空配列、負数/非有限の引数・weight<=0は構成エラー。
 
 例：A=600、g=8、重み50/30/20、必要幅200/160/120。3項目なら292/175.2/116.8となり最後が不足。1行目50:30は370/222、2行目20は600。元の静的span合計100は維持し、折返し後の各行へ100を要求しない。
 
-丸めは最終描画直前のみ。計算値は浮動小数のまま保持し、最後の項目に残差を割り当てて行幅を越えない。設計用のspan合計判定は06章の十進厳密計算を使い、px計算と区別する。
+幅の単位はCSS pxの浮動小数で、独自の整数px丸めは行わない。先頭n−1個をB*w/S、末尾をmax(0,B−先頭合計)とし、各必要幅との比較もこの最終値で行う。比較許容誤差は1e-7px、幅のCSS文字列化は丸めずString(number)。割当＋gapの和はA以内（浮動誤差を除く）。設計用のspan合計判定は06章の十進厳密計算を使い、px計算と区別する。
 
 ## DISPLAY-04 LayoutItemの動的処理
 
@@ -93,7 +93,6 @@ LabelとButtonに`textOverflowMode: InputSignal<AppCodeTextOverflowModeEnum>`、
 ```css
 .bruce-text-viewport { display:block; min-width:0; max-width:100%; }
 .bruce-text-track { display:inline; }
-.bruce-text-marquee .bruce-text-track { display:inline; }
 .bruce-text-marquee .bruce-text-track { display:inline-block; }
 .bruce-text-wrap { white-space:normal; overflow-wrap:anywhere; }
 .bruce-text-ellipsis { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
@@ -117,9 +116,15 @@ Componentではない内部Class。DOMの所有者はLabel/Button。controller�
 | destroy()→void | 全Observer/リスナー/rAF/Animationを解除 |
 | animation / frame / destroyed | private、他Component間で共有しない |
 
-D<=0ならモードがMARQUEEでも静止する。境界は実測小数pxで判定し、往復しながら超過幅が増減するループを作らない。非表示、document.hidden、reduced-motion時には動きを止める。reduced-motion時は静止した全文のアクセシブル名を維持し、WRAPまたは省略への切替方式は18章U-01で判断する。幅・文字・言語・フォント変更時は旧Animationを破棄し、新しいDで再開始する。
+D<=0ならモードがMARQUEEでもx=0で静止。stateは'idle'|'wrap'|'ellipsis'|'marquee'|'paused'|'destroyed'。updateは文字/Enum検査→cancel→viewportの旧mode classを全除去→新modeを1種類付与→textContent更新→schedule。measureはtransform/animationを除いた測定cloneの非折返し文字幅Tとviewport.clientWidth Vを読み、D=max(0,T-V)。track自身の変形後矩形を測定幅へ戻さない。
 
-**未承認の動作詳細**：右方向の移動の座標解釈、速度、端の停止時間、初期表示位置は原典で未確定。これらをコードへ任意の値で埋め込まない。18章U-01に、実装可能な二案と定数・影響・推奨を記載する。選択後にこの節とテストT-TEXT-03/04/06へ反映する。それまではマーキー2方式の実装可能性監査を合格にしない。
+P-01設計案の定数は速度30 CSS px/s、端待機500ms。D>0の右方向移動はx=-D→0。RESTARTは[-Dで500ms停止→0へD/30秒移動→0で500ms停止]を1周期としてiterations=Infinity、easing=linear、周期duration=1000+1000*D/30。次周期の先頭で-Dへ即時復帰。BOUNCEは同じ右移動→0で500ms→-Dへ同速逆移動→-Dで500ms、周期1000+2000*D/30。keyframe offsetは各経過ms/周期で算出し、同位置の端点を二つずつ置く。transformはtranslateX(px)。開始時は末尾側が見えるが初動は承認済み右方向を守る。
+
+reduced-motion時はmodeがmarqueeなら静止WRAPへ切替（P-01の提案部分）。document.hiddenまたは非表示はcancelして再表示で再計測。ResizeObserver(viewport)、MutationObserver(trackのtextのみ)、fonts.ready/loadingdone、matchMedia変更、visibilitychangeを所有する。updateから書いた同一text変更は無視。scheduleはrAF1件、reconcileで古いAnimationをcancel→transformを除去→必要時だけ新Animationを1件生成。destroyは全購読/Observer/rAF/Animationを解除しmode classと自分のtransformを元値へ戻す。破棄後callbackはreturn。
+
+WRAP時trackはinline/white-space:inherit/overflow-wrap:inherit、ELLIPSIS時もinlineでviewportにellipsis。marqueeだけinline-block。Buttonはdisplay:flexの既存.btnとし、viewportはmin-width:0;flex:1 1 auto、WRAP時height:auto/min-heightは既存.btnの値、既存padding/幅/タップ領域の最小値は変更しない。文字レイヤーのtransformやpointer処理でボタン本体を動かさない。Labelはrole=img/全文aria-label、track aria-hidden。Buttonはnative側だけ全文aria-label、viewport aria-hidden。
+
+P-01は内部定数と動作境界をまとめた工程②の具体案であり採用済み承認とは記載しない。実装者はA/B選択を残さず、本節の案を工程②承認後に実装する。
 
 ## DISPLAY-07 受入条件
 
@@ -128,3 +133,24 @@ D<=0ならモードがMARQUEEでも静止する。境界は実測小数pxで判�
 テスト：T-LAY-01〜12、T-TEXT-01〜08、T-DEVICE-01〜08。実機・スクリーンリーダーの結果は未実施として管理する。
 
 実装補完：[27章](27_共通UI・計測・日付の実装補完.md)に測定対象の完全型、native inputの自然幅、登録・再購読・解除、ELLIPSISの実体displayを記す。
+
+## DISPLAY-08 利用可能幅・計測対象・書込み所有
+
+Aは投影wrapperのgetBoundingClientRect().widthから左右borderとpaddingのcomputed px値を除いたcontent-box幅。gはgetComputedStyle(wrapper).columnGapの計算済み値（normalは0）。解決済み値がpx以外または非有限ならBRUCE_LAYOUT_GAPで停止し、root=16を仮定しない。wrapperはdisplay:flex;flex-wrap:wrap;column-gapは既存gap-2;row-gap:既存値、各itemは初期flex:var(--bruce-layout-weight,1) 1 0;min-width:0;box-sizing:border-box。A<=0/非接続/祖先非表示は書込み保留、表示時再計測。LayoutSpanは重みだけを所有する。
+
+| 部品／計測対象 | border-box必要幅の組立て |
+|---|---|
+| Textbox label.floating-label／input | max(ラベル文字幅、size属性によるnative自然幅、placeholder幅+input左右装飾) |
+| Date label.floating-label／input | max(ラベル文字幅、同type/stepのnative自然幅)。元controlは複製しない |
+| Label .bruce-text-track | 非折返し文字幅+viewport左右装飾 |
+| Button button | 非折返しlabelと既存icon/gap/padding/borderの合計 |
+| Radio .bruce-radio-option又はlabel.join-item | BUTTON:max(各選択肢自然幅)*N+gap*(N-1)、RADIO:各自然幅の合計+gap |
+| Toggle checkbox／表示span／icon | control自然幅+任意icon幅+label幅+存在する要素間gap+label外枠装飾 |
+| Alert message領域／action領域 | max(メッセージとiconの非折返し幅、全actionの必要幅合計+gap)+外枠装飾。内部既存md切替に外幅を循環使用しない |
+| Group fieldset/legend/投影内容 | 27章の子min-content必要幅とlegendの最大+左右装飾 |
+| TableContainer wrapper | 内部scrollを許すため外側必要幅0。外側padding/borderがあればその分だけ。表intrinsic幅は内部scroll幅に使う |
+| FAB | Layoutの通常配分対象外。fixedなbuttonの既存寸法だけを計測し行幅へ加えない |
+
+MeasureTarget={selector:string,mode:'intrinsic'|'native-input'}。selector不一致はBRUCE_MEASURE_TARGET。横合成は上表でComponent自身が行い、measureContentの全対象maxだけでRadio等を実装しない。measure()はcopyComputedStyles→clone接続→read→finally remove。複製のfont/color/全--custom-propertyを元computed値から設定し、inputはtype/size/value/placeholderをコピー、id/name/tabindex/イベントは除去。計測再入は27章で拒否する。
+
+LayoutItemはMap<HTMLElement,{flex,minWidth,boxSizing}>に変更前のinline値（priority含む）を保持する。collectItemsで表示boxを収集し、旧watch解除→新集合watch。削除/非表示/破棄時は自分が最後に書いた値と現値が一致する属性だけ元値へ戻す。self-writeのMutationRecordは値比較で捨てる。content/i18n/Input/font通知は同じrAFへ集約し、全read後に一括write。未知display:contents子を自動平坦化しない。

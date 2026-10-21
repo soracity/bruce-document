@@ -50,16 +50,16 @@ selector=app-date、extends FormControlComponentBase<Nullable<string>>。Input�
 <label class="floating-label">
   <span>{{ labelKey() ? (labelKey() | brf9018I18nLabel) : label() }}</span>
   <input class="input text-input font-input date-input border focus:border-neutral py-2 appearance-none"
-    step="any" [type]="type().value" [value]="displayValue()" [disabled]="requireControl().disabled"
+    step="any" [type]="type().value" [disabled]="requireControl().disabled"
     (input)="onInput($event)" (blur)="onBlur()" />
 </label>
 ```
 
-UTC ISOをdatetime-localへ直接[formControl]で渡さない。表示状態displayValueはstring Signal。変換中の不完全な入力は表示状態として保持し、既存の正しいUTC値を壊さない。Component自身の`dateInput`検証エラーをFormControlへ反映し、他Validatorのerrorsを消さない。訂正時はdateInputキーのみ除去する。ACGは日付専用Validatorを生成しない。
+UTC ISOをdatetime-localへ直接[formControl]で渡さない。displayValueは外部同期後の表示記録であり、テンプレートの[value]へバインドしない。27章のsyncFromControlだけがnative input.valueへ書き、ユーザー入力中はブラウザー自身の編集バッファを保持する。変換中の不完全な入力は表示状態として保持し、既存の正しいUTC値を壊さない。Component自身の`dateInput`検証エラーをFormControlへ反映し、他Validatorのerrorsを消さない。訂正時はdateInputキーのみ除去する。ACGは日付専用Validatorを生成しない。
 
-日付はnew Date('YYYY-MM-DD')経由でタイムゾーン変換しない。日時は年月日時分秒をローカル成分へ分解し、有効な日付/時刻かを往復で検査する。無効日・DST欠落時間は入力異常。DSTの重複時刻の扱いは18章U-03で決める。表示形式はOSのネイティブ入力/ロケールに従い、yyyy/MM/ddを設計書から固定しない。
+日付はnew Date('YYYY-MM-DD')経由でタイムゾーン変換しない。日時は年月日時分秒をローカル成分へ分解し、有効な日付/時刻かを往復で検査する。無効日・DST欠落時間は入力異常。DST重複の具体案は27章のJS互換規則とし、工程②全体の承認対象として18章P-03に記録する。表示形式はOSのネイティブ入力/ロケールに従い、yyyy/MM/ddを設計書から固定しない。
 
-CSS：host display:block/min-width:0、input width:100%。文字サイズを幅で縮小しない。テスト：T-DATE-01〜07。DST重複処理の未決を隠して実装可能性合格にしない。
+CSS：host display:block/min-width:0、input width:100%。文字サイズを幅で縮小しない。テスト：T-DATE-01〜07。P-03は工程②承認前の設計案であり、採用済みとしない。
 
 ## UI-04 RadioComponent
 
@@ -127,7 +127,7 @@ host display:block/min-width:0、button width:100%。共通スタイルはnative
 
 selector=app-fab、extends ComponentBase。Input ariaLabel:string必須、eventKey:string=''、buttonClick:Output<string>。onClick():voidはeventKey通知のみ。ng-contentにアイコンを投影する。FormControl不要。
 
-HTML：div.fab→button[type=button].btn.btn-primary.btn-circle.btn-lg.shadow-lg→aria-hiddenのアイコン。ボタンaria-labelはariaLabel。既定PRIMARY、円形、影lgを維持する。
+HTML：div.fab→button[type=button].btn.btn-primary.btn-circle.btn-lg（影はstyleClassesから1種類生成）→aria-hiddenのアイコン。ボタンaria-labelはariaLabel。既定PRIMARY、円形、影lgを維持する。
 
 ```css
 :host { display:block; block-size:calc(4rem + env(safe-area-inset-bottom,0px)); }

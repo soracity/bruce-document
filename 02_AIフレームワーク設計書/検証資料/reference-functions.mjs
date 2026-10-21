@@ -2,12 +2,12 @@
 export function partition(items, available, gap) {
   if (![available,gap].every(v=>Number.isFinite(v)&&v>=0) || items.some(i=>!Number.isFinite(i.required)||i.required<0||!Number.isFinite(i.weight)||i.weight<=0)) throw Error('BRUCE_LAYOUT_METRIC');
   if (available===0 || items.length===0) return [];
-  const widths=xs=>{const sum=xs.reduce((s,i)=>s+i.weight,0),base=Math.max(0,available-gap*(xs.length-1));return xs.map(i=>base*i.weight/sum);};
+  const widths=xs=>{const sum=xs.reduce((s,i)=>s+i.weight,0),base=Math.max(0,available-gap*(xs.length-1));const out=xs.map(i=>base*i.weight/sum);if(out.length)out[out.length-1]=Math.max(0,base-out.slice(0,-1).reduce((a,b)=>a+b,0));return out;};
   const result=[];let row=[];
   const finish=()=>{if(row.length)result.push({items:row,widths:widths(row)});};
   for(const i of items) {
     const candidate=[...row,i],ws=widths(candidate);
-    if(row.length && candidate.some((x,j)=>ws[j]<Math.min(x.required,available))) {finish();row=[i];}
+    if(row.length && (gap*(candidate.length-1)>available || candidate.some((x,j)=>ws[j]+1e-7<Math.min(x.required,available)))) {finish();row=[i];}
     else row=candidate;
   }
   finish();return result;
@@ -26,8 +26,19 @@ export function decimalTotal(raws) {
   if(scale)actual=actual.replace(/0+$/,'').replace(/\.$/,'');
   return {equals100:n===100n*10n**BigInt(scale),actual};
 }
-export const requiredTrim=value=>(value==null || typeof value==='string'&&value.trim().length===0)?{required:true}:null;
-export const ascii=value=>(value==null || value==='' || typeof value==='string'&&/^[\x20-\x7E]*$/.test(value))?null:{ascii:true};
+// AbstractControl.value相当を受ける。Angularの型検査を代用しない。
+export function requiredTrim(control) {
+ const value=control.value;
+ if(value===null||value===undefined)return {required:true};
+ if(typeof value!=='string')return {stringType:true};
+ return value.trim().length===0?{required:true}:null;
+}
+export function ascii(control) {
+ const value=control.value;
+ if(value===null||value===undefined||value==='')return null;
+ if(typeof value!=='string')return {stringType:true};
+ return /^[\x00-\x7F]*$/.test(value)?null:{ascii:true};
+}
 export const resolveColor=(cell,record,table,defaultColor)=>[cell,record,table,defaultColor].find(v=>v!==undefined);
 export function parseDate(raw) {
  const m=/^(\d{4,})-(\d{2})-(\d{2})$/.exec(raw);if(!m)return null;
