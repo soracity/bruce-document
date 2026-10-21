@@ -1,178 +1,129 @@
-# Table・Swipeの実装補完
+# Table・Swipeの内部実装契約
 
-03章の全公開API、21章の幾何計算に対する実装本文。公開Inputを増やさず、固有Inputは既存decorator形式、共通InputはComponentBaseのSignal形式に統一して記述する。固有InputをSignalへ移行する場合は当該テンプレート一式も同時に変更する。
+公開契約は03章、幾何純粋関数は21章。本章が実体構造・CSS・DOM属性・イベント接続の正本。固有Inputは既存decorator、共通InputはComponentBaseのSignalを使用。Rowへ共通Inputを追加しない。内部構造の変更を、固有APIや責務の再議論にしない。
 
-## TABLEIMPL-01 Componentごとの内部メンバー
+## TABLEIMPL-01 所有境界と内部メンバー
 
-| 対象／メンバー | 可視性・型・処理 |
-|---|---|
-| Container.logicalColumns | public getter unknown[]。Number(columns)が有限かつfloor後1以上ならその長さ、他は100。columns変更時のみ配列再生成 |
-| Container.resolvedEmptyMessage() | public→string。emptyMessageKey指定なら既存メッセージi18n、それ以外はemptyMessage |
-| Container.ownStyleClasses() | public→string。ComponentBaseのstyleClassesのうち背景／文字を除く。色はCellへ伝播し、tableへ二重塗りしない |
-| Record.tableLayout | public readonly、祖先Containerをinject。存在しなければ構成エラー |
-| Record.ownStyleClasses() | public→string。背景／文字／shadowを除く。色はCellへ、shadowは幾何補助レイヤーへ渡す |
-| Record.onClick() | public→void。clickableならrecordClick.emit()。画面の選択処理を自動実行しない |
-| Row | sticky:booleanのみ。共通基底・色Inputを新設しない |
-| Cell.record／tableLayout／row | private optional ancestor参照。探索は最も近いContainer境界内に限定 |
-| Cell.resolvedBackground／resolvedText | ComputedSignal<AppUiColorEnumまたはundefined>。各明示InputをCell→Record→Table→Cell既定の順で解決 |
-| Cell.isTopSticky／isLeftSticky | public getter boolean。祖先Row.sticky／自身sticky |
-| Cell.resolvedRadius() | public→RadiusPosition。明示rounded=falseならnone、それ以外はradiusPosition.value |
-| Cell.cellClassesForStyle() | public→string。共通の限定スタイル計算のみ。旧cellClasses／host.className転送とは別責務 |
-| Cell.ngOnChanges() | colSpan／rowSpanの正整数とEnum実体を検査。BRUCE_TABLE_SPANまたはBRUCE_STYLE_VALUE |
+Containerはdocument単位連番ownerId:string、各Recordは同じ規則のrecordId:stringを所有。各実体table/tbody/tr/tdへdata-bruce-owner=ownerId、Recordの自分の実体/セルにはdata-bruce-record=recordId。IDは外部から受け取らず、別Containerを跨がない。
 
-Signalの親色をcomputedから読む。decorator固有InputはngOnChangesで変更を検知し、ChangeDetectorRef.markForCheckと幾何再計算のscheduleへ通知する。TableCornersDirectiveはMutationObserverでも装飾属性更新を検出する。色だけ変えて同じclassを再書込みし続けない。
+RecordはskipSelf注入の必須Container、CellはskipSelfのnearest Container/optional Record/optional Row。Cellで取得したRecord/RowのContainerがCellのnearest Containerと同一である場合だけ利用。別の場合はrecord/rowをundefinedへ落とす。色はCell raw→同一owner Record raw→Container raw→Cell既定。CSSにもownerごとの任意動的色ルールを生成しない。
 
-## TABLEIMPL-02 実体HTML
+Containerの内部関数はownWrapperClasses():string（padding/rounded/shadow）、ownTableClasses():string（border）、emptyCellClasses():string（色）、resolvedEmptyMessage():string、collectRecords():RecordView[]、refreshRecords():void。RecordはownFrameClasses():string、needsPaddingFrame:boolean、onClick():void、rawDescriptor():RecordStyle、publishDescriptor():void。CellはresolvedBackground/Text:computed、cellClassesForStyle():string、resolvedRadius():RadiusPosition、isTopSticky/isLeftSticky:boolean。descriptorは次の型。
 
-Containerは03章TABLE-05に、wrapperのvisibleと限定スタイルを加えた次の形とする。Header/TabBar以外の画面向けclass入力を新設しない。
-
-```html
-<div class="app-table-layout-wrapper" [class.overflow-x-auto]="responsive"
-  [class.bruce-hidden]="!effectiveVisible()" data-bruce-style [class]="ownWrapperClasses()">
-  <table class="table table-fixed w-full app-table-layout" appTableCorners
-    data-bruce-style [class]="ownTableClasses()"
-    [class.app-table-layout--zebra]="zebra" [class.min-w-max]="responsive"
-    [class.app-table-layout--record-shadow]="recordShadow"
-    [style.--app-table-record-gap.px]="recordGap">
-    <colgroup>@for (column of logicalColumns; track $index) { <col /> }</colgroup>
-    @if (empty) {
-      <tbody class="app-table-empty"><tr>
-        <td class="app-table-cell" [attr.colspan]="logicalColumns.length"
-          data-bruce-style [class]="emptyCellClasses()">{{ resolvedEmptyMessage() }}</td>
-      </tr></tbody>
-    } @else { <ng-content /> }
-  </table>
-</div>
+```ts
+type Raw<T> = T | undefined;
+type RecordStyle = {
+ shadow:Raw<boolean>;shadowSize:Raw<UiShadowSize>;
+ rounded:Raw<boolean>;roundedSize:Raw<UiRoundedSize>;
+ border:Raw<boolean>;borderWidth:Raw<UiBorderWidth>;padding:Raw<UiPadding>;
+ effectiveShadow:boolean;effectiveShadowSize:UiShadowSize;
+ effectiveRounded:boolean;effectiveRoundedSize:UiRoundedSize;
+ effectiveBorder:boolean;effectiveBorderWidth:UiBorderWidth;effectivePadding:UiPadding;
+};
+type RecordView={ownerId:string;recordId:string;body:HTMLTableSectionElement;
+ grid:HTMLTableElement;frame?:HTMLDivElement;spacer?:HTMLTableSectionElement};
 ```
 
-ownWrapperClasses():stringはContainer自身のrounded／shadowのみ、ownTableClasses():stringはborder／paddingのみ。ownStyleClassesをこの二つに分ける。Container背景／文字はemptyCellClasses()または各Cellでのみ適用。空表示tdの状態背景もCellと同じ20%変換、文字は通常変換。empty=trueで投影データのDOMがAngularの投影制約により生成されても、データを表示する投影口は一つだけとし、幾何処理は可視の実体だけを収集する。
+raw値と実効値は別属性として発行する。undefined属性は削除、falseは文字列false、0は文字列0。raw/effectiveのprefixはdata-record-raw-*/data-record-effective-*。shadowSizeのみ明示でもshadow群のshouldApplyを有効にし、effectiveShadowに従う。shadow未指定かつ群overrideなしの場合だけContainer.recordShadowの互換経路へ進む。Record自身のshadow=falseはrecordShadow=trueより優先。rounded/border/paddingを子Inputへ代入しない。
 
-Record：
+## TABLEIMPL-02 合法な実体構造
+
+Container: div.app-table-layout-wrapper→table.app-table-layout[appTableCorners]→colgroup（logicalColumns個）と空tbodyまたは投影Record。wrapperにvisible/padding/rounded/shadow、tableにborderを適用。wrapperのpaddingは外側余白でありCellへコピーしない。responsive時wrapper overflow-x:auto/table min-width:max-content、通常table width:100%/table-layout:fixed。empty時tdはcolSpan=logicalColumns.length、背景はCellと同じ状態20%変換。
+
+通常Record: gap>0のspacer tbody→data tbody.app-table-record→投影Row(tr)→Cell(th/td)。spacerはaria-hidden、td colspan=logicalColumns.length、height=recordGap、padding/border0、透明。先頭の可視Recordのspacerだけ非表示。hidden Recordのspacerも非表示。
+
+**Recordのpaddingが有効かつeffectivePadding>0の場合**はtbodyへ効かないpadding classを付けず、同じRecordのテンプレートを次の構造へ切り替える。
 
 ```html
-@if (tableLayout.recordGap > 0) {
-  <tbody class="app-table-record-spacer-group" aria-hidden="true"
-    [class.bruce-hidden]="!effectiveVisible()">
-    <tr class="app-table-record-spacer"><td [attr.colspan]="tableLayout.logicalColumns.length"></td></tr>
-  </tbody>
-}
-<tbody class="app-table-record" data-bruce-style [class]="ownStyleClasses()"
-  [class.bruce-hidden]="!effectiveVisible()" [class.cursor-pointer]="clickable"
-  [class.app-table-record--selected]="selected"
-  [class.app-table-record--cell-border]="cellBorder"
+<tbody class="app-table-record" [attr.data-bruce-owner]="tableLayout.ownerId"
+  [attr.data-bruce-record]="recordId" [class.bruce-hidden]="!effectiveVisible()"
   [attr.aria-selected]="selected ? true : null" (click)="onClick()">
-  <ng-content />
+  <tr class="app-table-record-frame-row" role="presentation">
+    <td class="app-table-record-frame-cell" role="presentation"
+      [attr.colspan]="tableLayout.logicalColumns.length">
+      <div class="app-table-record-frame" data-bruce-style [class]="ownFrameClasses()">
+        <table class="app-table-record-grid" role="presentation"
+          [attr.data-bruce-owner]="tableLayout.ownerId" [attr.data-bruce-record]="recordId">
+          <colgroup>@for (c of tableLayout.logicalColumns; track $index) { <col /> }</colgroup>
+          <tbody><ng-content /></tbody>
+        </table>
+      </div>
+    </td>
+  </tr>
 </tbody>
 ```
 
-Recordには幾何描画用に`data-record-shadow`（true/false/未指定）、`data-record-shadow-size`、`data-record-rounded`、`data-record-rounded-size`を実効値から設定する。これらはDOM内部属性であり公開Inputの追加ではない。roundedSize未指定ではセルCSS変数を削除して既存測定半径へ戻し、明示0は0pxとして保持する。shadowのundefinedをtrue/falseへ潰す前に記録し、recordShadowの互換フォールバックと区別する。自分のスペーサーはRecordと一緒に表示を切り替える。Cell一つの非表示ではスペーサーを消さない。
+通常構造とframe構造のng-contentを二つ置かない。投影Rowを一つのng-template #recordContentへ収め、両分岐からNgTemplateOutletで排他的に1回描画する。内部tableは別Containerではなく同じownerのgrid。inner native colSpan/rowSpan・100論理列・border-collapseを使うため、結合を手製のdiv格子へ置換しない。padding=0は通常構造とし、Record自体のpaddingなしを実現する。Inputが変わり構造が切り替わった時は旧geometry/監視を解除し、afterNextRenderで再収集する。
 
-Row：
+frame用td/trは外側の列結合のためだけでdata cellへ数えない。role=presentationのinner tableの投影tr/td/thへそれぞれrow/cell/columnheaderまたはrowheaderの既存意味を明示し、aria-rowindex/aria-colindexをContainer全Record通算で設定する。外側tableはrole=table、aria-rowcount/colcountを表示論理行・列の値にする。header cellにはowner内一意ID、data cellには該当列とrowSpanに対応するheader IDのheaders属性を発行し、別ownerのheaderを混ぜない。frameの有無でheader関連とkeyboard経路を変えない。二重tableの読み上げとsticky挙動は工程③/実機で検証し、記述だけで合格にしない。
 
-```html
-<tr class="app-table-row" [class.app-table-row--sticky]="sticky"><ng-content /></tr>
-```
+Recordのpaddingがない場合のborder/rounded/shadowは幾何補助のRecord自身の枠・clip・影で描画。padding frameがある場合はdiv自身へ同じ固定スタイルを適用し、Recordの幾何影を重ねない。親Recordのroundedは親の描画領域をclipし、CellのroundedSize/radiusPositionそのものを変更しない。影はRecord一つにつき一経路のみ。Tableのshadowはwrapperだけ。
 
-Cellは同じcontent TemplateRefをth／tdへ投影する。`content`を2回同時描画しない。
+Rowの実体はtr.app-table-row、stickyは対応Cellのtop stickyへ渡す。Cellはng-template #contentを一つ持ち、headerによりth/tdを排他的に生成。data-bruce-owner/record、native colspan/rowspan、align/verticalAlign、data-table-radius、data-cell-radius-px、data-bruce-border-explicitを設定。visibleはtd/th自身だけ。NgTemplateOutletをimportsへ加え、contentを二重描画しない。
 
-```html
-<ng-template #content><ng-content /></ng-template>
-@if (header) {
-  <th class="app-table-cell font-semibold" data-bruce-style [class]="cellClassesForStyle()"
-    [class.app-table-cell--left]="isLeftSticky" [class.app-table-cell--top]="isTopSticky"
-    [class.bruce-hidden]="!effectiveVisible()"
-    [attr.colspan]="colSpan" [attr.rowspan]="rowSpan"
-    [style.text-align]="align.value" [style.vertical-align]="verticalAlign.value"
-    [attr.data-table-radius]="resolvedRadius()"
-    [attr.data-bruce-border-explicit]="borderExplicit ? 'true' : null"
-    [style.--bruce-cell-radius.px]="roundedSize() === undefined ? null : effectiveRoundedSize()">
-    <ng-container [ngTemplateOutlet]="content" />
-  </th>
-} @else {
-  <td class="app-table-cell" data-bruce-style [class]="cellClassesForStyle()"
-    [class.app-table-cell--left]="isLeftSticky" [class.app-table-cell--top]="isTopSticky"
-    [class.bruce-hidden]="!effectiveVisible()"
-    [attr.colspan]="colSpan" [attr.rowspan]="rowSpan"
-    [style.text-align]="align.value" [style.vertical-align]="verticalAlign.value"
-    [attr.data-table-radius]="resolvedRadius()"
-    [attr.data-bruce-border-explicit]="borderExplicit ? 'true' : null"
-    [style.--bruce-cell-radius.px]="roundedSize() === undefined ? null : effectiveRoundedSize()">
-    <ng-container [ngTemplateOutlet]="content" />
-  </td>
-}
-```
+## TABLEIMPL-03 CSSと装飾の非漏洩
 
-ngTemplateOutletを使うComponentのimportsへNgTemplateOutletを加える。03章のInput名cellClasses廃止は、任意CSS転送の廃止を意味する。ここでのcellClassesForStyleは固定値変換結果だけで、ElementRef.classNameを読まない。
-
-## TABLEIMPL-03 CSSと優先順位の実現
+グローバルCSSは以下の実体クラスに直接付ける。祖先Recordから全descendant Cellへ適用するセレクターは使わない。
 
 ```css
-app-table-record, app-table-row, app-table-cell { display:contents; }
-app-table-container-layout { display:block; min-width:0; }
-app-table-container-layout .app-table-layout-wrapper { position:relative; isolation:isolate; }
-app-table-container-layout .app-table-layout { border-collapse:collapse; border-spacing:0; }
-app-table-container-layout .app-table-cell { padding:0.125rem 0.25rem; }
-app-table-container-layout .app-table-record--selected {
-  --bruce-record-underlay:var(--color-primary);
-  background-color:var(--color-primary); color:var(--color-primary-content);
-}
-app-table-container-layout .app-table-cell--left { position:sticky; left:0; z-index:10; }
-app-table-container-layout .app-table-cell--top { position:sticky; top:0; z-index:20; }
-app-table-container-layout .app-table-cell--left.app-table-cell--top { z-index:25; }
-app-table-container-layout .app-table-record--cell-border .app-table-cell:not([data-bruce-border-explicit]) {
-  border:1px solid var(--color-base-300);
-}
-app-table-container-layout .app-table-record-spacer > td {
-  height:var(--app-table-record-gap,0px); padding:0!important; border:0!important; background:transparent!important;
-}
+app-table-record,app-table-row,app-table-cell { display:contents; }
+app-table-container-layout { display:block;min-width:0; }
+.app-table-layout-wrapper { position:relative;isolation:isolate; }
+.app-table-layout,.app-table-record-grid { border-collapse:collapse;border-spacing:0;table-layout:fixed;width:100%; }
+.app-table-cell { padding:.125rem .25rem; }
+.app-table-cell--left { position:sticky;left:0;z-index:10; }
+.app-table-cell--top { position:sticky;top:0;z-index:20; }
+.app-table-cell--left.app-table-cell--top { z-index:25; }
+.app-table-cell--record-border:not([data-bruce-border-explicit]) { border:1px solid var(--color-base-300); }
+.app-table-record-frame-cell { padding:0!important;border:0!important;background:transparent; }
+.app-table-record-spacer > td { height:var(--app-table-record-gap,0px);padding:0!important;border:0!important;background:transparent!important; }
 ```
 
-zebraはDOMのtbody nth-childでは判定しない。スペーサーやcolgroupが数えられるため、Container内の可視データRecordを表示順に収集し、index奇数のRecordに固定クラス`app-table-record--zebra`を付ける。ネストした別ContainerのRecordは除外する。未選択zebraの下地をbase-200、通常をbase-100にする。selectedの限定セレクターをzebraより後に置く。hoverによる既存base-200は選択色を消さない。先頭の**表示Record**に対応するスペーサーは非表示にし、hidden Recordによって余計な先頭gapを作らない。これらは構造・非表示処理の具体化であり、色継承対象の追加ではない。
+refreshRecordsは同一ownerのdata tbodyだけを表示順収集。各RecordのCellへ**構造状態**の固定class app-table-cell--selected/--zebra/--record-borderと、内部underlayを直接発行する（公開スタイルInputの継承ではない）。Cell収集はowner/record一致を条件にし、内側別Containerを除外。先頭可視spacerを隠し、可視Record index奇数だけzebra。selectedのunderlay=primary、未選択zebra=base-200、他=base-100。Cell明示/解決背景と文字を先に保ち、未指定の場合だけunderlay/text-primary-contentを使う。Cell textColor明示はselectedより優先。
 
-border明示クラスは27章のlayer外限定CSS、Recordの一括罫線は明示属性のないセルのみ。Cellの明示paddingクラスは上記既定paddingより優先する特異性で定義する。roundedは実効data-table-radiusとセル半径を幾何計算へ渡し、collapsed borderへborder-radiusだけを設定して済ませない。
+stickyの無指定背景はunderlay。状態20%背景はunderlayの上に同じ20%色のlinear-gradientを重ねる。4状態×left/top用固定classで定義し、動的CSS名を作らない。通常の不透明指定色はそのまま。Record frameの背景へ同じ状態20%を重ね塗りしない。共通明示padding/borderは27章の高特異性CSS、Record一括罫線は明示のないセルだけ。unknown Enumやspan不正は03章の構成エラー。
 
-stickyの背景：通常色指定がある場合はその不透明なbg-*を維持。追加色なしの場合は`background-color:var(--bruce-record-underlay,var(--color-base-100))`。20%状態色の場合は同じ下地をbackground-colorへ設定し、状態色20%のlinear-gradientをbackground-imageへ設定する。4状態×top／leftのセレクターを固定記述し、Cellの色指定をbase-100で消さない。通常セルの20%は従来どおり透過背景。textColor明示はselectedの継承文字より優先する。
+## TABLEIMPL-04 read/write・座標・復元
 
-## TABLEIMPL-04 幾何描画のread／writeと影
+private observedCells:Set、originalStyles:Map<Element,Map<property,{value,priority,lastWritten}>>、recordLayers:Map<recordId,HTMLElement>、frame?:number、destroyed=falseを所有。collectOwnedCellsはowner一致・data cell・可視のみ、nested Containerは除外。collectRecordsは通常tbodyまたはframe RecordViewで、内部gridをouterの別Recordへ二重計数しない。
 
-TableCornersDirectiveは一つのtableに一つ。03章の状態に、private originalClipPath:string、private generatedClipPath:string、private recordLayers:Map<HTMLTableSectionElement,HTMLElement>、private uniqueId:stringを加える。IDはdocument単位の増分番号で発行し、view再生成でも別IDを使う。
+MutationObserver attributeFilterはrowspan,colspan,class,style,hidden,data-table-radius,data-cell-radius-px,data-bruce-owner,data-bruce-record、およびdescriptor全16属性。属性名は上記固定型のキーから作る内部固定リストで、公開CSS文字列を解釈しない。ResizeObserverはouter table、各grid、全data cell、radiusProbe。削除要素はunobserve。scroll/resizeをrAF1件に集約し、全read→pure geometry→差分write。自分のSVG/layerへの更新は監視対象外にし、同一属性値を再設定しない。
 
-initializeでoriginalClipPathを退避し、wrapper直下にSVG（clipPathと弧）・shadowLayer・radiusProbeを作る。SVGのwidth／height／viewBoxは現在tableの実測寸法。clipPathUnitsはuserSpaceOnUse、clip-rule=evenodd。arcsは21章のstrokeWidthごとにpathを一つ作る。pathへfill=none／stroke=var(--color-base-300)／pointer-events=noneを設定。
+SVGは各gridに対応するclipPath/arcを持ち、gridのrectを基準に21章tableGridOffset補正を同じgridのgroupRectsへ適用。SVG overlayのwrapper基準原点はleft=gridRect.left-wrapperRect.left-wrapper.clientLeft+wrapper.scrollLeft、topも同様。width/height/viewBoxはgrid実測寸法。clipPathUnits=userSpaceOnUseでgridだけへclip-path=url(絶対document URL#ID)を設定。tableLocal座標とwrapperLocal座標を混ぜない。
 
-updateの順序は、(1)対象tableに直接属する可視tbodyと可視td/thを収集、(2)全getBoundingClientRect／computedStyleを読み終える、(3)21章のtableGridOffset→tableCornerGeometry、(4)差のあるpath／位置／clipだけwrite。Recordの選択／zebra／Cellの実効border-widthと--bruce-cell-radiusもread段階で解決。data-table-radius=noneまたはrounded=falseなら半径0。書込みで再発火したObserverは値同一なら再書込みしない。
+paddingなしRecordのown border/rounded/shadow layerはRecordView.bodyのrectを同じwrapper座標へ変換し描画。rounded=falseは0、明示sizeは指定px、overrideなしは既存0.5rem。shadowはraw明示/群override→effective値、どちらもなしだけContainer.recordShadow/mdへ。padding frameはdivが描くためこのlayerから除外する。Layerのpointer-events:none、Record影はtable背面、arcはz-index30。削除/非表示のRecord/gridのlayer/clipを除去する。
 
-影を必要とするRecordは、Record.shadow明示→Container.recordShadowの順で判定する。RecordのshadowSize明示またはRecord既定mdを使用する。recordShadowだけがtrueの互換経路は従来shadow-md／rounded-lg。Record.rounded=falseなら四角、roundedSize明示なら指定px、それ以外は既存0.5rem。Cellへ影をコピーしない。
+restoreは現値===lastWrittenの場合だけ元value/priorityへ戻す。別処理の変更を上書きしない。destroyはflag→rAF取消→全Observer/event解除→全gridのclip/style復元→自分のDOM除去→Map.clear。width0/非接続時は旧layerを非表示にして再測定を保留する。
 
-shadowLayerはwrapperのabsolute子、pointer-events:none、tableより背面。Record矩形から`left=rect.left-wrapperRect.left+wrapper.scrollLeft`、topも同様、width／heightを設定。Record一つにつき一要素。削除／非表示Recordの古い要素はremoveしてMapから除去。Table共通shadowはwrapper自身で描画するため、この処理でRecordへ伝播しない。
+## SWIPEIMPL-01 portal・Geometryの完全式
 
-scroll／resize／ResizeObserver／MutationObserverはscheduleでrAF一つへ集約。ngOnDestroyはフラグ→cancelAnimationFrame→全Observer.disconnect→全イベント解除→自身のDOM除去。clip-pathが自分のgeneratedClipPathのままの場合だけoriginalClipPathへ戻す。別処理が変更した値を無条件に上書きしない。
+既存依存ElementRef、TemplateRef、ApplicationRef、DOCUMENT、DestroyRef、optional Table単位SwipeCoordinatorを使う。createEmbeddedView({close:()=>close()})→attachView→bodyへoverlay/panel→rootNodes append→detectChanges。旧viewはdetach→destroy、旧DOM remove。host/table本体を移動しない。
 
-## SWIPEIMPL-01 Portal生成・位置計測の全手順
+```ts
+type Rect={left:number;top:number;right:number;bottom:number};
+type Geometry={host:Rect;clip:Rect;panelWidth:number};
+```
 
-SwipeDirectiveの依存はElementRef<HTMLElement>、TemplateRef Input、ApplicationRef、DOCUMENT、DestroyRef、optional SwipeCoordinator。TemplateRef.createEmbeddedView({close:()=>close()})→ApplicationRef.attachView(view)→bodyへoverlay／panelを生成→view.rootNodesをpanelへappend→view.detectChanges。旧viewはdetachView→destroy、旧overlayをremoveする。元tableのtbody／tr／tdのDOMを移動しない。
+hostがdisplay:contentsなら同ownerのdata領域union（spacer除外）、通常hostは実rect。clipはhost∩viewport∩全scroll祖先client矩形∩visualViewport可視矩形。祖先client矩形はrect.left+clientLeft/top+clientTopを原点、clientWidth/Heightを寸法とする。visualViewportはoffsetLeft/offsetTop/width/height。空交差ならclose/操作不可。panelWidth=min(host.right-host.left,自然panel幅)。
 
-overlayはposition:fixed／overflow:hidden／pointer-events:none／z-index:40。panelはabsolute／right:0／top:0／height:100%／display:flex。背景・枠・影はパネル内部の既存固定styleのみ。gesture判定をComponentBaseに入れない。閉状態のpanelはtranslateX(width)、開状態はtranslateX(0)、drag中はtranslateX(width-offset)。動かすのはpanelで、元のButtonやTable全体をtransformしない。
+overlayはfixed、left=clip.left、top=clip.top、width=clip.right-clip.left、height=clip.bottom-clip.top、overflow:hidden、pointer-events:none、z-index40。panelはabsolute、**right=clip.right-host.right、top=host.top-clip.top、height=host.bottom-host.top**、width=panelWidth。従ってpanelの右端は常にhost.rightで、overlayだけが可視領域でclipする。閉translateX(panelWidth)、開0、dragはpanelWidth-offset。幾何更新はtransition:noneでsnap、通常settleだけ180ms、reduce時none。
 
-measureGeometry():Geometryまたはundefinedはhost実体rectを取得。display:contentsの場合は所有hostの可視データ子のrect union（スペーサー除外）。viewportの{left:0,top:0,right:innerWidth,bottom:innerHeight}と各scroll祖先のclient矩形の共通領域を求める。visualViewportがあればoffsetLeft／offsetTop／width／heightの可視矩形も交差する。交差幅／高さ0ならcloseし操作不可。panel自然幅を一度readしmin(host幅,panel幅)を採用。overlayのclip矩形は共通領域、panelのright位置はhost右端から共通領域右端の差で補正する。
+themeはroot/hostの全--custom-property/font/color/directionをoverlayへコピーし、コピー済みSetにない旧値を削除。host祖先class/data-theme変化、visualViewport resize/scroll、window resize、capture scroll、ResizeObserverをrAF1件へ集約。Geometry read後にまとめてwrite。
 
-Geometry型は`{host:{left,top,right,bottom},clip:{left,top,right,bottom},panelWidth:number}`。updateGeometry():voidは前回との差だけ書き、geometry変更中のtransitionを一時noneにする。resize／scrollによるpanelの位置変更で180msの追従遅れを作らない。root／hostの全`--*` custom properties、font、color、directionをoverlayへコピーし、テーマ属性class/data-themeの変化で再コピーする。コピーしなくなった旧custom propertyは削除する。
+## SWIPEIMPL-02 イベント接続・排他・抑止
 
-## SWIPEIMPL-02 Pointer・通知・解除
+全登録はaddListener(target,type,handler,options)で解除関数をlisteners:Array<()=>void>へ格納。host pointerdown、document pointermove/up/cancel（capture,passive:false）、host lostpointercapture、document click（capture）、document keydown（capture）、panel click/keydownを登録。document側はactive gesture idまたは自分のopen状態に該当する時だけ処理。panel内イベントをhostの誤クリック抑止へ流さない。
 
-03章のgesture状態と閾値を使う。private listeners:Array<()=>void>、private previousFocus:HTMLElementまたはundefined、private suppressClickUntil:number=0、private animationFrame:numberまたはundefinedを所有する。
+pointerdownはprimary/左button/template/geometry/別gestureなしを確認。panel内部・native入力操作中は新規dragを開始しない。開始座標/startOffset/wasOpenとpreviousFocusを保存。moveで8px、方向比1.25を判定。縦はcaptureもpreventDefaultもせず終了。横はnewOffset=clamp(startOffset-dx,0,width)、newOffset>0になる**前**にclaim(this)。claim失敗なら取消/0へ戻し露出しない。成功ならcaptureを試み、cancelable時のみpreventDefault→offset反映。単独カードはclaim相当をtrueとする。
 
-pointerdownはprimary pointer／左button／templateあり／有効Geometry／他gestureなしで開始。inputなど本来操作可能な対象を勝手にdisabledにしない。座標・開始offset・wasOpenを保存する。moveで8px以上かつ方向比1.25を超えたときだけaxisを確定。縦なら元状態へ戻してgesture終了、preventDefault／captureを行わない。
+pointerupは最後の座標まで反映、閾値min(48,width/2)。閉開始はoffset-startOffset>=閾値、開開始は差>-閾値でopen。cancel/lostcaptureはwasOpenへ復元し、初期closedへ戻る場合はrelease。up後に自分でreleasePointerCaptureして届いたlostイベントはgesture終了後なので無視。Eventの二重配送はWeakSet<Event>で抑止。settleはclaimを再確認し状態確定→offset/render/inert/aria確定→状態差がある場合だけswipeOpenChange.emit。
 
-横のoffset=clamp(startOffset-dx,0,width)。pointerupも最後の座標でoffsetを更新し、delta=offset-startOffset、t=min(48,width/2)として、閉開始はdelta>=tでopen、開開始はdelta>-tでopen維持。cancelはwasOpenへ戻す。captureが失敗してもdocumentのpointermove/up/cancelで同じgesture idを追跡。二重に同じイベントを処理しないため処理済みEventをWeakSetへ記録する。
+横drag成立後のpointer clickは700ms、detail>0かつ元内容由来だけpreventDefault/stopImmediatePropagation。keyboard detail0は通す。open中の元内容tapはcloseしRecord clickへ流さない。panel内buttonのclick/Enter/Spaceは通常到達し、Escapeだけclose。panelはclosed/drag中inert=true/aria-hidden=true/pointer-events:none、静止openだけ解除。closeでfocusがpanel内なら接続済みpreviousFocusへpreventScroll復元。
 
-横drag終了時にsuppressClickUntil=performance.now()+700。capture clickのdetail>0かつ期限内ならpreventDefault／stopImmediatePropagation。detail=0のkeyboard clickは通す。開状態で元内容をtapした場合はcloseしてRecordのクリックへ進めない。closed状態の通常tapは止めない。panel内部のアクションclickは元内容の誤クリック抑止と分離する。
+SwipeCoordinator.claimはactiveを新ownerへ設定→旧close→active===ownerを返す。releaseは同一ownerの場合だけ解除。reentrantなOutputから別ownerが開いても最後の所有者を保持。destroyはflag→gesture取消→close/release→capture解除→全listener/Observer/rAF解除→view detach/destroy→DOM remove。解除は複数回呼べる。template変更は同じcleanup後に再生成。
 
-settle(open)は、開く場合coordinator.claim(this)に失敗したら閉状態へ戻す。状態が変化した場合にだけswipeOpenChangeをemit。通知前にopened／offset／inert／aria-hiddenを確定し、通知から別ownerがopenする再入でもcoordinator.activeを壊さない。閉じたpanel内にfocusがあった場合だけ、接続済みpreviousFocusへfocus({preventScroll:true})を行う。Escapeはopen時だけclose。gesture中やclosedはpanelをinert／aria-hidden／pointer-events:none、静止openだけ解除する。
+## SWIPEIMPL-03 横scrollとの境界（P-02設計案）
 
-`prefers-reduced-motion:reduce`は既存の180ms transitionをnoneにする。TemplateRef変更時はgesture取消→close→旧viewとDOM破棄→新view生成。ngOnDestroyはdestroyed=true→close/release→pointer capture解放→全イベント解除→Observer.disconnect→rAF取消→view detach/destroy→DOM除去。破棄後callbackは何もしない。
+responsive Containerでwrapper.scrollWidth-wrapper.clientWidth>1 CSS pxの場合、pointer Swipeを開始しない。touch-actionはpan-x pan-y pinch-zoom、capture/preventDefaultをしない。overflowがない場合/単独カードは現行pan-y pinch-zoomのSwipeを維持。ResizeObserverでoverflowを更新し、drag中にscroll優先へ変わった場合はcancelして元状態へ戻す。
 
-横scrollとSwipeの優先規則はU-02の選択待ちであり、この手順だけで両方の競合が解消済みと扱わない。SwipeのActionsラベル多言語APIも原典の検討事項として残し、英語固定値の互換実装を勝手な新規公開Inputへ変更しない。
-
-## 検証
-
-T-TABLE-15：先頭Recordを非表示にし次の可視Record先頭に余計なgapが出ないこと。T-SWIPE-13：同じPointerEventがhost／document両方へ届いても移動・通知は1回。T-TABLE-16：自身のclip-path設定後に別処理が変更した値を、破棄時に上書きしない。既存のT-TABLE-01〜14／T-SWIPE-01〜12と合わせて実行する。今回、実ブラウザーでこれらの操作試験は行っていない。
+既存open()/close()はどちらの状態でも有効。利用画面はCell内の既存Buttonから同じDirectiveのopen()を呼ぶ操作経路を持つ。共通側で新しい列/タップ寸法/業務ラベルを自動挿入しない。Actionsの既存英語ラベルは互換値、未承認の新i18n Inputを追加しない。P-02は原典の横scroll競合を閉じる具体案であり工程②全体の承認対象。実機で動いたとは記載しない。

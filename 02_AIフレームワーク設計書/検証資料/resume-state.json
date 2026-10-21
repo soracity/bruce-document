@@ -6,19 +6,14 @@
   "stage_name": "設計書全体の修正",
   "status": "in_progress",
   "stage_approval": "stage1_approved_stage2_not_requested",
-  "last_completed_unit": "S2-02",
-  "next_action": "Table/Swipeの実体構造・座標・イベント接続を修正する。工程②完了まで承認を求めない。",
-  "next_work_unit": "S2-03",
+  "last_completed_unit": "S2-03",
+  "next_action": "静的検査器・ACG・公開証跡の完全な型と全失敗経路を修正する。",
+  "next_work_unit": "S2-04",
   "investigation_remaining": [],
   "unapplied_findings": [
     "F01",
     "F13",
     "F14",
-    "F16",
-    "F17",
-    "F18",
-    "F19",
-    "F20",
     "F21",
     "F22",
     "F23",
@@ -43,7 +38,7 @@
     {
       "id": "S2-03",
       "title": "Table・Swipeの構造・描画・操作接続の修正",
-      "status": "pending"
+      "status": "complete"
     },
     {
       "id": "S2-04",

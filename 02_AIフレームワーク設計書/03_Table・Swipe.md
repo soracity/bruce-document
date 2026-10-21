@@ -13,7 +13,7 @@
 </app-table-container-layout>
 ```
 
-table→colgroup/Record→tbody→Row→tr→Cell→td/thの実体構造を維持する。Record/Row/Cellのホストはdisplay:contents。colSpan/rowSpanと角丸はDOM順推測で置き換えない。ViewEncapsulation.Noneのセレクターは`app-table-container-layout`等の接頭辞で範囲を限定し、別テーブルへ漏らさない。
+table→colgroup/Record→tbody→Row→tr→Cell→td/thの実体構造を維持する。Record/Row/Cellのホストはdisplay:contents。colSpan/rowSpanと角丸はDOM順推測で置き換えない。グローバルな祖先prefixだけではネストTableへ漏れるため、描画CSSは28章の実体への直接クラスと所有関係で限定する。Recordのpadding有効時は合法なframe用tr/tdと内部tableを使用する（28章）。通常の無指定構造と固有APIは維持する。
 
 ComponentBaseをTableContainer/Record/Cellが利用する。Rowは構造・sticky責務を維持し、今回共通スタイルInputの追加対象へ含めない。Rowの条件付き除去は画面の@ifで行う。共通Signal Inputは基底一箇所、固有Inputは各Componentのみで定義する。
 
@@ -82,34 +82,9 @@ stickyセル/行の不透明な下地は、selected Recordならprimary、未選
 
 Cell paddingは未指定なら現行0.125rem/0.25rem。明示paddingは02章の全方向指定。rounded=falseの明示指定は角丸補正を無効にする。未指定時は既存radiusPositionを使い、NONEなら角丸なし。roundedSize明示時はその値、未指定時は既存--app-table-radius=0.5remを使う。Table/Recordのrounded・shadowをCellへコピーしない。
 
-## TABLE-05 HTML/CSSの実装骨格
+## TABLE-05 実体HTML/CSSの正本
 
-```html
-<!-- Container -->
-<div class="app-table-layout-wrapper" [class.overflow-x-auto]="responsive">
-  <table class="table table-fixed w-full app-table-layout" appTableCorners
-    [class.app-table-layout--zebra]="zebra" [class.min-w-max]="responsive"
-    [style.--app-table-record-gap.px]="recordGap">
-    <colgroup>@for (column of logicalColumns; track $index) { <col /> }</colgroup>
-    @if (empty) {
-      <tbody><tr><td [attr.colspan]="logicalColumns.length">{{ resolvedEmptyMessage() }}</td></tr></tbody>
-    } @else { <ng-content /> }
-  </table>
-</div>
-```
-
-RecordはrecordGap>0でaria-hiddenのspacer tbodyを直前に作り、先頭の可視Recordのスペーサーをdisplay:none（表示順収集は28章）。データtbodyへaria-selectedとclick handlerを設定する。onClick():voidはclickable=true時のみrecordClick.emit()。Swipeのcapture抑止後はこのhandlerまで届かない。
-
-Rowはtrへ上固定クラスを適用する。Cellは一つの投影templateを用意し、headerによりth/tdを排他的に作る。colspan/rowspan、align.value、verticalAlign.value、data-table-radiusを設定する。ホストのclassNameは一切読み取らず、内部td/thのclassへ転送しない。
-
-```css
-app-table-container-layout .app-table-layout { border-collapse:collapse; border-spacing:0; border-radius:0; }
-app-table-container-layout .app-table-layout-wrapper { position:relative; isolation:isolate; }
-app-table-container-layout .app-table-record-spacer > td { padding:0!important; border:0!important; background:transparent!important; }
-app-table-container-layout .app-table-corner-overlay { position:absolute; pointer-events:none; z-index:30; }
-```
-
-色・角丸・影のclassは02章の固定変換だけを使用する。外部`class`を別名APIで復活させない。
+完全な実体構造・条件分岐・所有ID・CSSは28章TABLEIMPL-02/03を正本とする。Record/Row/Cellのhost.classNameを読み取らず、任意class転送を再導入しない。Rowの固有sticky、CellのcolSpan/rowSpan/header/align/verticalAlign/radiusPosition、Recordのclick/selected等の公開契約は本章TABLE-02を維持する。
 
 ## TABLE-06 TableCornersDirectiveと幾何計算
 
@@ -127,7 +102,7 @@ app-table-container-layout .app-table-corner-overlay { position:absolute; pointe
 | updateRecordShadows()→void | スペーサー除外、各Recordに必要な影だけを生成 |
 | ngOnDestroy()→void | 全監視解除、追加DOM除去、tableのclip-path解除 |
 
-監視対象はResizeObserver(table、radiusProbe、各実体cell)、MutationObserver(childList/subtree/文字とrowspan/colspan/class/style/data-table-radius)、capture scroll、window resize。削除されたcellはunobserveする。rAF内で計測と描画をまとめ、同じ値を書き続けない。
+監視対象はResizeObserver(table、radiusProbe、各実体cell)、MutationObserver(childList/subtree/文字と28章の全内部属性)、capture scroll、window resize。削除されたcellはunobserveする。rAF内で計測と描画をまとめ、同じ値を書き続けない。
 
 `tableGridOffset(tableRect, groupRects):{x:number,y:number}`：幅・高さ>0のtbody矩形の左L/上T/右R/下Bを取得。x=table.x+(table.width−(R−L))/2−L、yも同様。対象なしは0/0。UA名でBlink/WebKitを分岐しない。
 
@@ -164,10 +139,10 @@ private状態：host、document/window、view、overlay、panel、Resize/Mutatio
 | rebuild | gesture取消→close→旧view破棄→portal除去→templateがあればbodyへ再作成 |
 | pointerDown(e) | primary/左button/他gestureなし/panel幅>0を確認、開始座標とoffsetを保存 |
 | pointerMove(e) | 8px未満は保留。abs(dx)>abs(dy)×1.25なら横、逆なら縦。曖昧なら保留 |
-| 横移動 | cancelable時preventDefault、hostへcaptureを試み、offset=clamp(startOffset−dx,0,width) |
+| 横移動 | 初めてoffset>0になる前にcoordinator.claimを行い、失敗なら取消。成功時だけcancelableでpreventDefault、captureしoffset=clamp(startOffset−dx,0,width) |
 | pointerUp(e) | 最終座標も反映。閾値min(48,width/2)。閉状態からdistance>=閾値でopen、開状態からdistance>−閾値ならopen維持 |
 | pointerCancel/lostCapture | 元のwasOpenへ戻す。子からhostへのcapture移譲をcancelと誤認しない |
-| settle(open) | coordinator確保/解放→フォーカス保存/復元→offset→render→状態変更時のみ通知 |
+| settle(open) | 最初の横露出前のcoordinator確保、settle時再確認/解放→フォーカス保存/復元→offset→render→状態変更時のみ通知 |
 | click capture | Swipe後700msのpointer由来clickを抑止。開状態の元内容タップは閉じてrecordClickを止める |
 | keyDown | Escapeで閉じる。keyboard由来click(detail=0)を700ms抑止に巻き込まない |
 
@@ -202,11 +177,11 @@ claim(owner):booleanは同じownerならtrue。旧activeを退避→新ownerをa
 
 ## SWIPE-05 既知の競合・異常・テスト
 
-touch-action:pan-y pinch-zoomの現行方式は縦scroll/zoomを維持するが、responsive Tableの横scrollとの競合が既知。**どちらを優先するかは原典で未決であり、単なる実機試験済みとして閉じない。** 18章U-02に選択肢と実装影響を記載する。承認前にジェスチャー対象や横scrollを無断で削除しない。
+横scrollとの優先規則は工程②のP-02案として28章に一本化する。overflowのあるresponsive Tableはnative横scrollを優先し、既存open()/close()経路でpanel操作を提供する。これは動作境界の提案であり工程②承認前に採用済みとは記載しない。
 
 template=nullはportalなし、panel幅0/非表示は開かない、破棄後の予約callbackは何もしない。pointer capture失敗時もdocumentリスナーで継続し、無限例外を出さない。document/windowのない環境ではafterNextRenderのDOM処理を起動しない。
 
-テスト：T-TABLE-01〜14、T-SWIPE-01〜12。U-02未解決の複合横操作について実装可能性監査は保留。その他は既存正常系を維持する設計である。
+テスト：T-TABLE-01〜14、T-SWIPE-01〜12。P-02の採否は工程②全体の承認対象。複合操作の実機結果は未実施。その他は既存正常系を維持する設計である。
 
 ## TABLE-07 keyboard操作の利用側契約
 
