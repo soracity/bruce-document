@@ -48,7 +48,7 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
     }
     if (typeof MutationObserver !== 'undefined') {
       this.mutationObserver = new MutationObserver(refresh);
-      this.mutationObserver.observe(wrapper, { childList: true, subtree: false });
+      this.mutationObserver.observe(wrapper, { childList: true, subtree: false, attributes: true, attributeFilter: ['hidden', 'class', 'style'] });
     }
     refresh();
   }
@@ -76,7 +76,7 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
   /** Recalculate visible projected siblings after DOM changes. */
   distribute(wrapper: HTMLElement, requiredWidth: (element: HTMLElement) => number = () => 0): void {
     const children = Array.from(wrapper.children) as HTMLElement[];
-    const visible = children.filter(element => element.getClientRects().length > 0 &&
+    const visible = children.filter(element => !element.hidden && element.getClientRects().length > 0 &&
       getComputedStyle(element).display !== 'none');
     for (const element of children) {
       if (!visible.includes(element)) {
