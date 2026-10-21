@@ -1,0 +1,12 @@
+import {describe,it,expect} from 'vitest';
+import {UiStyleUtil} from '../src/ui-style.util.js';
+describe('IMP-03 / STYLE-04 設計書単独検証',()=>{
+  it.each([[0,'border-0'],[0.5,'border-[0.5px]'],[1,'border'],[2,'border-2'],[4,'border-4']] as const)('border %s', (v,w)=>expect(UiStyleUtil.getBorderClass(true,v)).toBe(w));
+  it.each([[0,'rounded-none'],[4,'rounded'],[8,'rounded-lg'],[16,'rounded-2xl'],[24,'rounded-3xl']] as const)('rounded %s',(v,w)=>expect(UiStyleUtil.getRoundedClass(true,v)).toBe(w));
+  it.each([['sm','shadow-sm'],['md','shadow-md'],['lg','shadow-lg']] as const)('shadow %s',(v,w)=>expect(UiStyleUtil.getShadowClass(true,v)).toBe(w));
+  it.each([[0,'p-0'],[4,'p-1'],[8,'p-2'],[12,'p-3'],[16,'p-4'],[24,'p-6'],[32,'p-8']] as const)('padding %s',(v,w)=>expect(UiStyleUtil.getPaddingClass(v)).toBe(w));
+  const colors=['primary','secondary','accent','neutral','base-100','base-200','base-300','info','success','warning','error'] as const;
+  it.each(colors)('color %s',(v)=>{expect(UiStyleUtil.getBackgroundColorClass(v)).toBe('bg-'+v);expect(UiStyleUtil.getTextColorClass(v)).toBe('text-'+v);expect(UiStyleUtil.getTableCellStatusColorClass(v)).toBe(['info','success','warning','error'].includes(v)?'bg-'+v+'/20':'bg-'+v);});
+  it('false/undefined',()=>{expect(UiStyleUtil.getBorderClass(false,4)).toBe('border-0');expect(UiStyleUtil.getRoundedClass(false,24)).toBe('rounded-none');expect(UiStyleUtil.getShadowClass(false,'lg')).toBe('shadow-none');expect(UiStyleUtil.getVisibleClass(false)).toBe('hidden');expect(UiStyleUtil.getVisibleClass(true)).toBe('');expect(UiStyleUtil.getBackgroundColorClass(undefined)).toBe('');expect(UiStyleUtil.getTextColorClass(undefined)).toBe('');expect(UiStyleUtil.getTableCellStatusColorClass(undefined)).toBe('');});
+  it('invalid runtime values fail fast',()=>{expect(()=>UiStyleUtil.getPaddingClass(99 as never)).toThrow('BRUCE_STYLE_VALUE');expect(()=>UiStyleUtil.getBackgroundColorClass('custom' as never)).toThrow('BRUCE_STYLE_VALUE');expect(()=>UiStyleUtil.getBorderClass('true' as never,1)).toThrow('BRUCE_STYLE_VALUE');expect(()=>UiStyleUtil.getVisibleClass(null as never)).toThrow('BRUCE_STYLE_VALUE');});
+});
