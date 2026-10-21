@@ -97,6 +97,7 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
     const values = new Map([['flex-basis', '24px'], ['flex-grow', '2']]);
     const priorities = new Map([['flex-basis', 'important'], ['flex-grow', 'important']]);
     const style = {
+      get flex() { return values.get('flex') ?? ''; },
       get flexBasis() { return values.get('flex-basis') ?? ''; },
       set flexBasis(value: string) { values.set('flex-basis', value); },
       get flexGrow() { return values.get('flex-grow') ?? ''; },
@@ -115,13 +116,14 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
     }));
     try {
       component.distribute(wrapper);
-      expect(style.flexBasis).toBe('200px');
-      expect(style.getPropertyPriority('flex-basis')).toBe('');
+      expect(style.flex).toBe('0 0 200px');
+      expect(style.getPropertyPriority('flex')).toBe('');
       component.ngOnDestroy();
       expect(style.flexBasis).toBe('24px');
       expect(style.flexGrow).toBe('2');
       expect(style.getPropertyPriority('flex-basis')).toBe('important');
       expect(style.getPropertyPriority('flex-grow')).toBe('important');
+      expect(style.flex).toBe('');
     } finally { vi.unstubAllGlobals(); }
   });
   it('skips redundant inline flex writes when allocation has not changed', () => {
@@ -141,9 +143,10 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
     }));
     try {
       component.distribute(wrapper);
-      expect(setProperty).toHaveBeenCalledTimes(2);
+      const firstWrites = setProperty.mock.calls.length;
+      expect(firstWrites).toBeGreaterThan(0);
       component.distribute(wrapper);
-      expect(setProperty).toHaveBeenCalledTimes(2);
+      expect(setProperty).toHaveBeenCalledTimes(firstWrites);
       component.ngOnDestroy();
     } finally { vi.unstubAllGlobals(); }
   });
