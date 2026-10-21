@@ -68,3 +68,11 @@ S3-01環境準備から再開。node_modulesやブラウザーバイナリは保
 - `angular/package.json` はVitestに変更済みだが `angular/package-lock.json` はPlaywright依存を含む旧状態で不整合。`npm ci` 成功を主張しない。
 - 現環境Node v22.16.0、npm 10.9.2、Vitest npmキャッシュなし。指定版Node 22.12.0/npm 11.6.2と異なる。依存再現性を未検証とする。
 - 次の順序：package-lock更新→依存再現→IMP-01/03の型検査とテスト→他対象の独立実装。型やEnum実体との整合、Angular DIテスト設定を確認する。未実施条件は合格へ加算しない。
+
+## 2026-10-21 Vitest実行環境の再確認
+
+- 実行環境: Node v22.16.0、npm 10.9.2。
+- `npm view vitest@4.0.15 version --fetch-retries=0 --fetch-timeout=8000` は `getaddrinfo EAI_AGAIN registry.npmjs.org` で失敗。
+- `getent hosts registry.npmjs.org` も名前解決不可。npmキャッシュ内のVitestも見つからず、現環境ではパッケージをインストールできない。
+- Vitest自体の障害、実装コードのテスト失敗、設計書の不合格を意味しない。テスト実行数0、合格数0。
+- 対処: npmレジストリに接続できる実行環境で `npm install --package-lock-only --no-audit --no-fund` によりlockを更新し、`npm ci --no-audit --no-fund`、`npm run compile`、`npm test` を順に実施。成功/失敗ログを記録する。DNSや依存導入が復旧するまでは合格を宣言しない。
