@@ -7,10 +7,10 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
     const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
     const first = {style:{flexBasis:'',flexGrow:''},getClientRects:()=>[{}]} as unknown as HTMLElement;
     const second = {style:{flexBasis:'',flexGrow:''},getClientRects:()=>[{}]} as unknown as HTMLElement;
-    const wrapper = {children:[first,second],clientWidth:210} as unknown as HTMLElement;
+    const wrapper = {children:[first,second],clientWidth:210,getBoundingClientRect:()=>({width:210})} as unknown as HTMLElement;
     const previous = globalThis.getComputedStyle;
     vi.stubGlobal('getComputedStyle',(element:HTMLElement) => ({
-      display:'block',columnGap:'10px',
+      display:'block',columnGap:'10px',paddingLeft:'0px',paddingRight:'0px',borderLeftWidth:'0px',borderRightWidth:'0px',
       getPropertyValue:() => element === first ? '60' : '40',
     }));
     try {
@@ -26,9 +26,9 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
     const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
     const first = {style:{flexBasis:'',flexGrow:''},getClientRects:()=>[{}]} as unknown as HTMLElement;
     const hidden = {style:{flexBasis:'20px',flexGrow:'0'},getClientRects:()=>[]} as unknown as HTMLElement;
-    const wrapper = {children:[first,hidden],clientWidth:210} as unknown as HTMLElement;
+    const wrapper = {children:[first,hidden],clientWidth:210,getBoundingClientRect:()=>({width:210})} as unknown as HTMLElement;
     vi.stubGlobal('getComputedStyle',(element:HTMLElement) => ({
-      display:'block',columnGap:'10px',
+      display:'block',columnGap:'10px',paddingLeft:'0px',paddingRight:'0px',borderLeftWidth:'0px',borderRightWidth:'0px',
       getPropertyValue:() => element === first ? '60' : '40',
     }));
     try {
@@ -43,9 +43,9 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
   it('clears stale allocated widths when container shrinks to zero', () => {
     const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
     const child = {style:{flexBasis:'200px',flexGrow:'0'},getClientRects:()=>[{}]} as unknown as HTMLElement;
-    const wrapper = {children:[child],clientWidth:0} as unknown as HTMLElement;
+    const wrapper = {children:[child],clientWidth:0,getBoundingClientRect:()=>({width:0})} as unknown as HTMLElement;
     vi.stubGlobal('getComputedStyle',() => ({
-      display:'block',columnGap:'8px',getPropertyValue:() => '1',
+      display:'block',columnGap:'8px',paddingLeft:'0px',paddingRight:'0px',borderLeftWidth:'0px',borderRightWidth:'0px',getPropertyValue:() => '1',
     }));
     try {
       component.distribute(wrapper);
