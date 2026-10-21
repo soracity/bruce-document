@@ -54,4 +54,27 @@ describe('IMP-10 DateComponent independent validation', () => {
       expect(control.touched).toBe(true);
     } finally { component.ngOnDestroy(); injector.destroy(); }
   });
+  it('does not replace an externally invalid stored date', () => {
+    const { injector, component, control } = setup();
+    try {
+      control.setValue('2024-02-30');
+      component.syncFromControl();
+      expect(control.value).toBe('2024-02-30');
+      expect(control.hasError('dateInput')).toBe(true);
+      expect(component.displayValue()).toBe('');
+    } finally { component.ngOnDestroy(); injector.destroy(); }
+  });
+  it('keeps original stored value on invalid draft and recovers after a valid date', () => {
+    const { injector, component, control } = setup();
+    try {
+      const validity = { badInput: false, typeMismatch: false, rangeOverflow: false, rangeUnderflow: false, stepMismatch: false };
+      component.onInput({ target: { value: '2024-02-30', validity } } as unknown as Event);
+      expect(control.value).toBe('2024-01-01');
+      expect(control.hasError('dateInput')).toBe(true);
+      component.onInput({ target: { value: '2024-02-29', validity } } as unknown as Event);
+      expect(control.value).toBe('2024-02-29');
+      expect(control.hasError('dateInput')).toBe(false);
+    } finally { component.ngOnDestroy(); injector.destroy(); }
+  });
+
 });
