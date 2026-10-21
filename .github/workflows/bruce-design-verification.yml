@@ -1,0 +1,45 @@
+name: Bruce design verification
+
+on:
+  push:
+    branches:
+      - docs/bruce-detail-20261020
+    paths:
+      - 'verification/angular/**'
+      - '.github/workflows/bruce-design-verification.yml'
+  pull_request:
+    paths:
+      - 'verification/angular/**'
+      - '.github/workflows/bruce-design-verification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bruce-design-verification-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verification:
+    name: Angular compile and Vitest
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: verification/angular
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.12.0'
+          cache: npm
+          cache-dependency-path: verification/angular/package-lock.json
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+      - name: Angular type check
+        run: npm run compile
+      - name: Vitest
+        run: npm test
