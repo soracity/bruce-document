@@ -91,8 +91,17 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
       if (!Number.isFinite(weight) || weight <= 0) throw new Error('BRUCE_SPAN_VALUE');
       return {element,weight,required:requiredWidth(element)};
     });
-    const gap = Number.parseFloat(getComputedStyle(wrapper).columnGap) || 0;
-    const rows = LayoutRowUtil.partition(metrics,wrapper.clientWidth,gap);
+    const wrapperStyle = getComputedStyle(wrapper);
+    const px = (value: string): number => {
+      if (value === '0') return 0;
+      if (!/^(?:\\d+(?:\\.\\d*)?|\\.\\d+)px$/.test(value.trim())) throw new Error('BRUCE_LAYOUT_GAP');
+      return Number.parseFloat(value);
+    };
+    const gap = wrapperStyle.columnGap === 'normal' ? 0 : px(wrapperStyle.columnGap);
+    const available = Math.max(0, wrapper.getBoundingClientRect().width -
+      px(wrapperStyle.paddingLeft) - px(wrapperStyle.paddingRight) -
+      px(wrapperStyle.borderLeftWidth) - px(wrapperStyle.borderRightWidth));
+    const rows = LayoutRowUtil.partition(metrics,available,gap);
     if (!rows.length) {
       for (const element of visible) {
         element.style.flexBasis = '';
