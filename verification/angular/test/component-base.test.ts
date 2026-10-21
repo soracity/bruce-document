@@ -46,3 +46,39 @@ describe('IMP-01 override checks', () => {
     } finally { injector.destroy(); }
   });
 });
+
+class StyleOverrideProbe extends ComponentBase {
+  protected override getDefaultBorder(): boolean { return false; }
+  protected override getDefaultBorderWidth(): 0 { return 0; }
+  protected override getDefaultRounded(): boolean { return false; }
+  protected override getDefaultRoundedSize(): 0 { return 0; }
+  protected override getDefaultBackgroundColor(): 'primary' { return 'primary'; }
+  protected override getDefaultTextColor(): 'error' { return 'error'; }
+  protected override getDefaultVisible(): boolean { return false; }
+}
+class InvalidDefaultProbe extends ComponentBase {
+  protected override getDefaultPadding(): 8 { return 8; }
+  protected override getDefaultShadowSize(): 'lg' { return 'lg'; }
+}
+describe('IMP-01 default override boundary checks', () => {
+  it('preserves false and zero from overridden default getters', () => {
+    const injector = createEnvironmentInjector([], null as never);
+    try {
+      const p = runInInjectionContext(injector, () => new StyleOverrideProbe());
+      expect(p.effectiveBorder()).toBe(false);
+      expect(p.effectiveBorderWidth()).toBe(0);
+      expect(p.effectiveRounded()).toBe(false);
+      expect(p.effectiveRoundedSize()).toBe(0);
+      expect(p.effectiveVisible()).toBe(false);
+      expect(p.styleClasses()).toBe('border-0 rounded-none bg-primary text-error');
+    } finally { injector.destroy(); }
+  });
+  it('uses overridden shadow size only when its group is activated', () => {
+    const injector = createEnvironmentInjector([], null as never);
+    try {
+      const p = runInInjectionContext(injector, () => new InvalidDefaultProbe());
+      expect(p.effectiveShadowSize()).toBe('lg');
+      expect(p.styleClasses()).toBe('shadow-none p-2');
+    } finally { injector.destroy(); }
+  });
+});
