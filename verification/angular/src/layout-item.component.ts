@@ -33,18 +33,22 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
   private unsubscribe?: () => void;
   private frame?: number;
   private disposed = false;
-  private readonly originalStyles = new Map<HTMLElement, {
+  private originalStyles?: Map<HTMLElement, {
     flexBasis: string; flexGrow: string; lastBasis: string; lastGrow: string;
   }>();
 
+  private allocations(): NonNullable<LayoutItemComponent['originalStyles']> {
+    return this.originalStyles ??= new Map();
+  }
+
   private writeAllocation(element: HTMLElement, basis: string, grow: string): void {
-    let saved = this.originalStyles.get(element);
+    let saved = this.allocations().get(element);
     if (!saved) {
       saved = {
         flexBasis: element.style.flexBasis, flexGrow: element.style.flexGrow,
         lastBasis: element.style.flexBasis, lastGrow: element.style.flexGrow,
       };
-      this.originalStyles.set(element, saved);
+      this.allocations().set(element, saved);
     }
     if (element.style.flexBasis === saved.lastBasis) {
       element.style.flexBasis = basis;
@@ -61,7 +65,7 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
     if (!saved) return;
     if (element.style.flexBasis === saved.lastBasis) element.style.flexBasis = saved.flexBasis;
     if (element.style.flexGrow === saved.lastGrow) element.style.flexGrow = saved.flexGrow;
-    this.originalStyles.delete(element);
+    this.allocations().delete(element);
   }
 
 
@@ -103,7 +107,7 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
     this.unsubscribe?.();
     if (this.frame !== undefined && typeof cancelAnimationFrame === 'function') cancelAnimationFrame(this.frame);
     this.frame = undefined;
-    for (const element of this.originalStyles.keys()) this.restoreAllocation(element);
+    for (const element of this.allocations().keys()) this.restoreAllocation(element);
   }
   /** Recalculate visible projected siblings after DOM changes. */
   distribute(wrapper: HTMLElement, requiredWidth: (element: HTMLElement) => number = () => 0): void {
