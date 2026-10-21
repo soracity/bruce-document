@@ -7,8 +7,8 @@
   "status": "completed_user_accepted",
   "stage_approval": "stage1_approved_stage3_execution_explicitly_approved",
   "last_completed_unit": "S4_user_accepted_design",
-  "next_action": "Phase 5の本番実装と実装後のテストへ進む。工程③の仮実装・技術検証はユーザーが中止し、工程④の文書受入は完了。",
-  "next_work_unit": "Phase5_production_implementation",
+  "next_action": "詳細設計書FIX版に従いPhase5本番実装を開始。実装完了後に、詳細設計書の仕様ID/IMP-ID/T-IDとの対応を持つテストコード・テストケース一覧を作成する。",
+  "next_work_unit": "Phase5_implementation_then_traceable_tests",
   "stage3_execution_approval": {
     "date": "2026-10-21",
     "evidence": "ユーザー発言：③の実行を承認します",
@@ -318,5 +318,26 @@
     "stage4": "completed_by_user_document_acceptance",
     "phase5": "not_started",
     "note": "工程④完了は双方向照合・29件修正・文書整合性確認済みの詳細設計書の受入を意味し、39実装対象の動作実証合格を意味しない。旧stage3_checkpointと検証台帳は履歴。"
+  },
+  "design_freeze": {
+    "status": "fixed_for_phase5",
+    "approved_at": "2026-10-21",
+    "baseline_commit": "324cb83b88e8005045afda7f865e3bccf0bcc995",
+    "directory": "02_AIフレームワーク設計書/",
+    "basis": "議事録と詳細設計書の双方向照合完了、29件の修正と文書整合性確認完了",
+    "changes": "FIX済み機能仕様は独断で変更しない。具体的不備や仕様変更は該当箇所のみ別途承認のうえ改訂。",
+    "policy_document": "02_AIフレームワーク設計書/Phase5_実装・テスト管理方針.md"
+  },
+  "phase5_test_management": {
+    "sequence": [
+      "Phase5の本番実装",
+      "実装完了後、固定詳細設計書に基づくテストコードとテストケース一覧を作成",
+      "実装に対するテスト実行",
+      "今後のバグ・改修をテストケース一覧とテストコードを中心に追跡"
+    ],
+    "existing_test_spec": "02_AIフレームワーク設計書/14_テスト仕様.md",
+    "traceability": "設計書章/仕様ID <-> IMP-ID <-> T-ID <-> 本番テストコード <-> 実行結果 <-> バグ/改修ID",
+    "before_implementation": "仮実装・独立実装検証・新規テストケースの先行大量作成は行わない",
+    "test_results": "過去322件のVitest成功は検証用コードの履歴。本番コードの合格判定へ流用しない"
   }
 }
