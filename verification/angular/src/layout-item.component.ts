@@ -166,7 +166,9 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
       return Number.parseFloat(value);
     };
     const gap = wrapperStyle.columnGap === 'normal' ? 0 : px(wrapperStyle.columnGap);
-    const available = Math.max(0, wrapper.getBoundingClientRect().width -
+    const boundsWidth = wrapper.getBoundingClientRect().width;
+    if (!Number.isFinite(boundsWidth)) return;
+    const available = Math.max(0, boundsWidth -
       px(wrapperStyle.paddingLeft) - px(wrapperStyle.paddingRight) -
       px(wrapperStyle.borderLeftWidth) - px(wrapperStyle.borderRightWidth));
     if (available <= 0 || !Number.isFinite(available)) return;
