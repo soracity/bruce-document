@@ -77,4 +77,25 @@ describe('IMP-10 DateComponent independent validation', () => {
     } finally { component.ngOnDestroy(); injector.destroy(); }
   });
 
+  it('removes only own validator on control replacement', () => {
+    const { injector, component, control: first } = setup();
+    try {
+      const second = new FormControl<string | null>('2024-03-01', { validators: Validators.required });
+      component['bindControl'](second);
+      expect(first.hasValidator(Validators.required)).toBe(true);
+      expect(second.hasValidator(Validators.required)).toBe(true);
+      expect(component.displayValue()).toBe('2024-03-01');
+      component.ngOnDestroy();
+      expect(second.hasValidator(Validators.required)).toBe(true);
+    } finally { injector.destroy(); }
+  });
+  it('retains external parent value after native validity rejects incomplete input', () => {
+    const { injector, component, control } = setup();
+    try {
+      component.onInput({ target: { value: '', validity: { badInput: true } } } as unknown as Event);
+      expect(control.value).toBe('2024-01-01');
+      expect(control.errors?.['dateInput']).toEqual({ reason: 'incomplete', raw: '' });
+    } finally { component.ngOnDestroy(); injector.destroy(); }
+  });
+
 });
