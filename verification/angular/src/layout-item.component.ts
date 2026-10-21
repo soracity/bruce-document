@@ -1,5 +1,6 @@
-/** 工程③ IMP-06 LayoutItemComponent: LAY-01 投影と行ラッパーの独立実装（計測は後続）。 */
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+/** 工程③ IMP-06 LayoutItemComponent: LAY-01 投影・幅配分・変更監視の独立検証。 */
+import { AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, OnDestroy, inject } from '@angular/core';
+import { LayoutMetricsService } from './layout-metrics.service.js';
 import { LayoutRowUtil, type LayoutMetric } from './layout-row.util.js';
 
 @Component({
@@ -24,7 +25,54 @@ import { LayoutRowUtil, type LayoutMetric } from './layout-row.util.js';
     }
   `],
 })
-export class LayoutItemComponent {
+export class LayoutItemComponent implements AfterViewInit, OnDestroy {
+  private readonly host = inject(ElementRef<HTMLElement>);
+  private readonly metrics = inject(LayoutMetricsService);
+  private resizeObserver?: ResizeObserver;
+  private mutationObserver?: MutationObserver;
+  private unsubscribe?: () => void;
+  private frame?: number;
+  private disposed = false;
+
+  ngAfterViewInit(): void {
+    const wrapper = this.host.nativeElement.querySelector('.bruce-layout-items') as HTMLElement | null;
+    if (!wrapper) return;
+    const refresh = () => {
+      this.unsubscribe?.();
+      this.unsubscribe = this.metrics.watch(Array.from(wrapper.children) as HTMLElement[], () => this.schedule(wrapper));
+      this.schedule(wrapper);
+    };
+    if (typeof ResizeObserver !== 'undefined') {
+      this.resizeObserver = new ResizeObserver(() => this.schedule(wrapper));
+      this.resizeObserver.observe(wrapper);
+    }
+    if (typeof MutationObserver !== 'undefined') {
+      this.mutationObserver = new MutationObserver(refresh);
+      this.mutationObserver.observe(wrapper, { childList: true, subtree: false });
+    }
+    refresh();
+  }
+
+  private schedule(wrapper: HTMLElement): void {
+    if (this.disposed || this.frame !== undefined) return;
+    if (typeof requestAnimationFrame !== 'function') {
+      this.distribute(wrapper, element => this.metrics.requiredWidth(element) ?? 0);
+      return;
+    }
+    this.frame = requestAnimationFrame(() => {
+      this.frame = undefined;
+      if (!this.disposed) this.distribute(wrapper, element => this.metrics.requiredWidth(element) ?? 0);
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.disposed = true;
+    this.resizeObserver?.disconnect();
+    this.mutationObserver?.disconnect();
+    this.unsubscribe?.();
+    if (this.frame !== undefined && typeof cancelAnimationFrame === 'function') cancelAnimationFrame(this.frame);
+    this.frame = undefined;
+  }
   /** Recalculate visible projected siblings after DOM changes. */
   distribute(wrapper: HTMLElement, requiredWidth: (element: HTMLElement) => number = () => 0): void {
     const children = Array.from(wrapper.children) as HTMLElement[];
