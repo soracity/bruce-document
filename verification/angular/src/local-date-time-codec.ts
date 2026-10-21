@@ -29,3 +29,29 @@ export function parseLocal(raw: string): Result<LocalParts> {
   if (hour > 23 || minute > 59 || second > 59) return fail(raw, 'invalidLocalValue');
   return { ok: true, value: { ...date.value, hour, minute, second, millisecond } };
 }
+
+/** UTC文法・各成分・TimeClip範囲を厳密検証する。 */
+export function parseUtc(raw: string): Result<Date> {
+  const match = /^([0-9]{4}|[+-][0-9]{6})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})(?:\\.([0-9]{1,3}))?Z$/.exec(raw);
+  if (!match) return fail(raw, 'invalidUtc');
+  const year = Number(match[1]), month = Number(match[2]), day = Number(match[3]);
+  const hour = Number(match[4]), minute = Number(match[5]), second = Number(match[6]);
+  const millisecond = Number((match[7] ?? '').padEnd(3, '0') || '0');
+  if (month < 1 || month > 12 || day < 1 || day > 31 || hour > 23 || minute > 59 || second > 59) {
+    return fail(raw, 'invalidUtc');
+  }
+  const date = new Date(0);
+  date.setUTCFullYear(year, month - 1, day);
+  date.setUTCHours(hour, minute, second, millisecond);
+  if (!Number.isFinite(date.getTime())) return fail(raw, 'outOfRange');
+  if (date.getUTCFullYear() !== year || date.getUTCMonth() !== month - 1 ||
+      date.getUTCDate() !== day || date.getUTCHours() !== hour ||
+      date.getUTCMinutes() !== minute || date.getUTCSeconds() !== second ||
+      date.getUTCMilliseconds() !== millisecond) return fail(raw, 'invalidUtc');
+  try {
+    date.toISOString();
+  } catch {
+    return fail(raw, 'outOfRange');
+  }
+  return { ok: true, value: date };
+}
