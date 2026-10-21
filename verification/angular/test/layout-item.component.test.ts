@@ -244,7 +244,7 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
       component.ngAfterViewInit();
       expect(watch).toHaveBeenCalledWith([first],expect.any(Function));
       expect(raf).toHaveBeenCalledOnce();
-      expect(mutationObserve).toHaveBeenCalledWith(wrapper,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden','class']});
+      expect(mutationObserve).toHaveBeenCalledWith(wrapper,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden','class','style']});
       expect(resizeObserve).toHaveBeenCalledWith(wrapper);
       wrapper.children = [second] as unknown as HTMLCollection;
       mutationCallback!([{type:'childList',target:wrapper} as MutationRecord],{} as MutationObserver);
