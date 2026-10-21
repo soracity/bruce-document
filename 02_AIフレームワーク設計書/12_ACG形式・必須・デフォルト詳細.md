@@ -1,6 +1,6 @@
 # ACG形式・必須・デフォルト詳細設計
 
-> 出典：[Phase 2.6](../01_ai-document/phase2_06_DTO・Form・Validation.md) 2.6.9〜2.6.11（925〜1275行）。2026-10-16承認済み設計の整理。実装・検証済みではない。全件監査合格を意味しない。
+> 出典：[Phase 2.6](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase2_06_DTO・Form・Validation.md) 2.6.9〜2.6.11（925〜1275行）。2026-10-16承認済み設計の整理。実装・検証済みではない。全件監査合格を意味しない。
 
 ## ACG-FORMAT-001〜005：形式チェック（2.6.9）
 

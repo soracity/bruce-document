@@ -1,6 +1,6 @@
 # DTO・Form・Validation・ACG設計（暫定・全件監査前）
 
-根拠：[2.6](../01_ai-document/phase2_06_DTO・Form・Validation.md)、[2.8](../01_ai-document/phase2_08_AI実装制約.md)、[Phase 4仕様表C](../01_ai-document/phase4_02_体系的設計書.md)。
+根拠：[2.6](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase2_06_DTO・Form・Validation.md)、[2.8](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase2_08_AI実装制約.md)、[Phase 4仕様表C](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase4_02_体系的設計書.md)。
 
 | ID | 確認済み設計方針 |
 |---|---|
@@ -17,7 +17,7 @@
 
 ## Phase 2.6 全14小区分の原典対応と実装契約（第1次照合・2026-10-21）
 
-根拠：[Phase 2.6](../01_ai-document/phase2_06_DTO・Form・Validation.md)。**14節すべての存在と見出しを確認**。以下は優先度の高い承認事項の第1次抽出であり、各節のコード例・例外・旧決定文書との原子単位全件照合は未完了。
+根拠：[Phase 2.6](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase2_06_DTO・Form・Validation.md)。**14節すべての存在と見出しを確認**。以下は優先度の高い承認事項の第1次抽出であり、各節のコード例・例外・旧決定文書との原子単位全件照合は未完了。
 
 | 節 | 対象 | この設計書の状態 |
 |---|---|---|
@@ -145,7 +145,7 @@ type Nullable<T> = T | null;
 
 ## Phase 2.6 第2次一括詳細化：型分類・ACG内部モデル・例外（2026-10-21）
 
-原典：[2.6.4〜2.6.14](../01_ai-document/phase2_06_DTO・Form・Validation.md)および同文書に収録された旧ACG決定原文。**この節の各規則は原典で明示された承認内容に限定する**。前節の第1次抽出に追加する。
+原典：[2.6.4〜2.6.14](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase2_06_DTO・Form・Validation.md)および同文書に収録された旧ACG決定原文。**この節の各規則は原典で明示された承認内容に限定する**。前節の第1次抽出に追加する。
 
 ### ACG-TYPE：TypeScriptTypeEnumと型解決
 
@@ -220,7 +220,7 @@ type Nullable<T> = T | null;
 
 ## Phase 2.6 第3次一括詳細化：型別許容パターンの全11行（2026-10-21）
 
-原典：[2.6.8 画面DTO項目の型別指定可能パターン](../01_ai-document/phase2_06_DTO・Form・Validation.md)。以下の`指定可`は任意指定、`必須`は値の指定必須、`-`は指定不可。**この11行以外の組合せをACGが推測補正してはならず、Exceptionで生成停止**する。
+原典：[2.6.8 画面DTO項目の型別指定可能パターン](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase2_06_DTO・Form・Validation.md)。以下の`指定可`は任意指定、`必須`は値の指定必須、`-`は指定不可。**この11行以外の組合せをACGが推測補正してはならず、Exceptionで生成停止**する。
 
 | 型 | Enum型 | 文字種 | 形式 | 必須 | 必須(真偽) | 文字数(最小/最大) | 数値(最小/最大) | 正規表現 |
 |---|---|---|---|---|---|---|---|---|
@@ -277,7 +277,7 @@ type Nullable<T> = T | null;
 
 ## Phase 2.6 原典対照台帳：承認規則・禁止事項・残差（2026-10-21）
 
-この台帳は原典の小区分ごとの**代表的な仕様原子**と本書の対応箇所を双方向に確認するための索引。全原子の機械照合ではない。旧決定文書の本文は[Phase 2.6](../01_ai-document/phase2_06_DTO・Form・Validation.md)に原文保存されている。
+この台帳は原典の小区分ごとの**代表的な仕様原子**と本書の対応箇所を双方向に確認するための索引。全原子の機械照合ではない。旧決定文書の本文は[Phase 2.6](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase2_06_DTO・Form・Validation.md)に原文保存されている。
 
 | 原典節 | 追跡する仕様原子（例外・禁止含む） | 07の対応 | 未解決／要実証 |
 |---|---|---|---|

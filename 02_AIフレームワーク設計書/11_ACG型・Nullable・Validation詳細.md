@@ -1,6 +1,6 @@
 # ACG型・Nullable・Validation詳細設計（承認済み仕様の転記整理）
 
-> 出典：[Phase 2.6](../01_ai-document/phase2_06_DTO・Form・Validation.md) 2.6.6〜2.6.8（原典561〜923行）。**設計仕様**であり、ACG実装済み・検証済みとは判定しない。2.6.9〜2.6.14の全詳細や他原典との双方向監査は別途必要。
+> 出典：[Phase 2.6](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase2_06_DTO・Form・Validation.md) 2.6.6〜2.6.8（原典561〜923行）。**設計仕様**であり、ACG実装済み・検証済みとは判定しない。2.6.9〜2.6.14の全詳細や他原典との双方向監査は別途必要。
 
 ## ACG-TYPE-001〜006：Nullable共通型（2.6.6・2026-10-16承認）
 

@@ -1,6 +1,6 @@
 # LayoutManager・静的検査設計（暫定・全件監査前）
 
-根拠：[2.2](../01_ai-document/phase2_02_幅の責務.md)、[2.3](../01_ai-document/phase2_03_余白の責務.md)、[2.4](../01_ai-document/phase2_04_レスポンシブ・折り返し.md)。
+根拠：[2.2](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase2_02_幅の責務.md)、[2.3](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase2_03_余白の責務.md)、[2.4](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase2_04_レスポンシブ・折り返し.md)。
 
 | ID | 現行承認規則 |
 |---|---|
@@ -19,7 +19,7 @@
 
 ## 実装詳細と注意
 
-検査器の正式エラーコード、AST API、対象パスの解決、CI定義、テスト、特殊な@for例外は未確定。LayoutItem直下@ifの後続承認とng-container内分岐の適用範囲は、[2.2.4原典](../01_ai-document/phase2_02_幅の責務.md)の時系列照合を完了するまで要確認。実装・検証は未完了。
+検査器の正式エラーコード、AST API、対象パスの解決、CI定義、テスト、特殊な@for例外は未確定。LayoutItem直下@ifの後続承認とng-container内分岐の適用範囲は、[2.2.4原典](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase2_02_幅の責務.md)の時系列照合を完了するまで要確認。実装・検証は未完了。
 
 
 ## 実装設計追補：HTML・判定・実行経路（2026-10-20）
@@ -180,7 +180,7 @@ templateUrlは直接文字列リテラル、templateは直接文字列／テン�
 
 ## Phase 2.3 余白の責務：原典照合・実装境界（2026-10-21）
 
-照合対象：[phase2_03_余白の責務.md](../01_ai-document/phase2_03_余白の責務.md) の 2.3.1、2.3.2、2.3.3 および2026-10-19追記。これは**当該ファイルとの照合**であり、旧議事録全件との双方向照合完了を意味しない。
+照合対象：[phase2_03_余白の責務.md](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase2_03_余白の責務.md) の 2.3.1、2.3.2、2.3.3 および2026-10-19追記。これは**当該ファイルとの照合**であり、旧議事録全件との双方向照合完了を意味しない。
 
 | 原典小区分 | 承認済み設計 | 実装上の帰結 | 状態・残件 |
 |---|---|---|---|
@@ -223,7 +223,7 @@ templateUrlは直接文字列リテラル、templateは直接文字列／テン�
 
 ## Phase 2.4 レスポンシブ・折り返し：承認仕様と受入契約（2026-10-21）
 
-根拠：[phase2_04_レスポンシブ・折り返し.md](../01_ai-document/phase2_04_レスポンシブ・折り返し.md) 2.4.1〜2.4.3、2026-10-19の時系列承認。**当該原典との照合であり旧新議事録全件の監査完了ではない**。
+根拠：[phase2_04_レスポンシブ・折り返し.md](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase2_04_レスポンシブ・折り返し.md) 2.4.1〜2.4.3、2026-10-19の時系列承認。**当該原典との照合であり旧新議事録全件の監査完了ではない**。
 
 ### 2.4.1・2.4.2 LayoutItemの配置契約
 
