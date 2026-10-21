@@ -1,0 +1,154 @@
+{
+  "date": "2026-10-21",
+  "stage": 2,
+  "unit": "S2-06",
+  "result": "passed",
+  "baselineCommit": "8d64d1a99de19240d3adb2b3d6b35c84f7aee76c",
+  "documentAudit": {
+    "result": "passed",
+    "minutesInScope": 19,
+    "supplementarySources": 4,
+    "excludedRules": 9,
+    "stage2Findings": 29,
+    "sourceLines": 8782,
+    "uniqueBlocks": 91,
+    "sourceOccurrences": 91,
+    "rules": 159,
+    "implementationTargets": 39,
+    "testSpecifications": 194,
+    "missingLocalLinks": [],
+    "unclosedFences": [],
+    "wbsRows": 79,
+    "wbsStates": {
+      "完了": 49,
+      "進行中": 1,
+      "未着手": 29
+    },
+    "codeFilesHashChecked": 0,
+    "errors": [],
+    "semanticApproval": "manual review required; not decided by this script",
+    "applicationTests": "not executed"
+  },
+  "pureReference": {
+    "pureReferenceChecks": 81,
+    "result": "passed",
+    "applicationTests": "not executed",
+    "proposals": [
+      "P-01",
+      "P-02",
+      "P-03"
+    ]
+  },
+  "geometry": [
+    {
+      "pureGeometryChecks": 28,
+      "result": "passed",
+      "browserRendering": "not executed"
+    },
+    {
+      "pureGeometryChecksIncludingRuntimeGuards": 31,
+      "result": "passed",
+      "browserRendering": "not executed"
+    }
+  ],
+  "runs": [
+    {
+      "command": [
+        "python",
+        "02_AIフレームワーク設計書/検証資料/audit-design.py",
+        "--source-cache",
+        "../source-cache",
+        "--repository-tree",
+        "../repository-tree.json"
+      ],
+      "exitCode": 0,
+      "stdout": "{\n  \"result\": \"passed\",\n  \"minutesInScope\": 19,\n  \"supplementarySources\": 4,\n  \"excludedRules\": 9,\n  \"stage2Findings\": 29,\n  \"sourceLines\": 8782,\n  \"uniqueBlocks\": 91,\n  \"sourceOccurrences\": 91,\n  \"rules\": 159,\n  \"implementationTargets\": 39,\n  \"testSpecifications\": 194,\n  \"missingLocalLinks\": [],\n  \"unclosedFences\": [],\n  \"wbsRows\": 79,\n  \"wbsStates\": {\n    \"完了\": 49,\n    \"進行中\": 1,\n    \"未着手\": 29\n  },\n  \"codeFilesHashChecked\": 0,\n  \"errors\": [],\n  \"semanticApproval\": \"manual review required; not decided by this script\",\n  \"applicationTests\": \"not executed\"\n}"
+    },
+    {
+      "command": [
+        "node",
+        "02_AIフレームワーク設計書/検証資料/test-reference-functions.mjs"
+      ],
+      "exitCode": 0,
+      "stdout": "{\"pureReferenceChecks\":81,\"result\":\"passed\",\"applicationTests\":\"not executed\",\"proposals\":[\"P-01\",\"P-02\",\"P-03\"]}"
+    },
+    {
+      "command": [
+        "node",
+        "02_AIフレームワーク設計書/検証資料/test-geometry.mjs"
+      ],
+      "exitCode": 0,
+      "stdout": "{\"pureGeometryChecks\":28,\"result\":\"passed\",\"browserRendering\":\"not executed\"}\n{\"pureGeometryChecksIncludingRuntimeGuards\":31,\"result\":\"passed\",\"browserRendering\":\"not executed\"}"
+    }
+  ],
+  "limits": [
+    "設計文書と参照計算の点検。工程③の実装検証は未実施。",
+    "A/B最終合格、実API/CI/実機の合格ではない。"
+  ],
+  "runtime": {
+    "node": "v24.19.0",
+    "python": "Python 3.12.14"
+  },
+  "checkedFiles": {
+    "02_AIフレームワーク設計書/00_原典棚卸し.md": "b1ca046577471b10a40f541118383c9bb180f5763b3814efce40831de7f12e58",
+    "02_AIフレームワーク設計書/01_アーキテクチャ・責務境界.md": "37d10a2668a46a40e0706587ddddb29d60110835f2b237a20668c48bee840a22",
+    "02_AIフレームワーク設計書/02_共通スタイル・UiStyleUtil.md": "7164977900a66063b4f6d32504c20882640a4852239ecf282ff4f97c723046fb",
+    "02_AIフレームワーク設計書/03_Table・Swipe.md": "6070efa32072950eb9bf900cc364eb4630cda9ea33c1da700a565a99d6878350",
+    "02_AIフレームワーク設計書/04_AI実装・例外運用.md": "d1c61a227a21489e2fe0bbc502c72bd3c04ff4724b6f50ecf1c655dfad13ec30",
+    "02_AIフレームワーク設計書/05_表示・レスポンシブ・CSS.md": "1e7de85f86181c43b0ffb6a97757a218671e3e4f41214dafc4dbc1fba911b7c5",
+    "02_AIフレームワーク設計書/06_LayoutManager・静的検査.md": "946fb4ed635a313cbebba8adcfd78b1a5c6e7fa243cdf23f4720cf0a2571ee25",
+    "02_AIフレームワーク設計書/07_DTO・Form・ACG.md": "a39f7c5d08f98d05b438ecd26be388af9d812a889c0e516c529f4f839a248860",
+    "02_AIフレームワーク設計書/08_監査・未完了管理.md": "75cd8e6f5e854d91ea7f2e3ffd293b3e6a5d6121cce27e819305862031f31b99",
+    "02_AIフレームワーク設計書/09_一括監査進捗台帳.md": "aa41b537b4833ccfc865dbfb2597dd9ca3b7168f8c09f63fe024bf2557029cca",
+    "02_AIフレームワーク設計書/09_実装対象・仕様対応表.md": "a86b92c98e158c74d422800492b8f9d7231cc3ab96a8620421daf269a6b495cf",
+    "02_AIフレームワーク設計書/10_仕様原子抽出台帳.md": "0b5ae7e911def05cce254917ff9bcb75adea4da12042c12c7304a23097fb2f36",
+    "02_AIフレームワーク設計書/10_詳細照合_2.5と2.6.md": "1b07d7ed5e542924b6d164833c65841b204ffb7b5c7e4400f7491487e2559a41",
+    "02_AIフレームワーク設計書/11_ACG型・Nullable・Validation詳細.md": "9ea108573ce45d6d1d47135aa35956e5f652b5feb585f1a994e8bab098dbeb1a",
+    "02_AIフレームワーク設計書/12_ACG形式・必須・デフォルト詳細.md": "9c0c555281d3baa6a2e91ceca197733bbc5c5f90a733078895cd6965d72abf19",
+    "02_AIフレームワーク設計書/13_通常UI・Header・TabBar.md": "5d38f425b73ec249135c43ed3c25dfc2f0a8ce8627fb44fc9aa2acad02b361dd",
+    "02_AIフレームワーク設計書/14_テスト仕様.md": "c06b968ec1096a107d988805272ed10e22343d24d58affe9205eeae7ad183ad0",
+    "02_AIフレームワーク設計書/15_差分・移行.md": "bc87391282be95ab8014bf9912a156f99492079b6af43ca44284b93f63a8ea34",
+    "02_AIフレームワーク設計書/16_仕様台帳.md": "74cefae1ae601eb540c7a58fdd79fd474a1e432ab542a2e4ba3ebed2d03a751e",
+    "02_AIフレームワーク設計書/17-01_原典単位.md": "479d309f7b716569b620cd8ff91d56b8718d33cb17f2f2f473eeb44169cdee56",
+    "02_AIフレームワーク設計書/17-02_原典単位.md": "de99c8d5927526f9c1bb304a2d1702d91e89e0b9756981cf4bcbf9f683594395",
+    "02_AIフレームワーク設計書/17-03_原典単位.md": "3d909dd66564c5070ec9ca3f27fdfca715a6ee637f0635a14618de477db2c25b",
+    "02_AIフレームワーク設計書/17-04_原典単位.md": "755640213dabeddb8cdb639e74aac82becebcbfd42d48c33bd4031885d7475bb",
+    "02_AIフレームワーク設計書/17-05_原典単位.md": "8d3fde521a59ba1a7fb89db044c88d9a62cf3884b30561b255557b67f2aa89db",
+    "02_AIフレームワーク設計書/17-06_原典単位.md": "4e8762c4ddcf265ccd0d3495eb7f88fe9f119b90180aa6ae562cf831106d64ce",
+    "02_AIフレームワーク設計書/17-07_原典単位.md": "29195da7615a850c7e8f5414e87d7f2014f11f43e8e6455a73423c762b34502d",
+    "02_AIフレームワーク設計書/17-08_原典単位.md": "be4d3fd3d541389be9d4a6cafc1802b5ed60ac05a4fcab66f260884f689c278d",
+    "02_AIフレームワーク設計書/17-09_原典単位.md": "3ae74e40c2b37aa9a0f909e6f85fdb5bb2eefddc2d79cf797f6d9da27806e9b6",
+    "02_AIフレームワーク設計書/17-10_原典単位.md": "98f86541b65d62c7dc50846c3c7cbf25de2469d912c9ebcbda370cc9f3872dd4",
+    "02_AIフレームワーク設計書/17-11_原典単位.md": "ab4a4ed3a9a4e6f45a3a57a0779599dfa2133b25f8a70c30f939690a658d305b",
+    "02_AIフレームワーク設計書/17-12_原典単位.md": "67850fdf05aa8dca1c227fa50f2562025e35016ec956b1f0871b5345e3563ff0",
+    "02_AIフレームワーク設計書/17-13_原典単位.md": "76d9c7c31eb47dce386cf6cf4101f1a6e6c6e1cc319c2e33087d5c56b67b0257",
+    "02_AIフレームワーク設計書/17-14_原典単位.md": "50cc46b77cc2dc03d986e9aadc9c02413fb095a9936cd2100ff7a14f8a774960",
+    "02_AIフレームワーク設計書/17_原典・仕様対応表.md": "df9c7aa4c393da91a1319c90ef519746571f895efb5092e4ef779939e107c395",
+    "02_AIフレームワーク設計書/18_承認履歴・未決事項.md": "2e726734fd23106689281a7f90c3a475f3f7bd89dc419797bc68b0d86da9b5b2",
+    "02_AIフレームワーク設計書/19_監査手順.md": "fca340e380631c0e66fe58d5bb1045bc1595b3ff2fc6e4ad50a6b76e8da74459",
+    "02_AIフレームワーク設計書/20_ACG原典・確定照合.md": "856c418919aed72794de21abdf30a53b862391a5be9efd1ac1b3e003f269c9c3",
+    "02_AIフレームワーク設計書/21_実装補足・幾何計算と互換HTML.md": "96329b403567a55f1a95e87d336bd1d31e533d8eac13dc2b58276ded88c60537",
+    "02_AIフレームワーク設計書/22_UI責務原典・確定照合.md": "363e59570aea66a856c18f8101ae3c2669d6ad14905c3c177e3d615e6db8f06e",
+    "02_AIフレームワーク設計書/23_旧調査・運用履歴・確定照合.md": "cb091435587a342af4ab2d26d080b8fe7a63fde4fae99b6a30d15e3cfa8852e1",
+    "02_AIフレームワーク設計書/24_新議事録・後日承認の確定照合.md": "05771b9d7ba59378777422509263a870b31f8031789bffc3e1fd3f6897ebc46f",
+    "02_AIフレームワーク設計書/25_実装可能性監査.md": "126eae8dff8ad32d9a5fd0cde30794c32ade5716b976daa2ae941187837c1f96",
+    "02_AIフレームワーク設計書/27_共通UI・計測・日付の実装補完.md": "667f55d9478fc748abf6fba8fda42ac79b9e526cc7d71b089d7714800eb9d362",
+    "02_AIフレームワーク設計書/28_Table・Swipeの実装補完.md": "07058d2ebd0224dd56d5ebd2f1fa5970872d9f1d5d242a4389e417ac3aafa405",
+    "02_AIフレームワーク設計書/29_静的検査器・ACGの実装補完.md": "6bd4a1235ed1d17ca2ae029fcefbfe1d5d68d66956d57d9b81c6e57db80385e4",
+    "02_AIフレームワーク設計書/30_工程1_不足・矛盾と修正対象.md": "98b7574629b045ec911ae1a05698888e1a3232f6384db4665e2de109d841f9b6",
+    "02_AIフレームワーク設計書/31_工程1_19議事録_双方向照合.md": "fe3eb77c643d419cbf30be8f2a0abb7faddc7efcdc7efa98ee57e729f6a25cc5",
+    "02_AIフレームワーク設計書/32_工程2_修正結果と検証契約.md": "e6e496467f7aeb93ab327519fbfb0e9f589dde2654a3b3f39e25527f9c2ca593",
+    "02_AIフレームワーク設計書/README.md": "5d48e52476be0c41be2339017d8eecb30c888b9a6665193c0c707d0b0124d323",
+    "02_AIフレームワーク設計書/作業再開.md": "92d6a4b63d8b70f68e427d5be70f3b3f679f9dd8757b827b8d10609c90d10f96",
+    "02_AIフレームワーク設計書/検証資料/audit-design.py": "ce05e58bbdadd97f261b402f6a3995e694f841ea4e2f22700e5902887d8f3d90",
+    "02_AIフレームワーク設計書/検証資料/requirements.json": "b6d9b71b034755c80458a11668cfd4bf09f98ad671b1da0bbdada2ce036016a7",
+    "02_AIフレームワーク設計書/検証資料/stage2-changes.json": "3d1228ec5116238e2c05a5f2437c6fcd7891066defbc79e887ac780bb07adfcf",
+    "02_AIフレームワーク設計書/検証資料/source-manifest.json": "1fb86279b95bad73801d48f10e402a06e0f9c03c7db639f15a9606cd4df0aedb",
+    "02_AIフレームワーク設計書/検証資料/source-units.json": "5811bcd3d8ea9a322df7dca0cf8051cd614063d4951c5a95539b3c840c07866a",
+    "02_AIフレームワーク設計書/検証資料/resume-state.json": "85515e44b72f3fdc7d8c184af9b5978cecf504ba7abebd8f25fab32307458591",
+    "02_AIフレームワーク設計書/検証資料/reference-functions.mjs": "69f1a5d232c1cc280da6aa15c0a7b97ebd705b4862f651a47bc6ed17cdd2cab0",
+    "02_AIフレームワーク設計書/検証資料/test-reference-functions.mjs": "eac903da8feeeca81c43ef89749069d5435a99c4671d9f58e4ed0d50fbfed95b",
+    "02_AIフレームワーク設計書/検証資料/table-geometry.mjs": "c78c785bc33d2b6d57390ab2496f5949d2b5ea0d1e76acd285bcc8a241d06a4a",
+    "02_AIフレームワーク設計書/検証資料/test-geometry.mjs": "de6ac8adc7cac5adcd229fa5e42acad6e4f634f0e6bee3cb3e569125dce6f953"
+  }
+}

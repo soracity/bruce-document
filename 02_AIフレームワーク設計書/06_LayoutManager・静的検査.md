@@ -60,7 +60,7 @@ LayoutSpanDirectiveは内部CSS変数`--bruce-layout-weight`へ重みを反映�
 
 ## LAY-03 未承認の特殊構造の境界
 
-ネストした@if、複数要素を返す分岐、複数の排他連鎖の組合せ、明示的な空分岐、@switch/@defer、ng-template/ngTemplateOutletやng-contentで兄弟が決まる構造、LayoutItem内の@forの例外は包括承認されていない。検査器は正常扱いで読み飛ばさず`BRUCE-LAYOUT-009`で「検査規則未定義」と報告する。許可を勝手に一般化しない。必要な場合は18章の選択肢を提示する。
+ネストした@if、複数要素を返す分岐、複数の排他連鎖の組合せ、明示的な空分岐、@switch/@defer、ng-template/ngTemplateOutletやng-contentで兄弟が決まる構造、LayoutItem内の@forの例外は包括承認されていない。検査器は正常扱いで読み飛ばさず`BRUCE-LAYOUT-009`で「検査規則未定義」と報告する。今回の実装では拒否を確定動作とし、許可を勝手に一般化しない。将来の例外追加は18章の対象外境界に従う別変更である。
 
 対応可能な基準構造はLAY-02の原典具体例。ng-containerの階層数には上限を設けず展開する。展開後の構造が未承認形になった場合に限って上記診断とする。通常の要素内部にある@forは兄弟数を変えないため、この禁止に含めない。その内部に別LayoutItemがあれば、そのItem自体を独立検査する。
 

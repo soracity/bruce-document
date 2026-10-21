@@ -4,11 +4,11 @@
   "branch": "docs/bruce-detail-20261020",
   "stage": 2,
   "stage_name": "設計書全体の修正",
-  "status": "in_progress",
-  "stage_approval": "stage1_approved_stage2_not_requested",
-  "last_completed_unit": "S2-05",
-  "next_action": "29件の反映一覧・文書整合を点検する。旧audit-design.pyは34件前提のため現行19件/159規則/194テストへ更新してから実行。工程②は未完了、承認を求めない。",
-  "next_work_unit": "S2-06",
+  "status": "complete_awaiting_stage_approval",
+  "stage_approval": "stage1_approved_stage2_pending",
+  "last_completed_unit": "S2-06",
+  "next_action": "工程②の29修正とP-01〜03を含む成果全体の承認後、19章に従い工程③の設計単独実装検証へ進む。工程①の再承認は不要。",
+  "next_work_unit": "S3-01_after_stage2_approval",
   "investigation_remaining": [],
   "unapplied_findings": [],
   "units": [
@@ -40,14 +40,14 @@
     {
       "id": "S2-06",
       "title": "29件の修正内容を点検し工程②成果を保存",
-      "status": "pending"
+      "status": "complete"
     }
   ],
   "inputs": {
     "source_commit": "35e2ed90a133b0ff8ca5721353488ea1da233240",
     "design_commit": "b8117fec26b6992551fbdeafb1cf702bf6951e29",
     "design_branch_commit": "9ad5464f768cdaf4d7395c20c43565c0dbaf1360",
-    "previous_saved_checkpoint": "38aa6da334130b9054deefcec815d42e9bfdbd0e",
+    "previous_saved_checkpoint": "8d64d1a99de19240d3adb2b3d6b35c84f7aee76c",
     "source_files": [
       {
         "path": "01_ai-document/phase1_01_既存資産棚卸し.md",
@@ -226,8 +226,8 @@
     "工程①を再承認依頼しない。工程②の完了前は工程③を開始しない。"
   ],
   "limits": [
-    "画面やサービスの中断を防止する機能ではない。保存済み地点からの再開で損失範囲を減らす。",
-    "実装本文・検証コードの修正、Angular/Java/ブラウザー/CI/実機試験は未実施。"
+    "Angular/Java/ブラウザー/CI/実機試験は未実施。工程②完了はA/B最終合格ではない。",
+    "比較156ソースは過去の固定manifest。今回の最新feature取得やhash再検査を主張しない。"
   ],
   "stage1_approval": {
     "status": "approved",
@@ -235,12 +235,7 @@
     "evidence": "本チャットのユーザー発言「承認します。」（工程①完了の説明に対する承認）",
     "result_commit": "9189e2610eb6bd86ff1fbf3200a0bca676e87eca"
   },
-  "pending_document_verification": [
-    "audit-design.pyを19件/159規則/194テストへ更新",
-    "新規32章の全29行と正本対応を確認",
-    "README/08/進捗/再開/WBSを現在状態に同期",
-    "純粋参照67項目と幾何31項目を現行記述で再確認",
-    "branch/mainの保存先案内とcommit/tree/blob検査"
-  ],
-  "interruption_note": "ユーザーが実行直後のtimeoutを報告。原因説明を優先し、未検証部分を完了扱いせず途中保存。"
+  "pending_document_verification": [],
+  "interruption_note": "ユーザーがリセット後にWork復旧と報告。原因は特定していない。保存済みS2-05からS2-06を完了した。",
+  "document_verification": "検証資料/stage2-document-check.json"
 }

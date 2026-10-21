@@ -486,7 +486,8 @@
       "IMP-27"
     ],
     "tests": [
-      "T-CHECK-10"
+      "T-CHECK-10",
+      "T-CHECK-27"
     ]
   },
   {
@@ -898,7 +899,8 @@
     ],
     "tests": [
       "T-CHECK-18",
-      "T-CHECK-22"
+      "T-CHECK-22",
+      "T-CHECK-28"
     ]
   },
   {
@@ -925,7 +927,8 @@
     ],
     "tests": [
       "T-CHECK-22",
-      "T-CHECK-25"
+      "T-CHECK-25",
+      "T-CHECK-29"
     ]
   },
   {
@@ -955,7 +958,9 @@
       "T-CI-03",
       "T-CI-02",
       "T-CI-04",
-      "T-CI-05"
+      "T-CI-05",
+      "T-CI-06",
+      "T-CI-07"
     ]
   },
   {
@@ -1095,7 +1100,8 @@
       "IMP-17"
     ],
     "tests": [
-      "T-LAY-05"
+      "T-LAY-05",
+      "T-LAY-13"
     ]
   },
   {
@@ -1126,7 +1132,8 @@
       "IMP-17"
     ],
     "tests": [
-      "T-LAY-05"
+      "T-LAY-05",
+      "T-LAY-14"
     ]
   },
   {
@@ -1162,7 +1169,8 @@
       "T-LAY-09",
       "T-LAY-10",
       "T-LAY-11",
-      "T-LAY-12"
+      "T-LAY-12",
+      "T-LAY-15"
     ]
   },
   {
@@ -1657,7 +1665,8 @@
       "IMP-34"
     ],
     "tests": [
-      "T-ARC-01"
+      "T-ARC-01",
+      "T-ACG-23"
     ]
   },
   {
@@ -1689,7 +1698,8 @@
       "IMP-34"
     ],
     "tests": [
-      "T-FORM-08"
+      "T-FORM-08",
+      "T-ACG-25"
     ]
   },
   {
@@ -2269,7 +2279,8 @@
       "IMP-37"
     ],
     "tests": [
-      "T-ACG-21"
+      "T-ACG-21",
+      "T-ACG-24"
     ]
   },
   {
@@ -2359,7 +2370,9 @@
       "IMP-37"
     ],
     "tests": [
-      "T-ACG-10"
+      "T-ACG-10",
+      "T-DATE-09",
+      "T-DATE-10"
     ]
   },
   {
@@ -2912,7 +2925,9 @@
       "IMP-36"
     ],
     "tests": [
-      "T-ACG-19"
+      "T-ACG-19",
+      "T-ACG-26",
+      "T-MIG-05"
     ]
   },
   {
@@ -3239,7 +3254,9 @@
       "IMP-21"
     ],
     "tests": [
-      "T-STYLE-03"
+      "T-STYLE-03",
+      "T-STYLE-13",
+      "T-STYLE-14"
     ]
   },
   {
@@ -3565,7 +3582,8 @@
       "T-FORM-01",
       "T-FORM-02",
       "T-FORM-03",
-      "T-STYLE-09"
+      "T-STYLE-09",
+      "T-FORM-09"
     ]
   },
   {
@@ -3618,7 +3636,8 @@
       "IMP-02"
     ],
     "tests": [
-      "T-STYLE-04"
+      "T-STYLE-04",
+      "T-STYLE-12"
     ]
   },
   {
@@ -3675,7 +3694,8 @@
     ],
     "tests": [
       "T-TABLE-06",
-      "T-STYLE-06"
+      "T-STYLE-06",
+      "T-TABLE-18"
     ]
   },
   {
@@ -3705,7 +3725,8 @@
       "IMP-22"
     ],
     "tests": [
-      "T-STYLE-07"
+      "T-STYLE-07",
+      "T-TABLE-17"
     ]
   },
   {
@@ -3736,7 +3757,8 @@
     ],
     "tests": [
       "T-TABLE-02",
-      "T-TABLE-04"
+      "T-TABLE-04",
+      "T-TABLE-19"
     ]
   },
   {
@@ -3828,7 +3850,8 @@
     ],
     "tests": [
       "T-TABLE-10",
-      "T-TABLE-12"
+      "T-TABLE-12",
+      "T-TABLE-20"
     ]
   },
   {
@@ -3963,7 +3986,8 @@
       "IMP-38"
     ],
     "tests": [
-      "T-MAINT-02"
+      "T-MAINT-02",
+      "T-MAINT-01"
     ],
     "session_basis": "本チャットの対象19件という明示指定"
   },
@@ -4345,7 +4369,9 @@
     ],
     "tests": [
       "T-SWIPE-07",
-      "T-SWIPE-09"
+      "T-SWIPE-09",
+      "T-SWIPE-14",
+      "T-SWIPE-15"
     ]
   },
   {
@@ -4370,7 +4396,8 @@
     ],
     "tests": [
       "T-SWIPE-06",
-      "T-SWIPE-08"
+      "T-SWIPE-08",
+      "T-SWIPE-16"
     ]
   },
   {

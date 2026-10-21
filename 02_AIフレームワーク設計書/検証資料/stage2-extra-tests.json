@@ -6,8 +6,8 @@
   },
   {
     "id": "T-STYLE-13",
-    "action": "FAB shadowSize未指定/sm/md/falseを切替",
-    "expected": "lg/sm/md/noneが各1種類。静的shadow-lgとの競合なし"
+    "action": "FAB shadowSize未指定/sm/mdとshadow=falseを切替",
+    "expected": "lg/sm/md/noneが各1種類。静的shadow-lgとの競合なし。shadowSizeへbooleanを渡さない"
   },
   {
     "id": "T-STYLE-14",

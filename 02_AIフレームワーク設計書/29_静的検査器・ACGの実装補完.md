@@ -11,8 +11,8 @@
 | parseArguments | argv:readonly string[]→Result<BuildOptions> |
 | readWorkspace | root:string→Result<AngularWorkspace>。angular.jsonをJSONC解析、projects/options/configurationsの型も検査 |
 | candidateProjects | workspace→readonly string[]。application、build target、対応builderで絞る。configuration検査はproject決定後 |
-| resolveBuildOptions | workspace,project,configuration→{tsConfig:string,fileReplacements:readonly {replace:string,with:string}[]} |
-| normalizeReplacements | root,entries→ReadonlyMap<string,string>。絶対化・正規化・存在確認。重複replace・循環・同一replaceへの異なるwithは設定エラー |
+| resolveBuildOptions | workspace,project,configuration→Result<ResolvedOptions>。TOOL-05の型を使用 |
+| normalizeReplacements | root,entries→Result<ReadonlyMap<string,string>>。絶対化・正規化・存在確認。重複replace・循環・同一replaceへの異なるwithは設定エラー |
 | createProgram | context:BuildContext→Result<ts.Program>。追加rootや未選択構成を混ぜない |
 | isOwnSource | path:string,context→boolean。realpathがworkspace内で、成果物／依存除外に一致しないこと |
 

@@ -51,10 +51,12 @@ export function parseDate(raw) {
 export function assertReleaseEvidence(manifest,requested,run) {
  const sha=/^[0-9a-f]{40}$/i,digest=/^[0-9a-f]{64}$/i;
  const text=v=>typeof v==='string'&&v.trim().length>0;
+ const matches=(pattern,v)=>typeof v==='string'&&pattern.test(v);
+ const id=v=>matches(/^[0-9]+$/,v);
  for(const e of [manifest,run]) {
-  if(!e||!sha.test(e.commit)||!digest.test(e.artifactSha256)||!digest.test(e.lockfileSha256)||!text(e.project)||!text(e.configuration)||!text(e.runId)||e.layout!=='success'||e.angular!=='success')throw Error('BRUCE_RELEASE_EVIDENCE');
+  if(!e||!matches(sha,e.commit)||!matches(digest,e.artifactSha256)||!matches(digest,e.archiveSha256)||!matches(digest,e.lockfileSha256)||!matches(sha,e.designCommit)||!matches(sha,e.acgCommit)||!text(e.project)||!text(e.configuration)||!id(e.runId)||!id(e.artifactId)||!Number.isSafeInteger(e.runAttempt)||e.runAttempt<=0||e.layout!=='success'||e.angular!=='success')throw Error('BRUCE_RELEASE_EVIDENCE');
  }
- if(!requested || !sha.test(requested.commit)||!digest.test(requested.artifactSha256)||!text(requested.project)||!text(requested.configuration)||!sha.test(manifest.designCommit)||!sha.test(manifest.acgCommit))throw Error('BRUCE_RELEASE_MANIFEST');
+ if(!requested || !matches(sha,requested.commit)||!matches(digest,requested.artifactSha256)||!text(requested.project)||!text(requested.configuration))throw Error('BRUCE_RELEASE_MANIFEST');
  for(const field of ['commit','project','configuration','artifactSha256'])if(manifest[field]!==requested[field]||run[field]!==requested[field])throw Error('BRUCE_RELEASE_MISMATCH:'+field);
- for(const field of ['runId','lockfileSha256'])if(manifest[field]!==run[field])throw Error('BRUCE_RELEASE_MISMATCH:'+field);
+ for(const field of ['runId','runAttempt','artifactId','archiveSha256','lockfileSha256','designCommit','acgCommit'])if(manifest[field]!==run[field])throw Error('BRUCE_RELEASE_MISMATCH:'+field);
 }
