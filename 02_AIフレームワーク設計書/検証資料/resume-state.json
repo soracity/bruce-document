@@ -4,13 +4,36 @@
   "branch": "docs/bruce-detail-20261020",
   "stage": 3,
   "stage_name": "設計単独実装検証",
-  "status": "blocked_environment_permissions",
+  "status": "in_progress_partial_verified",
   "stage_approval": "stage1_approved_stage3_execution_explicitly_approved",
-  "last_completed_unit": "S2-06",
-  "next_action": "ブラウザーOS依存を導入できる実行環境についてユーザーの指示を受ける。権限回避しない。verification/README.mdの未実施一覧からS3-01を再開。実行承認は取得済み。",
-  "next_work_unit": "S3-01_environment",
-  "stage3_execution_approval": {"date":"2026-10-21","evidence":"ユーザー発言：③の実行を承認します","design_commit":"5fd8472b382ffe20ea910a90c0c5c991f44ffbb4","scope":"工程③の実行。最終合格やP-01〜03の個別採否を追加推定しない"},
-  "stage3_checkpoint": {"unit":"S3-01","status":"blocked","completed":["指定Angular21.0.0依存とpackage-lock作成","Node22.12.0/npm11.6.2確認","Playwrightブラウザー取得"],"blocker":"playwright install-deps chromium webkit: setgroups Operation not permitted / apt exit 100","not_run":"IMP-01〜39の独立実装・実行検証、194仕様テスト。環境準備のみで合格数は0","details":"verification/README.md"},
+  "last_completed_unit": "S3-04a_IMP31_validator_and_date_contract",
+  "next_action": "IMP-01〜39全件の設計本文と独立実装・テストの意味突合を継続。検証ソース未作成19件は設計だけから独立実装し、その後ngc/Vitest、必要なDOM・Java/Node・CLI/CI-fixtureで検証。工程③合格未宣言、工程④未着手。verification/工程3_IMP39_詳細契約突合台帳.md を参照。",
+  "next_work_unit": "S3-04b_all_39_contract_implementation",
+  "stage3_execution_approval": {
+    "date": "2026-10-21",
+    "evidence": "ユーザー発言：③の実行を承認します",
+    "design_commit": "5fd8472b382ffe20ea910a90c0c5c991f44ffbb4",
+    "scope": "工程③の実行。最終合格やP-01〜03の個別採否を追加推定しない"
+  },
+  "stage3_checkpoint": {
+    "unit": "S3-04a",
+    "status": "partial_verified",
+    "completed": [
+      "IMP-31: FORMAT-02のrequiredTrim/asciiを設計書と一致する公開API・stringType判定へ修正",
+      "IMP-31: DEFAULT-02のAppDateUtilを新規独立実装しローカル暦日とUTC現在日時を検証",
+      "GitHub Actions run 39578517571 でAngular ngc成功、Vitest 23ファイル/276テスト成功、NG0"
+    ],
+    "test_gate": {
+      "commit": "ed59aa57bf19f530d77bc9161a8f991f7b80ad24",
+      "run_id": 39578517571,
+      "angular_typecheck": "passed",
+      "vitest_files": 23,
+      "vitest_tests": 276,
+      "vitest_failed": 0
+    },
+    "not_run": "39対象の全API/HTML/CSS/異常/破棄意味一致、実ブラウザー/Java21-Gradle/ACG生成/CLI/CI-fixture、T194件全試験",
+    "next": "全39対象の設計契約と独立実装のギャップを1件単位で補う。未実装19件/部分20件を完了扱いしない。"
+  },
   "investigation_remaining": [],
   "unapplied_findings": [],
   "units": [
@@ -239,5 +262,25 @@
   },
   "pending_document_verification": [],
   "interruption_note": "ユーザーがリセット後にWork復旧と報告。原因は特定していない。保存済みS2-05からS2-06を完了した。",
-  "document_verification": "検証資料/stage2-document-check.json"
+  "document_verification": "検証資料/stage2-document-check.json",
+  "historical_stage3_checkpoint": {
+    "unit": "S3-01",
+    "status": "blocked",
+    "completed": [
+      "指定Angular21.0.0依存とpackage-lock作成",
+      "Node22.12.0/npm11.6.2確認",
+      "Playwrightブラウザー取得"
+    ],
+    "blocker": "playwright install-deps chromium webkit: setgroups Operation not permitted / apt exit 100",
+    "not_run": "IMP-01〜39の独立実装・実行検証、194仕様テスト。環境準備のみで合格数は0",
+    "details": "verification/README.md"
+  },
+  "stage3_imp_verification": {
+    "total": 39,
+    "source_present_or_partial": 20,
+    "source_absent": 19,
+    "full_contract_pass": 0,
+    "full_contract_pass_note": "全契約合格が未立証であり実装検証合格0と同義。NG確定39を意味しない。",
+    "report": "verification/工程3_IMP39_詳細契約突合台帳.md"
+  }
 }
