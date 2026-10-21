@@ -58,3 +58,13 @@ S3-01環境準備から再開。node_modulesやブラウザーバイナリは保
 - 対応するVitest `angular/test/ui-style.util.test.ts` を追加。CSS固定Map、全11色、数値候補、false/undefined、不正値Fail Fastを確認するテストを記述。
 - **テスト実行は未実施・合格0**。この環境では `npm view vitest@4.0.15` が `EAI_AGAIN registry.npmjs.org` で失敗し、lock更新と依存導入も未実施。
 - 次はレジストリ接続が復旧した環境でlock更新、クリーンインストール、`ngc`、Vitest実行。結果を記録する。IMP-03も実行合格まで完了扱いしない。
+
+## 2026-10-21 工程③再開・進捗整合
+
+- ユーザー承認済み方針：Vitestを使用。PlaywrightおよびGitHub Actionsは工程③で使用しない。旧Playwright準備記録は過去の履歴であり、今後の必須手順ではない。
+- IMP-03: `angular/src/ui-style.util.ts` と `angular/test/ui-style.util.test.ts` を保存済み。
+- IMP-01: `angular/src/component-base.ts` と `angular/test/component-base.test.ts` を保存済み。
+- いずれも独立実装・テストコード作成の段階。AngularコンパイルおよびVitest実行の成功は未確認。合格0件。
+- `angular/package.json` はVitestに変更済みだが `angular/package-lock.json` はPlaywright依存を含む旧状態で不整合。`npm ci` 成功を主張しない。
+- 現環境Node v22.16.0、npm 10.9.2、Vitest npmキャッシュなし。指定版Node 22.12.0/npm 11.6.2と異なる。依存再現性を未検証とする。
+- 次の順序：package-lock更新→依存再現→IMP-01/03の型検査とテスト→他対象の独立実装。型やEnum実体との整合、Angular DIテスト設定を確認する。未実施条件は合格へ加算しない。
