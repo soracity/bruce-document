@@ -147,6 +147,32 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
       component.ngOnDestroy();
     } finally { vi.unstubAllGlobals(); }
   });
+  it('rejects unsupported computed gap units', () => {
+    const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
+    const child = {style:{flexBasis:'',flexGrow:''},getClientRects:()=>[{}]} as unknown as HTMLElement;
+    const wrapper = {children:[child],getBoundingClientRect:()=>({width:200})} as unknown as HTMLElement;
+    vi.stubGlobal('getComputedStyle',() => ({
+      display:'block',columnGap:'1rem',paddingLeft:'0px',paddingRight:'0px',
+      borderLeftWidth:'0px',borderRightWidth:'0px',getPropertyValue:() => '1',
+    }));
+    try {
+      expect(() => component.distribute(wrapper)).toThrow('BRUCE_LAYOUT_GAP');
+    } finally { vi.unstubAllGlobals(); }
+  });
+  it('defers writes for nonfinite container geometry', () => {
+    const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
+    const child = {style:{flexBasis:'11px',flexGrow:'3'},getClientRects:()=>[{}]} as unknown as HTMLElement;
+    const wrapper = {children:[child],getBoundingClientRect:()=>({width:Number.NaN})} as unknown as HTMLElement;
+    vi.stubGlobal('getComputedStyle',() => ({
+      display:'block',columnGap:'8px',paddingLeft:'0px',paddingRight:'0px',
+      borderLeftWidth:'0px',borderRightWidth:'0px',getPropertyValue:() => '1',
+    }));
+    try {
+      component.distribute(wrapper);
+      expect(child.style.flexBasis).toBe('11px');
+      expect(child.style.flexGrow).toBe('3');
+    } finally { vi.unstubAllGlobals(); }
+  });
   it('schedules redistribution when required-width notification fires', () => {
     const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
     const child = {} as HTMLElement;
