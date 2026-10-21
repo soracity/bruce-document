@@ -131,6 +131,7 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
     const values = new Map([['flex-basis', ''], ['flex-grow', '']]);
     const setProperty = vi.fn((name:string,value:string) => values.set(name,value));
     const style = {
+      get flex(){return values.get('flex') ?? '';},
       get flexBasis(){return values.get('flex-basis') ?? '';},
       get flexGrow(){return values.get('flex-grow') ?? '';},
       getPropertyPriority:()=>'',setProperty,
