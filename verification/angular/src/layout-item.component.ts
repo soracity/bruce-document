@@ -38,6 +38,7 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
     lastBasis: string; lastGrow: string; lastBasisPriority: string; lastGrowPriority: string;
     minWidth: string; boxSizing: string; minWidthPriority: string; boxSizingPriority: string;
     lastMinWidth: string; lastBoxSizing: string;
+    flex: string; flexPriority: string; lastFlex: string; lastFlexPriority: string;
   }>;
 
   private allocations(): NonNullable<LayoutItemComponent['originalStyles']> {
@@ -68,8 +69,20 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
         minWidthPriority: this.priority(element, 'min-width'),
         boxSizingPriority: this.priority(element, 'box-sizing'),
         lastMinWidth: element.style.minWidth, lastBoxSizing: element.style.boxSizing,
+        flex: element.style.flex, flexPriority: this.priority(element, 'flex'),
+        lastFlex: element.style.flex, lastFlexPriority: this.priority(element, 'flex'),
       };
       this.allocations().set(element, saved);
+    }
+    if (element.style.setProperty &&
+        element.style.flex === saved.lastFlex &&
+        this.priority(element, 'flex') === saved.lastFlexPriority) {
+      const nextFlex = '0 0 ' + basis;
+      if (element.style.flex !== nextFlex || this.priority(element, 'flex') !== '') {
+        element.style.setProperty('flex', nextFlex);
+        saved.lastFlex = element.style.flex;
+        saved.lastFlexPriority = '';
+      }
     }
     if (element.style.minWidth === saved.lastMinWidth && element.style.minWidth !== '0px') {
       if (element.style.setProperty) element.style.setProperty('min-width', '0px');
@@ -106,6 +119,9 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
     if (element.style.flexGrow === saved.lastGrow &&
         this.priority(element, 'flex-grow') === saved.lastGrowPriority)
       this.setFlex(element, 'flex-grow', saved.grow, saved.growPriority);
+    if (element.style.setProperty && element.style.flex === saved.lastFlex &&
+        this.priority(element, 'flex') === saved.lastFlexPriority)
+      element.style.setProperty('flex', saved.flex, saved.flexPriority);
     if (element.style.minWidth === saved.lastMinWidth) {
       if (element.style.setProperty) element.style.setProperty('min-width', saved.minWidth, saved.minWidthPriority);
       else element.style.minWidth = saved.minWidth;
