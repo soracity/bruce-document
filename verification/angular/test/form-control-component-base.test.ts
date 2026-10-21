@@ -1,6 +1,6 @@
 import '@angular/compiler';
 import { describe, expect, it } from 'vitest';
-import { ChangeDetectorRef, createEnvironmentInjector, runInInjectionContext } from '@angular/core';
+import { ChangeDetectorRef, provideZonelessChangeDetection, createEnvironmentInjector, runInInjectionContext } from '@angular/core';
 import { FormControl, FormControlStatus } from '@angular/forms';
 import { FormControlComponentBase } from '../src/form-control-component-base.js';
 
@@ -20,6 +20,7 @@ class Probe extends FormControlComponentBase<string | null> {
 function setup() {
   let marked = 0;
   const injector = createEnvironmentInjector([
+    provideZonelessChangeDetection(),
     { provide: ChangeDetectorRef, useValue: { markForCheck: () => { marked++; } } },
   ], null as never);
   const probe = runInInjectionContext(injector, () => new Probe());
