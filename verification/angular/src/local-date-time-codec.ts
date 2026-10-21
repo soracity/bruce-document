@@ -20,7 +20,7 @@ export function parseDate(raw: string): Result<DateParts> {
 export type LocalParts = DateParts & { hour: number; minute: number; second: number; millisecond: number };
 
 export function parseLocal(raw: string): Result<LocalParts> {
-  const match = /^([0-9]{4,}-[0-9]{2}-[0-9]{2})T([0-9]{2}):([0-9]{2})(?::([0-9]{2})(?:\\.([0-9]{1,3}))?)?$/.exec(raw);
+  const match = /^([0-9]{4,}-[0-9]{2}-[0-9]{2})T([0-9]{2}):([0-9]{2})(?::([0-9]{2})(?:\.([0-9]{1,3}))?)?$/.exec(raw);
   if (!match) return fail(raw, 'incomplete');
   const date = parseDate(match[1]!);
   if (!date.ok) return fail(raw, date.error.reason);
