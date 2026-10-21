@@ -55,3 +55,29 @@ export function parseUtc(raw: string): Result<Date> {
   }
   return { ok: true, value: date };
 }
+
+/** UIIMPL-04: DATE/DATE_TIMEの保存値をnative入力文字列へ変換する。 */
+export type DateInputType = 'DATE' | 'DATE_TIME';
+export type DateInputValue = { text: string; original?: { utc: string; input: string } };
+function formatYear(year: number): string { return String(year).padStart(4, '0'); }
+function two(value: number): string { return String(value).padStart(2, '0'); }
+function three(value: number): string { return String(value).padStart(3, '0'); }
+export function toInput(value: string | null, type: DateInputType): Result<DateInputValue> {
+  if (type !== 'DATE' && type !== 'DATE_TIME') throw new Error('BRUCE_DATE_TYPE');
+  if (value === null || value === '') return { ok: true, value: { text: '' } };
+  if (type === 'DATE') {
+    const date = parseDate(value);
+    if (!date.ok) return fail(value, 'invalidStoredValue');
+    const { year, month, day } = date.value;
+    return { ok: true, value: { text: formatYear(year) + '-' + two(month) + '-' + two(day) } };
+  }
+  const parsed = parseUtc(value);
+  if (!parsed.ok) return fail(value, 'invalidStoredValue');
+  const date = parsed.value;
+  const year = date.getFullYear();
+  if (year <= 0) return fail(value, 'outOfRange');
+  const input = formatYear(year) + '-' + two(date.getMonth() + 1) + '-' + two(date.getDate()) +
+    'T' + two(date.getHours()) + ':' + two(date.getMinutes()) + ':' + two(date.getSeconds()) +
+    '.' + three(date.getMilliseconds());
+  return { ok: true, value: { text: input, original: { utc: value, input } } };
+}
