@@ -40,6 +40,21 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
       vi.unstubAllGlobals();
     }
   });
+  it('clears stale allocated widths when container shrinks to zero', () => {
+    const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
+    const child = {style:{flexBasis:'200px',flexGrow:'0'},getClientRects:()=>[{}]} as unknown as HTMLElement;
+    const wrapper = {children:[child],clientWidth:0} as unknown as HTMLElement;
+    vi.stubGlobal('getComputedStyle',() => ({
+      display:'block',columnGap:'8px',getPropertyValue:() => '1',
+    }));
+    try {
+      component.distribute(wrapper);
+      expect(child.style.flexBasis).toBe('');
+      expect(child.style.flexGrow).toBe('');
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
   it('schedules redistribution when required-width notification fires', () => {
     const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
     const child = {} as HTMLElement;
