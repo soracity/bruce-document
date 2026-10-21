@@ -44,10 +44,10 @@ export class TextOverflowController {
         {transform:`translateX(${start}px)`,offset:1},
       ]
       : [
-        {transform:`translateX(${start}px)`,offset:0},
-        {transform:`translateX(${start}px)`,offset:500/duration},
-        {transform:'translateX(0px)',offset:(500+travel)/duration},
-        {transform:'translateX(0px)',offset:1},
+        {transform:'translateX(0px)',offset:0},
+        {transform:'translateX(0px)',offset:500/duration},
+        {transform:`translateX(${start}px)`,offset:(500+travel)/duration},
+        {transform:`translateX(${start}px)`,offset:1},
       ];
     this.animation = this.track.animate(frames,{duration,iterations:Infinity,easing:'linear'});
   }
