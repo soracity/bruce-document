@@ -1,14 +1,23 @@
 import { describe, expect, it, vi } from 'vitest';
 import { TextOverflowController } from '../src/text-overflow.controller.js';
-function setup(width:number,textWidth:number) {
+function setup(width:number,textWidth:number,padding=0) {
   const classes = new Set<string>();
-  const viewport = {clientWidth:width,classList:{add:(x:string)=>classes.add(x),remove:(...x:string[])=>x.forEach(v=>classes.delete(v))}} as unknown as HTMLElement;
+  const viewport = {clientWidth:width,style:{paddingLeft:`${padding}px`,paddingRight:`${padding}px`},classList:{add:(x:string)=>classes.add(x),remove:(...x:string[])=>x.forEach(v=>classes.delete(v))}} as unknown as HTMLElement;
   const cancel = vi.fn();
   const animate = vi.fn((_frames:Keyframe[], _options:KeyframeAnimationOptions) => ({cancel}));
   const track = {scrollWidth:textWidth,textContent:'',style:{transform:''},animate} as unknown as HTMLElement;
   return {controller:new TextOverflowController(viewport,track),classes,animate,cancel,track};
 }
 describe('IMP-17 TextOverflowController measurement and lifecycle', () => {
+  it('preserves 8px padding on both sides while calculating exact endpoints', () => {
+    const {controller,animate} = setup(200,300,8);
+    controller.update('sample','MARQUEE_RESTART');
+    expect(controller.measure()).toEqual({viewport:184,text:300,distance:116});
+    const [frames] = animate.mock.calls[0];
+    expect(frames[0].transform).toBe('translateX(0px)');
+    expect(frames[frames.length-1].transform).toBe('translateX(-116px)');
+    controller.destroy();
+  });
   it('does not animate when text fits the viewport', () => {
     const {controller,animate} = setup(100,80);
     controller.update('abc','MARQUEE_BOUNCE');
