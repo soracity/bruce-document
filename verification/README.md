@@ -51,3 +51,10 @@ S3-01環境準備から再開。node_modulesやブラウザーバイナリは保
 - **重要**: package-lock.json は以前のPlaywright構成のままであり、`package.json` と不整合。ロックファイル更新成功、`npm ci` 成功、`ngc` 成功、Vitest成功のいずれも主張しない。
 - 次はnpmレジストリに接続できる環境で、指定Node/npmバージョンと依存解決を確認し、lockを再生成・クリーンインストールした後、設計書単独の実装・検証を開始する。
 - ブラウザーを使わない検証は先行できるが、DOM実描画などの未検証条件を合格扱いしない。工程③未完了、合格0。
+
+## S3-02 IMP-03 着手（2026-10-21）
+
+- 詳細設計書02章STYLE-01/04だけを根拠に、独立検証コード `angular/src/ui-style.util.ts` を追加。
+- 対応するVitest `angular/test/ui-style.util.test.ts` を追加。CSS固定Map、全11色、数値候補、false/undefined、不正値Fail Fastを確認するテストを記述。
+- **テスト実行は未実施・合格0**。この環境では `npm view vitest@4.0.15` が `EAI_AGAIN registry.npmjs.org` で失敗し、lock更新と依存導入も未実施。
+- 次はレジストリ接続が復旧した環境でlock更新、クリーンインストール、`ngc`、Vitest実行。結果を記録する。IMP-03も実行合格まで完了扱いしない。
