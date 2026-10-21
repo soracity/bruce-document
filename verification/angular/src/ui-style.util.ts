@@ -17,9 +17,9 @@ function select<T extends string | number>(map: Readonly<Record<T,string>>, valu
 }
 export class UiStyleUtil {
   private constructor() {}
-  static getBorderClass(enabled:boolean,width:UiBorderWidth):string {return enabled===false?'border-0':enabled===true?select(border,width):invalid(enabled);}
-  static getRoundedClass(enabled:boolean,size:UiRoundedSize):string {return enabled===false?'rounded-none':enabled===true?select(rounded,size):invalid(enabled);}
-  static getShadowClass(enabled:boolean,size:UiShadowSize):string {return enabled===false?'shadow-none':enabled===true?select(shadow,size):invalid(enabled);}
+  static getBorderClass(enabled:boolean,width:UiBorderWidth):string {const widthClass=select(border,width);return enabled===false?'border-0':enabled===true?widthClass:invalid(enabled);}
+  static getRoundedClass(enabled:boolean,size:UiRoundedSize):string {const sizeClass=select(rounded,size);return enabled===false?'rounded-none':enabled===true?sizeClass:invalid(enabled);}
+  static getShadowClass(enabled:boolean,size:UiShadowSize):string {const sizeClass=select(shadow,size);return enabled===false?'shadow-none':enabled===true?sizeClass:invalid(enabled);}
   static getPaddingClass(value:UiPadding):string {return select(padding,value);}
   static getBackgroundColorClass(value:AppUiColor|undefined):string {return value===undefined?'':select(bg,value);}
   static getTextColorClass(value:AppUiColor|undefined):string {return value===undefined?'':select(fg,value);}
