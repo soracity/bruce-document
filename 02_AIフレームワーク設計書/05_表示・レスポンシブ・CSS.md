@@ -97,6 +97,7 @@ LabelとButtonに`textOverflowMode: InputSignal<AppCodeTextOverflowModeEnum>`、
 .bruce-text-wrap { white-space:normal; overflow-wrap:anywhere; }
 .bruce-text-ellipsis { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 .bruce-text-marquee { overflow:hidden; white-space:nowrap; }
+.bruce-text-marquee { box-sizing:border-box; padding-inline:8px; } /* 2026-10-21追加承認：スクロール中も左右の余白を常時確保 */
 .bruce-text-marquee .bruce-text-track { white-space:nowrap; pointer-events:none; }
 ```
 
@@ -116,9 +117,9 @@ Componentではない内部Class。DOMの所有者はLabel/Button。controller�
 | destroy()→void | 全Observer/リスナー/rAF/Animationを解除 |
 | animation / frame / destroyed | private、他Component間で共有しない |
 
-D<=0ならモードがMARQUEEでもx=0で静止。stateは'idle'|'wrap'|'ellipsis'|'marquee'|'paused'|'destroyed'。updateは文字/Enum検査→cancel→viewportの旧mode classを全除去→新modeを1種類付与→textContent更新→schedule。measureはtransform/animationを除いた測定cloneの非折返し文字幅Tとviewport.clientWidth Vを読み、D=max(0,T-V)。track自身の変形後矩形を測定幅へ戻さない。
+D<=0ならモードがMARQUEEでもx=0で静止。stateは'idle'|'wrap'|'ellipsis'|'marquee'|'paused'|'destroyed'。updateは文字/Enum検査→cancel→viewportの旧mode classを全除去→新modeを1種類付与→textContent更新→schedule。measureはtransform/animationを除いた測定cloneの非折返し文字幅Tと、viewport.clientWidthから左右の実paddingを差し引いた内側表示幅Vを読み、D=max(0,T-V)。track自身の変形後矩形を測定幅へ戻さない。
 
-P-01設計案の定数は速度30 CSS px/s、端待機500ms。D>0の移動方向はモード別に定める。RESTARTは2026-10-21の追加承認により左方向（先頭→末尾）へ変更する。x=0で500ms停止→x=-DへD/30秒移動→x=-Dで500ms停止を1周期としてiterations=Infinity、easing=linear、周期duration=1000+1000*D/30。次周期の先頭でx=0へ即時復帰。BOUNCEは従来どおり右方向（末尾→先頭）を初動とし、x=-Dで500ms→0へD/30秒移動→0で500ms→-Dへ同速逆移動、周期1000+2000*D/30。keyframe offsetは各経過ms/周期で算出し、同位置の端点を二つずつ置く。transformはtranslateX(px)。Dは文字列の実幅と表示領域幅の差であり、固定パーセント・余白・paddingを移動距離へ混入させない。
+P-01設計案の定数は速度30 CSS px/s、端待機500ms。D>0の移動方向はモード別に定める。RESTARTは2026-10-21の追加承認により左方向（先頭→末尾）へ変更する。x=0で500ms停止→x=-DへD/30秒移動→x=-Dで500ms停止を1周期としてiterations=Infinity、easing=linear、周期duration=1000+1000*D/30。次周期の先頭でx=0へ即時復帰。BOUNCEは従来どおり右方向（末尾→先頭）を初動とし、x=-Dで500ms→0へD/30秒移動→0で500ms→-Dへ同速逆移動、周期1000+2000*D/30。keyframe offsetは各経過ms/周期で算出し、同位置の端点を二つずつ置く。transformはtranslateX(px)。Dは文字列の実幅とpaddingを除く内側表示幅との差であり、固定パーセントや空白文字を混入させない。左右8pxはviewportの固定paddingとして確保し、スクロール中を含め文字をその領域に描画しない。先頭・末尾の位置は内側領域の両端に一致させる。
 
 reduced-motion時はmodeがmarqueeなら静止WRAPへ切替（P-01の提案部分）。document.hiddenまたは非表示はcancelして再表示で再計測。ResizeObserver(viewport)、MutationObserver(trackのtextのみ)、fonts.ready/loadingdone、matchMedia変更、visibilitychangeを所有する。updateから書いた同一text変更は無視。scheduleはrAF1件、reconcileで古いAnimationをcancel→transformを除去→必要時だけ新Animationを1件生成。destroyは全購読/Observer/rAF/Animationを解除しmode classと自分のtransformを元値へ戻す。破棄後callbackはreturn。
 
