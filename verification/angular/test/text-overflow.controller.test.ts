@@ -4,7 +4,7 @@ function setup(width:number,textWidth:number) {
   const classes = new Set<string>();
   const viewport = {clientWidth:width,classList:{add:(x:string)=>classes.add(x),remove:(...x:string[])=>x.forEach(v=>classes.delete(v))}} as unknown as HTMLElement;
   const cancel = vi.fn();
-  const animate = vi.fn(() => ({cancel}));
+  const animate = vi.fn((_frames:Keyframe[], _options:KeyframeAnimationOptions) => ({cancel}));
   const track = {scrollWidth:textWidth,textContent:'',style:{transform:''},animate} as unknown as HTMLElement;
   return {controller:new TextOverflowController(viewport,track),classes,animate,cancel,track};
 }
@@ -22,6 +22,26 @@ describe('IMP-17 TextOverflowController measurement and lifecycle', () => {
     expect(controller.measure()).toEqual({viewport:100,text:160,distance:60});
     expect(animate).toHaveBeenCalledTimes(1);
     expect(animate.mock.calls[0]).toBeDefined();
+    controller.destroy();
+  });
+  it('RESTART travels left from the first character to the last without overshoot', () => {
+    const {controller,animate} = setup(200,300);
+    controller.update('sample','MARQUEE_RESTART');
+    const [frames,options] = animate.mock.calls[0];
+    expect(frames.map(frame => frame.transform)).toEqual([
+      'translateX(0px)','translateX(0px)','translateX(-100px)','translateX(-100px)',
+    ]);
+    expect(options.duration).toBeCloseTo(1000+100/30*1000);
+    expect(options.iterations).toBe(Infinity);
+    controller.destroy();
+  });
+  it('BOUNCE preserves rightward first travel and reverses at the exact edges', () => {
+    const {controller,animate} = setup(200,300);
+    controller.update('sample','MARQUEE_BOUNCE');
+    const [frames] = animate.mock.calls[0];
+    expect(frames.map(frame => frame.transform)).toEqual([
+      'translateX(-100px)','translateX(-100px)','translateX(0px)','translateX(0px)','translateX(-100px)',
+    ]);
     controller.destroy();
   });
   it('cancels active animation when switching to wrap and on destroy', () => {
