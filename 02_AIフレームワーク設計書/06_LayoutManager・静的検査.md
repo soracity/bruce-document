@@ -69,10 +69,10 @@ LayoutSpanDirectiveは内部CSS変数`--bruce-layout-weight`へ重みを反映�
 | ファイル/クラス | 公開メソッドと型 | 処理・副作用 |
 |---|---|---|
 | cli.mjs | main(argv:string[]):Promise<number> | CLI解析、検査、英語診断、終了コード |
-| workspace.mjs / WorkspaceResolver | resolve(options:BuildOptions):BuildContext | angular.json/tsconfigと選択対象を確定 |
+| workspace.mjs / WorkspaceResolver | resolve(options:BuildOptions):Result<BuildContext> | angular.json/tsconfigと選択対象を確定 |
 | components.mjs / ComponentCollector | collect(context:BuildContext):ComponentSource[] | TS Programの自作@Componentを列挙 |
-| templates.mjs / TemplateExtractor | extract(component):TemplateSourceまたはDiagnostic | 直接リテラル/外部ファイル読込、位置情報 |
-| parser.mjs / AngularTemplateParser | parse(source):ParsedTemplateまたはDiagnostic[] | 公式parseTemplateを呼ぶ |
+| templates.mjs / TemplateExtractor | extract(component):Result<TemplateSource> | 直接リテラル/外部ファイル読込、位置情報 |
+| parser.mjs / AngularTemplateParser | parse(source):Result<ParsedTemplate> | 公式parseTemplateを呼ぶ |
 | layout-rule.mjs / LayoutRuleChecker | check(parsed,source):Diagnostic[] | Item・span・分岐・禁止構造 |
 | diagnostic.mjs / DiagnosticReporter | sortAndFormat(items):string | 重複排除、安定順序、英語表示 |
 | index.mjs | checkLayout(context):Promise<Diagnostic[]> | 上記を順に実行。DOM/アプリ起動なし |
@@ -80,6 +80,8 @@ LayoutSpanDirectiveは内部CSS変数`--bruce-layout-weight`へ重みを反映�
 JavaScript ESMを使い、Nodeから実行する。TypeScript Compiler APIは依存先のtypescriptをimportする。Angular compilerはアプリのlockfileと同じバージョンを利用し、検査器だけ別の最新版を導入しない。
 
 ```ts
+type Result<T> = {ok:true;value:T} | {ok:false;diagnostics:Diagnostic[]};
+type ParsedTemplate = {nodes:readonly TmplAstNode[]};
 type BuildOptions = { project?: string; configuration: string };
 type BuildContext = {
   workspaceRoot: string; project: string; configuration: string;
@@ -104,7 +106,7 @@ type Diagnostic = {
 ## CHECK-02 ビルド設定とComponent列挙
 
 1. wrapperが引数を一度だけ解釈し、project/configurationを固定する。configuration省略はproduction。--project NAME/--project=NAME、--configuration NAME/--configuration=NAMEの両記法を受ける。位置引数、空文字、重複指定（両記法の重複も含む）、未知引数は設定エラー。npmの区切り--はnpm側で除去される前提で、wrapperへ来た未知の単独--を無視しない。
-2. angular.jsonはTypeScriptのparseConfigFileTextToJson等でコメント/末尾カンマを含む設定JSONとして解析し、解析エラーを設定診断にする。通常JSON.parseで有効な設定を誤拒否しない。projectsのうち、applicationでbuild targetと選択configurationを持つ候補を得る。実測対象builderは`@angular/build:application`。未対応builderを推測して通さない。
+2. angular.jsonはTypeScriptのparseConfigFileTextToJson等でコメント/末尾カンマを含む設定JSONとして解析し、解析エラーを設定診断にする。通常JSON.parseで有効な設定を誤拒否しない。projectsのうち、applicationで対応build targetを持つ全候補を得る。configurationはproject選択後に検査する。実測対象builderは`@angular/build:application`。未対応builderを推測して通さない。
 3. project省略で候補1件のみ自動選択。0件・複数件は診断し中止。複数候補の診断には候補名を辞書順に列挙する。明示projectが不在/ビルド不可/構成不在なら対象名と不正理由を示して中止。利用可能なproject/configuration名を取得できる場合は診断の参考情報として列挙する。他名へフォールバックしない。
 4. build.optionsへ選択configurationのoptionsを重ね、tsConfigとfileReplacementsを確定する。複数configurationのカンマ指定は現在の公式入口で受け付けず、必要時に別設計する。
 5. `ts.readConfigFile`と`ts.parseJsonConfigFileContent`でextends/include/exclude/filesを解決する。読込・解析エラーを収集する。
@@ -134,7 +136,7 @@ APIはAngular 21.0.0の公式ソース`packages/compiler/src/render3/view/templa
 | AST | 収集時の処理 |
 |---|---|
 | TmplAstElement(通常) | 1項目として追加。内部を兄弟へ平坦化しない |
-| TmplAstElement(ng-container) | childrenを再帰展開 |
+| TmplAstElement(ng-container) | Span付与を先に検査して拒否し、childrenを再帰展開 |
 | TmplAstIfBlock | LAY-02/03に従い基準構成を作る |
 | TmplAstForLoopBlock | 論理兄弟境界なら禁止診断 |
 | TmplAstText | trim後空なら無視、他は直接文字診断 |
@@ -199,7 +201,7 @@ Total: 1 error. Angular build was not started.
 }
 ```
 
-例：`npm run build -- --project feature-20251212 --configuration production`。wrapperはBuildContextを一度作りcheckLayoutへ渡す。診断0件の場合だけ、同じproject/configurationでAngular CLIを子プロセス起動する。`spawn(process.execPath,[ngJs,'build',project,'--configuration',configuration],{shell:false,stdio:'inherit'})`を使用し、引数をシェル文字列へ連結しない。ngJsはアプリ依存の`@angular/cli/bin/ng.js`を解決する。Angularの終了コード・signal終了も失敗へ伝える。
+例：`npm run build -- --project feature-20251212 --configuration production`。wrapperはresolveのokを判定し、成功時のBuildContextだけを一度checkLayoutへ渡す。失敗ResultにContextを捏造しない。診断0件の場合だけ、同じproject/configurationでAngular CLIを子プロセス起動する。`spawn(process.execPath,[ngJs,'build',project,'--configuration',configuration],{shell:false,stdio:'inherit'})`を使用し、引数をシェル文字列へ連結しない。ngJsはアプリ依存の`@angular/cli/bin/ng.js`を解決する。Angularの終了コード・signal終了も失敗へ伝える。
 
 直接npx ng buildは専用検査を回避できる。技術的禁止を達成したと表示せず、正式成果物は04章のCI合格ゲートで守る。Push時にアプリCIで公式入口を起動し、正式公開は同じコミットの検査・Angularビルド合格を必須とする。Android/iOSのネイティブビルド・署名合格とは別。
 
@@ -208,3 +210,11 @@ Total: 1 error. Angular build was not started.
 補助API確認：TypeScript 5.9.2の[公式commandLineParser.ts](https://github.com/microsoft/TypeScript/blob/v5.9.2/src/compiler/commandLineParser.ts#L2243)でparseConfigFileTextToJson(fileName,jsonText)がparseJsonTextを使い{config,error}を返すことを確認した。返却errorがあれば設定を正常扱いしない。AngularのParseTemplateOptions確認と同様、実装時はアプリlockfileの実バージョンで検証する。
 
 実装補完：[29章](29_静的検査器・ACGの実装補完.md)にProgram、fileReplacements、inline range、全内部関数、終了処理を記す。
+
+## CHECK-07 Span付与先と実行時の一致
+
+ng-container/ng-template/ng-contentおよびTmplAstTemplateのattributes/inputsにappLayoutSpanがあれば、透明展開・特殊構造処理より先にBRUCE-LAYOUT-008を報告する。attr.appLayoutSpan/style.*による代用も008。Spanを透明展開の途中で消失させない。付与先が通常Elementで値が不正なら003。
+
+LayoutSpanDirectiveはElementRef.nativeElement instanceof HTMLElementと独立したboxを検査する。comment/Text/ng-container/templateはBRUCE_SPAN_HOSTで停止。display:noneの通常HTMLElementは非表示として保留し、display:contentsが確定した要素は幅を配れないため停止する。Directiveは自身のCSS変数だけを所有し、元の値/priorityを保持、現値が自分の最終値の場合だけdestroyで復元する。
+
+全内部型と0/1/2へ至る分岐は29章TOOL-05を正本とする。CLIにHTML/CSSはない。

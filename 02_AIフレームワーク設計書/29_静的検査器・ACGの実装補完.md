@@ -4,11 +4,11 @@
 
 ## TOOL-01 BuildContextとTypeScript Program
 
-06章のWorkspaceResolver.resolveは同期関数で、設定不正を`ConfigurationFailure`（diagnostics:Diagnostic[]）で返すかthrowし、cliが終了2へ変換する。以後のTemplate診断と混ぜて正常Contextを捏造しない。
+06章のWorkspaceResolver.resolveは同期関数で、設定不正を`Result<BuildContext>`の失敗として返し、cliが終了2へ変換する。以後のTemplate診断と混ぜて正常Contextを捏造しない。
 
 | 内部関数 | 型／引数／戻り値 |
 |---|---|
-| parseArguments | argv:readonly string[]→BuildOptionsまたはConfigurationFailure |
+| parseArguments | argv:readonly string[]→Result<BuildOptions> |
 | readWorkspace | root:string→AngularWorkspace。angular.jsonをJSONC解析、projects/options/configurationsの型も検査 |
 | candidateProjects | workspace,configuration:string→readonly string[]。application、build target、対応builder、選択configuration存在で絞る |
 | resolveBuildOptions | workspace,project,configuration→{tsConfig:string,fileReplacements:readonly {replace:string,with:string}[]} |
@@ -49,15 +49,15 @@ const parsed = parseTemplate(sourceFile.text, sourceFile.fileName, {
 type LayoutChild = {node:TmplAstElement, span?:{raw:string,value:number}};
 type LayoutConfiguration = readonly LayoutChild[];
 // findItems(nodes:readonly TmplAstNode[]):readonly TmplAstElement[]
-// collectConfigurations(item:TmplAstElement):LayoutConfiguration[] | Diagnostic[]
-// readSpan(node:TmplAstElement):LayoutChild | Diagnostic[]
+// collectConfigurations(item:TmplAstElement):Result<LayoutConfiguration[]>
+// readSpan(node:TmplAstElement):Result<LayoutChild>
 // validateConfiguration(items:LayoutConfiguration):Diagnostic[]
 // decimalTotal(raws:readonly string[]):{equals100:boolean,actual:string}
 ```
 
 findItemsはElementのchildren、Ifの各branch、Forのchildren／empty、その他解析可能Blockの子へ走査を継続する。外側Itemで反復禁止を検出しても、その内部の別Itemを検査し忘れない。各ItemのcollectConfigurationsだけが「論理兄弟」境界を扱う。
 
-collectConfigurationsはng-containerを再帰展開して表示要素を収集し、(A)通常要素＋独立したelseなしIf群なら一つの全表示構成、(B)通常要素＋一つの排他If連鎖なら明示branchごとの構成を返す。各If branchは展開後一要素。条件のネスト、複数排他連鎖の組合せ、明示空branch、兄弟For、Template／Content等はLAY-03の診断とする。@letやコメント・空白は幅項目にしない。別のComponent内部へ兄弟展開を進めない。
+collectConfigurationsはng-containerの不正Spanを先に008へ記録してから再帰展開して表示要素を収集し、(A)通常要素＋独立したelseなしIf群なら一つの全表示構成、(B)通常要素＋一つの排他If連鎖なら明示branchごとの構成を返す。各If branchは展開後一要素。条件のネスト、複数排他連鎖の組合せ、明示空branch、兄弟For、Template／Content等はLAY-03の診断とする。@letやコメント・空白は幅項目にしない。別のComponent内部へ兄弟展開を進めない。
 
 readSpanは属性名／BoundAttribute名を確認。appLayoutSpanの文字列属性、attr.appLayoutSpan等による代用は拒否。式はASTWithSource.astがLiteralPrimitiveでvalueがnumber／正／有限であることを確認。rawはバインディング式の元表記を取得。数値リテラル以外をNumberへ変換して通さない。
 
@@ -91,17 +91,19 @@ importsはFormGroup／FormControlを常に、Validators／AppInputValidators／A
 
 escapeTsString(String):Stringは単引用符を外側に使い、'→\\'、backslash→\\\\、CR／LF／TAB／BS／FFを各escapeへ、その他U+0000〜001Fと2028／2029は\\uXXXXへ変換。元値のtrim／大文字化をしない。正規表現sourceも同じ文字列escapeを通し、JavaのPatternでJavaScript文法を判定しない。
 
-## ACGIMPL-02 JavaScript検証ブリッジ
+## ACGIMPL-02 JavaScript検証ブリッジの全境界
 
-既存ACGのJava側だけでJavaScript正規表現・TS文字列escapeを保証したことにしない。内部クラス`AcgJavaScriptValidationBridge`を`io.github.soracity.alfred.generator.validation`へ置く。公開APIは`validateRegex(List<RegexInput>):void`／`validateSyntax(List<SourceInfo>):void`。RegexInputは{file,physicalName,source}。ユーザーの画面／DTOへこのクラスを公開しない。
+配置はio.github.soracity.alfred.generator.validation.AcgJavaScriptValidationBridge。内部Java record BridgeConfig(Path nodeExecutable,Path typescriptModulePath,Duration timeout,int maxOutputBytes)。constructor(BridgeConfig)は全Pathを絶対化、nodeが実行可能、typescriptModulePathが読める実ファイル、timeout>0、maxOutputBytes>0を検査。推奨実行構成はtimeout=30秒、maxOutputBytes=1048576（内部保護値で画面仕様ではない）。既存ACG起動構成からnodePathと対象Bruce/node_modules/typescript/lib/typescript.jsを渡す。PATH依存やオンラインインストールへ黙ってfallbackしない。
 
-実行環境は対象BruceのNodeと同じ互換版、および対象Bruceのtypescript依存。nodeExecutable／typescriptModulePathをACG実行環境で明示解決し、存在しなければACG実行前提不足のAcgSystemException。黙ってregex検査を飛ばさない。新しいオンラインサービスを呼び出さない。
+public validateRegex(List<RegexInput>):void、validateSyntax(List<SourceInfo>):voidを維持。RegexInput(String file,String physicalName,String source)は全String必須、regex sourceは空を形式条件で別検査。SyntaxInputはSourceInfo.sourcePackage()/sourceFileName()/Source()から{file,source}へ写す。ファイル名だけで重複しないようpackageとrelative filenameを結合した識別子をfileとする。Source()は大文字Sの既存アクセサー。
 
-JavaはProcessBuilderの引数配列でリソース`validation/validate-ui-values.mjs`を起動し、UTF-8のJSONをstdinへ送る。stdoutはJSON応答だけ、stderrは実行障害。リクエストは`{mode:"regex",items:[{file,physicalName,source}]}`または`{mode:"syntax",typescriptModulePath,items:[{file,source}]}`。SourceInfoの出力パスをfile、生成テキストをsourceへ写す。indexは0始まり。Java側はmodeごとに必要フィールドを検査してから送る。JSONの文字列を実行コードとして連結しない。正常応答は`{ok:true}`、不正は`{ok:false,index,message}`。非0終了／壊れた応答／中断はシステム例外。stdout／stderrは別スレッドで同時回収し、pipe満杯でwaitForが停止しない。NodeはJSON.parse後のmode／配列／文字列型を検証し、不正要求はstderr＋終了2とする。最初の不正indexから項目名・型・列・値・理由を付けて定義例外にする。
+JSONは既存Java JSON serializerを使用し、文字列連結しない。共通request={version:1,mode:'regex'|'syntax',typescriptModulePath:string,items:[...]}。regex item={file,physicalName,source}、syntax item={file,source}。Nodeはversion/modeと全必須フィールド型を検査し、不正要求はstderrに理由を1行、終了2。成功stdout={ok:true}、定義不正stdout={ok:false,index:number,message:string}、正常プロトコルはいずれも終了0。indexは0以上items.length未満。stdoutに他ログを混ぜない。
 
-Nodeのregexモードは各sourceについて`new RegExp(source)`するだけで、正規表現をevalしない。TS syntaxモードは指定されたtypescriptモジュールからcreateSourceFile（ScriptKind.TS、ScriptTarget.Latest）を使いparseDiagnosticsを確認する。構文診断は生成文字列の問題としてSourceInfoを返す前に停止。importの実在／型互換は生成先アプリの型検査で別確認し、構文合格を型検査合格と報告しない。
+リソース/validation/validate-ui-values.mjsをgetResourceAsStreamで読み、専用temp directoryへcopyする。存在しなければAcgSystemException。ProcessBuilder(List.of(nodeExecutable,scriptPath))、shellなし、UTF-8 JSONをstdinへ書きclose。stdout/stderrはExecutorServiceの2 taskで同時に読み、各maxOutputBytesを超えたらプロセスを終了してシステム例外。waitFor(timeout)がfalseならdestroy→短い終了猶予→destroyForcibly、task.cancel。InterruptedExceptionはdestroyForcibly→interruptフラグを戻す→AcgSystemException。finallyでstream close、task終了、executor shutdownNow、script/tempを削除。削除失敗は主例外のsuppressedへ添付し、検証成功を捏造しない。
 
-プロセスのstdin終了、stdout／stderr回収、waitFor、割込み時destroyForcibly、抽出した一時scriptファイルのfinally削除を所有する。同じ生成実行中の検証は一つのプロセスへまとめてよいが、終了済みプロセスを別実行の状態として共有しない。
+終了非0/timeout/壊れたJSON/余分なstdout/不正index/欠落fieldはAcgSystemException。ok=falseは元定義のfile/physicalName/列/値/messageを持つAcgRuntimeException。最初の定義不正で終了し、SourceInfoの書込みへ進めない。
+
+Node scriptはimport {createRequire} from 'node:module'、import {pathToFileURL} from 'node:url'。const require=createRequire(import.meta.url)、const ts=require(absoluteTypescriptModulePath)で対象のCommonJS TypeScriptをロードする（ESM default exportを推測しない）。regexはnew RegExp(source)、TSはts.createSourceFile(file,source,ts.ScriptTarget.Latest,true,ts.ScriptKind.TS)のparseDiagnosticsを検査。createSourceFileの型検査ではないことを明記する。sourceをeval/Function/importで実行しない。regexは入力文字列への.testを行わず構文だけ確認する。例外をcatchしfirst indexでok=false。stdin read/JSON/モジュールロード障害は終了2。
 
 ## ACGIMPL-03 Enum定義書・型生成の完成形
 
@@ -113,28 +115,90 @@ AppUiColorEnum定義は02_COMPONENTに置き、定数11値は02章と一致。�
 
 AcgEnumSpecCodeGeneratorは既存のprivate constructor／public readonly name,value／static readonly各定数／values／valueOf／toEnum／toStringを生成する。一般Enumの色へCode Brandを無断付与せず、CODE Enumは既存Symbol実体Brandを保持する。表示type生成は全プロパティreadonly、配列wrapper／Injectable／FormGroupなし。Brand不要の表示DTOにBrandを追加しない。
 
-## RELEASE-01 公開ゲートのデータ契約
+## RELEASE-01 証跡の生成・保存・取得
 
-04章のCI・公開連携を具体化する。これは公開を実施する指示ではない。
+04章のCIは公式build成功後にtools/create-build-evidence.mjsを実行する。成果物tarのSHAと、upload-artifactが作るZIP archiveのSHAを区別する。署名・Store公開を実行する指示ではない。
 
 ```ts
-type BuildEvidence = {
-  commit:string; project:string; configuration:string;
-  runId:string; layout:'success'; angular:'success';
-  lockfileSha256:string; artifactSha256:string;
+type BuildEvidence={
+ commit:string;project:string;configuration:string;runId:string;runAttempt:number;
+ artifactId:string;archiveSha256:string;artifactSha256:string;lockfileSha256:string;
+ layout:'success';angular:'success';designCommit:string;acgCommit:string;
 };
-type ReleaseManifest = BuildEvidence & {
-  designCommit:string; acgCommit:string;
-  nativeEvidence?:{platform:'android'|'ios';result:'success';artifactSha256:string}[];
-};
-// assertReleaseEvidence(manifest:ReleaseManifest, requested:{commit:string,project:string,
-//   configuration:string,artifactSha256:string}, verifiedRun:BuildEvidence):void
+type ReleaseManifest=BuildEvidence;
+type Requested={commit:string;project:string;configuration:string;artifactSha256:string};
+// createBundle(outputDir:string,bundleFile:string):Promise<{artifactSha256:string}>
+// createBuildEvidence(options:BuildEvidenceOptions):Promise<BuildEvidence>
+// fetchVerifiedRun(repository:string,runId:string,attempt:number,token:string):Promise<BuildEvidence>
+// assertReleaseEvidence(manifest:ReleaseManifest,requested:Requested,verifiedRun:BuildEvidence):void
 ```
 
-assertReleaseEvidenceはrequested／manifest／verifiedRunのcommit／project／configuration／artifact digestを比較し、manifestとverifiedRunのrunId／lockfileSha256を比較し、layout／angularがともにsuccessかを検証。不一致・未実施・欠落は明示エラー。commit/designCommit/acgCommitは40桁hex、digestは64桁hex、project/configuration/runIdは非空文字列として実行時も検査する。branchの「直近成功」を別SHAへ流用しない。CIログの手書きsuccess文字列だけでverifiedRunを作らず、実際のCI run／job結果を取得して検証する。BuildEvidenceはビルド終了後の成功経路だけで作る。
+createBundleは選択builder options.outputPath（stringまたはbase/browser形式）を解決し、browser成果物ディレクトリを専用dist.tarへまとめる。workspace外や不存在を拒否。Node spawnの引数配列でtarを実行し、失敗時は証跡を作らない。bundleの実bytesをnode:crypto SHA-256で計算。lockfileSha256はcheckoutしたpackage-lock.jsonの実bytes。designCommit/acgCommitは管理済みtools/release-inputs.jsonの40桁SHAから読み、未設定なら失敗する。
 
-ネイティブ成果物を正式配布する場合の署名／ストア処理はアプリ配布設計の責務。Angular成功をnative成功へ置き換えない。Node/npm／workflowサービス／配布先／実行担当の実運用設定を、本文の具体案が存在するだけで設定済みにしない。
+build成功→bundle作成→bundleだけをbruce-bundle-SHA-RUN-ATTEMPT名でupload-artifact→返却artifact-id/artifact-digestをcreateBuildEvidenceへ渡す→evidence.json生成→bruce-evidence-SHA-RUN-ATTEMPT名で別artifactへupload。evidenceが参照するのは先行するbundle artifactなので自己参照digestにならない。archiveSha256はupload-artifactのZIP digest、artifactSha256は中のdist.tarのdigest。
+
+createBuildEvidenceのoptionsはworkspaceRoot/outputDir/bundleFile/outFile/project/configuration/commit/runId/runAttempt/artifactId/archiveSha256。commit/runId/attemptはCI提供のGITHUB_*環境から、project/configは同じbuild引数から取得。任意のsuccess文字列だけで成功を宣言せず、build stepのsuccess分岐からだけ呼ぶ。出力は専用temp fileへUTF-8 JSON→renameで置換。例外時は古い成功証跡を同じ実行のものとして残さない。
+
+公開側は要求runId/attemptを明示し、actions:readのtokenでGET /repos/{repository}/actions/runs/{runId}、同attemptのjobs、run artifactsを取得する。run.head_sha=要求SHA、status=completed、conclusion=success、configured workflow path=.github/workflows/bruce-build.yml、job layout-and-angular conclusion=successを要求。別attemptのjobや直近成功を代用しない。ページングを最後まで読み、同じ名前が0/複数なら失敗。
+
+evidence artifactをダウンロードしschemaを検査、bundle artifactのid/expired/workflow_run.head_shaをAPI結果と照合する。GET /repos/{repository}/actions/artifacts/{id}/zipの302をHTTPSで追跡して取得し、ZIPのSHA-256をAPI digestのsha256:接頭辞除去後/manifest.archiveSha256と比較。archive内は期待するdist.tarだけを読み、absolute/.. pathやsymlinkを展開しない。dist.tar bytesのSHAをrequested/manifest.artifactSha256と比較。失効/認証/404/不正schema/不一致は非0で停止し、ネットワーク障害を成功へしない。
+
+verifiedRunはAPIから確認したrun/job/artifactと、同じtrusted workflowが作ったevidenceから構成する。assertReleaseEvidenceはcommit/project/configuration/artifactSha256をrequested/manifest/runの三者一致、runId/attempt/artifactId/archiveSha256/lockfileSha256/designCommit/acgCommitをmanifest/run一致とする。SHA40桁、digest64桁、IDs十進非空、attempt正整数、layout/angular成功を検査。HTTP tokenはログ/JSONへ出さない。最後に確認済みbundleとmanifestだけを配布側へ渡す。native署名や配布先は別のアプリ設計のまま。
+
+一次資料：[GitHub artifact REST](https://docs.github.com/en/rest/actions/artifacts)、[upload-artifact v4](https://github.com/actions/upload-artifact/tree/v4)。API artifact digestと中身のtar digestを同一と仮定しない。
 
 ## 検証
 
 T-CHECK-26：templateなし空Componentを正常解析し、同名HTMLの推測探索なし。T-ACG-21：Node未配置／不正JS regex／TS構文不正で既存出力を更新しない。T-ACG-22：AppUiColorEnumの一般列挙型・11値・出力名・旧専用Enum除外を生成対象で確認。T-CI-05：SHA一致でも別project／別configuration／別artifactなら公開を拒否。記載は実装後の試験仕様であり、ACG／Angular／CIの実行結果ではない。
+
+## TOOL-05 内部型と全終了経路
+
+06章のResult<T>を全失敗可能APIへ統一し、Array同士のunionで成功/失敗を判別しない。ConfigurationFailureというthrow/返却混在型は使用しない。
+
+```ts
+type AngularWorkspace={projects:Record<string,WorkspaceProject>};
+type WorkspaceProject={projectType:string;architect?:{build?:BuildTarget};targets?:{build?:BuildTarget}};
+type BuildTarget={builder:string;options:Record<string,unknown>;configurations:Record<string,Record<string,unknown>>};
+type ResolvedOptions={tsConfig:string;fileReplacements:readonly {replace:string;with:string}[]};
+type LayoutChild={node:TmplAstElement;span?:{raw:string;value:number}};
+type LayoutConfiguration=readonly LayoutChild[];
+// parseArguments(argv:readonly string[]):Result<BuildOptions>
+// readWorkspace(root:string):Result<AngularWorkspace>
+// candidateProjects(ws:AngularWorkspace):readonly string[]
+// resolveBuildOptions(ws:AngularWorkspace,project:string,config:string):Result<ResolvedOptions>
+// normalizeReplacements(root:string,entries:ResolvedOptions['fileReplacements']):Result<ReadonlyMap<string,string>>
+// createProgram(context:BuildContext):Result<ts.Program>
+// collect(context:BuildContext,program:ts.Program):{components:ComponentSource[];diagnostics:Diagnostic[]}
+// extract(component:ComponentSource):Result<TemplateSource>
+// parse(source:TemplateSource):Result<ParsedTemplate>
+// findItems(nodes:readonly TmplAstNode[]):readonly TmplAstElement[]
+// collectConfigurations(item:TmplAstElement):Result<LayoutConfiguration[]>
+// readSpan(node:TmplAstElement):Result<LayoutChild>
+// validateConfiguration(items:LayoutConfiguration):Diagnostic[]
+```
+
+project候補はapplicationかつbuild可能な対応builderを持つ全件を先に数える。configの有無で候補を減らして複数projectの明示要求を迂回しない。project確定後にconfigを検査する（不正なら003）。architect/targets両方が競合定義なら004。BuildContextのrootNames/replacementsはresolve済みだけを渡す。
+
+checkLayoutはcreateProgram失敗ならdiagnosticsを返す。collectはComponentごとのmetadata診断を記録し他Component継続。各extract失敗は次Component、parse失敗は次template、collectConfigurations失敗は次Item、値/混在違反は派生合計を抑止。I/O障害が当該templateの読込みに限定されればTEMPLATE-002、workspace/Program作成を継続不能ならCONFIG-001/INTERNAL-001とする。想定外throwは最上位catchでINTERNAL-001を1件追加しstderrに英語で出力。診断codeにCONFIG/INTERNALを含むなら2、他診断あり1、0件0。wrapperは0件時だけngを起動し、child error/signal/非0は失敗。成功証跡の生成まで進めない。
+
+findItemsは公式ASTのElement.children、IfBlock.branches[].children、ForLoopBlock.children/empty.children、SwitchBlock.cases[].children、DeferredBlock.children/placeholder/loading/errorのchildrenを探索。兄弟規則未定義のblockでも内側の独立Item探索は継続する。Componentの内部を別templateへ追いかけて重複列挙しない。
+
+十進合計はraw数値リテラルを文字列として係数BigInt/scaleへ分解し、maxScale=max(0,...scale)に揃える。正/有限数の検査と厳密合計を別々にする。00/0x等の表記はAngular/TS number literalが許容しても十進正規表現に一致しなければ003。巨大桁で資源上限を超えた場合はINTERNAL-001（検査不能）で停止し、違反なしへ丸めない。
+
+## ACGIMPL-04 入力metadataと既存モデルAPI
+
+AcgUiSpecDtoはtitleList、summary、dtoType、dtoName、dtoPackage、dtoItemListの既存record。metadataは画面設計書L1、概要L2「１．概要」、DTO各項目L4「（１）DTO種別」「（２）DTO名称」「（３）DTOパッケージ」「（４）DTO項目定義」から取得。dtoTypeのチェックはDtoMemberTypeEnum.UI_FORM_DTO一つ、dtoNameはDataModelNameEnum.PHYSICAL_NAME/FILE_NAME/LOGICAL_NAMEから取得し、欠落/複数を拒否。UI生成器へ他のDTO種別を黙って渡さない。
+
+classNameはTypeScript scannerでidentifierとして検査し、予約語・文法不正は生成前に拒否。filenameは単一basename（.ts必須、absolute/../区切り含む値は不可）。dtoPackageは既存単一backslash区切りの相対package。各segmentが空/./..なら拒否、OS出力root外へ解決しない。入力の論理名/summaryはコメント出力時に*/を* /へ無害化し、コメントから任意TSを挿入させない。16項目表のない入力やnull dtoItemListは不正（空リストは意図した空FormGroupとして許可）。
+
+AcgClassModel.builder().className(name).isInjectable(true).providedInRoot(false).addImport(module,names...)、setClassCommentList(List<String>)、addField(AcgFieldModel)、build()を使用。isInjectableがprovidedInRootの既定を同時設定するため、必ずこの呼出し順でfalseを上書きする。AcgFieldModelはcommentList/scope/fieldName/readonly/isStatic/initializerの既存constructorを使用し、formGroupはreadonly=true/isStatic=false。AcgValueNewModel(className,List<AcgValueModelIF>)、AcgValueObjectModel(List<AcgValueObjectPropertyModel>)、AcgValueArrayModel、Boolean/Number/Null/String/Referenceの既存モデルを組み合わせる。createClassModelは引数なしでspecFile/uiSpecを読むためgenerateはインスタンスを同時共有しない。
+
+AcgClassCodeGenerator.generateByClassModel(model):Stringの後でbridge.validateSyntax、SourceInfo(String sourcePackage,Path sourceFileName,String Source)を返す。アクセサーはsourcePackage()/sourceFileName()/Source()。書込みは既存出力制御だけ。既存DAOはisInjectable(true)のroot既定を維持し、UI改修で全呼出しを非rootへ変えない。既存Builder/getterの再実装を新たな公開APIとしない。
+
+## ACGIMPL-05 物理名キー・出力の安全性
+
+項目physicalNameはnull/空/空白だけ/重複を生成前に拒否。業務上のcamelCase等の命名制約は追加しない。全object propertyの出力をcomputed string keyに統一し、例として`['name']:...`、`['__proto__']:...`を出す。`__proto__:...`や単なる引用符keyはprototype setterになるため使用しない。AcgClassCodeGenerator.appendObjectValueはescapeTsString(propertyName)の前後へ[ ]を付けてから:を出力。通常項目名でも出力規則を切り替えない。文字列escapeの定義は本章ACGIMPL-01。
+
+TypeScriptの型推論はcomputed literal keyを保持する。画面の@let ctrlsは維持し、非identifier名はctrls['a-b']等で参照、FormGroup.getは区切り付き文字列でなくget(['a.b'])を使用する。Angular既存controls実装が同名のhasOwnPropertyメソッドへ依存するため、その1キーはframeworkの構造予約名として定義エラー（業務命名制約ではない）。constructor/__proto__等の安全なown keyは生成後Object.hasOwnとFormGroup.controls/getの操作で確認する。
+
+AcgSourceSelectorは正規化済みroot相対パス完全一致の除外だけを使い、旧専用色Enumの定義pathを実行リストへ明記する。root外候補はシステムエラー、除外候補は履歴に記録。生成先も正規化してroot内を要求する。検証完了前に既存ファイルを置換せず、全SourceInfoをtempへ書き終えてから出力制御が置換する。部分出力を正常終了にしない。

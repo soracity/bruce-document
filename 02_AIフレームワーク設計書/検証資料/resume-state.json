@@ -6,18 +6,12 @@
   "stage_name": "設計書全体の修正",
   "status": "in_progress",
   "stage_approval": "stage1_approved_stage2_not_requested",
-  "last_completed_unit": "S2-03",
-  "next_action": "静的検査器・ACG・公開証跡の完全な型と全失敗経路を修正する。",
-  "next_work_unit": "S2-04",
+  "last_completed_unit": "S2-04",
+  "next_action": "移行・原典とテスト対応・設計案の承認境界を同期して29件の修正一覧を作る。",
+  "next_work_unit": "S2-05",
   "investigation_remaining": [],
   "unapplied_findings": [
     "F01",
-    "F13",
-    "F14",
-    "F21",
-    "F22",
-    "F23",
-    "F24",
     "F25",
     "F26",
     "F27",
@@ -43,7 +37,7 @@
     {
       "id": "S2-04",
       "title": "静的検査器・ACG・公開証跡の契約の修正",
-      "status": "pending"
+      "status": "complete"
     },
     {
       "id": "S2-05",

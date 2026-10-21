@@ -114,7 +114,7 @@ ApplicationへFormGroup/FormControl/Angular Validatorを渡さない。入力エ
 | AcgDataModelCodeGenerator | generateByDataModel(AcgDataModel):String | readonly付きexport typeを出力 |
 | AcgEnumSpecCodeGenerator | generate(Path,EnumSpecDto):List<SourceInfo> | 列挙型設計書から既存Enum形式を出力 |
 
-SourceInfoは既存の出力パッケージ・ファイル名・ソース文字列を保持する。ソースの書込みは既存ACGの出力制御が担当し、UI生成器内で勝手に別ディレクトリへ書かない。
+SourceInfoは既存record SourceInfo(String sourcePackage,Path sourceFileName,String Source)。アクセサーはsourcePackage()/sourceFileName()/Source()。入力metadata・Builder呼出し順・全依存APIは29章ACGIMPL-04を正本とする。ソースの書込みは既存ACGの出力制御が担当し、UI生成器内で勝手に別ディレクトリへ書かない。
 
 ## ACG-02 16列の完全定義
 
@@ -166,7 +166,7 @@ AcgClassModelはisInjectableとprovidedInRootを分離する。isInjectable=true
 
 ## ACG-05 異常処理・再生成
 
-全項目の仕様検証を終えてから出力ファイルを置換する。失敗した定義の中途半端なTSを既存正常ファイルへ上書きしない。Exceptionは物理名・型・Enum型・文字種・不正列・値・理由を含む。静的検査器の全件収集とACGのFail Fastを混同しない。
+metadata・全項目・JS regex・生成TS構文の検証を終えてから出力ファイルを置換する。physicalNameは29章のcomputed string keyで出力し、__proto__を通常own controlとして維持する。失敗した定義の中途半端なTSを既存正常ファイルへ上書きしない。Exceptionは物理名・型・Enum型・文字種・不正列・値・理由を含む。静的検査器の全件収集とACGのFail Fastを混同しない。
 
 再生成比較では、生成日時/元ファイルmtime等の可変ヘッダーだけを比較から分離し、型・import・初期値・Validator・readonly・decorator・プロパティ順は一致させる。生成物直接修正を正本にせず、定義/解析器/モデル/生成器/テストを直す。
 
