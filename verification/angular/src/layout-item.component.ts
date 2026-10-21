@@ -93,6 +93,13 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
     });
     const gap = Number.parseFloat(getComputedStyle(wrapper).columnGap) || 0;
     const rows = LayoutRowUtil.partition(metrics,wrapper.clientWidth,gap);
+    if (!rows.length) {
+      for (const element of visible) {
+        element.style.flexBasis = '';
+        element.style.flexGrow = '';
+      }
+      return;
+    }
     for (const row of rows) {
       row.items.forEach((item,index) => {
         item.element.style.flexGrow = '0';
