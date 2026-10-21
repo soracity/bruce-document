@@ -116,7 +116,7 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
         else if (records.some(record => record.type === 'attributes' &&
           (record.target as HTMLElement).parentElement === wrapper)) this.schedule(wrapper);
       });
-      this.mutationObserver.observe(wrapper, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden', 'class'] });
+      this.mutationObserver.observe(wrapper, { childList: true, subtree: true, attributes: true, attributeFilter: ['hidden', 'class', 'style'] });
     }
     refresh();
   }
