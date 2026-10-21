@@ -42,3 +42,12 @@ S3-01環境準備から再開。node_modulesやブラウザーバイナリは保
 4. 失敗を設計欠陥と環境欠落に分け、修正・再実行結果を保存する。
 
 **新規の工程③検証合格は0。IMP-01〜39・194仕様テストはすべて未実施。** 工程②の純粋参照81項目・幾何31項目を工程③の実Angular/Java/DOM検証に流用しない。実稼働CI/Store署名/実機は別範囲で未実施。
+
+## 2026-10-21 Vitest方針への変更と再開確認
+
+- ユーザー承認により、工程③ではVitestを使い、PlaywrightとGitHub Actionsは使用しない。
+- `verification/angular/package.json` を変更済み（Vitest 4.0.15、`vitest run`、Playwright依存削除）。commit `ebb99ab59657a1e4f0e2b44fa0093d3e4ed3c633`。
+- 本再開環境で `node -v` は v22.16.0、`npm -v` は 10.9.2。`npm view vitest@4.0.15 version --fetch-retries=0 --fetch-timeout=5000` は `EAI_AGAIN registry.npmjs.org` で失敗。Vitestキャッシュも確認できず、テストは未実行。
+- **重要**: package-lock.json は以前のPlaywright構成のままであり、`package.json` と不整合。ロックファイル更新成功、`npm ci` 成功、`ngc` 成功、Vitest成功のいずれも主張しない。
+- 次はnpmレジストリに接続できる環境で、指定Node/npmバージョンと依存解決を確認し、lockを再生成・クリーンインストールした後、設計書単独の実装・検証を開始する。
+- ブラウザーを使わない検証は先行できるが、DOM実描画などの未検証条件を合格扱いしない。工程③未完了、合格0。
