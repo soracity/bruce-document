@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { parseDate, parseLocal, parseUtc, toInput } from '../src/local-date-time-codec.js';
+import { parseDate, parseLocal, parseUtc, toInput, fromInput } from '../src/local-date-time-codec.js';
 describe('IMP-10 UIIMPL-04 parseDate (partial codec)', () => {
   it.each([
     ['2024-02-29', 2024, 2, 29], ['2000-02-29', 2000, 2, 29],
@@ -106,5 +106,74 @@ describe('IMP-10 UIIMPL-04 toInput', () => {
   });
   it('rejects unknown type as configuration error', () => {
     expect(() => toInput('2024-01-01', 'BAD' as never)).toThrow('BRUCE_DATE_TYPE');
+  });
+});
+
+describe('IMP-10 UIIMPL-04 fromInput', () => {
+  it.each(['DATE', 'DATE_TIME'] as const)('preserves empty input for %s', type => {
+    expect(fromInput('', type)).toEqual({ ok: true, value: '' });
+  });
+  it('normalizes valid DATE input', () => {
+    expect(fromInput('00002024-02-29', 'DATE')).toEqual({ ok: true, value: '2024-02-29' });
+  });
+  it('rejects invalid DATE input', () => {
+    expect(fromInput('2023-02-29', 'DATE')).toEqual({
+      ok: false, error: { reason: 'invalidDate', raw: '2023-02-29' },
+    });
+  });
+  it('roundtrips unchanged UTC string, including fractional-second precision', () => {
+    const utc = '2024-02-29T12:30:45.12Z';
+    const input = toInput(utc, 'DATE_TIME');
+    expect(input.ok).toBe(true);
+    if (input.ok) expect(fromInput(input.value.text, 'DATE_TIME', input.value.original)).toEqual({
+      ok: true, value: utc,
+    });
+  });
+  it('converts edited local time to UTC', () => {
+    const raw = '2024-02-29T12:30:45.123';
+    const result = fromInput(raw, 'DATE_TIME');
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      const d = new Date(result.value);
+      expect(d.getFullYear()).toBe(2024);
+      expect(d.getMonth()).toBe(1);
+      expect(d.getDate()).toBe(29);
+      expect(d.getHours()).toBe(12);
+      expect(d.getMinutes()).toBe(30);
+      expect(d.getSeconds()).toBe(45);
+      expect(d.getMilliseconds()).toBe(123);
+    }
+  });
+  it('does not use original UTC after an edit', () => {
+    const original = toInput('2024-02-29T12:30:45Z', 'DATE_TIME');
+    expect(original.ok).toBe(true);
+    if (original.ok) {
+      const edited = original.value.text.replace(':45.', ':46.');
+      const result = fromInput(edited, 'DATE_TIME', original.value.original);
+      expect(result.ok).toBe(true);
+      if (result.ok) expect(result.value).not.toBe('2024-02-29T12:30:45Z');
+    }
+  });
+  it('rejects nonexistent spring-forward local time in New York', () => {
+    const previous = process.env.TZ;
+    try {
+      process.env.TZ = 'America/New_York';
+      const raw = '2024-03-10T02:30';
+      expect(fromInput(raw, 'DATE_TIME')).toEqual({
+        ok: false, error: { reason: 'nonexistentLocalTime', raw },
+      });
+    } finally {
+      if (previous === undefined) delete process.env.TZ;
+      else process.env.TZ = previous;
+    }
+  });
+  it('rejects invalid time input', () => {
+    const raw = '2024-01-01T24:00';
+    expect(fromInput(raw, 'DATE_TIME')).toEqual({
+      ok: false, error: { reason: 'invalidLocalValue', raw },
+    });
+  });
+  it('rejects unknown type', () => {
+    expect(() => fromInput('', 'BAD' as never)).toThrow('BRUCE_DATE_TYPE');
   });
 });
