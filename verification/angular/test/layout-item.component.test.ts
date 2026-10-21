@@ -40,6 +40,30 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
       vi.unstubAllGlobals();
     }
   });
+  it('coalesces repeated resize notifications into one animation frame', () => {
+    const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
+    const pending: Array<FrameRequestCallback> = [];
+    const raf = vi.fn((callback:FrameRequestCallback) => {
+      pending.push(callback);
+      return pending.length;
+    });
+    const distribute = vi.spyOn(component,'distribute').mockImplementation(() => {});
+    vi.stubGlobal('requestAnimationFrame',raf);
+    try {
+      Object.assign(component,{disposed:false});
+      const schedule = (component as unknown as {schedule:(wrapper:HTMLElement)=>void}).schedule.bind(component);
+      const wrapper = {} as HTMLElement;
+      schedule(wrapper);
+      schedule(wrapper);
+      expect(raf).toHaveBeenCalledOnce();
+      pending[0]!(0);
+      expect(distribute).toHaveBeenCalledOnce();
+      schedule(wrapper);
+      expect(raf).toHaveBeenCalledTimes(2);
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
   it('disconnects observers, unsubscribes metrics and cancels pending frame on destroy', () => {
     const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
     const resizeDisconnect = vi.fn();
