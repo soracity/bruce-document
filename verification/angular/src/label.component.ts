@@ -20,7 +20,7 @@ export type TextOverflowMode = 'WRAP' | 'ELLIPSIS' | 'MARQUEE_BOUNCE' | 'MARQUEE
     .bruce-text-track { display:inline; }
     .bruce-text-wrap { white-space:normal;overflow-wrap:anywhere; }
     .bruce-text-ellipsis { white-space:nowrap;overflow:hidden;text-overflow:ellipsis; }
-    .bruce-text-marquee { overflow:hidden;white-space:nowrap; }
+    .bruce-text-marquee { overflow:hidden;white-space:nowrap;box-sizing:border-box;padding-inline:8px; }
     .bruce-text-marquee .bruce-text-track { display:inline-block;white-space:nowrap;pointer-events:none; }
   `],
 })
