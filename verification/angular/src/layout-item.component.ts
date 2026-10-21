@@ -66,13 +66,15 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
       this.allocations().set(element, saved);
     }
     if (element.style.flexBasis === saved.lastBasis &&
-        this.priority(element, 'flex-basis') === saved.lastBasisPriority) {
+        this.priority(element, 'flex-basis') === saved.lastBasisPriority &&
+        (element.style.flexBasis !== basis || this.priority(element, 'flex-basis') !== '')) {
       this.setFlex(element, 'flex-basis', basis, '');
       saved.lastBasis = basis;
       saved.lastBasisPriority = '';
     }
     if (element.style.flexGrow === saved.lastGrow &&
-        this.priority(element, 'flex-grow') === saved.lastGrowPriority) {
+        this.priority(element, 'flex-grow') === saved.lastGrowPriority &&
+        (element.style.flexGrow !== grow || this.priority(element, 'flex-grow') !== '')) {
       this.setFlex(element, 'flex-grow', grow, '');
       saved.lastGrow = grow;
       saved.lastGrowPriority = '';
