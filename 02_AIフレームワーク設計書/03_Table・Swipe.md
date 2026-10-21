@@ -1,6 +1,6 @@
 # Table・Swipe設計（暫定・全件監査前）
 
-根拠：[3.4](../01_ai-document/phase3_04_Table.md)、[3.5](../01_ai-document/phase3_05_Swipe・Layout.md)、[2.5](../01_ai-document/phase2_05_任意CSS注入の排除.md)。
+根拠：[3.4](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase3_04_Table.md)、[3.5](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase3_05_Swipe・Layout.md)、[2.5](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase2_05_任意CSS注入の排除.md)。
 
 | ID | 現行承認事項 |
 |---|---|
@@ -16,11 +16,11 @@
 
 ## 追加の原典照合が必要な事項
 
-[2.5.3の旧承認](../01_ai-document/phase2_05_任意CSS注入の排除.md)にはTableCell専用Enumの物理名・6値とHeader/TabBarのCSS注入廃止が記録されている。後日承認された共通AppUiColorEnumを現行仕様として優先する。旧専用Enumは実装指示ではない。既存画面の具体的な置換対応と互換性は設計上の未決事項として管理する。Header/TabBarの外部CSSをComponent内部に移す方針は継続。実装・検証未実施。
+[2.5.3の旧承認](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase2_05_任意CSS注入の排除.md)にはTableCell専用Enumの物理名・6値とHeader/TabBarのCSS注入廃止が記録されている。後日承認された共通AppUiColorEnumを現行仕様として優先する。旧専用Enumは実装指示ではない。既存画面の具体的な置換対応と互換性は設計上の未決事項として管理する。Header/TabBarの外部CSSをComponent内部に移す方針は継続。実装・検証未実施。
 
 ## Phase 3.1／3.4 後日承認の詳細設計照合（2026-10-21）
 
-根拠：[Phase 3.1](../01_ai-document/phase3_01_共通スタイル.md) の2026-10-20「最終設計承認：Component別既定値・全11色固定マッピング」、[Phase 3.4](../01_ai-document/phase3_04_Table.md) の同日追加承認。これは対象2原典の照合であり、全議事録監査完了ではない。
+根拠：[Phase 3.1](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase3_01_共通スタイル.md) の2026-10-20「最終設計承認：Component別既定値・全11色固定マッピング」、[Phase 3.4](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase3_04_Table.md) の同日追加承認。これは対象2原典の照合であり、全議事録監査完了ではない。
 
 ### 現行色Enumと旧設計の優先順位
 
@@ -79,7 +79,7 @@
 
 ## Table色解決の純粋関数契約・実装前検証仕様（2026-10-21）
 
-本節は[Phase 3.1](../01_ai-document/phase3_01_共通スタイル.md)と[Phase 3.4](../01_ai-document/phase3_04_Table.md)の**承認済み優先順位をテスト可能な形に記述した設計補助**。Angular Component間の値伝達方式を新たに承認したものではない。
+本節は[Phase 3.1](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase3_01_共通スタイル.md)と[Phase 3.4](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase3_04_Table.md)の**承認済み優先順位をテスト可能な形に記述した設計補助**。Angular Component間の値伝達方式を新たに承認したものではない。
 
 ### 属性別の解決関数（参照擬似コード）
 

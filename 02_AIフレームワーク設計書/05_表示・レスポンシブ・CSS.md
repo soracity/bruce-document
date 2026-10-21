@@ -1,6 +1,6 @@
 # 表示・レスポンシブ・CSS設計（暫定・全件監査前）
 
-根拠：[2.4](../01_ai-document/phase2_04_レスポンシブ・折り返し.md)、[2.5](../01_ai-document/phase2_05_任意CSS注入の排除.md)、[3.1](../01_ai-document/phase3_01_共通スタイル.md)。
+根拠：[2.4](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase2_04_レスポンシブ・折り返し.md)、[2.5](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase2_05_任意CSS注入の排除.md)、[3.1](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase3_01_共通スタイル.md)。
 
 | ID | 現行設計原則 |
 |---|---|
@@ -16,7 +16,7 @@
 
 ## Phase 2.5 任意CSS注入排除：原典照合・移行設計（2026-10-21）
 
-照合元：[Phase 2.5](../01_ai-document/phase2_05_任意CSS注入の排除.md) の2.5.1〜2.5.3。**同議事録との照合であり、全旧新議事録の双方向監査完了ではない**。
+照合元：[Phase 2.5](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase2_05_任意CSS注入の排除.md) の2.5.1〜2.5.3。**同議事録との照合であり、全旧新議事録の双方向監査完了ではない**。
 
 ### 承認された責務境界
 

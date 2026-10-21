@@ -1,6 +1,6 @@
 # 共通スタイル・UiStyleUtil設計（暫定・全件監査前）
 
-> 承認済み事項の抽出。実装・検証は未完了。根拠：[3.1](../01_ai-document/phase3_01_共通スタイル.md)、[3.2](../01_ai-document/phase3_02_UiStyleUtil.md)、[3.3](../01_ai-document/phase3_03_ComponentBase.md)。
+> 承認済み事項の抽出。実装・検証は未完了。根拠：[3.1](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase3_01_共通スタイル.md)、[3.2](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase3_02_UiStyleUtil.md)、[3.3](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase3_03_ComponentBase.md)。
 
 | ID | 現行仕様 |
 |---|---|
@@ -21,7 +21,7 @@
 
 ## Phase 3.3 基底クラス継承・既定値解決の実装契約（2026-10-21）
 
-根拠：[Phase 3.3](../01_ai-document/phase3_03_ComponentBase.md) の2026-10-20正式承認と追加承認、[Phase 3.1](../01_ai-document/phase3_01_共通スタイル.md) の共通基準値・Component別既定値承認。**既存議事録の旧単一基底案は撤回済み**。本節は承認済み責務と実装前の確認事項を区別する。
+根拠：[Phase 3.3](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase3_03_ComponentBase.md) の2026-10-20正式承認と追加承認、[Phase 3.1](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase3_01_共通スタイル.md) の共通基準値・Component別既定値承認。**既存議事録の旧単一基底案は撤回済み**。本節は承認済み責務と実装前の確認事項を区別する。
 
 ### 継承関係（設計承認済み）
 
@@ -102,7 +102,7 @@ class ExampleCell extends ComponentBase {
 
 ## Phase 3.2 UiStyleUtil API別責務・固定CSS変換契約（2026-10-21）
 
-原典：[Phase 3.2.1](../01_ai-document/phase3_02_UiStyleUtil.md) 2026-10-20追加承認。旧議事録中の「想定API」は**後日の8メソッド承認により具体化された履歴**として扱う。以下は既承認のAPI名と変換責務の詳細整理であり、未承認のクラス対応を補完しない。
+原典：[Phase 3.2.1](https://github.com/soracity/catw-document/blob/main/01_ai-document/phase3_02_UiStyleUtil.md) 2026-10-20追加承認。旧議事録中の「想定API」は**後日の8メソッド承認により具体化された履歴**として扱う。以下は既承認のAPI名と変換責務の詳細整理であり、未承認のクラス対応を補完しない。
 
 ### 公開メソッド一覧
 
