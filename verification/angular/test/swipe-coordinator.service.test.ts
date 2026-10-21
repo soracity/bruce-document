@@ -50,3 +50,24 @@ describe('IMP-24 SwipeCoordinator', () => {
     expect(second.close).not.toHaveBeenCalled();
   });
 });
+
+describe('IMP-24 SwipeCoordinator additional reentrancy boundaries', () => {
+  it('does not clear a newly claimed owner when stale owner releases in close', () => {
+    const coordinator = new SwipeCoordinator();
+    const first = { close: vi.fn(() => coordinator.release(first)) };
+    const second = { close: vi.fn() };
+    coordinator.claim(first);
+    expect(coordinator.claim(second)).toBe(true);
+    expect(first.close).toHaveBeenCalledTimes(1);
+    expect(coordinator.claim(second)).toBe(true);
+    expect(second.close).not.toHaveBeenCalled();
+  });
+  it('does not close previous owner twice for repeated same-owner claim', () => {
+    const coordinator = new SwipeCoordinator();
+    const first = { close: vi.fn() }, second = { close: vi.fn() };
+    coordinator.claim(first);
+    coordinator.claim(second);
+    coordinator.claim(second);
+    expect(first.close).toHaveBeenCalledTimes(1);
+  });
+});
