@@ -237,6 +237,34 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
       component.ngOnDestroy();
     } finally { vi.unstubAllGlobals(); }
   });
+  it('restores allocated flex styles when a projected child is removed', () => {
+    const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
+    const first = {style:{flexBasis:'25px',flexGrow:'3'},getClientRects:()=>[{}]} as unknown as HTMLElement;
+    const wrapper = {children:[first],getBoundingClientRect:()=>({width:200})} as unknown as HTMLElement;
+    let mutationCallback: MutationCallback | undefined;
+    vi.stubGlobal('getComputedStyle',() => ({
+      display:'block',columnGap:'8px',paddingLeft:'0px',paddingRight:'0px',
+      borderLeftWidth:'0px',borderRightWidth:'0px',getPropertyValue:() => '1',
+    }));
+    vi.stubGlobal('MutationObserver',class {
+      constructor(callback:MutationCallback){mutationCallback=callback;}
+      observe=vi.fn();
+      disconnect=vi.fn();
+    });
+    try {
+      Object.assign(component,{
+        host:{nativeElement:{querySelector:()=>wrapper}},
+        metrics:{watch:vi.fn(() => vi.fn()),requiredWidth:vi.fn(() => 0)},disposed:false,
+      });
+      component.ngAfterViewInit();
+      expect(first.style.flexBasis).toBe('200px');
+      wrapper.children = [] as unknown as HTMLCollection;
+      mutationCallback!([{type:'childList',target:wrapper} as MutationRecord],{} as MutationObserver);
+      expect(first.style.flexBasis).toBe('25px');
+      expect(first.style.flexGrow).toBe('3');
+      component.ngOnDestroy();
+    } finally { vi.unstubAllGlobals(); }
+  });
   it('coalesces repeated resize notifications into one animation frame', () => {
     const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
     const pending: Array<FrameRequestCallback> = [];
