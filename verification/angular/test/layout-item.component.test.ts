@@ -195,10 +195,10 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
       component.ngAfterViewInit();
       expect(watch).toHaveBeenCalledWith([first],expect.any(Function));
       expect(raf).toHaveBeenCalledOnce();
-      expect(mutationObserve).toHaveBeenCalledWith(wrapper,{childList:true,subtree:false,attributes:true,attributeFilter:['hidden','class']});
+      expect(mutationObserve).toHaveBeenCalledWith(wrapper,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden','class']});
       expect(resizeObserve).toHaveBeenCalledWith(wrapper);
       wrapper.children = [second] as unknown as HTMLCollection;
-      mutationCallback!([],{} as MutationObserver);
+      mutationCallback!([{type:'childList',target:wrapper} as MutationRecord],{} as MutationObserver);
       expect(unsubscribeFirst).toHaveBeenCalledOnce();
       expect(watch).toHaveBeenCalledWith([second],expect.any(Function));
       component.ngOnDestroy();
@@ -208,6 +208,34 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
     } finally {
       vi.unstubAllGlobals();
     }
+  });
+  it('schedules direct-child hidden changes without resubscribing metrics', () => {
+    const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
+    const wrapper = {children:[]} as unknown as HTMLElement;
+    const child = {parentElement:wrapper} as HTMLElement;
+    wrapper.children = [child] as unknown as HTMLCollection;
+    const watch = vi.fn(() => vi.fn());
+    let mutationCallback: MutationCallback | undefined;
+    const raf = vi.fn((_callback:FrameRequestCallback) => 9);
+    vi.stubGlobal('requestAnimationFrame',raf);
+    vi.stubGlobal('MutationObserver',class {
+      constructor(callback:MutationCallback){mutationCallback=callback;}
+      observe=vi.fn();
+      disconnect=vi.fn();
+    });
+    try {
+      Object.assign(component,{
+        host:{nativeElement:{querySelector:()=>wrapper}},
+        metrics:{watch,requiredWidth:vi.fn(() => 0)},disposed:false,
+      });
+      component.ngAfterViewInit();
+      expect(watch).toHaveBeenCalledOnce();
+      mutationCallback!([{type:'attributes',target:child,attributeName:'hidden'} as MutationRecord],{} as MutationObserver);
+      expect(watch).toHaveBeenCalledOnce();
+      const pending = (component as unknown as {frame?:number}).frame;
+      expect(pending).toBe(9);
+      component.ngOnDestroy();
+    } finally { vi.unstubAllGlobals(); }
   });
   it('coalesces repeated resize notifications into one animation frame', () => {
     const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
