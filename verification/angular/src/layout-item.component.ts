@@ -36,6 +36,8 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
   private originalStyles?: Map<HTMLElement, {
     basis: string; grow: string; basisPriority: string; growPriority: string;
     lastBasis: string; lastGrow: string; lastBasisPriority: string; lastGrowPriority: string;
+    minWidth: string; boxSizing: string; minWidthPriority: string; boxSizingPriority: string;
+    lastMinWidth: string; lastBoxSizing: string;
   }>;
 
   private allocations(): NonNullable<LayoutItemComponent['originalStyles']> {
@@ -62,8 +64,22 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
         lastBasis: element.style.flexBasis, lastGrow: element.style.flexGrow,
         lastBasisPriority: this.priority(element, 'flex-basis'),
         lastGrowPriority: this.priority(element, 'flex-grow'),
+        minWidth: element.style.minWidth, boxSizing: element.style.boxSizing,
+        minWidthPriority: this.priority(element, 'min-width'),
+        boxSizingPriority: this.priority(element, 'box-sizing'),
+        lastMinWidth: element.style.minWidth, lastBoxSizing: element.style.boxSizing,
       };
       this.allocations().set(element, saved);
+    }
+    if (element.style.minWidth === saved.lastMinWidth && element.style.minWidth !== '0px') {
+      if (element.style.setProperty) element.style.setProperty('min-width', '0px');
+      else element.style.minWidth = '0px';
+      saved.lastMinWidth = '0px';
+    }
+    if (element.style.boxSizing === saved.lastBoxSizing && element.style.boxSizing !== 'border-box') {
+      if (element.style.setProperty) element.style.setProperty('box-sizing', 'border-box');
+      else element.style.boxSizing = 'border-box';
+      saved.lastBoxSizing = 'border-box';
     }
     if (element.style.flexBasis === saved.lastBasis &&
         this.priority(element, 'flex-basis') === saved.lastBasisPriority &&
@@ -90,6 +106,14 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
     if (element.style.flexGrow === saved.lastGrow &&
         this.priority(element, 'flex-grow') === saved.lastGrowPriority)
       this.setFlex(element, 'flex-grow', saved.grow, saved.growPriority);
+    if (element.style.minWidth === saved.lastMinWidth) {
+      if (element.style.setProperty) element.style.setProperty('min-width', saved.minWidth, saved.minWidthPriority);
+      else element.style.minWidth = saved.minWidth;
+    }
+    if (element.style.boxSizing === saved.lastBoxSizing) {
+      if (element.style.setProperty) element.style.setProperty('box-sizing', saved.boxSizing, saved.boxSizingPriority);
+      else element.style.boxSizing = saved.boxSizing;
+    }
     this.allocations().delete(element);
   }
 
