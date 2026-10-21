@@ -23,7 +23,7 @@ export class LayoutMetricsService {
     entry.measure = measure;
     return () => {
       if (entry.measure === measure) entry.measure = undefined;
-      this.cleanup(element, entry);
+      if (this.entries.get(element) === entry) this.cleanup(element, entry);
     };
   }
   requiredWidth(element: HTMLElement): number | undefined {
