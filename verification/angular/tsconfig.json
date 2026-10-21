@@ -1,0 +1,5 @@
+{
+ "compilerOptions": {"target":"ES2022","module":"NodeNext","moduleResolution":"NodeNext","lib":["ES2022","DOM"],"strict":true,"experimentalDecorators":true,"skipLibCheck":false,"outDir":"dist","rootDir":"src","declaration":true},
+ "angularCompilerOptions":{"strictTemplates":true,"strictInjectionParameters":true},
+ "include":["src/**/*.ts"]
+}
