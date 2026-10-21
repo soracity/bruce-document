@@ -51,3 +51,28 @@ describe('IMP-05 LayoutRowUtil partition', () => {
     expect(()=>LayoutRowUtil.partition([m(1,n)],100,0)).toThrow('BRUCE_LAYOUT_VALUE');
   });
 });
+
+
+describe('IMP-05 LayoutRowUtil partition invariants', () => {
+  it('never allocates negative widths and conserves row width', () => {
+    for (const available of [1, 10, 99, 200, 600]) {
+      for (const gap of [0, 1, 8, 30]) {
+        const items = [m(0,1), m(0,3), m(0,5), m(0,7)];
+        const rows = LayoutRowUtil.partition(items, available, gap);
+        expect(rows.flatMap(row => row.items)).toEqual(items);
+        for (const row of rows) {
+          expect(row.widths).toHaveLength(row.items.length);
+          expect(row.widths.every(width => Number.isFinite(width) && width >= 0)).toBe(true);
+          expect(row.widths.reduce((a,b) => a+b,0) + gap * (row.items.length-1)).toBeCloseTo(available, 7);
+        }
+      }
+    }
+  });
+  it('preserves item identity and never mutates original metrics', () => {
+    const items = [m(90,2), m(40,5), m(200,3)];
+    const snapshot = items.map(x => ({ required:x.required, weight:x.weight, element:x.element }));
+    const rows = LayoutRowUtil.partition(items, 150, 8);
+    expect(rows.flatMap(row=>row.items)).toEqual(items);
+    expect(items.map(x=>({ required:x.required, weight:x.weight, element:x.element }))).toEqual(snapshot);
+  });
+});
