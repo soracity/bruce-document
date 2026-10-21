@@ -34,8 +34,8 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
     try {
       component.distribute(wrapper);
       expect(first.style.flexBasis).toBe('210px');
-      expect(hidden.style.flexBasis).toBe('');
-      expect(hidden.style.flexGrow).toBe('');
+      expect(hidden.style.flexBasis).toBe('20px');
+      expect(hidden.style.flexGrow).toBe('0');
     } finally {
       vi.unstubAllGlobals();
     }
@@ -49,8 +49,8 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
     }));
     try {
       component.distribute(wrapper);
-      expect(child.style.flexBasis).toBe('');
-      expect(child.style.flexGrow).toBe('');
+      expect(child.style.flexBasis).toBe('200px');
+      expect(child.style.flexGrow).toBe('0');
     } finally {
       vi.unstubAllGlobals();
     }
