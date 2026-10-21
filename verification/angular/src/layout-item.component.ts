@@ -35,7 +35,7 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
   private disposed = false;
   private originalStyles?: Map<HTMLElement, {
     flexBasis: string; flexGrow: string; lastBasis: string; lastGrow: string;
-  }>();
+  }>;
 
   private allocations(): NonNullable<LayoutItemComponent['originalStyles']> {
     return this.originalStyles ??= new Map();
