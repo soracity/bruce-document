@@ -55,6 +55,43 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
       vi.unstubAllGlobals();
     }
   });
+  it('restores the original inline allocation after redistribution and destroy', () => {
+    const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
+    const child = {style:{flexBasis:'24px',flexGrow:'2'},getClientRects:()=>[{}]} as unknown as HTMLElement;
+    const wrapper = {children:[child],getBoundingClientRect:()=>({width:200})} as unknown as HTMLElement;
+    vi.stubGlobal('getComputedStyle',() => ({
+      display:'block',columnGap:'8px',paddingLeft:'0px',paddingRight:'0px',
+      borderLeftWidth:'0px',borderRightWidth:'0px',getPropertyValue:() => '1',
+    }));
+    try {
+      component.distribute(wrapper);
+      expect(child.style.flexBasis).toBe('200px');
+      expect(child.style.flexGrow).toBe('0');
+      component.ngOnDestroy();
+      expect(child.style.flexBasis).toBe('24px');
+      expect(child.style.flexGrow).toBe('2');
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
+  it('does not overwrite externally modified inline allocation on destroy', () => {
+    const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
+    const child = {style:{flexBasis:'24px',flexGrow:'2'},getClientRects:()=>[{}]} as unknown as HTMLElement;
+    const wrapper = {children:[child],getBoundingClientRect:()=>({width:200})} as unknown as HTMLElement;
+    vi.stubGlobal('getComputedStyle',() => ({
+      display:'block',columnGap:'8px',paddingLeft:'0px',paddingRight:'0px',
+      borderLeftWidth:'0px',borderRightWidth:'0px',getPropertyValue:() => '1',
+    }));
+    try {
+      component.distribute(wrapper);
+      child.style.flexBasis = '88px';
+      component.ngOnDestroy();
+      expect(child.style.flexBasis).toBe('88px');
+      expect(child.style.flexGrow).toBe('2');
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
   it('schedules redistribution when required-width notification fires', () => {
     const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
     const child = {} as HTMLElement;
