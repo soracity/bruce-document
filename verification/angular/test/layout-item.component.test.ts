@@ -40,6 +40,56 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
       vi.unstubAllGlobals();
     }
   });
+  it('refreshes metric subscriptions when projected children change', () => {
+    const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
+    const first = {} as HTMLElement;
+    const second = {} as HTMLElement;
+    const wrapper = {children:[first]} as unknown as HTMLElement;
+    const host = {querySelector:vi.fn(() => wrapper)};
+    const unsubscribeFirst = vi.fn();
+    const unsubscribeSecond = vi.fn();
+    const watch = vi.fn()
+      .mockReturnValueOnce(unsubscribeFirst)
+      .mockReturnValueOnce(unsubscribeSecond);
+    let mutationCallback: MutationCallback | undefined;
+    const mutationDisconnect = vi.fn();
+    const resizeDisconnect = vi.fn();
+    const mutationObserve = vi.fn();
+    const resizeObserve = vi.fn();
+    const raf = vi.fn((_callback:FrameRequestCallback) => 7);
+    vi.stubGlobal('requestAnimationFrame',raf);
+    vi.stubGlobal('MutationObserver',class {
+      constructor(callback:MutationCallback){mutationCallback=callback;}
+      observe=mutationObserve;
+      disconnect=mutationDisconnect;
+    });
+    vi.stubGlobal('ResizeObserver',class {
+      observe=resizeObserve;
+      disconnect=resizeDisconnect;
+    });
+    try {
+      Object.assign(component,{
+        host:{nativeElement:host},
+        metrics:{watch,requiredWidth:vi.fn(() => 0)},
+        disposed:false,
+      });
+      component.ngAfterViewInit();
+      expect(watch).toHaveBeenCalledWith([first],expect.any(Function));
+      expect(raf).toHaveBeenCalledOnce();
+      expect(mutationObserve).toHaveBeenCalledWith(wrapper,{childList:true,subtree:false});
+      expect(resizeObserve).toHaveBeenCalledWith(wrapper);
+      wrapper.children = [second] as unknown as HTMLCollection;
+      mutationCallback!([],{} as MutationObserver);
+      expect(unsubscribeFirst).toHaveBeenCalledOnce();
+      expect(watch).toHaveBeenCalledWith([second],expect.any(Function));
+      component.ngOnDestroy();
+      expect(unsubscribeSecond).toHaveBeenCalledOnce();
+      expect(mutationDisconnect).toHaveBeenCalledOnce();
+      expect(resizeDisconnect).toHaveBeenCalledOnce();
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
   it('coalesces repeated resize notifications into one animation frame', () => {
     const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
     const pending: Array<FrameRequestCallback> = [];
