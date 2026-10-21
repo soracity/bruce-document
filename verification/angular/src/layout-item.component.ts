@@ -94,7 +94,7 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
     const wrapperStyle = getComputedStyle(wrapper);
     const px = (value: string): number => {
       if (value === '0') return 0;
-      if (!/^(?:\\d+(?:\\.\\d*)?|\\.\\d+)px$/.test(value.trim())) throw new Error('BRUCE_LAYOUT_GAP');
+      if (!/^(?:\d+(?:\.\d*)?|\.\d+)px$/.test(value.trim())) throw new Error('BRUCE_LAYOUT_GAP');
       return Number.parseFloat(value);
     };
     const gap = wrapperStyle.columnGap === 'normal' ? 0 : px(wrapperStyle.columnGap);
