@@ -23,7 +23,7 @@ export abstract class FormControlComponentBase<T> extends ComponentBase {
   }
 
   protected requireControl(): FormControl<T> {
-    const control = this.control();
+    const control = this.control() ?? this.currentControl;
     if (!control) throw new Error('BRUCE_CONTROL_REQUIRED');
     return control;
   }
