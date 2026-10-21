@@ -94,14 +94,14 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
       else element.style.boxSizing = 'border-box';
       saved.lastBoxSizing = 'border-box';
     }
-    if (element.style.flexBasis === saved.lastBasis &&
+    if (!element.style.setProperty && element.style.flexBasis === saved.lastBasis &&
         this.priority(element, 'flex-basis') === saved.lastBasisPriority &&
         (element.style.flexBasis !== basis || this.priority(element, 'flex-basis') !== '')) {
       this.setFlex(element, 'flex-basis', basis, '');
       saved.lastBasis = basis;
       saved.lastBasisPriority = '';
     }
-    if (element.style.flexGrow === saved.lastGrow &&
+    if (!element.style.setProperty && element.style.flexGrow === saved.lastGrow &&
         this.priority(element, 'flex-grow') === saved.lastGrowPriority &&
         (element.style.flexGrow !== grow || this.priority(element, 'flex-grow') !== '')) {
       this.setFlex(element, 'flex-grow', grow, '');
@@ -113,10 +113,10 @@ export class LayoutItemComponent implements AfterViewInit, OnDestroy {
   private restoreAllocation(element: HTMLElement): void {
     const saved = this.allocations().get(element);
     if (!saved) return;
-    if (element.style.flexBasis === saved.lastBasis &&
+    if (!element.style.setProperty && element.style.flexBasis === saved.lastBasis &&
         this.priority(element, 'flex-basis') === saved.lastBasisPriority)
       this.setFlex(element, 'flex-basis', saved.basis, saved.basisPriority);
-    if (element.style.flexGrow === saved.lastGrow &&
+    if (!element.style.setProperty && element.style.flexGrow === saved.lastGrow &&
         this.priority(element, 'flex-grow') === saved.lastGrowPriority)
       this.setFlex(element, 'flex-grow', saved.grow, saved.growPriority);
     if (element.style.setProperty && element.style.flex === saved.lastFlex &&
