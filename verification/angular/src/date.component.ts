@@ -31,12 +31,16 @@ export class DateComponent extends FormControlComponentBase<string | null> {
   private original?: { utc: string; input: string };
   private selfWrite = false;
   private disposed = false;
+  private previousType?: DateInputType;
 
   constructor() {
     super();
     effect(() => {
-      this.type();
-      this.syncFromControl();
+      const nextType = this.type();
+      if (this.previousType !== nextType) {
+        this.previousType = nextType;
+        this.syncFromControl();
+      }
     });
     effect(() => {
       const native = this.nativeInput();
@@ -101,6 +105,7 @@ export class DateComponent extends FormControlComponentBase<string | null> {
       return;
     }
     this.draftError.set(null);
+    this.original = undefined;
     this.selfWrite = true;
     try {
       control.setValue(result.value, { emitEvent: true });
