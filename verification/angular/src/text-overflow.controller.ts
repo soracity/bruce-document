@@ -19,7 +19,10 @@ export class TextOverflowController {
     this.reconcile();
   }
   measure():TextOverflowMeasurement {
-    const viewport = Math.max(0,this.viewport.clientWidth);
+    const css = typeof getComputedStyle === 'function' ? getComputedStyle(this.viewport) : this.viewport.style;
+    const left = Number.parseFloat(css.paddingLeft) || 0;
+    const right = Number.parseFloat(css.paddingRight) || 0;
+    const viewport = Math.max(0,this.viewport.clientWidth - left - right);
     const text = Math.max(0,this.track.scrollWidth);
     return {viewport,text,distance:Math.max(0,text-viewport)};
   }
