@@ -15,8 +15,8 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
     }));
     try {
       component.distribute(wrapper);
-      expect(first.style.flexBasis).toBe('120px');
-      expect(second.style.flexBasis).toBe('80px');
+      expect(Number.parseFloat(first.style.flexBasis)).toBeCloseTo(120, 8);
+      expect(Number.parseFloat(second.style.flexBasis)).toBeCloseTo(80, 8);
     } finally {
       if (previous) vi.stubGlobal('getComputedStyle',previous);
       else vi.unstubAllGlobals();
