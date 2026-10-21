@@ -32,6 +32,7 @@ export class DateComponent extends FormControlComponentBase<string | null> {
   private selfWrite = false;
   private disposed = false;
   private previousType?: DateInputType;
+  private pendingInput: string | null = null;
 
   constructor() {
     super();
@@ -44,7 +45,12 @@ export class DateComponent extends FormControlComponentBase<string | null> {
     });
     effect(() => {
       const native = this.nativeInput();
-      if (native) this.syncFromControl();
+      if (native) {
+        if (this.pendingInput !== null) {
+          native.nativeElement.value = this.pendingInput;
+          this.pendingInput = null;
+        } else this.syncFromControl();
+      }
     });
   }
 
@@ -82,6 +88,7 @@ export class DateComponent extends FormControlComponentBase<string | null> {
     }
     const native = this.nativeInput()?.nativeElement;
     if (native) native.value = this.displayValue();
+    else this.pendingInput = this.displayValue();
     control.updateValueAndValidity({ emitEvent: false });
     this.changeDetectorRef.markForCheck();
   }
