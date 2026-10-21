@@ -124,6 +124,29 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
       expect(style.getPropertyPriority('flex-grow')).toBe('important');
     } finally { vi.unstubAllGlobals(); }
   });
+  it('skips redundant inline flex writes when allocation has not changed', () => {
+    const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
+    const values = new Map([['flex-basis', ''], ['flex-grow', '']]);
+    const setProperty = vi.fn((name:string,value:string) => values.set(name,value));
+    const style = {
+      get flexBasis(){return values.get('flex-basis') ?? '';},
+      get flexGrow(){return values.get('flex-grow') ?? '';},
+      getPropertyPriority:()=>'',setProperty,
+    };
+    const child = {style,getClientRects:()=>[{}]} as unknown as HTMLElement;
+    const wrapper = {children:[child],getBoundingClientRect:()=>({width:200})} as unknown as HTMLElement;
+    vi.stubGlobal('getComputedStyle',() => ({
+      display:'block',columnGap:'8px',paddingLeft:'0px',paddingRight:'0px',
+      borderLeftWidth:'0px',borderRightWidth:'0px',getPropertyValue:() => '1',
+    }));
+    try {
+      component.distribute(wrapper);
+      expect(setProperty).toHaveBeenCalledTimes(2);
+      component.distribute(wrapper);
+      expect(setProperty).toHaveBeenCalledTimes(2);
+      component.ngOnDestroy();
+    } finally { vi.unstubAllGlobals(); }
+  });
   it('schedules redistribution when required-width notification fires', () => {
     const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
     const child = {} as HTMLElement;
