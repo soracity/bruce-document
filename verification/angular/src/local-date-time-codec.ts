@@ -32,7 +32,7 @@ export function parseLocal(raw: string): Result<LocalParts> {
 
 /** UTC文法・各成分・TimeClip範囲を厳密検証する。 */
 export function parseUtc(raw: string): Result<Date> {
-  const match = /^([0-9]{4}|[+-][0-9]{6})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})(?:\\.([0-9]{1,3}))?Z$/.exec(raw);
+  const match = /^([0-9]{4}|[+-][0-9]{6})-([0-9]{2})-([0-9]{2})T([0-9]{2}):([0-9]{2}):([0-9]{2})(?:\.([0-9]{1,3}))?Z$/.exec(raw);
   if (!match) return fail(raw, 'invalidUtc');
   const year = Number(match[1]), month = Number(match[2]), day = Number(match[3]);
   const hour = Number(match[4]), minute = Number(match[5]), second = Number(match[6]);
