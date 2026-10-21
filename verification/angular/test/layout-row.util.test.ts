@@ -31,6 +31,19 @@ describe('IMP-05 LayoutRowUtil partition', () => {
     const rows = LayoutRowUtil.partition([m(0,1e308),m(0,1e308)],100,0);
     expect(rows[0]!.widths).toEqual([50,50]);
   });
+  it.each([-1, NaN, Infinity])('rejects invalid gap %s', gap => {
+    expect(() => LayoutRowUtil.partition([m(1,1)], 100, gap)).toThrow('BRUCE_LAYOUT_VALUE');
+  });
+  it.each([-1, NaN, Infinity])('rejects invalid required width %s', required => {
+    expect(() => LayoutRowUtil.partition([m(required,1)], 100, 0)).toThrow('BRUCE_LAYOUT_VALUE');
+  });
+  it('splits after a candidate fails and preserves original input weights', () => {
+    const items = [m(50, 1), m(50, 1), m(90, 1)];
+    const before = items.map(item => item.weight);
+    const rows = LayoutRowUtil.partition(items, 100, 0);
+    expect(rows.map(row => row.items)).toEqual([[items[0], items[1]], [items[2]]]);
+    expect(items.map(item => item.weight)).toEqual(before);
+  });
   it.each([-1, NaN, Infinity])('rejects invalid available %s', n => {
     expect(()=>LayoutRowUtil.partition([m(1,1)],n,0)).toThrow('BRUCE_LAYOUT_VALUE');
   });
