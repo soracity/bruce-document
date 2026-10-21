@@ -40,6 +40,41 @@ describe('IMP-06 LayoutItemComponent independent structure', () => {
       vi.unstubAllGlobals();
     }
   });
+  it('schedules redistribution when required-width notification fires', () => {
+    const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
+    const child = {} as HTMLElement;
+    const wrapper = {children:[child]} as unknown as HTMLElement;
+    let metricsChanged: (() => void) | undefined;
+    const watch = vi.fn((_children:HTMLElement[], callback:()=>void) => {
+      metricsChanged = callback;
+      return vi.fn();
+    });
+    const frames: FrameRequestCallback[] = [];
+    vi.stubGlobal('requestAnimationFrame',vi.fn((callback:FrameRequestCallback) => {
+      frames.push(callback);
+      return frames.length;
+    }));
+    const distribute = vi.spyOn(component,'distribute').mockImplementation(() => {});
+    try {
+      Object.assign(component,{
+        host:{nativeElement:{querySelector:()=>wrapper}},
+        metrics:{watch,requiredWidth:vi.fn(() => 75)},
+        disposed:false,
+      });
+      component.ngAfterViewInit();
+      expect(frames).toHaveLength(1);
+      frames[0]!(0);
+      expect(distribute).toHaveBeenCalledOnce();
+      metricsChanged!();
+      expect(frames).toHaveLength(2);
+      frames[1]!(1);
+      expect(distribute).toHaveBeenCalledTimes(2);
+      expect(distribute.mock.calls[1]![1]!(child)).toBe(75);
+      component.ngOnDestroy();
+    } finally {
+      vi.unstubAllGlobals();
+    }
+  });
   it('refreshes metric subscriptions when projected children change', () => {
     const component = Object.create(LayoutItemComponent.prototype) as LayoutItemComponent;
     const first = {} as HTMLElement;
