@@ -13,6 +13,18 @@
 - 既存のフェード効果は機能要件として必要な場合にのみCSSで再実装する。旧APIのために依存追加しない。
 - **決定反映のみ完了**。新Bruceローカルソースの修正・ビルド確認は未実施。
 
+## 移植後のビルドNG診断（2026-10-27）
+
+- 2026-10-27 15:48 JSTのユーザー提供ログでは `npm run build` **失敗**。新Bruceブランチのコードも照合したが、ローカル作業ツリーの現在値は取得不可のため、作業を勝手に完了扱いしない。
+- `brf9011-enum` の移植漏れを解消する（既存GitHub新ブランチに存在せず）。
+- `Nullable<T>` を `src/global.d.ts` に型定義として移植。
+- `$SESSION_CRITICAL_SERVICE`、`$SESSION_LOG_SERVICE` の参照は `brf9015-sqlite/sqlite-session.tokens.ts` に統一。既存 `src/app/app.config.ts` のprovidersに型付きトークンと `AppSqliteSessionService` を登録する。
+- DDLは既存 `sqlite/sql/ddl/ddl.ts` を利用。旧相対パスを修正し、必要ならtsconfig pathsに `@bruce_ddl/*` → `./sqlite/sql/ddl/*` を登録。
+- `@angular/animations` は導入しない。header、app-layoutから旧importとtriggerおよびテンプレートの `[@in.title]` を除去。
+- `uuid` は `package.json` の依存関係と利用意図を確認し、必要なら明示導入。
+- `app-sqlite-test-adapter.ts` と `brf9016-test-base/test-base.service.ts` はNode依存のテスト専用コード。アプリビルドに入れない（移動またはアプリtsconfigから除外。実際のテストは別に維持）。
+- 最終確認：`npm run build`、`npm run test -- --watch=false`、SQLite接続・永続化、各機能試験。**いずれも今回の修正では未実施**。
+
 ## 原則
 
 - 作業は**手動**。旧Bruceは読み取り専用とし、新Worktreeにのみコピー・修正する。
