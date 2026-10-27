@@ -5,6 +5,14 @@
 > 新：`bruce-feature-20261027` / `feature/feature-20261027`  
 > 状態：**一覧作成済み／実際の移植は未着手**。本一覧はGitHubの旧ブランチのパス一覧から生成。ファイル内部の依存関係の全数精査は未実施。
 
+## 追加確定事項（2026-10-27）
+
+- **新Bruceには `@angular/animations` を導入しない。**
+- 旧 `AppLayoutComponent` / `HeaderComponent` から `@angular/animations` のimportと、旧アニメーションAPI（`trigger`、`transition`、`style`、`animate`）を移植しない。
+- `AppLayoutComponent` のデコレーター内 `animations` 指定、HTMLの `[@in.title]` を除去・必要ならCSSへ置換する。
+- 既存のフェード効果は機能要件として必要な場合にのみCSSで再実装する。旧APIのために依存追加しない。
+- **決定反映のみ完了**。新Bruceローカルソースの修正・ビルド確認は未実施。
+
 ## 原則
 
 - 作業は**手動**。旧Bruceは読み取り専用とし、新Worktreeにのみコピー・修正する。
