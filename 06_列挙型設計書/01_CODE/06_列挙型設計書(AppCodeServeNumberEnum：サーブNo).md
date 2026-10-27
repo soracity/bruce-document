@@ -19,7 +19,7 @@
 | メッセージ列挙型 | メッセージの列挙型 |
 
 #### 列挙型パッケージ
-app\brf9000\brf9011-enum\code
+io\github\soracity\bruce\brf9000\brf9011-enum\code
 
 #### 列挙型定義
 | No | 列挙名 | 値 | 型 | 説明 |

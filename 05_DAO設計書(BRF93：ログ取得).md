@@ -15,7 +15,7 @@
 - ファイル名：app-log-search.dao.ts
 
 #### （３）パッケージ
-app\brf9000\brf9012-log
+io\github\soracity\bruce\brf9000\brf9012-log
 
 #### （４）SQL
 ```
@@ -54,7 +54,7 @@ select id
 - ファイル名：
 
 #### （３）入力パラメータパッケージ
-app\brf9000\brf9012-log
+io\github\soracity\bruce\brf9000\brf9012-log
 
 #### （４）入力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
@@ -74,7 +74,7 @@ app\brf9000\brf9012-log
 - ファイル名：app-log-search-response.type.ts
 
 #### （３）出力パラメータパッケージ
-app\brf9000\brf9012-log
+io\github\soracity\bruce\brf9000\brf9012-log
 
 #### （４）出力パラメータ値
 | No | 名称(論理名) | 名称(物理名) | 型 | 備考 |
