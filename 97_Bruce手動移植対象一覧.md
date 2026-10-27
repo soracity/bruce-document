@@ -16,7 +16,7 @@
 ## 移植後のビルドNG診断（2026-10-27）
 
 - 2026-10-27 15:48 JSTのユーザー提供ログでは `npm run build` **失敗**。新Bruceブランチのコードも照合したが、ローカル作業ツリーの現在値は取得不可のため、作業を勝手に完了扱いしない。
-- `brf9011-enum` の移植漏れを解消する（既存GitHub新ブランチに存在せず）。
+- `brf9011-enum` は**ACGで自動生成する**（ユーザー決定）。手動コピーしない。生成・出力先・import参照・ビルド成功は未確認。
 - `Nullable<T>` を `src/global.d.ts` に型定義として移植。
 - `$SESSION_CRITICAL_SERVICE`、`$SESSION_LOG_SERVICE` の参照は `brf9015-sqlite/sqlite-session.tokens.ts` に統一。既存 `src/app/app.config.ts` のprovidersに型付きトークンと `AppSqliteSessionService` を登録する。
 - DDLは既存 `sqlite/sql/ddl/ddl.ts` を利用。旧相対パスを修正し、必要ならtsconfig pathsに `@bruce_ddl/*` → `./sqlite/sql/ddl/*` を登録。
@@ -37,7 +37,9 @@
 
 ## 手動移植チェックリスト
 
-### 01 基盤型・例外・ユーティリティ（18ファイル）
+### 01 基盤型・例外・ユーティリティ（18ファイル：EnumはACG生成対象）
+
+**注意：以下の `brf9011-enum/code` はACGで生成し、旧Bruceから手動コピーしない。チェックは生成結果の確認後に行う。**
 
 - [ ] `src/app/brf9000/brf9011-enum/code/app-code-boolean.enum.ts`
 - [ ] `src/app/brf9000/brf9011-enum/code/app-code-court-side.enum.ts`
@@ -86,6 +88,8 @@
 - [ ] `src/app/brf9000/brf9021-sequence/infrastructure/repositories/bri9021.repository.ts`
 
 ### 04 多言語（28ファイル）
+
+**注意：以下の `brf9011-enum/i18n` もACG生成対象として扱う。ACGの生成範囲・出力結果を確認し、生成対象外のみ別途移植判断する。**
 
 - [ ] `src/app/brf9000/brf9010-i18n/application/dto/bra9010-label-key.dto.ts`
 - [ ] `src/app/brf9000/brf9010-i18n/application/dto/bra9100-label-language.dto.ts`
