@@ -1,15 +1,10 @@
-# DB設計書
-- 論理名：言語マスタ
-- 物理名：t_m_label_language
+# DB設計書（移管先への参照）
 
-#### DB項目定義
-| # | 項目名（論理名） | 項目名（物理名） | 型 | サイズ | 値 | NOTNULL | PK | IDX1 | IDX2 | IDX3 | IDX4 | IDX5  |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 1 | 言語コード | language_code | TEXT |  |  |  | 1 |  |  |  |  |   |
-| 2 | 言語名（英語表記） | language_name | TEXT |  |  |  |  |  |  |  |  |   |
-| 3 | 言語名（ネイティブ） | native_name | TEXT |  |  |  |  |  |  |  |  |   |
-| 4 | ソート順 | display_order | INTEGER |  |  |  |  |  |  |  |  |   |
-| 5 | 無効フラグ | disabled_flg | TEXT |  |  |  |  |  |  |  |  |   |
-| 6 | 作成日 | create_date_time | TEXT |  |  |  |  |  |  |  |  |   |
-| 7 | 更新日 | update_date_time | TEXT |  |  |  |  |  |  |  |  |   |
-| 8 | 削除日 | delete_date_time | TEXT |  |  |  |  |  |  |  |  |   |
+- 論理名：言語マスタ
+- 物理名：`t_m_label_language`
+- 現在の管理元：`soracity/catw-document` の `catw-i18n/07_DB設計書/`
+- [DB設計書の正本](https://github.com/soracity/catw-document/blob/main/catw-i18n/07_DB設計書/07_DB設計書(t_m_label_language：言語マスタ).md)
+- DDL実装の正本：`soracity/catw/projects/catw-i18n/sqlite/sql/ddl/ddl.ts`
+- 利用アプリ（Bruce）はmigration適用とBruce固有の初期ラベル・翻訳データを担当する。
+
+旧Bruce側の詳細定義はGit履歴に残し、本ファイルには複製しない。

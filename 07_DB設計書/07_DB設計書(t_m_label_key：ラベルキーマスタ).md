@@ -1,14 +1,10 @@
-# DB設計書
-- 論理名：ラベルキーマスタ
-- 物理名：t_m_label_key
+# DB設計書（移管先への参照）
 
-#### DB項目定義
-| # | 項目名（論理名） | 項目名（物理名） | 型 | サイズ | 値 | NOTNULL | PK | IDX1 | IDX2 | IDX3 | IDX4 | IDX5  |
-|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| 1 | ラベルキー | label_key | TEXT |  |  |  | 1 |  |  |  |  |   |
-| 2 | ラベルタイプ | label_type | TEXT |  |  |  | 2 |  |  |  |  |   |
-| 3 | 説明 | description | TEXT |  |  |  |  |  |  |  |  |   |
-| 4 | 無効フラグ | disabled_flg | TEXT |  |  |  |  |  |  |  |  |   |
-| 5 | 作成日 | create_date_time | TEXT |  |  |  |  |  |  |  |  |   |
-| 6 | 更新日 | update_date_time | TEXT |  |  |  |  |  |  |  |  |   |
-| 7 | 削除日 | delete_date_time | TEXT |  |  |  |  |  |  |  |  |   |
+- 論理名：ラベルキーマスタ
+- 物理名：`t_m_label_key`
+- 現在の管理元：`soracity/catw-document` の `catw-i18n/07_DB設計書/`
+- [DB設計書の正本](https://github.com/soracity/catw-document/blob/main/catw-i18n/07_DB設計書/07_DB設計書(t_m_label_key：ラベルキーマスタ).md)
+- DDL実装の正本：`soracity/catw/projects/catw-i18n/sqlite/sql/ddl/ddl.ts`
+- 利用アプリ（Bruce）はmigration適用とBruce固有の初期ラベル・翻訳データを担当する。
+
+旧Bruce側の詳細定義はGit履歴に残し、本ファイルには複製しない。
