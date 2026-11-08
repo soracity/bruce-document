@@ -2,11 +2,11 @@
 
 #### 列挙型名称
 - 論理名：スコア入力タブ
-- 物理名：AppComponentLiveScoringTabEnum
-- ファイル名：app-component-live-scoring-tab-enum.ts
+- 物理名：Brf9010ComponentLiveScoringTabEnum
+- ファイル名：brf9010-component-live-scoring-tab-enum.ts
 
 #### 列挙型パッケージ
-io\github\soracity\bruce\brf9000\brf9011-enum\component
+io\github\soracity\bruce\brf9000\brf9010-enum\component
 
 #### 列挙型定義
 | No | 列挙名 | 値 | 型 | 説明 |

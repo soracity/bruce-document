@@ -2,8 +2,8 @@
 
 #### 列挙型名称
 - 論理名：ゲーム確定
-- 物理名：AppCodeGameFinalEnum
-- ファイル名：app-code-game-final.enum.ts
+- 物理名：Brf9010CodeGameFinalEnum
+- ファイル名：brf9010-code-game-final.enum.ts
 
 #### 列挙種別
 - [ ] 一般列挙型
@@ -19,7 +19,7 @@
 | メッセージ列挙型 | メッセージの列挙型 |
 
 #### 列挙型パッケージ
-io\github\soracity\bruce\brf9000\brf9011-enum\code
+io\github\soracity\bruce\brf9000\brf9010-enum\code
 
 #### 列挙型定義
 | No | 列挙名 | 値 | 型 | 説明 |

@@ -2,8 +2,8 @@
 
 #### 列挙型名称
 - 論理名：タイブレーク
-- 物理名：AppCodeTieBreakEnum
-- ファイル名：app-code-tie-break.enum.ts
+- 物理名：Brf9010CodeTieBreakEnum
+- ファイル名：brf9010-code-tie-break.enum.ts
 
 #### 列挙種別
 - [ ] 一般列挙型
@@ -19,7 +19,7 @@
 | メッセージ列挙型 | メッセージの列挙型 |
 
 #### 列挙型パッケージ
-io\github\soracity\bruce\brf9000\brf9011-enum\code
+io\github\soracity\bruce\brf9000\brf9010-enum\code
 
 #### 列挙型定義
 | No | 列挙名 | 値 | 型 | 説明 |

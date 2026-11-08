@@ -2,11 +2,11 @@
 
 #### 列挙型名称
 - 論理名：スコア入力メニュー
-- 物理名：AppComponentLiveScoringMenuEnum
-- ファイル名：app-component-live-scoring-menu-enum.ts
+- 物理名：Brf9010ComponentLiveScoringMenuEnum
+- ファイル名：brf9010-component-live-scoring-menu-enum.ts
 
 #### 列挙型パッケージ
-io\github\soracity\bruce\brf9000\brf9011-enum\component
+io\github\soracity\bruce\brf9000\brf9010-enum\component
 
 #### 列挙型定義
 | No | 列挙名 | 値 | 型 | 説明 |

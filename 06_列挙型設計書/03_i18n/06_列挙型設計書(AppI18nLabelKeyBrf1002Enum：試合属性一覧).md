@@ -2,8 +2,8 @@
 
 #### 列挙型名称
 - 論理名：ラベルキー
-- 物理名：AppI18nLabelKeyBrf1002Enum
-- ファイル名：app-i18n-label-key-brf1002.enum.ts
+- 物理名：Brf9010I18nLabelKeyBrf1002Enum
+- ファイル名：brf9010-i18n-label-key-brf1002.enum.ts
 
 #### 列挙種別
 - [ ] 一般列挙型
@@ -17,7 +17,7 @@
 | メッセージ列挙型 | メッセージの列挙型 |
 
 #### 列挙型パッケージ
-io\github\soracity\bruce\brf9000\brf9011-enum\i18n
+io\github\soracity\bruce\brf9000\brf9010-enum\i18n
 
 #### 列挙型定義
 | No | 列挙名 | 値 | 型 | 説明 |
