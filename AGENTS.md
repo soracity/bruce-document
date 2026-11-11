@@ -6,6 +6,8 @@
 
 ## 2. 共通規則の正本
 
+本書自身の正式な正本は、このリポジトリの`main/AGENTS.md`である。他のブランチの同名ファイルは正式な規則を上書きしない。
+
 `soracity` 全体の共通開発規則の正本は、次のファイルとする。
 
 - [soracity/soracity-document/AGENTS.md](https://github.com/soracity/soracity-document/blob/main/AGENTS.md)
@@ -18,8 +20,8 @@ Gitブランチの種類・命名・作成・削除・マージの承認条件�
 
 - Bruceアプリの機能・画面・データモデル・アーキテクチャなどは、`bruce-document` の承認済み設計書を根拠とする。共通規則の文書をアプリ固有の仕様書として扱わない。
 - Bruceの設計書と実装の変更では、承認済み仕様・既存成果・公開API・ライブラリとの責務境界を確認する。未承認の設計判断を承認済みとして扱わない。
-- catwライブラリ自体の設計・実装・管理に及ぶ作業では、`soracity/catw-document/AGENTS.md` も確認する。
-- Alfredのコード生成機能に及ぶ作業では、`soracity/alfred-document/AGENTS.md` も確認する。
+- catwライブラリ自体の設計・実装・管理に及ぶ作業では、`soracity/catw-document`の`main/AGENTS.md` も確認する。
+- Alfredのコード生成機能に及ぶ作業では、`soracity/alfred-document`の`main/AGENTS.md` も確認する。
 - AIフレームワークの議事録・詳細設計書は `soracity/catw-document` へ移管済みである。移管済みの文書を確認なく `bruce-document` に復活・複製しない。必要な参照先は本リポジトリの `README.md` を確認する。
 
 ## 4. 規則の優先順位と矛盾
