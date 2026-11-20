@@ -22,23 +22,23 @@
 | 09 | 〇 | 選手名１ | singlesPlayer1 | `app-textbox` | 文字列 | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_SINGLES_PLAYER1` | - |
 | 10 | 〇 | 選手名２ | singlesPlayer2 | `app-textbox` | 文字列 | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_SINGLES_PLAYER2` | - |
 | 11 | - | 選手A | - | app-group | - | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_PLAYER_A` | 新規ラベルキー候補 |
-| 12 | 〇 | 選手名１ | doublesPlayerA1 | `app-textbox` | 文字列 | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_DOUBLES_PLAYERA1` | - |
-| 13 | 〇 | 選手名２ | doublesPlayerA2 | `app-textbox` | 文字列 | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_DOUBLES_PLAYERA2` | - |
-| 14 | - | 選手B | - | app-group | - | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_PLAYER_B` | 新規ラベルキー候補 |
-| 15 | 〇 | 選手名３ | doublesPlayerB1 | `app-textbox` | 文字列 | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_DOUBLES_PLAYERB1` | - |
-| 16 | 〇 | 選手名４ | doublesPlayerB2 | `app-textbox` | 文字列 | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_DOUBLES_PLAYERB2` | - |
-| 17 | 〇 | サーブ順(選手名S1) | serveNoSinglesPlayer1 | `app-toggle` | 文字列 | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_SERVE_ROTATION` | - |
-| 18 | 〇 | サーブ順(選手名S2) | serveNoSinglesPlayer2 | `app-toggle` | 文字列 | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_SERVE_ROTATION` | - |
-| 19 | - | サーブ順（選手A見出し） | - | app-label | - | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_SERVE_ROTATION` | 既存。現行HTMLは「サービス」 |
-| 20 | 〇 | サーブ順(選手名DA1) | serveNoDoublesPlayerA1 | `app-toggle` | 文字列 | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_SERVE_ROTATION` | - |
-| 21 | 〇 | サーブ順(選手名DA2) | serveNoDoublesPlayerA2 | `app-toggle` | 文字列 | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_SERVE_ROTATION` | - |
-| 22 | - | サーブ順（選手B見出し） | - | app-label | - | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_SERVE_ROTATION` | 既存。現行HTMLは「サービス」 |
-| 23 | 〇 | サーブ順(選手名DB1) | serveNoDoublesPlayerB1 | `app-toggle` | 文字列 | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_SERVE_ROTATION` | - |
-| 24 | 〇 | サーブ順(選手名DB2) | serveNoDoublesPlayerB2 | `app-toggle` | 文字列 | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_SERVE_ROTATION` | - |
-| 25 | - | リターン順（選手A見出し） | - | app-label | - | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_RETURN_ROTATION` | 既存。現行HTMLは「リターン」 |
-| 26 | 〇 | リターン順(選手名DA1) | returnNoDoublesPlayerA1 | `app-toggle` | Enum | Brf9010CodeCourtSideEnum | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_RETURN_ROTATION` | DEUCE_SIDE=0、AD_SIDE=1 |
-| 27 | 〇 | リターン順(選手名DA2) | returnNoDoublesPlayerA2 | `app-toggle` | Enum | Brf9010CodeCourtSideEnum | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_RETURN_ROTATION` | DEUCE_SIDE=0、AD_SIDE=1 |
-| 28 | - | リターン順（選手B見出し） | - | app-label | - | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_RETURN_ROTATION` | 既存。現行HTMLは「リターン」 |
+| 12 | - | サーブ順（選手A見出し） | - | app-label | - | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_SERVE_ROTATION` | 既存。現行HTMLは「サービス」 |
+| 13 | - | リターン順（選手A見出し） | - | app-label | - | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_RETURN_ROTATION` | 既存。現行HTMLは「リターン」 |
+| 14 | 〇 | 選手名１ | doublesPlayerA1 | `app-textbox` | 文字列 | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_DOUBLES_PLAYERA1` | - |
+| 15 | 〇 | 選手名２ | doublesPlayerA2 | `app-textbox` | 文字列 | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_DOUBLES_PLAYERA2` | - |
+| 16 | - | 選手B | - | app-group | - | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_PLAYER_B` | 新規ラベルキー候補 |
+| 17 | - | サーブ順（選手B見出し） | - | app-label | - | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_SERVE_ROTATION` | 既存。現行HTMLは「サービス」 |
+| 18 | - | リターン順（選手B見出し） | - | app-label | - | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_RETURN_ROTATION` | 既存。現行HTMLは「リターン」 |
+| 19 | 〇 | 選手名３ | doublesPlayerB1 | `app-textbox` | 文字列 | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_DOUBLES_PLAYERB1` | - |
+| 20 | 〇 | 選手名４ | doublesPlayerB2 | `app-textbox` | 文字列 | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_DOUBLES_PLAYERB2` | - |
+| 21 | 〇 | サーブ順(選手名S1) | serveNoSinglesPlayer1 | `app-toggle` | 文字列 | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_SERVE_ROTATION` | - |
+| 22 | 〇 | サーブ順(選手名S2) | serveNoSinglesPlayer2 | `app-toggle` | 文字列 | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_SERVE_ROTATION` | - |
+| 23 | 〇 | サーブ順(選手名DA1) | serveNoDoublesPlayerA1 | `app-toggle` | 文字列 | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_SERVE_ROTATION` | - |
+| 24 | 〇 | サーブ順(選手名DA2) | serveNoDoublesPlayerA2 | `app-toggle` | 文字列 | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_SERVE_ROTATION` | - |
+| 25 | 〇 | サーブ順(選手名DB1) | serveNoDoublesPlayerB1 | `app-toggle` | 文字列 | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_SERVE_ROTATION` | - |
+| 26 | 〇 | サーブ順(選手名DB2) | serveNoDoublesPlayerB2 | `app-toggle` | 文字列 | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_SERVE_ROTATION` | - |
+| 27 | 〇 | リターン順(選手名DA1) | returnNoDoublesPlayerA1 | `app-toggle` | Enum | Brf9010CodeCourtSideEnum | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_RETURN_ROTATION` | DEUCE_SIDE=0、AD_SIDE=1 |
+| 28 | 〇 | リターン順(選手名DA2) | returnNoDoublesPlayerA2 | `app-toggle` | Enum | Brf9010CodeCourtSideEnum | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_RETURN_ROTATION` | DEUCE_SIDE=0、AD_SIDE=1 |
 | 29 | 〇 | リターン順(選手名DB1) | returnNoDoublesPlayerB1 | `app-toggle` | Enum | Brf9010CodeCourtSideEnum | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_RETURN_ROTATION` | DEUCE_SIDE=0、AD_SIDE=1 |
 | 30 | 〇 | リターン順(選手名DB2) | returnNoDoublesPlayerB2 | `app-toggle` | Enum | Brf9010CodeCourtSideEnum | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_RETURN_ROTATION` | DEUCE_SIDE=0、AD_SIDE=1 |
 | 31 | - | ゲーム設定（グループ） | - | app-group | - | - | - | - | - | - | - | - | - | - | - | `Brf9010I18nLabelKeyBrf1001Enum.LBL_MATCH_SETTING` | 既存 |
@@ -65,14 +65,7 @@
 | 入力制約・初期値・無効状態 | 開発者担当のため、初稿では未指定 |
 | 新規Enum定義 | 不要（既存Enumを再利用） |
 
-### 開発者が追加する非表示管理項目
-
-| 物理名 | 現行の型 |
-| --- | --- |
-| `matchStatus` | `Brf9010CodeMatchStatusEnum` |
-| `createDateTime` | 文字列 |
-| `updateDateTime` | 文字列 |
-| `deleteDateTime` | 文字列 |
+非表示管理項目（`matchStatus`・`createDateTime`・`updateDateTime`・`deleteDateTime`）は開発者による追記対象とし、このAI初稿の統合表にはまだ含めない。
 
 ## 検証上の注意
 
