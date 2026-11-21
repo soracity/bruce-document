@@ -62,12 +62,12 @@ io\github\soracity\bruce\brf9000\brf9010-enum\i18n
 | 38 | LBL_COURT_AD_SIDE | lbl.brf1001.court.ad.side | 文字列 | アドバンテージサイド(正式名) |
 | 39 | LBL_COURT_DEUCE | lbl.brf1001.court.deuce | 文字列 | デュースサイド(略名) |
 | 40 | LBL_COURT_AD | lbl.brf1001.court.ad | 文字列 | アドバンテージサイド(略名) |
-| 41 | LBL_BASIC_INFO | lbl.brf1001.basic.info | 文字列 | 基本情報（新規候補・未確定） |
-| 42 | LBL_PLAYERS | lbl.brf1001.players | 文字列 | 選手（新規候補・未確定） |
-| 43 | LBL_PLAYER_A | lbl.brf1001.player.a | 文字列 | 選手A（新規候補・未確定） |
-| 44 | LBL_PLAYER_B | lbl.brf1001.player.b | 文字列 | 選手B（新規候補・未確定） |
+| 41 | LBL_BASIC_INFO | lbl.brf1001.basic.info | 文字列 | 基本情報 |
+| 42 | LBL_PLAYERS | lbl.brf1001.players | 文字列 | 選手 |
+| 43 | LBL_PLAYER_A | lbl.brf1001.player.a | 文字列 | 選手A |
+| 44 | LBL_PLAYER_B | lbl.brf1001.player.b | 文字列 | 選手B |
 
-**管理方針：** 本設計書を当該画面で使用するラベルキーの「列挙名・値・説明」の定義元とし、画面設計書のラベルキー列はその参照先を記載する。AIは画面設計書と本設計書を併せて作成・更新し、既存キーの再利用・重複排除・両者の整合性確認を行う。新規候補は承認前に既存定義や生成済みEnumとして扱わない。翻訳文の登録およびEnumコードの生成は別工程とする。**
+**管理方針：** 本設計書を当該画面で使用するラベルキーの「列挙名・値・説明」の定義元とし、画面設計書のラベルキー列はその参照先を記載する。AIは画面設計書と本設計書を併せて作成・更新し、既存キーの再利用・重複排除・両者の整合性確認を行う。新規キーは開発担当者の承認後に確定した定義として扱う。ただし設計書で確定しても生成済みEnumや翻訳DBへの反映済みとは扱わない。翻訳文の登録およびEnumコードの生成は別工程とする。**
 
   - 値説明
   - lbl.<"comn" | 機能ID>.<label key>
