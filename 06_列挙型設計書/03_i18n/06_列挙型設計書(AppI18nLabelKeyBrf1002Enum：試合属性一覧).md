@@ -33,38 +33,13 @@ io\github\soracity\bruce\brf9000\brf9010-enum\i18n
 | 09 | LBL_DOUBLES_PLAYERA2 | lbl.brf1001.doubles.player.a2 | 文字列 | 選手名２ |
 | 10 | LBL_DOUBLES_PLAYERB1 | lbl.brf1001.doubles.player.b1 | 文字列 | 選手名３ |
 | 11 | LBL_DOUBLES_PLAYERB2 | lbl.brf1001.doubles.player.b2 | 文字列 | 選手名４ |
-| 12 | LBL_MATCH_SETTING | lbl.brf1001.match.setting | 文字列 | ゲーム設定 |
-| 13 | LBL_SET_TYPE | lbl.brf1001.set.type | 文字列 | セット設定 |
-| 14 | LBL_GAME_FINAL_TYPE | lbl.brf1001.gamefinal.type | 文字列 | ゲーム確定 |
-| 15 | LBL_MATCH_STATUS | lbl.brf1001.match.status | 文字列 | 状態 |
-| 16 | LBL_TIEBREAK_MODE | lbl.brf1001.tiebreak.mode | 文字列 | タイブレークモード |
-| 17 | LBL_SERVE_ROTATION | lbl.brf1001.serve.rotation | 文字列 | サーバー順 |
-| 18 | LBL_RETURN_ROTATION | lbl.brf1001.return.rotation | 文字列 | リターン順 |
-| 19 | LBL_MATCH_TYPE_SINGLES | lbl.brf1001.match.type.singles | 文字列 | シングルス |
-| 20 | LBL_MATCH_TYPE_DOUBLES | lbl.brf1001.match.type.doubles | 文字列 | ダブルス |
-| 21 | LBL_MATCH_SETTING_ON | lbl.brf1001.match.setting.on | 文字列 | オン |
-| 22 | LBL_MATCH_SETTING_OFF | lbl.brf1001.match.setting.off | 文字列 | オフ |
-| 23 | LBL_SET_TYPE_OFF | lbl.brf1001.set.type.off | 文字列 | オフ |
-| 24 | LBL_SET_TYPE_1 | lbl.brf1001.set.type.1 | 文字列 | １セット |
-| 25 | LBL_SET_TYPE_3 | lbl.brf1001.set.type.3 | 文字列 | ３セット |
-| 26 | LBL_SET_TYPE_5 | lbl.brf1001.set.type.5 | 文字列 | ５セット |
-| 27 | LBL_GAME_FINAL_TYPE_DUCE | lbl.brf1001.gamefinal.type.duce | 文字列 | デュース |
-| 28 | LBL_GAME_FINAL_TYPE_SEMIAD | lbl.brf1001.gamefinal.type.semiad | 文字列 | セミアド |
-| 29 | LBL_GAME_FINAL_TYPE_NOAD | lbl.brf1001.gamefinal.type.noad | 文字列 | ノーアド |
-| 30 | LBL_MATCH_STATUS_NOT_READY | lbl.brf1001.match.status.not.ready | 文字列 | 試合開始前 |
-| 31 | LBL_MATCH_STATUS_SCORING | lbl.brf1001.match.status.scoring | 文字列 | スコア入力中 |
-| 32 | LBL_MATCH_STATUS_FINISHED | lbl.brf1001.match.status.finished | 文字列 | 試合終了 |
-| 33 | LBL_MATCH_STATUS_SCORE_FINAL | lbl.brf1001.match.status.score.final | 文字列 | スコア確定 |
-| 34 | LBL_TIEBREAK_MODE_ON | lbl.brf1001.tiebreak.mode.on | 文字列 | オン |
-| 35 | LBL_TIEBREAK_MODE_OFF | lbl.brf1001.tiebreak.mode.off | 文字列 | オフ |
-| 36 | LBL_COURT_DEUCE_SIDE | lbl.brf1001.court.deuce.side | 文字列 | デュースサイド(正式名) |
-| 37 | LBL_COURT_AD_SIDE | lbl.brf1001.court.ad.side | 文字列 | アドバンテージサイド(正式名) |
-| 38 | LBL_COURT_DEUCE | lbl.brf1001.court.deuce | 文字列 | デュースサイド(略名) |
-| 39 | LBL_COURT_AD | lbl.brf1001.court.ad | 文字列 | アドバンテージサイド(略名) |
-| 40 | LBL_SEARCH_ITEM | lbl.brf1002.search.item | 文字列 | 検索項目 |
-| 41 | LBL_SEARCH | lbl.brf1002.search | 文字列 | 検索 |
-| 42 | LBL_MATCH_PLACE | lbl.brf1002.match.place | 文字列 | 場所 |
-| 43 | LBL_SURFACE | lbl.brf1002.surface | 文字列 | サーフェス |
+| 12 | LBL_SET_TYPE | lbl.brf1001.set.type | 文字列 | セット設定 |
+| 13 | LBL_GAME_FINAL_TYPE | lbl.brf1001.gamefinal.type | 文字列 | ゲーム確定 |
+| 14 | LBL_MATCH_STATUS | lbl.brf1001.match.status | 文字列 | 状態 |
+| 15 | LBL_SEARCH_ITEM | lbl.brf1002.search.item | 文字列 | 検索項目 |
+| 16 | LBL_SEARCH | lbl.brf1002.search | 文字列 | 検索 |
+| 17 | LBL_MATCH_PLACE | lbl.brf1002.match.place | 文字列 | 場所 |
+| 18 | LBL_SURFACE | lbl.brf1002.surface | 文字列 | サーフェス |
 
   - 値説明
   - lbl.<"comn" | 機能ID>.<label key>
