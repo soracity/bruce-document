@@ -61,6 +61,10 @@ io\github\soracity\bruce\brf9000\brf9010-enum\i18n
 | 37 | LBL_COURT_AD_SIDE | lbl.brf1001.court.ad.side | 文字列 | アドバンテージサイド(正式名) |
 | 38 | LBL_COURT_DEUCE | lbl.brf1001.court.deuce | 文字列 | デュースサイド(略名) |
 | 39 | LBL_COURT_AD | lbl.brf1001.court.ad | 文字列 | アドバンテージサイド(略名) |
+| 40 | LBL_SEARCH_ITEM | lbl.brf1002.search.item | 文字列 | 検索項目 |
+| 41 | LBL_SEARCH | lbl.brf1002.search | 文字列 | 検索 |
+| 42 | LBL_MATCH_PLACE | lbl.brf1002.match.place | 文字列 | 場所 |
+| 43 | LBL_SURFACE | lbl.brf1002.surface | 文字列 | サーフェス |
 
   - 値説明
   - lbl.<"comn" | 機能ID>.<label key>
