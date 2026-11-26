@@ -26,6 +26,8 @@ io\github\soracity\bruce\brf9000\brf9010-enum\i18n
 | 02 | LBL_MATCH_ID | lbl.brf1001.match.id | 文字列 | 試合ID |
 | 03 | LBL_MATCH_CODE | lbl.brf1001.match.code | 文字列 | 試合CODE |
 | 04 | LBL_MATCH_DATETIME | lbl.brf1001.match.date.time | 文字列 | 試合日時 |
+| 45 | LBL_MATCH_PLACE | lbl.brf1001.match.place | 文字列 | 場所 |
+| 46 | LBL_SURFACE | lbl.brf1001.surface | 文字列 | サーフェス |
 | 05 | LBL_MATCH_NAME | lbl.brf1001.match.name | 文字列 | 試合名 |
 | 06 | LBL_MATCH_TYPE | lbl.brf1001.match.type | 文字列 | 試合タイプ |
 | 07 | LBL_SINGLES_PLAYER1 | lbl.brf1001.singles.player.1 | 文字列 | 選手名１ |
@@ -66,8 +68,6 @@ io\github\soracity\bruce\brf9000\brf9010-enum\i18n
 | 42 | LBL_PLAYERS | lbl.brf1001.players | 文字列 | 選手 |
 | 43 | LBL_PLAYER_A | lbl.brf1001.player.a | 文字列 | 選手A |
 | 44 | LBL_PLAYER_B | lbl.brf1001.player.b | 文字列 | 選手B |
-| 45 | LBL_MATCH_PLACE | lbl.brf1001.match.place | 文字列 | 場所 |
-| 46 | LBL_SURFACE | lbl.brf1001.surface | 文字列 | サーフェス |
 
 **管理方針：** 本設計書を当該画面で使用するラベルキーの「列挙名・値・説明」の定義元とし、画面設計書のラベルキー列はその参照先を記載する。AIは画面設計書と本設計書を併せて作成・更新し、既存キーの再利用・重複排除・両者の整合性確認を行う。新規キーは開発担当者の承認後に確定した定義として扱う。ただし設計書で確定しても生成済みEnumや翻訳DBへの反映済みとは扱わない。翻訳文の登録およびEnumコードの生成は別工程とする。**
 
