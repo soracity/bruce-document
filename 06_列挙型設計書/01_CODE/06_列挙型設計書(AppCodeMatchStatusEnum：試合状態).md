@@ -22,16 +22,14 @@
 io\github\soracity\bruce\brf9000\brf9010-enum\code
 
 #### 列挙型定義
-| No | 列挙名 | 値 | 型 | 説明 |
-| --- | :--- | :--- | :--- | :--- |
-| 01 |NOT_STARTED|00|文字列| 試合開始前 |
-| 02 |IN_PROGRESS|01|文字列| 試合中 |
-| 03 |FINISHED|02|文字列| 試合終了 |
-| 04 |FINAL|03|文字列| 試合確定 |
+| No | 列挙名 | 値 | 型 | 説明 | ラベルキー | アイコン |
+| --- | :--- | :--- | :--- | :--- | --- | --- |
+| 01 | NOT_STARTED | 00 | 文字列 | 試合開始前 | lbl.code.not.started | schedule |
+| 02 | IN_PROGRESS | 01 | 文字列 | 試合中 | lbl.code.in.progress | play_circle |
+| 03 | FINISHED | 02 | 文字列 | 試合終了 | lbl.code.finished | sports_score |
+| 04 | FINAL | 03 | 文字列 | 試合確定 | lbl.code.final | verified |
 
-  - 値説明
-  - lbl.<"comn" | 機能ID>.<label key>
-  - msg.<"comn" | 機能ID>.<label key>
+- ラベルキー：`lbl.code.` + 列挙名を小文字化し、`_`を`.`に置換する。
 
 #### 留意事項
 - 型
