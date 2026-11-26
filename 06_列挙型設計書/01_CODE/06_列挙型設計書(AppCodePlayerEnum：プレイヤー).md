@@ -22,14 +22,14 @@
 io\github\soracity\bruce\brf9000\brf9010-enum\code
 
 #### 列挙型定義
-| No | 列挙名 | 値 | 型 | 説明 | ラベルキー | アイコン |
-| --- | :--- | :--- | :--- | :--- |
-| 01 | SINGLES_A | 0 | 文字列 | シングルス(A) | lbl.code.singles.a | person |
-| 02 | SINGLES_B | 1 | 文字列 | シングルス(B) | lbl.code.singles.b | person |
-| 03 | DOUBLES_A1 | 2 | 文字列 | ダブルス(A1) | lbl.code.doubles.a1 | group |
-| 04 | DOUBLES_A2 | 3 | 文字列 | ダブルス(A2) | lbl.code.doubles.a2 | group |
-| 05 | DOUBLES_B1 | 4 | 文字列 | ダブルス(B1) | lbl.code.doubles.b1 | group |
-| 06 | DOUBLES_B2 | 5 | 文字列 | ダブルス(B2) | lbl.code.doubles.b2 | group |
+| No | 列挙名 | 値 | 型 | ラベルキー | アイコン | 説明 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 01 | SINGLES_A | 0 | 文字列 | lbl.code.singles.a | person | シングルス(A) |
+| 02 | SINGLES_B | 1 | 文字列 | lbl.code.singles.b | person | シングルス(B) |
+| 03 | DOUBLES_A1 | 2 | 文字列 | lbl.code.doubles.a1 | group | ダブルス(A1) |
+| 04 | DOUBLES_A2 | 3 | 文字列 | lbl.code.doubles.a2 | group | ダブルス(A2) |
+| 05 | DOUBLES_B1 | 4 | 文字列 | lbl.code.doubles.b1 | group | ダブルス(B1) |
+| 06 | DOUBLES_B2 | 5 | 文字列 | lbl.code.doubles.b2 | group | ダブルス(B2) |
 
 - ラベルキー：`lbl.code.` + 列挙名を小文字化し、`_`を`.`に置換する。
 
