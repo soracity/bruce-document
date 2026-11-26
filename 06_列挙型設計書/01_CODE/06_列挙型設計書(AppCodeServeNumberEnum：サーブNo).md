@@ -22,10 +22,10 @@
 io\github\soracity\bruce\brf9000\brf9010-enum\code
 
 #### 列挙型定義
-| No | 列挙名 | 値 | 型 | 説明 | ラベルキー | アイコン |
-| --- | :--- | :--- | :--- | :--- |
-| 01 | SERVE_1 | 0 | 文字列 | ファーストサーブ | lbl.code.serve.1 | looks_one |
-| 02 | SERVE_2 | 1 | 文字列 | セカンドサーブ | lbl.code.serve.2 | looks_two |
+| No | 列挙名 | 値 | 型 | ラベルキー | アイコン | 説明 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 01 | SERVE_1 | 0 | 文字列 | lbl.code.serve.1 | looks_one | ファーストサーブ |
+| 02 | SERVE_2 | 1 | 文字列 | lbl.code.serve.2 | looks_two | セカンドサーブ |
 
 - ラベルキー：`lbl.code.` + 列挙名を小文字化し、`_`を`.`に置換する。
 
