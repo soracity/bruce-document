@@ -12,7 +12,7 @@
 - [ ] メッセージ列挙型
 
 | 列挙種別 | 意味 |
-|---|---|
+|---|---| --- | --- |
 | 一般列挙型 | 列挙名、値で構成される列挙型 |
 | コード列挙型 | コード値の列挙型 |
 | ラベル列挙型 | ラベルの列挙型 |
@@ -22,18 +22,16 @@
 io\github\soracity\bruce\brf9000\brf9010-enum\code
 
 #### 列挙型定義
-| No | 列挙名 | 値 | 型 | 説明 |
+| No | 列挙名 | 値 | 型 | 説明 | ラベルキー | アイコン |
 | --- | :--- | :--- | :--- | :--- |
-| 01 |SINGLES_A|0|文字列| シングルス(A) |
-| 02 |SINGLES_B|1|文字列| シングルス(B) |
-| 03 |DOUBLES_A1|2|文字列| ダブルス(A1) |
-| 04 |DOUBLES_A2|3|文字列| ダブルス(A2) |
-| 05 |DOUBLES_B1|4|文字列| ダブルス(B1) |
-| 06 |DOUBLES_B2|5|文字列| ダブルス(B2) |
+| 01 | SINGLES_A | 0 | 文字列 | シングルス(A) | lbl.code.singles.a | person |
+| 02 | SINGLES_B | 1 | 文字列 | シングルス(B) | lbl.code.singles.b | person |
+| 03 | DOUBLES_A1 | 2 | 文字列 | ダブルス(A1) | lbl.code.doubles.a1 | group |
+| 04 | DOUBLES_A2 | 3 | 文字列 | ダブルス(A2) | lbl.code.doubles.a2 | group |
+| 05 | DOUBLES_B1 | 4 | 文字列 | ダブルス(B1) | lbl.code.doubles.b1 | group |
+| 06 | DOUBLES_B2 | 5 | 文字列 | ダブルス(B2) | lbl.code.doubles.b2 | group |
 
-  - 値説明
-  - lbl.<"comn" | 機能ID>.<label key>
-  - msg.<"comn" | 機能ID>.<label key>
+- ラベルキー：`lbl.code.` + 列挙名を小文字化し、`_`を`.`に置換する。
 
 #### 留意事項
 - 型
