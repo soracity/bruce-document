@@ -34,12 +34,12 @@ io\github\soracity\bruce\brf9000\brf9010-enum\i18n
 | 10 | LBL_DOUBLES_PLAYERA2 | lbl.brf1001.doubles.player.a2 | 文字列 | 選手名２ |
 | 11 | LBL_DOUBLES_PLAYERB1 | lbl.brf1001.doubles.player.b1 | 文字列 | 選手名３ |
 | 12 | LBL_DOUBLES_PLAYERB2 | lbl.brf1001.doubles.player.b2 | 文字列 | 選手名４ |
-| 13 | LBL_MATCH_SETTING | lbl.brf1001.match.setting | 文字列 | ゲーム設定 |
+| 13 | LBL_MATCH_SETTING | lbl.brf1001.match.setting | 文字列 | 試合設定 |
 | 14 | LBL_SET_TYPE | lbl.brf1001.set.type | 文字列 | セット設定 |
 | 15 | LBL_GAME_FINAL_TYPE | lbl.brf1001.gamefinal.type | 文字列 | ゲーム確定 |
 | 16 | LBL_MATCH_STATUS | lbl.brf1001.match.status | 文字列 | 状態 |
 | 17 | LBL_TIEBREAK_MODE | lbl.brf1001.tiebreak.mode | 文字列 | タイブレークモード |
-| 18 | LBL_SERVE_ROTATION | lbl.brf1001.serve.rotation | 文字列 | サーバー順 |
+| 18 | LBL_SERVE_ROTATION | lbl.brf1001.serve.rotation | 文字列 | サーブ順 |
 | 19 | LBL_RETURN_ROTATION | lbl.brf1001.return.rotation | 文字列 | リターン順 |
 | 20 | LBL_MATCH_TYPE_SINGLES | lbl.brf1001.match.type.singles | 文字列 | シングルス |
 | 21 | LBL_MATCH_TYPE_DOUBLES | lbl.brf1001.match.type.doubles | 文字列 | ダブルス |
@@ -66,6 +66,8 @@ io\github\soracity\bruce\brf9000\brf9010-enum\i18n
 | 42 | LBL_PLAYERS | lbl.brf1001.players | 文字列 | 選手 |
 | 43 | LBL_PLAYER_A | lbl.brf1001.player.a | 文字列 | 選手A |
 | 44 | LBL_PLAYER_B | lbl.brf1001.player.b | 文字列 | 選手B |
+| 45 | LBL_MATCH_PLACE | lbl.brf1001.match.place | 文字列 | 場所 |
+| 46 | LBL_SURFACE | lbl.brf1001.surface | 文字列 | サーフェス |
 
 **管理方針：** 本設計書を当該画面で使用するラベルキーの「列挙名・値・説明」の定義元とし、画面設計書のラベルキー列はその参照先を記載する。AIは画面設計書と本設計書を併せて作成・更新し、既存キーの再利用・重複排除・両者の整合性確認を行う。新規キーは開発担当者の承認後に確定した定義として扱う。ただし設計書で確定しても生成済みEnumや翻訳DBへの反映済みとは扱わない。翻訳文の登録およびEnumコードの生成は別工程とする。**
 
