@@ -21,6 +21,8 @@ io\github\soracity\bruce\brf1000\brf1002\infrastructure\dao-generate
 ```
 select matchId
       , matchDateTime
+      , match_place                 AS matchPlace
+      , surface                     AS surface
       , matchName
       , matchType
       , singlesPlayer1
